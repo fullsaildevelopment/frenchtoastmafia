@@ -24,9 +24,19 @@
 *.lai
 *.la
 *.a
-*.lib
 
 # Executables
 *.exe
 *.out
 *.app
+
+
+# Extra Stuff
+*.tlog
+*.log
+*.cso
+*.csh
+*.ipch
+*.suo
+*.db
+*.xml
