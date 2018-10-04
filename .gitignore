@@ -40,3 +40,10 @@
 *.suo
 *.db
 *.xml
+
+Debug
+Release
+.vs
+*.pdb
+*.idb
+*.ilk
