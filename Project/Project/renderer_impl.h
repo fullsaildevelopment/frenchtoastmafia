@@ -60,14 +60,9 @@ struct cRenderer::tImpl
 
 	tConstantBuffer t_constant_buffer;
 
-	XMFLOAT4X4 cam_float4x4;
-	XMFLOAT4 eye_float4 = XMFLOAT4(0.0f, 15.0f, -15.0f, 0.0f);
-	XMFLOAT4 at_float4 = XMFLOAT4(0.0f, 0.0f, 0.0f, 0.0f);
-	XMFLOAT4 up_float4 = XMFLOAT4(0.0f, 1.0f, 0.0f, 0.0f);
-
-	XMVECTOR vEye_Vector = XMLoadFloat4(&eye_float4);// { 0.0f, 15.0f, -15.0f, 0.0f };
-	XMVECTOR vAt_Vector = XMLoadFloat4(&at_float4);// { 0.0f, 0.0f, 0.0f, 0.0f };
-	XMVECTOR vUp_Vector = XMLoadFloat4(&up_float4);// { 0.0f, 1.0f, 0.0f, 0.0f };
+	XMVECTOR vEye_Vector = { 0.0f, 15.0f, -15.0f, 0.0f };
+	XMVECTOR vAt_Vector = { 0.0f, 0.0f, 0.0f, 0.0f };
+	XMVECTOR vUp_Vector = { 0.0f, 1.0f, 0.0f, 0.0f };
 	XMMATRIX mCamera_Matrix = XMMatrixInverse(nullptr, XMMatrixLookAtLH(vEye_Vector, vAt_Vector, vUp_Vector));
 	XMMATRIX mCamera_Origin = mCamera_Matrix;
 
@@ -223,7 +218,9 @@ struct cRenderer::tImpl
 			1,5,3,
 			5,7,3,
 			4,5,0,
-			5,2,0
+			5,1,0,
+			2,3,6,
+			3,7,6
 		};
 
 		ZeroMemory(&d3dBuffer_Desc, sizeof(D3D11_BUFFER_DESC));
