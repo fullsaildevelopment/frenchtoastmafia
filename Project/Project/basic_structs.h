@@ -1,3 +1,11 @@
+/************************************************************************
+* Filename:  		basic_structs.h
+* Date:      		10/02/2018
+* Mod. Date: 		10/09/2018
+* Mod. Initials:	WM
+* Author:    		Wichet Manawanitjarern
+* Purpose:   		Additional structs to hold different datatype and make accessing them easier.
+*************************************************************************/
 #pragma once
 
 #include <array>

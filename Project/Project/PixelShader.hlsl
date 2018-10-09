@@ -1,3 +1,12 @@
+/************************************************************************
+* Filename:  		PixelShader.hlsl
+* Date:      		10/02/2018
+* Mod. Date: 		10/09/2018
+* Mod. Initials:	WM
+* Author:    		Wichet Manawanitjarern
+* Purpose:   		Basic PixelShader for Rendering
+*************************************************************************/
+
 texture2D tTexture : register(t0);
 
 SamplerState sSampler_State[2] : register(s0);
