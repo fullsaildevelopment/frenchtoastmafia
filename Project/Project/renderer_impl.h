@@ -63,15 +63,18 @@ struct cRenderer::tImpl
 
 	CComPtr<ID3D11Buffer> d3dConstant_Buffer_WVP;
 
-	CComPtr<ID3D11Buffer> d3d_test_cube_vertex_buffer;
-	CComPtr<ID3D11Buffer> d3d_test_cube_index_buffer;
-
 	tConstantBuffer t_constant_buffer;
 
 	XMFLOAT4X4 fCamera_Matrix;
 	XMFLOAT4X4 fCamera_Origin;
 
 	XTime cTime;
+
+	CComPtr<ID3D11Buffer> d3d_test_cube_vertex_buffer;
+	tVertex *test_cube = new tVertex[8];
+
+	CComPtr<ID3D11Buffer> d3d_test_cube_index_buffer;
+	bool test_cube_spawn = false;
 
 	void initialize(cView& v)
 	{
@@ -181,38 +184,38 @@ struct cRenderer::tImpl
 		d3dDevice->CreateBuffer(&d3dConstant_Buffer_Desc, nullptr, &d3dConstant_Buffer_WVP.p);
 
 		// VERTEX BUFFER
-		tVertex *test_cube = new tVertex[8];
-		for (unsigned int i = 0; i < 8; i++)
-		{
-			test_cube[i].fPosition.m_x = 1.0f;
-			test_cube[i].fPosition.m_y = 1.0f;
-			test_cube[i].fPosition.m_z = 1.0f;
-			test_cube[i].fPosition.m_w = 1.0f;
-
-			if (i % 2 == 0)
-				test_cube[i].fPosition.m_x *= -1.0f;
-
-			if (i == 2 || i == 3 || i == 6 || i == 7)
-				test_cube[i].fPosition.m_y *= -1.0f;
-
-			if (i < 4)
-				test_cube[i].fPosition.m_z *= -1.0f;
-		}
-
-		ZeroMemory(&d3dBuffer_Desc, sizeof(D3D11_BUFFER_DESC));
-		d3dBuffer_Desc.ByteWidth = sizeof(tVertex) * 8;
-		d3dBuffer_Desc.Usage = D3D11_USAGE_IMMUTABLE;
-		d3dBuffer_Desc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-		d3dBuffer_Desc.CPUAccessFlags = NULL;
-		d3dBuffer_Desc.MiscFlags = 0;
-		d3dBuffer_Desc.StructureByteStride = 0;
-
-		ZeroMemory(&d3dSRD, sizeof(D3D11_SUBRESOURCE_DATA));
-		d3dSRD.pSysMem = test_cube;
-		d3dSRD.SysMemPitch = 0;
-		d3dSRD.SysMemSlicePitch = 0;
-
-		d3dDevice->CreateBuffer(&d3dBuffer_Desc, &d3dSRD, &d3d_test_cube_vertex_buffer);
+		//tVertex *test_cube = new tVertex[8];
+		//for (unsigned int i = 0; i < 8; i++)
+		//{
+		//	test_cube[i].fPosition.fX = 1.0f;
+		//	test_cube[i].fPosition.fY = 1.0f;
+		//	test_cube[i].fPosition.fZ = 1.0f;
+		//	test_cube[i].fPosition.fW = 1.0f;
+		//
+		//	if (i % 2 == 0)
+		//		test_cube[i].fPosition.fX *= -1.0f;
+		//
+		//	if (i == 2 || i == 3 || i == 6 || i == 7)
+		//		test_cube[i].fPosition.fY *= -1.0f;
+		//
+		//	if (i < 4)
+		//		test_cube[i].fPosition.fZ *= -1.0f;
+		//}
+		//
+		//ZeroMemory(&d3dBuffer_Desc, sizeof(D3D11_BUFFER_DESC));
+		//d3dBuffer_Desc.ByteWidth = sizeof(tVertex) * 8;
+		//d3dBuffer_Desc.Usage = D3D11_USAGE_IMMUTABLE;
+		//d3dBuffer_Desc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+		//d3dBuffer_Desc.CPUAccessFlags = NULL;
+		//d3dBuffer_Desc.MiscFlags = 0;
+		//d3dBuffer_Desc.StructureByteStride = 0;
+		//
+		//ZeroMemory(&d3dSRD, sizeof(D3D11_SUBRESOURCE_DATA));
+		//d3dSRD.pSysMem = test_cube;
+		//d3dSRD.SysMemPitch = 0;
+		//d3dSRD.SysMemSlicePitch = 0;
+		//
+		//d3dDevice->CreateBuffer(&d3dBuffer_Desc, &d3dSRD, &d3d_test_cube_vertex_buffer);
 
 		// INDEX BUFFER
 
@@ -345,6 +348,42 @@ struct cRenderer::tImpl
 			cTime.Restart();
 		}
 
+		// F - fire cube
+		if (GetAsyncKeyState('F'))
+		{
+			for (unsigned int i = 0; i < 8; i++)
+			{
+				test_cube[i].fPosition.fX = 1.0f;
+				test_cube[i].fPosition.fY = 1.0f;
+				test_cube[i].fPosition.fZ = 1.0f;
+				test_cube[i].fPosition.fW = 1.0f;
+
+				if (i % 2 == 0)
+					test_cube[i].fPosition.fX *= -1.0f;
+
+				if (i == 2 || i == 3 || i == 6 || i == 7)
+					test_cube[i].fPosition.fY *= -1.0f;
+
+				if (i < 4)
+					test_cube[i].fPosition.fZ *= -1.0f;
+			}
+
+			ZeroMemory(&d3dBuffer_Desc, sizeof(D3D11_BUFFER_DESC));
+			d3dBuffer_Desc.ByteWidth = sizeof(tVertex) * 8;
+			d3dBuffer_Desc.Usage = D3D11_USAGE_IMMUTABLE;
+			d3dBuffer_Desc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+			d3dBuffer_Desc.CPUAccessFlags = NULL;
+			d3dBuffer_Desc.MiscFlags = 0;
+			d3dBuffer_Desc.StructureByteStride = 0;
+
+			ZeroMemory(&d3dSRD, sizeof(D3D11_SUBRESOURCE_DATA));
+			d3dSRD.pSysMem = test_cube;
+			d3dSRD.SysMemPitch = 0;
+			d3dSRD.SysMemSlicePitch = 0;
+
+			d3dDevice->CreateBuffer(&d3dBuffer_Desc, &d3dSRD, &d3d_test_cube_vertex_buffer);
+		}
+
 		// NORMALIZING ROTATIONS
 		XMVECTOR newZ = mCamera_Matrix.r[2];
 		newZ = XMVector3Normalize(newZ);
@@ -384,16 +423,39 @@ struct cRenderer::tImpl
 		unsigned int verts_size = sizeof(tVertex);
 		unsigned int off_set = 0;
 
-		ID3D11Buffer *tmp_v_buffer[] = { d3d_test_cube_vertex_buffer };
-		d3dContext->IASetVertexBuffers(0, 1, tmp_v_buffer, &verts_size, &off_set);
-		d3dContext->IASetIndexBuffer(d3d_test_cube_index_buffer, DXGI_FORMAT_R32_UINT, 0);
-		d3dContext->IASetInputLayout(d3dInput_Layout);
-		d3dContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-		d3dContext->VSSetShader(d3dVertex_Shader, NULL, 0);
-		d3dContext->PSSetShader(d3dPixel_Shader, NULL, 0);
-		d3dContext->DrawIndexed(36, 0, 0);
-		
+		if (test_cube_spawn)
+		{
+			ID3D11Buffer *tmp_v_buffer[] = { d3d_test_cube_vertex_buffer };
+			d3dContext->IASetVertexBuffers(0, 1, tmp_v_buffer, &verts_size, &off_set);
+			d3dContext->IASetIndexBuffer(d3d_test_cube_index_buffer, DXGI_FORMAT_R32_UINT, 0);
+			d3dContext->IASetInputLayout(d3dInput_Layout);
+			d3dContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+			d3dContext->VSSetShader(d3dVertex_Shader, NULL, 0);
+			d3dContext->PSSetShader(d3dPixel_Shader, NULL, 0);
+			d3dContext->DrawIndexed(36, 0, 0);
+		}
+
 		// PRESENT
 		d3dSwap_Chain->Present(1, 0);
 	}
+
+	//static void New_Position(tFloat3 tPosition)
+	//{
+	//	for (unsigned int i = 0; i < 8; i++)
+	//	{
+	//		test_cube[i].fPosition.x = tPosition.x;
+	//		test_cube[i].fPosition.y = tPosition.y;
+	//		test_cube[i].fPosition.z = tPosition.z;
+	//		test_cube[i].fPosition.w = 1.0f;
+	//
+	//		if (i % 2 == 0)
+	//			test_cube[i].fPosition.x *= -1.0f;
+	//
+	//		if (i == 2 || i == 3 || i == 6 || i == 7)
+	//			test_cube[i].fPosition.y *= -1.0f;
+	//
+	//		if (i < 4)
+	//			test_cube[i].fPosition.z *= -1.0f;
+	//	}
+	//}
 };

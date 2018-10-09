@@ -23,6 +23,8 @@ public:
 
 	void draw();
 
+	//static void New_Position(tFloat3 tPosition);
+
 private:
 
 	struct tImpl;
