@@ -105,4 +105,3 @@ struct tVertex
 	tFloat4 fColor;
 	tFloat2 fTexture_Coordinate;
 };
-
