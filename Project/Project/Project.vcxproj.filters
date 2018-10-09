@@ -1,108 +1,46 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Source Files">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
-    </Filter>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
-    <Filter Include="Renderer">
-      <UniqueIdentifier>{cbf34b50-e45d-4bc7-b811-64ff358a2f75}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Modules">
-      <UniqueIdentifier>{5fb68add-0dfc-419c-9092-b1a4a18d0fec}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Modules\Characters">
-      <UniqueIdentifier>{29cf2def-cee5-40ef-99ff-4066a0a4409e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Modules\Spells">
-      <UniqueIdentifier>{089351cd-a435-42e5-aae7-57b76231822f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Helper files">
-      <UniqueIdentifier>{0be4e6ae-7958-439b-aeb0-4e693bb65b7a}</UniqueIdentifier>
-    </Filter>
+    <FxCompile Include="PixelShader.hlsl" />
+    <FxCompile Include="PixelShaderTest.hlsl" />
+    <FxCompile Include="VertexShader.hlsl" />
+    <FxCompile Include="VertexShaderTest.hlsl" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="header.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="targetver.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="resource.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Project.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="renderer_structs.h">
-      <Filter>Renderer</Filter>
-    </ClInclude>
-    <ClInclude Include="renderer.h">
-      <Filter>Renderer</Filter>
-    </ClInclude>
-    <ClInclude Include="view.h">
-      <Filter>Renderer</Filter>
-    </ClInclude>
-    <ClInclude Include="renderer_impl.h">
-      <Filter>Renderer</Filter>
-    </ClInclude>
-    <ClInclude Include="Base_Character.h">
-      <Filter>Modules\Characters</Filter>
-    </ClInclude>
-    <ClInclude Include="Base_Spell.h">
-      <Filter>Modules\Spells</Filter>
-    </ClInclude>
-    <ClInclude Include="XTime.h">
-      <Filter>Helper files</Filter>
-    </ClInclude>
-    <ClInclude Include="basic_structs.h">
-      <Filter>Helper files</Filter>
-    </ClInclude>
+    <ClCompile Include="Base_Character.cpp" />
+    <ClCompile Include="Base_Spell.cpp" />
+    <ClCompile Include="Project.cpp" />
+    <ClCompile Include="renderer.cpp" />
+    <ClCompile Include="WICTextureLoader.cpp" />
+    <ClCompile Include="XTime.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Project.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="renderer.cpp">
-      <Filter>Renderer</Filter>
-    </ClCompile>
-    <ClCompile Include="Base_Character.cpp">
-      <Filter>Modules\Characters</Filter>
-    </ClCompile>
-    <ClCompile Include="Base_Spell.cpp">
-      <Filter>Modules\Spells</Filter>
-    </ClCompile>
-    <ClCompile Include="XTime.cpp">
-      <Filter>Helper files</Filter>
-    </ClCompile>
+    <ClInclude Include="Base_Character.h" />
+    <ClInclude Include="Base_Spell.h" />
+    <ClInclude Include="basic_structs.h" />
+    <ClInclude Include="Ben_funcs.h" />
+    <ClInclude Include="Ben_structs.h" />
+    <ClInclude Include="header.h" />
+    <ClInclude Include="Project.h" />
+    <ClInclude Include="renderer.h" />
+    <ClInclude Include="renderer_impl.h" />
+    <ClInclude Include="renderer_structs.h" />
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="targetver.h" />
+    <ClInclude Include="view.h" />
+    <ClInclude Include="WICTextureLoader.h" />
+    <ClInclude Include="XTime.h" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="Project.rc">
-      <Filter>Resource Files</Filter>
-    </ResourceCompile>
+    <ResourceCompile Include="Project.rc" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="small.ico">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="Project.ico">
-      <Filter>Resource Files</Filter>
-    </Image>
+    <Image Include="Project.ico" />
+    <Image Include="small.ico" />
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="VertexShader.hlsl">
-      <Filter>Renderer</Filter>
-    </FxCompile>
-    <FxCompile Include="PixelShader.hlsl">
-      <Filter>Renderer</Filter>
-    </FxCompile>
+    <Filter Include="NewFilter1">
+      <UniqueIdentifier>{6b4836f1-aed7-47f2-8e25-53540efdb24e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
 </Project>
