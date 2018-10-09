@@ -12,7 +12,6 @@
 class Base_Character
 {
 private:
-// Private Member Variable
 	// Game Data
 	bool m_bIsAlive = false;
 	// int nHealth = 100; unused placeholder
@@ -133,7 +132,6 @@ public:
 	* Mod. Initials:	 WM
 	*****************************************************************/
 	tFloat4 getHeading();
-	//float get m_fVelocity();
 
 
 	/***************

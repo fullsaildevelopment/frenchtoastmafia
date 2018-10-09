@@ -25,6 +25,9 @@
     <Filter Include="Modules\Spells">
       <UniqueIdentifier>{089351cd-a435-42e5-aae7-57b76231822f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Helper files">
+      <UniqueIdentifier>{0be4e6ae-7958-439b-aeb0-4e693bb65b7a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="header.h">
@@ -39,9 +42,6 @@
     <ClInclude Include="Project.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="basic_structs.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="renderer_structs.h">
       <Filter>Renderer</Filter>
     </ClInclude>
@@ -51,9 +51,6 @@
     <ClInclude Include="view.h">
       <Filter>Renderer</Filter>
     </ClInclude>
-    <ClInclude Include="XTime.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="renderer_impl.h">
       <Filter>Renderer</Filter>
     </ClInclude>
@@ -61,7 +58,13 @@
       <Filter>Modules\Characters</Filter>
     </ClInclude>
     <ClInclude Include="Base_Spell.h">
-      <Filter>Header Files</Filter>
+      <Filter>Modules\Spells</Filter>
+    </ClInclude>
+    <ClInclude Include="XTime.h">
+      <Filter>Helper files</Filter>
+    </ClInclude>
+    <ClInclude Include="basic_structs.h">
+      <Filter>Helper files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -71,14 +74,14 @@
     <ClCompile Include="renderer.cpp">
       <Filter>Renderer</Filter>
     </ClCompile>
-    <ClCompile Include="XTime.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Base_Character.cpp">
       <Filter>Modules\Characters</Filter>
     </ClCompile>
     <ClCompile Include="Base_Spell.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Modules\Spells</Filter>
+    </ClCompile>
+    <ClCompile Include="XTime.cpp">
+      <Filter>Helper files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
