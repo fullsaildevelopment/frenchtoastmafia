@@ -1,37 +1,33 @@
-#include <stdio.h>
+//#include <stdio.h>
 #include <iostream>
-#include <fmod.hpp>
+#include "dopeSoundSystem.h"
+#include <Windows.h>
 
-FMOD_RESULT Studio::System::initialize
-(
-	int maxchannels,
-	FMOD_STUDIO_INITFLAGS studioflags,
-	FMOD_INITFLAGS flags,
-	void *extradriverdata
-);
+dopeSoundSystem sound;
 
 int main()
 {
-	FMOD_RESULT resulty;
-
-	FMOD::System* System = nullptr;   // creates system pointer
-
-	resulty = FMOD::System_Create(&System);     // creates system object
-
-	if (resulty != FMOD_OK)
+	//sound.playSong("fionnulas-tale-celtic-flute-music.mp3");
+	while (true)
 	{
-		printf("FMOD ERROR!, YOU SHALL PLAY IN SILENCE (&d) &s\n", resulty, FMOD_ERRORCALLBACK_INFO(resulty));
-		exit(-1);
-	}
+		//FMOD::System::update();
 
-	resulty = System->init(512, FMOD_INIT_NORMAL, 0);  // initilizes FMOD
+		if (GetAsyncKeyState('Z'))
+		{
+			sound.playSong("fionnulas-tale-celtic-flute-music.mp3");
+		}
 
-	if (resulty != FMOD_OK)
-	{
-		printf("FMOD ERROR!, YOU SHALL PLAY IN SILENCE (&d) &s\n", resulty, FMOD_ERRORCALLBACK_INFO(resulty));
-		exit(-1);
+		if (GetAsyncKeyState('X'))
+		{
+			sound.pauseNUnPause();
+		}
+
+		if (GetAsyncKeyState('C'))
+		{
+			sound.stopSong();
+		}
+		
 	}
-	//resulty = FMOD::System::createStream()
 
 	return 0;
 }
