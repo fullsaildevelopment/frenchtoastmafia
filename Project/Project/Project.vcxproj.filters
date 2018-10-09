@@ -16,6 +16,18 @@
     <Filter Include="Renderer">
       <UniqueIdentifier>{cbf34b50-e45d-4bc7-b811-64ff358a2f75}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Modules">
+      <UniqueIdentifier>{5fb68add-0dfc-419c-9092-b1a4a18d0fec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Modules\Characters">
+      <UniqueIdentifier>{29cf2def-cee5-40ef-99ff-4066a0a4409e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Modules\Spells">
+      <UniqueIdentifier>{089351cd-a435-42e5-aae7-57b76231822f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Helper files">
+      <UniqueIdentifier>{0be4e6ae-7958-439b-aeb0-4e693bb65b7a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="header.h">
@@ -30,9 +42,6 @@
     <ClInclude Include="Project.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="basic_structs.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="renderer_structs.h">
       <Filter>Renderer</Filter>
     </ClInclude>
@@ -42,11 +51,20 @@
     <ClInclude Include="view.h">
       <Filter>Renderer</Filter>
     </ClInclude>
-    <ClInclude Include="XTime.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="renderer_impl.h">
       <Filter>Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Base_Character.h">
+      <Filter>Modules\Characters</Filter>
+    </ClInclude>
+    <ClInclude Include="Base_Spell.h">
+      <Filter>Modules\Spells</Filter>
+    </ClInclude>
+    <ClInclude Include="XTime.h">
+      <Filter>Helper files</Filter>
+    </ClInclude>
+    <ClInclude Include="basic_structs.h">
+      <Filter>Helper files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -56,8 +74,14 @@
     <ClCompile Include="renderer.cpp">
       <Filter>Renderer</Filter>
     </ClCompile>
+    <ClCompile Include="Base_Character.cpp">
+      <Filter>Modules\Characters</Filter>
+    </ClCompile>
+    <ClCompile Include="Base_Spell.cpp">
+      <Filter>Modules\Spells</Filter>
+    </ClCompile>
     <ClCompile Include="XTime.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Helper files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

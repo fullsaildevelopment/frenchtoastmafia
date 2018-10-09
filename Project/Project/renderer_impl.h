@@ -1,3 +1,11 @@
+/************************************************************************
+* Filename:  		renderer_impl.h
+* Date:      		10/02/2018
+* Mod. Date: 		10/09/2018
+* Mod. Initials:	WM
+* Author:    		Wichet Manawanitjarern
+* Purpose:   		Main Rendering file
+*************************************************************************/
 #pragma once
 
 #include <atlbase.h>
@@ -60,16 +68,17 @@ struct cRenderer::tImpl
 
 	tConstantBuffer t_constant_buffer;
 
-	XMVECTOR vEye_Vector = { 0.0f, 15.0f, -15.0f, 0.0f };
-	XMVECTOR vAt_Vector = { 0.0f, 0.0f, 0.0f, 0.0f };
-	XMVECTOR vUp_Vector = { 0.0f, 1.0f, 0.0f, 0.0f };
-	XMMATRIX mCamera_Matrix = XMMatrixInverse(nullptr, XMMatrixLookAtLH(vEye_Vector, vAt_Vector, vUp_Vector));
-	XMMATRIX mCamera_Origin = mCamera_Matrix;
+	XMFLOAT4X4 fCamera_Matrix;
+	XMFLOAT4X4 fCamera_Origin;
 
 	XTime cTime;
 
 	void initialize(cView& v)
 	{
+		XMMATRIX mCamera_Matrix = XMMatrixInverse(nullptr, XMMatrixLookAtLH({ 0.0f, 15.0f, -15.0f, 0.0f }, { 0.0f, 0.0f, 0.0f, 0.0f }, { 0.0f, 1.0f, 0.0f, 0.0f }));
+		XMStoreFloat4x4(&fCamera_Matrix, mCamera_Matrix);
+		fCamera_Origin = fCamera_Matrix;
+
 		// Get Current Window Size
 		RECT current_window_size;
 		GetClientRect(_hWnd, &current_window_size);
@@ -275,6 +284,9 @@ struct cRenderer::tImpl
 		d3dContext->ClearRenderTargetView(d3dRTV, clear_color);
 		d3dContext->ClearDepthStencilView(d3dDSV, D3D11_CLEAR_DEPTH, 1.0f, 0);
 
+		XMMATRIX mCamera_Matrix = XMLoadFloat4x4(&fCamera_Matrix);
+		XMMATRIX mCamera_Origin = XMLoadFloat4x4(&fCamera_Origin);
+
 		// CONTROLS
 		// A - move left
 		if (GetAsyncKeyState('A'))
@@ -346,6 +358,8 @@ struct cRenderer::tImpl
 		mCamera_Matrix.r[1] = newY;
 		mCamera_Matrix.r[2] = newZ;
 
+		XMStoreFloat4x4(&fCamera_Matrix, mCamera_Matrix);
+
 		// Get Current Window Size
 		RECT current_window_size;
 		GetClientRect(_hWnd, &current_window_size);
@@ -378,7 +392,7 @@ struct cRenderer::tImpl
 		d3dContext->VSSetShader(d3dVertex_Shader, NULL, 0);
 		d3dContext->PSSetShader(d3dPixel_Shader, NULL, 0);
 		d3dContext->DrawIndexed(36, 0, 0);
-
+		
 		// PRESENT
 		d3dSwap_Chain->Present(1, 0);
 	}
