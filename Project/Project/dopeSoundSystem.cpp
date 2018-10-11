@@ -41,29 +41,7 @@ dopeSoundSystem::dopeSoundSystem()
 			printf("FMOD ERROR!, YOU SHALL PLAY IN SILENCE (&d) &s\n", resulty, FMOD_ErrorString(resulty));
 			exit(-1);
 			return;
-		}
-	                                                                // FMOD_LOOP_NORMAL
-		//System->createSound("fionnulas-tale-celtic-flute-music.mp3", FMOD_DEFAULT, NULL, &song);
-		////System->createSound("celtic-harp-and-flute-music-call-of-the-ancients.mp3", FMOD_LOOP_NORMAL, NULL, &song2);
-		//FMOD::Sound *songStreaming;
-		//System->createStream("fionnulas-tale-celtic-flute-music.mp3", FMOD_DEFAULT, 0, &songStreaming);
-
-		//// system->playSound(FMOD_CHANNEL_FREE, audio, false, 0);  // to play a sound with no looping needed
-		//FMOD::Channel *soundChannel;
-		//System->playSound(song, NULL, false, &soundChannel);
-		////resulty = FMOD::System::createStream()
-
-		/*soundChannel->setMode(FMOD_LOOP_NORMAL);
-		soundChannel->setLoopCount(-1);*/
-
-		//bool pauseSound;
-		//pauseSound = false;
-
-		//soundChannel->getPaused(&pauseSound);
-		//soundChannel->setPaused(!pauseSound);
-		
-		//System->update(); // will want to call in the games main loop
-		//System->release(); // will want to call when closing the game
+		}                                                          
 }
 
 
@@ -124,5 +102,9 @@ void dopeSoundSystem::setSoundVelocity(float posX, float prevX, float posY, floa
 void dopeSoundSystem::set3DSoundSettings(float doppler_Scale, float distance_ScaleFac, float rolloff_Scale)
 {
 	System->set3DSettings(doppler_Scale, distance_ScaleFac, rolloff_Scale);
+}
+void dopeSoundSystem::updateSoundSystem()
+{
+	System->update();
 }
 
