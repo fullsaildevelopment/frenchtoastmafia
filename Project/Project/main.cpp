@@ -11,10 +11,9 @@ int main()
 	while (true)
 	{
 		//FMOD::System::update();
-
 		if (GetAsyncKeyState('Z'))
 		{
-			sound.playSong("fionnulas-tale-celtic-flute-music.mp3");
+			sound.playSong("fionnulas-tale-celtic-flute-music.mp3", FMOD_LOOP_NORMAL);
 		}
 
 		if (GetAsyncKeyState('X'))

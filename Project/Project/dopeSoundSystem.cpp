@@ -72,7 +72,7 @@ dopeSoundSystem::~dopeSoundSystem()
 	System->release();
 }
 
-void dopeSoundSystem::playSong(const char* soundName)
+void dopeSoundSystem::playSong(const char* soundName, FMOD_MODE channel_mode)
 {
 	System->createSound(soundName, FMOD_DEFAULT, NULL, &song);
 	//System->createSound("celtic-harp-and-flute-music-call-of-the-ancients.mp3", FMOD_LOOP_NORMAL, NULL, &song2);
@@ -83,10 +83,11 @@ void dopeSoundSystem::playSong(const char* soundName)
 	//FMOD::Channel *soundChannel;
 	System->playSound(song, NULL, false, &soundChannel);
 	//resulty = FMOD::System::createStream()
-	soundChannel->setMode(FMOD_LOOP_NORMAL);  // if i want sounds to cue them call default and play another song
+	soundChannel->setMode(channel_mode);  // if i want sounds to cue them call default and play another song
+	// FMOD_LOOP_NORMAL
 	soundChannel->setLoopCount(-1);
 }
-void dopeSoundSystem::play3DSound(const char* soundName)
+void dopeSoundSystem::play3DSound(const char* soundName, FMOD_MODE channel_mode)
 {
 	System->createSound(soundName, FMOD_3D, NULL, &soundEffect);
 
@@ -94,9 +95,10 @@ void dopeSoundSystem::play3DSound(const char* soundName)
 
 	System->playSound(soundEffect, NULL, false, &threeDSoundChannel);
 
-	threeDSoundChannel->setMode(FMOD_3D_HEADRELATIVE);   // if this doesn't work well makea whole new class for just 3D sounds initialize it with 3D_RIGHTHAND
+	threeDSoundChannel->setMode(channel_mode);   // if this doesn't work well makea whole new class for just 3D sounds initialize it with 3D_RIGHTHAND
+	// FMOD_3D_HEADRELATIVE // plays sound relative to players head
 	//FMOD_3D_INVERSEROLLOFF  // All sounds naturally attenuate (fade out) in the real world using a inverse distance attenuation
-	//FMOD_3D_LINEARROLLOFF
+	//FMOD_3D_LINEARROLLOFF   // All sounds naturally attenuate (fade out) in the real world using a linear distance attenuation
 	// set3DSettings you can use to change the mindistance/ distance factor, doppler effect, rolloff scale
 }
 void dopeSoundSystem::pauseNUnPause()
@@ -118,5 +120,9 @@ void dopeSoundSystem::setSoundVelocity(float posX, float prevX, float posY, floa
 	velocityX = (posX - prevX) * 1000 / deltaTime;
 	velocityY = (posY - prevY) * 1000 / deltaTime;
 	velocityZ = (posZ - prevZ) * 1000 / deltaTime;
+}
+void dopeSoundSystem::set3DSoundSettings(float doppler_Scale, float distance_ScaleFac, float rolloff_Scale)
+{
+	System->set3DSettings(doppler_Scale, distance_ScaleFac, rolloff_Scale);
 }
 
