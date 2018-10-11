@@ -16,14 +16,12 @@ public:
 	using native_handle_t = void*;
 
 	cRenderer(native_handle_t hwnd);
-
+	
 	~cRenderer();
-
+	
 	cView cDefault_View;
-
+	
 	void draw();
-
-	//static void New_Position(tFloat3 tPosition);
 
 private:
 

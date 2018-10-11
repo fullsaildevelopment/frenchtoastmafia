@@ -151,6 +151,7 @@
     <ClInclude Include="Base_Spell.h" />
     <ClInclude Include="basic_structs.h" />
     <ClInclude Include="header.h" />
+    <ClInclude Include="math_conversion.h" />
     <ClInclude Include="Project.h" />
     <ClInclude Include="renderer.h" />
     <ClInclude Include="renderer_impl.h" />

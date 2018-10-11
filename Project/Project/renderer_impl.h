@@ -84,7 +84,7 @@ struct cRenderer::tImpl
 	CComPtr<ID3D11Buffer> d3d_test_bullet_vertex_buffer;
 	CComPtr<ID3D11Buffer> d3d_test_bullet_index_buffer;
 
-	void initialize(cView& v)
+	void initialize(cView& c_View)
 	{
 		// BACKEND SETUP
 		{
@@ -375,7 +375,7 @@ struct cRenderer::tImpl
 		}
 	}
 
-	void draw_view(cView& v)
+	void draw_view(cView& c_View)
 	{
 		// SIGNALS
 		cTime.Signal();
@@ -462,7 +462,7 @@ struct cRenderer::tImpl
 			}
 
 			// F - switch color
-			if (GetAsyncKeyState('F') && 1)
+			if (GetAsyncKeyState('F'))
 			{
 				test_dummy_toggle = !test_dummy_toggle;
 
@@ -486,6 +486,7 @@ struct cRenderer::tImpl
 		mCamera_Matrix.r[2] = newZ;
 
 		XMStoreFloat4x4(&fCamera_Matrix, mCamera_Matrix);
+		c_View.setCamera_Matrix(fCamera_Matrix);
 
 		// Get Current Window Size
 		RECT current_window_size;

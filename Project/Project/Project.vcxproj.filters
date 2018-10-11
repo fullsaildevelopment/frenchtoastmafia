@@ -66,6 +66,9 @@
     <ClInclude Include="basic_structs.h">
       <Filter>Helper files</Filter>
     </ClInclude>
+    <ClInclude Include="math_conversion.h">
+      <Filter>Helper files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Project.cpp">

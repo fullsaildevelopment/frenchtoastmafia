@@ -21,11 +21,5 @@ cRenderer::~cRenderer() {}
 void cRenderer::draw()
 {
 	pcRendererImpl->draw_view(cDefault_View);
-	//cRenderer::tImpl::Clear_Position();
 }
-
-//void cRenderer::New_Position(tFloat3 tPosition)
-//{
-//	cRenderer::New_Position(tPosition);
-//}
 
