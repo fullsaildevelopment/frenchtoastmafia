@@ -39,4 +39,23 @@
 *.ipch
 *.suo
 *.db
+<<<<<<< HEAD
 *.xml
+=======
+*.xml
+*.opendb
+*.user
+*.iobj
+*.ilk
+*.pdb
+*.ipdb
+*.idb
+/.vs/
+/x64/
+/x86/
+/Debug/
+/Release/
+/Project/x64/
+/Project/Debug/
+/Project/Release/
+>>>>>>> master
