@@ -57,6 +57,9 @@
     <ClInclude Include="WICTextureLoader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Ben_variables.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Project.cpp">
@@ -96,6 +99,9 @@
       <Filter>Renderer</Filter>
     </FxCompile>
     <FxCompile Include="PixelShaderTest.hlsl">
+      <Filter>Renderer</Filter>
+    </FxCompile>
+    <FxCompile Include="PixelShaderArena.hlsl">
       <Filter>Renderer</Filter>
     </FxCompile>
   </ItemGroup>

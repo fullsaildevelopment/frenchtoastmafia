@@ -156,6 +156,7 @@
     <ClInclude Include="basic_structs.h" />
     <ClInclude Include="Ben_funcs.h" />
     <ClInclude Include="Ben_structs.h" />
+    <ClInclude Include="Ben_variables.h" />
     <ClInclude Include="header.h" />
     <ClInclude Include="Project.h" />
     <ClInclude Include="renderer.h" />
@@ -198,6 +199,12 @@
       <HeaderFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(Filename).csh</HeaderFileOutput>
       <VariableName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">%(Filename)</VariableName>
       <HeaderFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">%(Filename).csh</HeaderFileOutput>
+    </FxCompile>
+    <FxCompile Include="PixelShaderArena.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
     </FxCompile>
     <FxCompile Include="PixelShaderTest.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>

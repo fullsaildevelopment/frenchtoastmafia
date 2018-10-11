@@ -34,7 +34,7 @@ float4 main(PixelShaderInput input) : SV_TARGET
 
 float4 pointLightColor = { 0.5, 0.5, 3.0, 1 };
 
-float3 pointLightPos = { 1.0f , 3.0, 1.0 };
+float3 pointLightPos = { 7.0f , 3.0, 1.0 };
 float3 pointLightDir = normalize(pointLightPos - input.worldPos);
 float pointLightStrength = 2.0 - length(pointLightPos - input.worldPos);
 if (pointLightStrength < 0)

@@ -33,7 +33,10 @@ OUTPUT_DATA main(INPUT_DATA tInput)
 
 	float4 fCurrent_Position = float4(tInput.fPosition.xyz, 1.0f);
 
-	fCurrent_Position = mul(fCurrent_Position, fWorld_Matrix);
+	//if (unique_object_1)
+	//	pos = mul(pos, unqiue_data)
+	//else
+	//	fCurrent_Position = mul(fCurrent_Position, fWorld_Matrix);
 
 	tOutput.fWorld_Position = fCurrent_Position;
 

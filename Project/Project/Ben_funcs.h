@@ -347,6 +347,290 @@ void gibVertsPls(const char* fbx_file_path, vector<float> *_floatVec, vector<int
 	sdk_manager->Destroy();
 }
 
+void getArenaVerts(const char* fbx_file_path, vector<float> *_posVec, vector<float> *_uvVec, vector<float> *_normalVec, vector<int> *_indVec, int *_max)
+{
+	FbxScene* scene = nullptr;
+
+	FbxManager* sdk_manager = create_and_import(fbx_file_path, scene);
+	//If the scene was imported...
+	if (scene != nullptr)
+	{
+		// Get the count of geometry objects in the scene
+		int geo_count = scene->GetGeometryCount();
+		for (int i = 0; i < geo_count; ++i)
+		{
+			//Get geometry number 'i' 
+			FbxGeometry* geo = scene->GetGeometry(i);
+			// If it's not a mesh, skip it
+			// Geometries might be some other type like nurbs
+			if (geo->GetAttributeType() != FbxNodeAttribute::eMesh)
+				continue;
+			// Found a mesh
+			FbxMesh* mesh = (FbxMesh*)geo;
+
+			//POSITIONS
+
+			int poly_count = mesh->GetPolygonCount();
+
+			int* polygon_verts = mesh->GetPolygonVertices();
+
+			const FbxVector4* control_points = mesh->GetControlPoints();
+			int cpCount = mesh->GetControlPointsCount();
+			int tracker = 0;
+
+			int tempMax = 0;
+			for (int i = 0; i < poly_count; i++)
+			{
+				for (int v = 0; v < 3; v++)
+				{
+					int vert_ind = i * 3 + v;
+					int point_index = polygon_verts[vert_ind];
+					FbxVector4 position = control_points[point_index];
+					if (point_index > tracker)
+					{
+						tracker = point_index;
+					}
+					_posVec->push_back((float)position.mData[0]);
+					_posVec->push_back((float)position.mData[1]);
+					_posVec->push_back((float)position.mData[2]);
+
+					_indVec->push_back(point_index);
+
+					if (point_index > tempMax)
+					{
+						tempMax = point_index;
+					}
+				}
+
+			}
+
+			*_max = tempMax;
+			bool tr = true;
+			//UVS
+			//Code taken from fbx sample
+
+			FbxStringList lUVSetNameList;
+			mesh->GetUVSetNames(lUVSetNameList);
+
+			FbxVector2 lUVValue;
+
+			//iterating over all uv sets
+			for (int lUVSetIndex = 0; lUVSetIndex < lUVSetNameList.GetCount(); lUVSetIndex++)
+			{
+				int what = lUVSetNameList.GetCount();
+				//get lUVSetIndex-th uv set
+				const char* lUVSetName = lUVSetNameList.GetStringAt(lUVSetIndex);
+				const FbxGeometryElementUV* lUVElement = mesh->GetElementUV(lUVSetName);
+
+				if (!lUVElement)
+					continue;
+
+				// only support mapping mode eByPolygonVertex and eByControlPoint
+				if (lUVElement->GetMappingMode() != FbxGeometryElement::eByPolygonVertex &&
+					lUVElement->GetMappingMode() != FbxGeometryElement::eByControlPoint)
+					return;
+
+				//index array, where holds the index referenced to the uv data
+				const bool lUseIndex = lUVElement->GetReferenceMode() != FbxGeometryElement::eDirect;
+				const int lIndexCount = (lUseIndex) ? lUVElement->GetIndexArray().GetCount() : 0;
+
+				//iterating through the data by polygon
+				const int lPolyCount = mesh->GetPolygonCount();
+
+				if (lUVElement->GetMappingMode() == FbxGeometryElement::eByControlPoint)
+				{
+					for (int lPolyIndex = 0; lPolyIndex < lPolyCount; ++lPolyIndex)
+					{
+						// build the max index array that we need to pass into MakePoly
+						const int lPolySize = mesh->GetPolygonSize(lPolyIndex);
+						for (int lVertIndex = 0; lVertIndex < lPolySize; ++lVertIndex)
+						{
+
+							//get the index of the current vertex in control points array
+							int lPolyVertIndex = mesh->GetPolygonVertex(lPolyIndex, lVertIndex);
+
+							//the UV index depends on the reference mode
+							int lUVIndex = lUseIndex ? lUVElement->GetIndexArray().GetAt(lPolyVertIndex) : lPolyVertIndex;
+
+							lUVValue = lUVElement->GetDirectArray().GetAt(lUVIndex);
+
+							_uvVec->push_back((float)lUVValue.mData[0]);
+							_uvVec->push_back((float)lUVValue.mData[1]);
+						}
+					}
+				}
+				else if (lUVElement->GetMappingMode() == FbxGeometryElement::eByPolygonVertex)
+				{
+					int lPolyIndexCounter = 0;
+					for (int lPolyIndex = 0; lPolyIndex < lPolyCount; ++lPolyIndex)
+					{
+						// build the max index array that we need to pass into MakePoly
+						const int lPolySize = mesh->GetPolygonSize(lPolyIndex);
+						for (int lVertIndex = 0; lVertIndex < lPolySize; ++lVertIndex)
+						{
+							if (lPolyIndexCounter < lIndexCount)
+							{
+
+								//the UV index depends on the reference mode
+								int lUVIndex = lUseIndex ? lUVElement->GetIndexArray().GetAt(lPolyIndexCounter) : lPolyIndexCounter;
+
+								lUVValue = lUVElement->GetDirectArray().GetAt(lUVIndex);
+
+								_uvVec->push_back((float)lUVValue.mData[0]);
+								_uvVec->push_back((float)lUVValue.mData[1]);
+
+								lPolyIndexCounter++;
+							}
+						}
+					}
+				}
+			}
+
+			//NORMALS
+			//Code taken from fbx sample
+
+			FbxGeometryElementNormal* lNormalElement = mesh->GetElementNormal();
+			if (lNormalElement)
+			{
+				//mapping mode is by control points. The mesh should be smooth and soft.
+				//we can get normals by retrieving each control point
+				if (lNormalElement->GetMappingMode() == FbxGeometryElement::eByControlPoint)
+				{
+
+					const int lPolyCount = mesh->GetPolygonCount();
+					FbxVector4 lNormal;
+					for (int i = 0; i < lPolyCount; i++)
+					{
+						for (int j = 0; j < 3; j++)
+						{
+							if (lNormalElement->GetReferenceMode() == FbxGeometryElement::eDirect)
+							{
+								int vert_ind = i * 3 + j;
+								int point_index = polygon_verts[vert_ind];
+
+								lNormal = lNormalElement->GetDirectArray().GetAt(point_index);
+
+								_normalVec->push_back((float)lNormal[0]);
+								_normalVec->push_back((float)lNormal[1]);
+								_normalVec->push_back((float)lNormal[2]);
+
+								if (i == (lPolyCount - 2))
+								{
+									bool tr = true;
+								}
+							}
+							else
+							{
+								//to do
+							}
+						}
+					}
+					/*
+					//Let's get normals of each vertex, since the mapping mode of normal element is by control point
+					for (int lVertexIndex = 0; lVertexIndex < mesh->GetControlPointsCount(); lVertexIndex++)
+					{
+					int test = mesh->GetControlPointsCount();
+					int lNormalIndex = 0;
+					//reference mode is direct, the normal index is same as vertex index.
+					//get normals by the index of control vertex
+					if (lNormalElement->GetReferenceMode() == FbxGeometryElement::eDirect)
+					lNormalIndex = lVertexIndex;
+
+					//reference mode is index-to-direct, get normals by the index-to-direct
+					if (lNormalElement->GetReferenceMode() == FbxGeometryElement::eIndexToDirect)
+					lNormalIndex = lNormalElement->GetIndexArray().GetAt(lVertexIndex);
+
+					//Got normals of each vertex.
+					FbxVector4 lNormal = lNormalElement->GetDirectArray().GetAt(lNormalIndex);
+
+					_floatVec->push_back((float)lNormal[0]);
+					_floatVec->push_back((float)lNormal[1]);
+					_floatVec->push_back((float)lNormal[2]);
+
+					if (lVertexIndex > 1000)
+					{
+					bool tr = true;
+					}
+					*/
+
+					//end for lVertexIndex
+				}//end eByControlPoint
+				 //mapping mode is by polygon-vertex.
+				 //we can get normals by retrieving polygon-vertex.
+				else if (lNormalElement->GetMappingMode() == FbxGeometryElement::eByPolygonVertex)
+				{
+					int lIndexByPolygonVertex = 0;
+					//Let's get normals of each polygon, since the mapping mode of normal element is by polygon-vertex.
+					for (int lPolygonIndex = 0; lPolygonIndex < mesh->GetPolygonCount(); lPolygonIndex++)
+					{
+						//get polygon size, you know how many vertices in current polygon.
+						int lPolygonSize = mesh->GetPolygonSize(lPolygonIndex);
+						//retrieve each vertex of current polygon.
+						for (int i = 0; i < lPolygonSize; i++)
+						{
+							int lNormalIndex = 0;
+							//reference mode is direct, the normal index is same as lIndexByPolygonVertex.
+							if (lNormalElement->GetReferenceMode() == FbxGeometryElement::eDirect)
+								lNormalIndex = lIndexByPolygonVertex;
+
+							//reference mode is index-to-direct, get normals by the index-to-direct
+							if (lNormalElement->GetReferenceMode() == FbxGeometryElement::eIndexToDirect)
+								lNormalIndex = lNormalElement->GetIndexArray().GetAt(lIndexByPolygonVertex);
+
+							//Got normals of each polygon-vertex.
+							FbxVector4 lNormal = lNormalElement->GetDirectArray().GetAt(lNormalIndex);
+
+							float normX;
+							float normY;
+							float normZ;
+
+							if (lNormal.mData[0] < 0.000000000001f)
+							{
+								normX = 0;
+							}
+							else
+							{
+								normX = (float)lNormal.mData[0];
+							}
+
+							if (lNormal.mData[1] < 0.000000000001f)
+							{
+								normY = 0;
+							}
+							else
+							{
+								normY = (float)lNormal.mData[1];
+							}
+
+							if (lNormal.mData[2] < 0.000000000001f)
+							{
+								normZ = 0;
+							}
+							else
+							{
+								normZ = (float)lNormal.mData[2];
+							}
+
+							_normalVec->push_back(normX);
+							_normalVec->push_back(normY);
+							_normalVec->push_back(normZ);
+
+							lIndexByPolygonVertex++;
+						}//end for i //lPolygonSize
+					}//end for lPolygonIndex //PolygonCount
+
+				}//end eByPolygonVertex
+			}//end if lNormalElement
+
+		}
+	}
+
+	bool tr = true;
+	//Destroy the manager
+	sdk_manager->Destroy();
+}
+
+
 int materialStuff(const char* fbx_file_path, vector<myLam>* _lamVec, vector<myPhong>* _phongVec)
 {
 
@@ -570,8 +854,6 @@ int materialStuff(const char* fbx_file_path, vector<myLam>* _lamVec, vector<myPh
 
 void fillMageMaterial(PhongForShader* _mat, myPhong _phong)
 {
-	_mat->diffuse.x = _phong.diffuse[0];
-
 	_mat->ambient.x = _phong.ambient[0];
 	_mat->ambient.y = _phong.ambient[1];
 	_mat->ambient.z = _phong.ambient[2];
@@ -595,4 +877,15 @@ void fillMageMaterial(PhongForShader* _mat, myPhong _phong)
 	_mat->transparency = _phong.transparency;
 }
 
+void fillArenaMaterial(PhongForShader* _mat, myPhong _phong)
+{
+	_mat->diffuse.x = _phong.diffuse[0];
+	_mat->diffuse.y = _phong.diffuse[1];
+	_mat->diffuse.z = _phong.diffuse[2];
 
+	_mat->reflection = _phong.reflection;
+
+	_mat->shininess = _phong.shininess;
+
+	_mat->transparency = _phong.transparency;
+}

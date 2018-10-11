@@ -26,6 +26,7 @@ using namespace std;
 //Ben's includes
 
 #include "Ben_funcs.h"
+#include "Ben_variables.h"
 #include "WICTextureLoader.h"
 
 struct cRenderer::tImpl
@@ -84,69 +85,69 @@ struct cRenderer::tImpl
 		//Ben test
 		if (true)
 		{
-			//int materialStuff(const char* fbx_file_path, vector<myLam>* _lamVec, vector<myPhong>* _phongVec);
+			//int materialStuff(const char* fbx_file_path, vector<myLam>* _arenaLamVec, vector<myPhong>* _arenaPhongVec);
 			//
-			//int blah = materialStuff(filePath1, &lamVec, &phongVec);
+			//int blah = materialStuff(filePath2, &arenaLamVec, &arenaPhongVec);
 			//int get_scene_poly_count(const char* fbx_file_path);
 			//
-			//int sceneCount = get_scene_poly_count(filePath1);
+			//int sceneCount = get_scene_poly_count(filePath2);
 			//
-			//cout << "Number of lams: " << lamVec.size() << "\n\n";
-			//for (int l = 0; l < lamVec.size(); l++)
+			//cout << "Number of lams: " << arenaLamVec.size() << "\n\n";
+			//for (int l = 0; l < arenaLamVec.size(); l++)
 			//{
 			//	cout << "lam " << l + 1 << ":\n";
 			//}
 			//
-			//cout << "Number of phongs: " << phongVec.size() << "\n\n";
-			//for (int p = 0; p < phongVec.size(); p++)
+			//cout << "Number of phongs: " << arenaPhongVec.size() << "\n\n";
+			//for (int p = 0; p < arenaPhongVec.size(); p++)
 			//{
 			//	cout << "phong " << p + 1 << ":\n";
 			//
-			//	if (phongVec[p].ambientFilePath != nullptr)
+			//	if (arenaPhongVec[p].ambientFilePath != nullptr)
 			//	{
-			//		cout << "ambient tex file path:" << phongVec[p].ambientFilePath << "\n";
+			//		cout << "ambient tex file path:" << arenaPhongVec[p].ambientFilePath << "\n";
 			//	}
 			//	else
 			//	{
 			//		cout << "ambient  tex file path: none.\n";
 			//	}
-			//	cout << "ambient: " << phongVec[p].ambient[0] << ", " << phongVec[p].ambient[1] << ", " << phongVec[p].ambient[2] << "\n";
+			//	cout << "ambient: " << arenaPhongVec[p].ambient[0] << ", " << arenaPhongVec[p].ambient[1] << ", " << arenaPhongVec[p].ambient[2] << "\n";
 			//
-			//	if (phongVec[p].diffuseFilePath != nullptr)
+			//	if (arenaPhongVec[p].diffuseFilePath != nullptr)
 			//	{
-			//		cout << "diffuse tex file path:" << phongVec[p].diffuseFilePath << "\n";
+			//		cout << "diffuse tex file path:" << arenaPhongVec[p].diffuseFilePath << "\n";
 			//	}
 			//	else
 			//	{
 			//		cout << "diffuse tex file path: none.\n";
 			//	}
-			//	cout << "diffuse: " << phongVec[p].diffuse[0] << ", " << phongVec[p].diffuse[1] << ", " << phongVec[p].diffuse[2] << "\n";
+			//	cout << "diffuse: " << arenaPhongVec[p].diffuse[0] << ", " << arenaPhongVec[p].diffuse[1] << ", " << arenaPhongVec[p].diffuse[2] << "\n";
 			//
-			//	if (phongVec[p].emissiveFilePath != nullptr)
+			//	if (arenaPhongVec[p].emissiveFilePath != nullptr)
 			//	{
-			//		cout << "emissive tex file path:" << phongVec[p].emissiveFilePath << "\n";
+			//		cout << "emissive tex file path:" << arenaPhongVec[p].emissiveFilePath << "\n";
 			//	}
 			//	else
 			//	{
 			//		cout << "emissive tex file path: none.\n";
 			//	}
-			//	cout << "emissive: " << phongVec[p].emissive[0] << ", " << phongVec[p].emissive[1] << ", " << phongVec[p].emissive[2] << "\n";
+			//	cout << "emissive: " << arenaPhongVec[p].emissive[0] << ", " << arenaPhongVec[p].emissive[1] << ", " << arenaPhongVec[p].emissive[2] << "\n";
 			//
-			//	if (phongVec[p].specularFilePath != nullptr)
+			//	if (arenaPhongVec[p].specularFilePath != nullptr)
 			//	{
-			//		cout << "specular tex file path:" << phongVec[p].specularFilePath << "\n";
+			//		cout << "specular tex file path:" << arenaPhongVec[p].specularFilePath << "\n";
 			//	}
 			//	else
 			//	{
 			//		cout << "specular tex file path: none.\n";
 			//	}
-			//	cout << "specular: " << phongVec[p].specular[0] << ", " << phongVec[p].specular[1] << ", " << phongVec[p].specular[2] << "\n";
+			//	cout << "specular: " << arenaPhongVec[p].specular[0] << ", " << arenaPhongVec[p].specular[1] << ", " << arenaPhongVec[p].specular[2] << "\n";
 			//
-			//	cout << "transparency: " << phongVec[p].transparency << "\n";
-			//	cout << "shininess: " << phongVec[p].shininess << "\n";
-			//	cout << "reflection: " << phongVec[p].reflection << "\n\n";
+			//	cout << "transparency: " << arenaPhongVec[p].transparency << "\n";
+			//	cout << "shininess: " << arenaPhongVec[p].shininess << "\n";
+			//	cout << "reflection: " << arenaPhongVec[p].reflection << "\n\n";
 			//}
-			
+			//
 			//if (1)
 			//{
 			//	bool tr = true;
@@ -156,10 +157,10 @@ struct cRenderer::tImpl
 			//oStream.open("binFile1.bin", ios::binary);
 			//if (oStream.is_open())
 			//{
-			//	int test = sizeof(phongVec[0]);
-			//	for (int i = 0; i < phongVec.size(); i++)
+			//	int test = sizeof(arenaPhongVec[0]);
+			//	for (int i = 0; i < arenaPhongVec.size(); i++)
 			//	{
-			//		oStream.write((char*)&phongVec[i], sizeof(phongVec[i]));
+			//		oStream.write((char*)&arenaPhongVec[i], sizeof(arenaPhongVec[i]));
 			//	}
 			//}
 			//
@@ -172,56 +173,56 @@ struct cRenderer::tImpl
 			//
 			//if (iStream.is_open())
 			//{
-			//	for (int p = 0; p < phongVec.size(); p++)
+			//	for (int p = 0; p < arenaPhongVec.size(); p++)
 			//	{
 			//		cout << "Reconstructed Phongs: \n\n";
-			//		iStream.read((char*)&phongVec[p], sizeof(phongVec[p]));
+			//		iStream.read((char*)&arenaPhongVec[p], sizeof(arenaPhongVec[p]));
 			//
 			//		cout << "phong " << p + 1 << ":\n";
 			//
-			//		if (phongVec[p].ambientFilePath != nullptr)
+			//		if (arenaPhongVec[p].ambientFilePath != nullptr)
 			//		{
-			//			cout << "ambient tex file path:" << phongVec[p].ambientFilePath << "\n";
+			//			cout << "ambient tex file path:" << arenaPhongVec[p].ambientFilePath << "\n";
 			//		}
 			//		else
 			//		{
 			//			cout << "ambient  tex file path: none.\n";
 			//		}
-			//		cout << "ambient: " << phongVec[p].ambient[0] << ", " << phongVec[p].ambient[1] << ", " << phongVec[p].ambient[2] << "\n";
+			//		cout << "ambient: " << arenaPhongVec[p].ambient[0] << ", " << arenaPhongVec[p].ambient[1] << ", " << arenaPhongVec[p].ambient[2] << "\n";
 			//
-			//		if (phongVec[p].diffuseFilePath != nullptr)
+			//		if (arenaPhongVec[p].diffuseFilePath != nullptr)
 			//		{
-			//			cout << "diffuse tex file path:" << phongVec[p].diffuseFilePath << "\n";
+			//			cout << "diffuse tex file path:" << arenaPhongVec[p].diffuseFilePath << "\n";
 			//		}
 			//		else
 			//		{
 			//			cout << "diffuse tex file path: none.\n";
 			//		}
-			//		cout << "diffuse: " << phongVec[p].diffuse[0] << ", " << phongVec[p].diffuse[1] << ", " << phongVec[p].diffuse[2] << "\n";
+			//		cout << "diffuse: " << arenaPhongVec[p].diffuse[0] << ", " << arenaPhongVec[p].diffuse[1] << ", " << arenaPhongVec[p].diffuse[2] << "\n";
 			//
-			//		if (phongVec[p].emissiveFilePath != nullptr)
+			//		if (arenaPhongVec[p].emissiveFilePath != nullptr)
 			//		{
-			//			cout << "emissive tex file path:" << phongVec[p].emissiveFilePath << "\n";
+			//			cout << "emissive tex file path:" << arenaPhongVec[p].emissiveFilePath << "\n";
 			//		}
 			//		else
 			//		{
 			//			cout << "emissive tex file path: none.\n";
 			//		}
-			//		cout << "emissive: " << phongVec[p].emissive[0] << ", " << phongVec[p].emissive[1] << ", " << phongVec[p].emissive[2] << "\n";
+			//		cout << "emissive: " << arenaPhongVec[p].emissive[0] << ", " << arenaPhongVec[p].emissive[1] << ", " << arenaPhongVec[p].emissive[2] << "\n";
 			//
-			//		if (phongVec[p].specularFilePath != nullptr)
+			//		if (arenaPhongVec[p].specularFilePath != nullptr)
 			//		{
-			//			cout << "specular tex file path:" << phongVec[p].specularFilePath << "\n";
+			//			cout << "specular tex file path:" << arenaPhongVec[p].specularFilePath << "\n";
 			//		}
 			//		else
 			//		{
 			//			cout << "specular tex file path: none.\n";
 			//		}
-			//		cout << "specular: " << phongVec[p].specular[0] << ", " << phongVec[p].specular[1] << ", " << phongVec[p].specular[2] << "\n";
+			//		cout << "specular: " << arenaPhongVec[p].specular[0] << ", " << arenaPhongVec[p].specular[1] << ", " << arenaPhongVec[p].specular[2] << "\n";
 			//
-			//		cout << "transparency: " << phongVec[p].transparency << "\n";
-			//		cout << "shininess: " << phongVec[p].shininess << "\n";
-			//		cout << "reflection: " << phongVec[p].reflection << "\n\n";
+			//		cout << "transparency: " << arenaPhongVec[p].transparency << "\n";
+			//		cout << "shininess: " << arenaPhongVec[p].shininess << "\n";
+			//		cout << "reflection: " << arenaPhongVec[p].reflection << "\n\n";
 			//	}
 			//
 			//	iStream.close();
@@ -230,6 +231,7 @@ struct cRenderer::tImpl
 				//End of Ben test
 		}
 		
+		//mage calls
 		if (true)
 		{
 			polyCount = get_scene_poly_count(filePath1);
@@ -243,6 +245,22 @@ struct cRenderer::tImpl
 			
 			bool tr = true;
 		}
+
+		//arena calls
+		if (true)
+		{
+			arenaPolyCount = get_scene_poly_count(filePath2);
+			arenaVertCount = arenaPolyCount * 3;
+
+			int arenaCPs;
+
+			getArenaVerts(filePath2, &arenaPositions, &arenaUVs, &arenaNormals, &arenaIndexes, &arenaCPs);
+
+			int blah = materialStuff(filePath2, &arenaLamVec, &arenaPhongVec);
+
+			bool tr = true;
+		}
+
 
 		//end Ben test
 
@@ -429,7 +447,7 @@ struct cRenderer::tImpl
 
 		d3dDevice->CreateInputLayout(d3dInput_Element, ARRAYSIZE(d3dInput_Element), VertexShader, sizeof(VertexShader), &d3dInput_Layout.p);
 
-		//BEN'S OBJ CREATION
+		//MAGE CREATION
 		if (true)
 		{
 			//VERTEX SHADER TEST
@@ -486,7 +504,7 @@ struct cRenderer::tImpl
 				HRESULT CBresult = d3dDevice->CreateBuffer(&constantBufferDesc, nullptr, &mySystem.constant_buffers[0]);
 
 				//MODEL
-				XMStoreFloat4x4(&mySystem.constant_data[0].model, XMMatrixTranslation(1.0f, 0.0f, 0.0f));
+				XMStoreFloat4x4(&mySystem.constant_data[0].model, XMMatrixTranslation(5.0f, 0.0f, 0.0f));
 
 				//VIEW
 
@@ -496,7 +514,8 @@ struct cRenderer::tImpl
 				float fovAngleY = 70.0f * XM_PI / 180.0f;
 				float aspectRatio = d3dView_Port.Width / d3dView_Port.Height;
 
-				XMMATRIX perspectiveMatrix = XMMatrixPerspectiveFovLH(fovAngleY, aspectRatio, 0.1f, 1000.0f);
+				//XMMATRIX perspectiveMatrix = XMMatrixPerspectiveFovLH(fovAngleY, aspectRatio, 0.1f, 1000.0f);
+				XMMATRIX perspectiveMatrix = XMMatrixPerspectiveFovLH(XMConvertToRadians(45), fWindow_Width / fWindow_Height, 0.1f, 1000.0f);
 
 				XMStoreFloat4x4(&mySystem.constant_data[0].projection, perspectiveMatrix);
 
@@ -564,10 +583,24 @@ struct cRenderer::tImpl
 				//
 				for (int i = 0; i < vertCount; ++i)
 				{
+					//PositionUVNormal temp;
+					//
+					//int break1 = 30132;
+					//int break2 = 50220;
+					//
+					//temp.pos = { myFloats[i * 3],          myFloats[i * 3 + 1],          myFloats[i * 3 + 2] };
+					//
+					//temp.uv = { myFloats[i * 2 + break1], myFloats[i * 2 + break1 + 1] };
+					//
+					//temp.normal = { myFloats[i * 3 + break2], myFloats[i * 3 + break2 + 1], myFloats[i * 3 + break2 + 2] };
+					//
+					//temp.uv.y = 1 - temp.uv.y;
+					//mageVerts[i] = temp;
+
 					PositionUVNormal temp;
 
-					int break1 = 30132;
-					int break2 = 50220;
+					int break1 = vertCount * 3;//30132;
+					int break2 = vertCount * 5;//50220;
 
 					temp.pos = { myFloats[i * 3],          myFloats[i * 3 + 1],          myFloats[i * 3 + 2] };
 
@@ -586,6 +619,7 @@ struct cRenderer::tImpl
 				vertexBufferData.SysMemSlicePitch = 0;
 				CD3D11_BUFFER_DESC vertexBufferDesc(sizeof(PositionUVNormal) * vertCount, D3D11_BIND_VERTEX_BUFFER);
 				d3dDevice->CreateBuffer(&vertexBufferDesc, &vertexBufferData, &mySystem.vertex_buffers[0]);
+
 
 				//index count
 				mySystem.index_counts[0] = (INT32)vertCount;
@@ -647,6 +681,109 @@ struct cRenderer::tImpl
 			}
 		}
 
+		//ARENA CREATION
+		if (true)
+		{
+			//PIXEL SHADER TEST
+			if (true)
+			{
+				ifstream myPSFile("../x64/Debug/PixelShaderArena.cso", std::ifstream::binary);
+				if (myPSFile)
+				{
+					myPSFile.seekg(0, std::ios_base::end);
+					unsigned int size = (unsigned int)myPSFile.tellg();
+					myPSFile.seekg(0, std::ios_base::beg);
+
+					char* myPSchar = new char[size];
+					myPSFile.read(myPSchar, size);
+
+					HRESULT PSresult = d3dDevice->CreatePixelShader(myPSchar, size, nullptr, &mySystem.pixel_shaders[1]);
+
+					delete[] myPSchar;
+				}
+			}
+
+			//CONSTANT BUFFER TEST
+			if (true)
+			{
+				CD3D11_BUFFER_DESC constantBufferDesc(sizeof(ModelViewProjectionConstantBuffer), D3D11_BIND_CONSTANT_BUFFER);
+				HRESULT CBresult = d3dDevice->CreateBuffer(&constantBufferDesc, nullptr, &mySystem.constant_buffers[1]);
+
+				//MODEL
+				XMStoreFloat4x4(&mySystem.constant_data[1].model, XMMatrixTranslation(5.0f, 0.0f, 0.0f));
+
+				//VIEW
+
+				XMStoreFloat4x4(&mySystem.constant_data[1].view, mCamera_Matrix);
+
+				//PERSPECTIVE
+				float fovAngleY = 70.0f * XM_PI / 180.0f;
+				float aspectRatio = d3dView_Port.Width / d3dView_Port.Height;
+
+				//XMMATRIX perspectiveMatrix = XMMatrixPerspectiveFovLH(fovAngleY, aspectRatio, 0.1f, 1000.0f);
+				XMMATRIX perspectiveMatrix = XMMatrixPerspectiveFovLH(XMConvertToRadians(45), fWindow_Width / fWindow_Height, 0.1f, 1000.0f);
+
+				XMStoreFloat4x4(&mySystem.constant_data[1].projection, perspectiveMatrix);
+
+				//material buffer
+				CD3D11_BUFFER_DESC constantBufferDesc2(sizeof(PhongForShader), D3D11_BIND_SHADER_RESOURCE);
+				HRESULT CBresult2 = d3dDevice->CreateBuffer(&constantBufferDesc2, nullptr, &mySystem.material_buffers[1]);
+
+				fillArenaMaterial(&arenaMaterial, arenaPhongVec[1]);
+
+				d3dContext->UpdateSubresource(mySystem.material_buffers[1], 0, NULL, &arenaMaterial, 0, 0);
+
+				if (arenaPhongVec[1].diffuseFilePath != NULL)
+				{
+					HRESULT result = CreateWICTextureFromFile(d3dDevice, d3dContext, L"models\\Arena\\Arena.fbm\\JBrisnehan_Arena_Diffuse.png", (ID3D11Resource**)arenaDiffuseTex[1], &arenaDiffuseSRV[1], D3D11_REQ_TEXTURE2D_U_OR_V_DIMENSION);
+
+					bool tr = true;
+				}
+
+			}
+
+			//VERTEX BUFFER TEST
+			if (true)
+			{
+				PositionUVNormal* arenaVerts = new PositionUVNormal[arenaVertCount];
+
+				for (int i = 0; i < arenaVertCount; ++i)
+				{
+					PositionUVNormal temp;
+
+					temp.pos = { arenaPositions[i * 3],          arenaPositions[i * 3 + 1],          arenaPositions[i * 3 + 2] };
+
+					temp.uv = { arenaUVs[i * 2], arenaUVs[i * 2 + 1] };
+
+					temp.normal = { arenaNormals[i * 3], arenaNormals[i * 3 + 1], arenaNormals[i * 3 + 2] };
+
+					temp.uv.y = 1 - temp.uv.y;
+					arenaVerts[i] = temp;
+
+				}
+
+				D3D11_SUBRESOURCE_DATA vertexBufferData = { 0 };
+				vertexBufferData.pSysMem = arenaVerts;
+				vertexBufferData.SysMemPitch = 0;
+				vertexBufferData.SysMemSlicePitch = 0;
+				CD3D11_BUFFER_DESC vertexBufferDesc(sizeof(PositionUVNormal) * arenaVertCount, D3D11_BIND_VERTEX_BUFFER);
+				d3dDevice->CreateBuffer(&vertexBufferDesc, &vertexBufferData, &mySystem.vertex_buffers[1]);
+
+				//index count
+
+				mySystem.index_counts[1] = arenaIndexes.size();
+
+				//D3D11_SUBRESOURCE_DATA arenaIndexBufferData = { 0 };
+				//arenaIndexBufferData.pSysMem = &arenaIndexes[0];
+				//arenaIndexBufferData.SysMemPitch = 0;
+				//arenaIndexBufferData.SysMemSlicePitch = 0;
+				//CD3D11_BUFFER_DESC arenaIndexBufferDesc(arenaIndexes.size() * sizeof(int), D3D11_BIND_INDEX_BUFFER);
+				//d3dDevice->CreateBuffer(&arenaIndexBufferDesc, &arenaIndexBufferData, &mySystem.index_buffers[1]);
+
+				delete[] arenaVerts;
+			}
+
+		}
 
 	}
 	void draw_view(cView& v)
@@ -779,8 +916,11 @@ struct cRenderer::tImpl
 		setPipelineShadersAndLayout(myMage);
 		setPipelineDSS(myMage);
 		setPipelineRS(myMage);
-
 		myDraw(myMage);
+
+		setPipelineMain(arena1);
+		setPipelineShadersAndLayout(arena1);
+		myDraw(arena1);
 
 
 		// PRESENT
@@ -798,6 +938,7 @@ struct cRenderer::tImpl
 		d3dContext->UpdateSubresource(mySystem.constant_buffers[_state.constant_buffer], 0, NULL, &mySystem.constant_data[_state.constant_buffer], 0, 0);
 
 		XMStoreFloat4x4(&mySystem.constant_data[_state.constant_buffer].model, XMMatrixTranspose(XMLoadFloat4x4(&mySystem.constant_data[_state.constant_buffer].model)));
+		//XMStoreFloat4x4(&mySystem.constant_data[_state.constant_buffer].view, XMMatrixInverse(nullptr, mCamera_Matrix));
 		XMStoreFloat4x4(&mySystem.constant_data[_state.constant_buffer].projection, XMMatrixTranspose(XMLoadFloat4x4(&mySystem.constant_data[_state.constant_buffer].projection)));
 
 		d3dContext->VSSetConstantBuffers(0, 1, &mySystem.constant_buffers[_state.constant_buffer]);
@@ -816,20 +957,27 @@ struct cRenderer::tImpl
 			d3dContext->PSSetShaderResources(2, 1, mageTexView3);
 
 			d3dContext->PSSetSamplers(0, 1, &myLinearWrapSampler);
+		} else if (_state.constant_buffer == 1)
+		{
+			d3dContext->PSSetConstantBuffers(0, 1, &mySystem.material_buffers[1]);
+
+			ID3D11ShaderResourceView* arenaTexView[] = { arenaDiffuseSRV[1] };
+			d3dContext->PSSetShaderResources(0, 1, arenaTexView);
+
 		}
 
 
 
 		//VERETX BUFFERS
 
-		if (_state.vertex_buffer == 0)
+		if (_state.vertex_buffer == 0 || _state.vertex_buffer == 1)
 		{
 			UINT stride = sizeof(PositionUVNormal);
 			UINT offset = 0;
 			d3dContext->IASetVertexBuffers(0, 1, &mySystem.vertex_buffers[_state.vertex_buffer], &stride, &offset);
 
 			d3dContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-		}
+		} 
 
 
 	}
@@ -860,6 +1008,10 @@ struct cRenderer::tImpl
 	void myDraw(pipeline_state_t _state)
 	{
 		if (_state.vertex_buffer == 0)
+		{
+			d3dContext->Draw(mySystem.index_counts[_state.vertex_buffer], 0);
+		} 
+		else if (_state.vertex_buffer == 1)
 		{
 			d3dContext->Draw(mySystem.index_counts[_state.vertex_buffer], 0);
 		}

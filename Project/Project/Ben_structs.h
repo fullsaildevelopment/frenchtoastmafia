@@ -97,36 +97,3 @@ struct custom4X4
 //
 //	vector<custom4X4> bindPose;
 //};
-
-//VARIABLES
-graphics_system mySystem;
-
-pipeline_state_t myMage = { 0,0,0,0,0,0 };
-
-int polyCount;
-int vertCount;
-
-vector<float> myFloats;
-vector<int> cpIndexes;
-
-vector<myLam> lamVec;
-vector<myPhong> phongVec;
-
-PhongForShader mageMaterial;
-
-ID3D11Texture2D* mageAmbientTex[1];
-ID3D11ShaderResourceView* mageAmbientSRV[1];
-
-ID3D11Texture2D* mageDiffuseTex[1];
-ID3D11ShaderResourceView* mageDiffuseSRV[1];
-
-ID3D11Texture2D* mageEmissiveTex[1];
-ID3D11ShaderResourceView* mageEmissiveSRV[1];
-
-ID3D11Texture2D* mageSpecularTex[1];
-ID3D11ShaderResourceView* mageSpecularSRV[1];
-
-ID3D11SamplerState* myLinearWrapSampler;
-
-//Ben filepath
-const char* filePath1 = "models\\test\\Idle.fbx";
