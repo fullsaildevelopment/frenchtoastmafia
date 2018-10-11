@@ -18,11 +18,13 @@
 using namespace DirectX;
 
 #include "basic_structs.h"
+#include "collisions.h"
 #include "renderer.h"
 #include "renderer_structs.h"
 #include "XTime.h"
 
 #include "VertexShader.csh"
+#include "VertexShader_Bullet.csh"
 #include "PixelShader.csh"
 
 struct cRenderer::tImpl
@@ -56,6 +58,7 @@ struct cRenderer::tImpl
 	
 	// SHADERS
 	CComPtr<ID3D11VertexShader> d3dVertex_Shader;
+	CComPtr<ID3D11VertexShader> d3dVertex_Shader_Bullet;
 
 	CComPtr<ID3D11PixelShader> d3dPixel_Shader;
 
@@ -72,17 +75,25 @@ struct cRenderer::tImpl
 	// TIME
 	XTime cTime;
 
+	// COLLISIONS
+	tCollisions tColl;
 	// OBJECTS
 	// DUMMY
+	tVertex *test_dummy = new tVertex[8];
 	CComPtr<ID3D11Buffer> d3dConstant_Buffer_DUMMY;
-	tConstantBuffer_PixelShader_DUMMY tDUMMY;
+	tConstantBuffer_Float4 tDUMMY;
 	CComPtr<ID3D11Buffer> d3d_test_dummy_vertex_buffer;
 	CComPtr<ID3D11Buffer> d3d_test_dummy_index_buffer;
 	bool test_dummy_toggle = false;
 
 	// BULLET
+	tVertex *test_bullet = new tVertex[8];
+	CComPtr<ID3D11Buffer> d3dConstant_Buffer_BULLET;
+	tConstantBuffer_Float4 tBULLET;
 	CComPtr<ID3D11Buffer> d3d_test_bullet_vertex_buffer;
 	CComPtr<ID3D11Buffer> d3d_test_bullet_index_buffer;
+	bool test_bullet_toggle = false;
+	bool didCollide = false;
 
 	void initialize(cView& c_View)
 	{
@@ -184,6 +195,7 @@ struct cRenderer::tImpl
 
 			// SHADERS
 			d3dDevice->CreateVertexShader(VertexShader, sizeof(VertexShader), NULL, &d3dVertex_Shader.p);
+			d3dDevice->CreateVertexShader(VertexShader_Bullet, sizeof(VertexShader_Bullet), NULL, &d3dVertex_Shader_Bullet.p);
 			d3dDevice->CreatePixelShader(PixelShader, sizeof(PixelShader), NULL, &d3dPixel_Shader.p);
 
 			// INPUT ELEMENT
@@ -212,10 +224,23 @@ struct cRenderer::tImpl
 
 				d3dDevice->CreateBuffer(&d3dConstant_Buffer_Desc, nullptr, &d3dConstant_Buffer_WVPC.p);
 			}
+			// CONSTANT BUFFER - BULLET
+			{
+				ZeroMemory(&d3dConstant_Buffer_Desc, sizeof(D3D11_BUFFER_DESC));
+				d3dConstant_Buffer_Desc.ByteWidth = sizeof(tConstantBuffer_Float4);
+				d3dConstant_Buffer_Desc.Usage = D3D11_USAGE_DYNAMIC;
+				d3dConstant_Buffer_Desc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+				d3dConstant_Buffer_Desc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+				d3dConstant_Buffer_Desc.MiscFlags = 0;
+				d3dConstant_Buffer_Desc.StructureByteStride = 0;
+
+				d3dDevice->CreateBuffer(&d3dConstant_Buffer_Desc, nullptr, &d3dConstant_Buffer_BULLET.p);
+			}
+
 			// CONSTANT BUFFER - DUMMY
 			{
 				ZeroMemory(&d3dConstant_Buffer_Desc, sizeof(D3D11_BUFFER_DESC));
-				d3dConstant_Buffer_Desc.ByteWidth = sizeof(tConstantBuffer_PixelShader_DUMMY);
+				d3dConstant_Buffer_Desc.ByteWidth = sizeof(tConstantBuffer_Float4);
 				d3dConstant_Buffer_Desc.Usage = D3D11_USAGE_DYNAMIC;
 				d3dConstant_Buffer_Desc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
 				d3dConstant_Buffer_Desc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
@@ -231,7 +256,6 @@ struct cRenderer::tImpl
 			// DUMMY
 			{
 				// VERTEX BUFFER
-				tVertex *test_dummy = new tVertex[8];
 				// Create
 				for (unsigned int i = 0; i < 8; i++)
 				{
@@ -306,7 +330,6 @@ struct cRenderer::tImpl
 			// BULLET
 			{
 				// VERTEX BUFFER
-				tVertex *test_bullet = new tVertex[8];
 				for (unsigned int i = 0; i < 8; i++)
 				{
 					test_bullet[i].fPosition.fX = 1.0f;
@@ -399,6 +422,36 @@ struct cRenderer::tImpl
 			d3dContext->ClearDepthStencilView(d3dDSV, D3D11_CLEAR_DEPTH, 1.0f, 0);
 		}
 
+		if (didCollide)
+		{
+			tBULLET.fData.w = 0;
+			tBULLET.fData.z = 0;
+			test_bullet_toggle = false;
+		}
+
+		// MOVE BULLET
+		if (test_bullet_toggle)
+		{
+			tBULLET.fData.z += (float)cTime.Delta() * 10;
+		}
+
+		// AABB CHECKS
+		tAABB aabb_bullet, aabb_dummy;
+		aabb_bullet.center = { 0.0, 0.0f, 0.0f };
+		aabb_bullet.center.fZ += tBULLET.fData.z;
+		aabb_bullet.extents = { 1.0, 1.0f, 1.0f };
+		aabb_dummy.center = { 0.0, 0.0f, 15.0f };
+		aabb_dummy.extents = { 2.0, 4.0f, 2.0f };
+		didCollide = tColl.Detect_AABB_To_AABB(aabb_bullet, aabb_dummy);
+
+		if (didCollide)
+		{
+			if (tDUMMY.fData.w == 0)
+				tDUMMY.fData.w = 1;
+			else
+				tDUMMY.fData.w = 0;
+		}
+
 		XMMATRIX mCamera_Matrix = XMLoadFloat4x4(&fCamera_Matrix);
 		XMMATRIX mCamera_Origin = XMLoadFloat4x4(&fCamera_Origin);
 
@@ -464,14 +517,14 @@ struct cRenderer::tImpl
 			// F - switch color
 			if (GetAsyncKeyState('F'))
 			{
-				test_dummy_toggle = !test_dummy_toggle;
-
-				if (test_dummy_toggle)
-					tDUMMY.fToggle.x = 1;
-				else
-					tDUMMY.fToggle.x = 0;
+				if (!test_bullet_toggle)
+				{
+					test_bullet_toggle = true;
+					tBULLET.fData.w = 1;
+				}
 			}
 		}
+
 		// NORMALIZING ROTATIONS
 		XMVECTOR newZ = mCamera_Matrix.r[2];
 		newZ = XMVector3Normalize(newZ);
@@ -513,11 +566,21 @@ struct cRenderer::tImpl
 				d3dContext->VSSetConstantBuffers(0, 1, tmp_wvpc_buffer);
 			}
 
+			// CONSTANT BUFFER - BULLET
+			{
+				// MAP DATA
+				d3dContext->Map(d3dConstant_Buffer_BULLET, 0, D3D11_MAP_WRITE_DISCARD, 0, &d3dMSR);
+				memcpy(d3dMSR.pData, &tBULLET, sizeof(tConstantBuffer_Float4));
+				d3dContext->Unmap(d3dConstant_Buffer_BULLET, 0);
+				ID3D11Buffer *tmp_bullet_buffer[] = { d3dConstant_Buffer_BULLET };
+				d3dContext->VSSetConstantBuffers(1, 1, tmp_bullet_buffer);
+			}
+
 			// CONSTANT BUFFER - DUMMY
 			{
 				// MAP DATA
 				d3dContext->Map(d3dConstant_Buffer_DUMMY, 0, D3D11_MAP_WRITE_DISCARD, 0, &d3dMSR);
-				memcpy(d3dMSR.pData, &tDUMMY, sizeof(tConstantBuffer_PixelShader_DUMMY));
+				memcpy(d3dMSR.pData, &tDUMMY, sizeof(tConstantBuffer_Float4));
 				d3dContext->Unmap(d3dConstant_Buffer_DUMMY, 0);
 				ID3D11Buffer *tmp_dummy_buffer[] = { d3dConstant_Buffer_DUMMY };
 				d3dContext->PSSetConstantBuffers(0, 1, tmp_dummy_buffer);
@@ -546,9 +609,10 @@ struct cRenderer::tImpl
 				d3dContext->IASetIndexBuffer(d3d_test_bullet_index_buffer, DXGI_FORMAT_R32_UINT, 0);
 				d3dContext->IASetInputLayout(d3dInput_Layout);
 				d3dContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-				d3dContext->VSSetShader(d3dVertex_Shader, NULL, 0);
+				d3dContext->VSSetShader(d3dVertex_Shader_Bullet, NULL, 0);
 				d3dContext->PSSetShader(d3dPixel_Shader, NULL, 0);
-				d3dContext->DrawIndexed(36, 0, 0);
+				if (test_bullet_toggle)
+					d3dContext->DrawIndexed(36, 0, 0);
 			}
 			// PRESENT
 			d3dSwap_Chain->Present(1, 0);

@@ -13,7 +13,7 @@ SamplerState sSampler_State[2] : register(s0);
 
 cbuffer tConstant_Buffer : register(b0)
 {
-	float4 fToggle;
+	float4 fData;
 };
 
 struct INPUT_DATA
@@ -31,7 +31,7 @@ float4 main(INPUT_DATA input) : SV_TARGET
 	float4 BLACK = float4(0.0f, 0.0f, 0.0f, 1.0f);
 	float4 RED = float4(1.0f, 0.0f, 0.0f, 1.0f);
 
-	if (fToggle.x == 1)
+	if (fData.w == 1)
 		fEnd_Color = RED;
 	else
 		fEnd_Color = BLACK;

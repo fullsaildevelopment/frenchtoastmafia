@@ -20,7 +20,7 @@ struct tConstantBuffer_VertexShader_WVPC
 	XMFLOAT4X4 fCamera_Origin;
 };
 
-struct tConstantBuffer_PixelShader_DUMMY
+struct tConstantBuffer_Float4
 {
-	XMFLOAT4 fToggle = { 0.0f, 0.0f, 0.0f, 0.0f };
+	XMFLOAT4 fData = { 0.0f, 0.0f, 0.0f, 0.0f };
 };
