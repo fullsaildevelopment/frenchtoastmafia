@@ -400,6 +400,7 @@ struct cRenderer::tImpl
 
 			if (i == 2 || i == 3 || i == 6 || i == 7)
 				test_cube[i].fPosition.m_y *= -1.0f;
+=======
 			XMMATRIX mCamera_Matrix = XMMatrixInverse(nullptr, XMMatrixLookAtLH({ 0.0f, 15.0f, -15.0f, 0.0f }, { 0.0f, 0.0f, 0.0f, 0.0f }, { 0.0f, 1.0f, 0.0f, 0.0f }));
 			XMStoreFloat4x4(&fCamera_Matrix, mCamera_Matrix);
 			fCamera_Origin = fCamera_Matrix;
@@ -563,9 +564,9 @@ struct cRenderer::tImpl
 		{
 			//VERTEX SHADER TEST
 			if (true)
-
+=======
 			// CONSTANT BUFFER - WORLD VIEW PROJECTION
-
+>>>>>>> master
 			{
 				ZeroMemory(&d3dConstant_Buffer_Desc, sizeof(D3D11_BUFFER_DESC));
 				d3dConstant_Buffer_Desc.ByteWidth = sizeof(tConstantBuffer_VertexShader_WVPC);
@@ -592,6 +593,7 @@ struct cRenderer::tImpl
 
 			// CONSTANT BUFFER - DUMMY
 			{
+<<<<<<< HEAD
 				CD3D11_BUFFER_DESC constantBufferDesc(sizeof(ModelViewProjectionConstantBuffer), D3D11_BIND_CONSTANT_BUFFER);
 				HRESULT CBresult = d3dDevice->CreateBuffer(&constantBufferDesc, nullptr, &mySystem.constant_buffers[0]);
 
@@ -618,7 +620,7 @@ struct cRenderer::tImpl
 				fillMageMaterial(&mageMaterial, phongVec[0]);
 
 				d3dContext->UpdateSubresource(mySystem.material_buffers[0], 0, NULL, &mageMaterial, 0, 0);
-
+=======
 				ZeroMemory(&d3dConstant_Buffer_Desc, sizeof(D3D11_BUFFER_DESC));
 				d3dConstant_Buffer_Desc.ByteWidth = sizeof(tConstantBuffer_Float4);
 				d3dConstant_Buffer_Desc.Usage = D3D11_USAGE_DYNAMIC;
@@ -732,12 +734,12 @@ struct cRenderer::tImpl
 					int break2 = vertCount * 5;//50220;
 
 					temp.pos = { myFloats[i * 3],          myFloats[i * 3 + 1],          myFloats[i * 3 + 2] };
-
+=======
 					test_bullet[i].fPosition.fX = 1.0f;
 					test_bullet[i].fPosition.fY = 1.0f;
 					test_bullet[i].fPosition.fZ = 1.0f;
 					test_bullet[i].fPosition.fW = 1.0f;
-
+>>>>>>> master
 
 					if (i % 2 == 0)
 						test_bullet[i].fPosition.fX *= -1.0f;
