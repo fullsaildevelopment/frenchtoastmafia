@@ -22,5 +22,6 @@ public:
 	void play3DSound(const char* soundName);
 	void pauseNUnPause();
 	void stopSong();
+	void setSoundVelocity(float posX, float prevX, float posY, float prevY, float posZ, float prevZ, double deltaTime);
 };
 

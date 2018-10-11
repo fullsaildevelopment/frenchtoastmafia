@@ -32,7 +32,7 @@ dopeSoundSystem::dopeSoundSystem()
 		{
 			return;
 		}
-	
+	                               // FMOD_INIT_3D_RIGHTHANDED    or LEFTHANDED
 		resulty = System->init(512, FMOD_INIT_NORMAL, 0);  // initilizes FMOD
 		//resulty = System->initialize(512, FMOD_STUDIO_INIT_NORMAL, FMOD_INIT_NORMAL, 0);   // if i wanted to initialize FMOD studio and low level at the same time
 	
@@ -97,6 +97,7 @@ void dopeSoundSystem::play3DSound(const char* soundName)
 	threeDSoundChannel->setMode(FMOD_3D_HEADRELATIVE);
 	//FMOD_3D_INVERSEROLLOFF  // All sounds naturally attenuate (fade out) in the real world using a inverse distance attenuation
 	//FMOD_3D_LINEARROLLOFF
+	// set3DSettings you can use to change the mindistance/ distance factor, doppler effect, rolloff scale
 }
 void dopeSoundSystem::pauseNUnPause()
 {
@@ -106,5 +107,16 @@ void dopeSoundSystem::pauseNUnPause()
 void dopeSoundSystem::stopSong()
 {
 	soundChannel->stop();
+}
+
+void dopeSoundSystem::setSoundVelocity(float posX, float prevX, float posY, float prevY, float posZ, float prevZ, double deltaTime)
+{
+	float velocityX;
+	float velocityY;
+	float velocityZ;
+
+	velocityX = (posX - prevX) * 1000 / deltaTime;
+	velocityY = (posY - prevY) * 1000 / deltaTime;
+	velocityZ = (posZ - prevZ) * 1000 / deltaTime;
 }
 
