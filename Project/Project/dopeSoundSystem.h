@@ -14,7 +14,7 @@ private:
 	bool pauseSound = false;
 	FMOD::Sound* song;
 	FMOD::Sound* soundEffect;
-	FMOD::Sound* soundEffectStreaming
+	FMOD::Sound* soundEffectStreaming;
 public:
 	dopeSoundSystem();
 	~dopeSoundSystem();

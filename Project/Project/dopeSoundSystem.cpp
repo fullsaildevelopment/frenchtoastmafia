@@ -94,7 +94,7 @@ void dopeSoundSystem::play3DSound(const char* soundName)
 
 	System->playSound(soundEffect, NULL, false, &threeDSoundChannel);
 
-	threeDSoundChannel->setMode(FMOD_3D_HEADRELATIVE);
+	threeDSoundChannel->setMode(FMOD_3D_HEADRELATIVE);   // if this doesn't work well makea whole new class for just 3D sounds initialize it with 3D_RIGHTHAND
 	//FMOD_3D_INVERSEROLLOFF  // All sounds naturally attenuate (fade out) in the real world using a inverse distance attenuation
 	//FMOD_3D_LINEARROLLOFF
 	// set3DSettings you can use to change the mindistance/ distance factor, doppler effect, rolloff scale
