@@ -13,6 +13,115 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Renderer">
+      <UniqueIdentifier>{cbf34b50-e45d-4bc7-b811-64ff358a2f75}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Modules">
+      <UniqueIdentifier>{5fb68add-0dfc-419c-9092-b1a4a18d0fec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Modules\Characters">
+      <UniqueIdentifier>{29cf2def-cee5-40ef-99ff-4066a0a4409e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Modules\Spells">
+      <UniqueIdentifier>{089351cd-a435-42e5-aae7-57b76231822f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Helper files">
+      <UniqueIdentifier>{0be4e6ae-7958-439b-aeb0-4e693bb65b7a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Physics">
+      <UniqueIdentifier>{d527240c-b9b7-4b5a-a3f6-d99928294744}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="header.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Project.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="renderer_structs.h">
+      <Filter>Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="renderer.h">
+      <Filter>Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="view.h">
+      <Filter>Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="renderer_impl.h">
+      <Filter>Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Base_Character.h">
+      <Filter>Modules\Characters</Filter>
+    </ClInclude>
+    <ClInclude Include="Base_Spell.h">
+      <Filter>Modules\Spells</Filter>
+    </ClInclude>
+    <ClInclude Include="XTime.h">
+      <Filter>Helper files</Filter>
+    </ClInclude>
+    <ClInclude Include="basic_structs.h">
+      <Filter>Helper files</Filter>
+    </ClInclude>
+    <ClInclude Include="math_conversion.h">
+      <Filter>Helper files</Filter>
+    </ClInclude>
+    <ClInclude Include="physic_structs.h">
+      <Filter>Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="collisions.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Project.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="renderer.cpp">
+      <Filter>Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Base_Character.cpp">
+      <Filter>Modules\Characters</Filter>
+    </ClCompile>
+    <ClCompile Include="Base_Spell.cpp">
+      <Filter>Modules\Spells</Filter>
+    </ClCompile>
+    <ClCompile Include="XTime.cpp">
+      <Filter>Helper files</Filter>
+    </ClCompile>
+    <ClCompile Include="collisions.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Project.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="small.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Project.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="VertexShader.hlsl">
+      <Filter>Renderer</Filter>
+    </FxCompile>
+    <FxCompile Include="PixelShader.hlsl">
+      <Filter>Renderer</Filter>
+    </FxCompile>
+    <FxCompile Include="VertexShader_Bullet.hlsl">
+      <Filter>Renderer</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
