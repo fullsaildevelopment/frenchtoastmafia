@@ -1,12 +1,5 @@
-/************************************************************************
-* Filename:  		VertexShader.hlsl
-* Date:      		10/02/2018
-* Mod. Date: 		10/09/2018
-* Mod. Initials:	WM
-* Author:    		Wichet Manawanitjarern
-* Purpose:   		Basic VertexShader for Rendering
-*************************************************************************/
 #pragma pack_matrix(row_major)
+
 
 cbuffer tConstant_Buffer : register(b0)
 {
