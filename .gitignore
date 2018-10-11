@@ -44,6 +44,11 @@
 *.ilk
 *.pdb
 *.idb
-Debug
-Release
-.vs
+.vs/
+x64/
+x86/
+Debug/
+Release/
+Project/x64/
+Project/Debug/
+Project/Release/
