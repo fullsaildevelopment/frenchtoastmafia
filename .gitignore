@@ -41,9 +41,9 @@
 *.db
 *.xml
 
+*.ilk
+*.pdb
+*.idb
 Debug
 Release
 .vs
-*.pdb
-*.idb
-*.ilk

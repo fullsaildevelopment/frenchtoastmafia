@@ -10,8 +10,9 @@
 #include "renderer.h"
 
 
-cRenderer::cRenderer(native_handle_t hwnd)
+cRenderer::cRenderer(native_handle_t hwnd, cView cDefault_View_In)
 {
+	cDefault_View = cDefault_View_In;
 	pcRendererImpl = std::make_unique<cRenderer::tImpl>(hwnd);
 	pcRendererImpl->initialize(cDefault_View);
 }

@@ -13,11 +13,11 @@
 
 struct tFloat2
 {
-	float m_x;
-	float m_y;
+	float fX;
+	float fY;
 
-	float& operator[](int i) { return (&m_x)[i]; }
-	float operator[](int i)const { return (&m_x)[i]; }
+	float& operator[](int i) { return (&fX)[i]; }
+	float operator[](int i)const { return (&fX)[i]; }
 };
 
 struct tFloat3
@@ -26,19 +26,19 @@ struct tFloat3
 	{
 		struct
 		{
-			float m_x;
-			float m_y;
-			float m_z;
+			float fX;
+			float fY;
+			float fZ;
 		};
 
 		struct
 		{
-			float m_a[3];
+			float fA[3];
 		};
 	};
 
-	float& operator[](int i) { return (&m_x)[i]; }
-	float operator[](int i)const { return (&m_x)[i]; }
+	float& operator[](int i) { return (&fX)[i]; }
+	float operator[](int i)const { return (&fX)[i]; }
 };
 
 struct tFloat4
@@ -47,31 +47,31 @@ struct tFloat4
 	{
 		struct
 		{
-			float m_x;
-			float m_y;
-			float m_z;
-			float m_w;
+			float fX;
+			float fY;
+			float fZ;
+			float fW;
 		};
 
 		struct
 		{
-			float m_a[4];
+			float fA[4];
 		};
 
 		struct
 		{
-			tFloat3 m_xyz;
+			tFloat3 fXYZ;
 		};
 
 		struct
 		{
-			tFloat2 m_xy;
-			tFloat2 m_zw;
+			tFloat2 fXY;
+			tFloat2 fZW;
 		};
 	};
 
-	float& operator[](int i) { return (&m_x)[i]; }
-	float operator[](int i)const { return (&m_x)[i]; }
+	float& operator[](int i) { return (&fX)[i]; }
+	float operator[](int i)const { return (&fX)[i]; }
 };
 
 struct alignas(16) tFloat4_a : tFloat4 {};
@@ -82,20 +82,20 @@ struct tFloat4x4
 	{
 		struct
 		{
-			tFloat4 m_x;
-			tFloat4 m_y;
-			tFloat4 m_z;
-			tFloat4 m_w;
+			tFloat4 tX;
+			tFloat4 tY;
+			tFloat4 tZ;
+			tFloat4 tW;
 		};
 
 		struct
 		{
-			float m_a[16];
+			float fA[16];
 		};
 	};
 
-	tFloat4& operator[](int i) { return (&m_x)[i]; }
-	tFloat4 operator[](int i)const { return (&m_x)[i]; }
+	tFloat4& operator[](int i) { return (&tX)[i]; }
+	tFloat4 operator[](int i)const { return (&tX)[i]; }
 };
 
 struct tVertex
@@ -105,4 +105,3 @@ struct tVertex
 	tFloat4 fColor;
 	tFloat2 fTexture_Coordinate;
 };
-

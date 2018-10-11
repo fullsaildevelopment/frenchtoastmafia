@@ -15,12 +15,12 @@ class cRenderer
 public:
 	using native_handle_t = void*;
 
-	cRenderer(native_handle_t hwnd);
-
+	cRenderer(native_handle_t hwnd, cView cDefault_View_In);
+	
 	~cRenderer();
-
+	
 	cView cDefault_View;
-
+	
 	void draw();
 
 private:
