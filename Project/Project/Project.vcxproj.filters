@@ -31,6 +31,9 @@
     <Filter Include="Physics">
       <UniqueIdentifier>{d527240c-b9b7-4b5a-a3f6-d99928294744}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Assets">
+      <UniqueIdentifier>{b3fba42c-6064-4457-9fce-160e6eeb493d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="header.h">
@@ -76,7 +79,13 @@
       <Filter>Physics</Filter>
     </ClInclude>
     <ClInclude Include="collisions.h">
-      <Filter>Header Files</Filter>
+      <Filter>Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="binary_reader.h">
+      <Filter>Assets</Filter>
+    </ClInclude>
+    <ClInclude Include="WICTextureLoader.h">
+      <Filter>Helper files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -96,7 +105,13 @@
       <Filter>Helper files</Filter>
     </ClCompile>
     <ClCompile Include="collisions.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="binary_reader.cpp">
+      <Filter>Assets</Filter>
+    </ClCompile>
+    <ClCompile Include="WICTextureLoader.cpp">
+      <Filter>Helper files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -120,6 +135,9 @@
       <Filter>Renderer</Filter>
     </FxCompile>
     <FxCompile Include="VertexShader_Bullet.hlsl">
+      <Filter>Renderer</Filter>
+    </FxCompile>
+    <FxCompile Include="PixelShader_Mage.hlsl">
       <Filter>Renderer</Filter>
     </FxCompile>
   </ItemGroup>

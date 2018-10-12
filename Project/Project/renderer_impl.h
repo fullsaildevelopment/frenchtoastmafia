@@ -18,14 +18,17 @@
 using namespace DirectX;
 
 #include "basic_structs.h"
+#include "binary_reader.h"
 #include "collisions.h"
 #include "renderer.h"
 #include "renderer_structs.h"
+#include "WICTextureLoader.h"
 #include "XTime.h"
 
 #include "VertexShader.csh"
 #include "VertexShader_Bullet.csh"
 #include "PixelShader.csh"
+#include "PixelShader_Mage.csh"
 
 struct cRenderer::tImpl
 {
@@ -61,6 +64,7 @@ struct cRenderer::tImpl
 	CComPtr<ID3D11VertexShader> d3dVertex_Shader_Bullet;
 
 	CComPtr<ID3D11PixelShader> d3dPixel_Shader;
+	CComPtr<ID3D11PixelShader> d3dPixel_Shader_Mage;
 
 	//CComPtr<ID3D11DomainShader> d3dDomain_Shader;
 	//CComPtr<ID3D11GeometryShader> d3dGeometry_Shader;
@@ -78,6 +82,8 @@ struct cRenderer::tImpl
 	// COLLISIONS
 	tCollisions tColl;
 	// OBJECTS
+	cBinary_Reader cBinary_Read;
+
 	// DUMMY
 	tVertex *test_dummy = new tVertex[8];
 	CComPtr<ID3D11Buffer> d3dConstant_Buffer_DUMMY;
@@ -94,6 +100,21 @@ struct cRenderer::tImpl
 	CComPtr<ID3D11Buffer> d3d_test_bullet_index_buffer;
 	bool test_bullet_toggle = false;
 	bool didCollide = false;
+
+	// MAGE
+	CComPtr<ID3D11Buffer> d3dConstant_Buffer_MAGE;
+	CComPtr<ID3D11Buffer> d3d_test_mage_vertex_buffer;
+	CComPtr<ID3D11Buffer> d3d_test_mage_index_buffer;
+	tConstantBuffer_PixelShader cps_mage;
+	tMesh tMage = cBinary_Read.Read_Mesh("mesh.bin");
+	int nMage_Vertex_Count = (int)tMage.nVertex_Count;
+	int nMage_Index_Count = (int)tMage.nIndex_Count;
+	tVertex *test_mage = new tVertex[nMage_Vertex_Count];
+	tMaterials mage_mats = cBinary_Read.Read_Material("material.bin");
+	CComPtr<ID3D11ShaderResourceView> mage_srv_diffuse;
+	CComPtr<ID3D11ShaderResourceView> mage_srv_emissive;
+	CComPtr<ID3D11ShaderResourceView> mage_srv_specular;
+
 
 	void initialize(cView& c_View)
 	{
@@ -197,6 +218,7 @@ struct cRenderer::tImpl
 			d3dDevice->CreateVertexShader(VertexShader, sizeof(VertexShader), NULL, &d3dVertex_Shader.p);
 			d3dDevice->CreateVertexShader(VertexShader_Bullet, sizeof(VertexShader_Bullet), NULL, &d3dVertex_Shader_Bullet.p);
 			d3dDevice->CreatePixelShader(PixelShader, sizeof(PixelShader), NULL, &d3dPixel_Shader.p);
+			d3dDevice->CreatePixelShader(PixelShader_Mage, sizeof(PixelShader_Mage), NULL, &d3dPixel_Shader_Mage.p);
 
 			// INPUT ELEMENT
 			D3D11_INPUT_ELEMENT_DESC d3dInput_Element[] =
@@ -249,6 +271,19 @@ struct cRenderer::tImpl
 
 				d3dDevice->CreateBuffer(&d3dConstant_Buffer_Desc, nullptr, &d3dConstant_Buffer_DUMMY.p);
 			}
+
+			// CONSTANT BUFFER - MAGE
+			{
+				ZeroMemory(&d3dConstant_Buffer_Desc, sizeof(D3D11_BUFFER_DESC));
+				d3dConstant_Buffer_Desc.ByteWidth = sizeof(tConstantBuffer_PixelShader);
+				d3dConstant_Buffer_Desc.Usage = D3D11_USAGE_DYNAMIC;
+				d3dConstant_Buffer_Desc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+				d3dConstant_Buffer_Desc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+				d3dConstant_Buffer_Desc.MiscFlags = 0;
+				d3dConstant_Buffer_Desc.StructureByteStride = 0;
+
+				d3dDevice->CreateBuffer(&d3dConstant_Buffer_Desc, nullptr, &d3dConstant_Buffer_MAGE.p);
+			}
 		}
 
 		// VERTEX AND INDEX BUFFERS
@@ -263,22 +298,24 @@ struct cRenderer::tImpl
 					test_dummy[i].fPosition.fY = 4.0f;
 					test_dummy[i].fPosition.fZ = 2.0f;
 					test_dummy[i].fPosition.fW = 1.0f;
-
+				
 					if (i % 2 == 0)
 						test_dummy[i].fPosition.fX *= -1.0f;
-
+				
 					if (i == 2 || i == 3 || i == 6 || i == 7)
 						test_dummy[i].fPosition.fY *= -1.0f;
-
+				
 					if (i < 4)
 						test_dummy[i].fPosition.fZ *= -1.0f;
 				}
+				
 
 				// Move
 				for (unsigned int i = 0; i < 8; i++)
 				{
 					test_dummy[i].fPosition.fZ += 15.0f;
 				}
+
 				ZeroMemory(&d3dBuffer_Desc, sizeof(D3D11_BUFFER_DESC));
 				d3dBuffer_Desc.ByteWidth = sizeof(tVertex) * 8;
 				d3dBuffer_Desc.Usage = D3D11_USAGE_IMMUTABLE;
@@ -327,6 +364,7 @@ struct cRenderer::tImpl
 
 				d3dDevice->CreateBuffer(&d3dBuffer_Desc, &d3dSRD, &d3d_test_dummy_index_buffer);
 			}
+
 			// BULLET
 			{
 				// VERTEX BUFFER
@@ -394,6 +432,74 @@ struct cRenderer::tImpl
 				d3dSRD.SysMemSlicePitch = 0;
 
 				d3dDevice->CreateBuffer(&d3dBuffer_Desc, &d3dSRD, &d3d_test_bullet_index_buffer);
+			}
+
+			// MAGE
+			{
+				// VERTEX BUFFER
+
+				for (int i = 0; i < nMage_Vertex_Count; i++)
+				{
+					test_mage[i] = tMage.tVerts[i];
+				}
+
+				// Move
+				for (int i = 0; i < nMage_Vertex_Count; i++)
+				{
+					test_mage[i].fPosition.fX -= 15.0f;
+				}
+
+				ZeroMemory(&d3dBuffer_Desc, sizeof(D3D11_BUFFER_DESC));
+				d3dBuffer_Desc.ByteWidth = sizeof(tVertex) * nMage_Vertex_Count;
+				d3dBuffer_Desc.Usage = D3D11_USAGE_IMMUTABLE;
+				d3dBuffer_Desc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+				d3dBuffer_Desc.CPUAccessFlags = NULL;
+				d3dBuffer_Desc.MiscFlags = 0;
+				d3dBuffer_Desc.StructureByteStride = 0;
+
+				ZeroMemory(&d3dSRD, sizeof(D3D11_SUBRESOURCE_DATA));
+				d3dSRD.pSysMem = test_mage;
+				d3dSRD.SysMemPitch = 0;
+				d3dSRD.SysMemSlicePitch = 0;
+
+				d3dDevice->CreateBuffer(&d3dBuffer_Desc, &d3dSRD, &d3d_test_mage_vertex_buffer);
+
+				// INDEX BUFFER
+
+				int* nMage_Indicies = new int[nMage_Index_Count];
+				for (int i = 0; i < nMage_Index_Count; i++)
+				{
+					nMage_Indicies[i] = tMage.nIndicies[i];
+				}
+
+				ZeroMemory(&d3dBuffer_Desc, sizeof(D3D11_BUFFER_DESC));
+				d3dBuffer_Desc.ByteWidth = sizeof(unsigned int) * nMage_Index_Count;
+				d3dBuffer_Desc.Usage = D3D11_USAGE_IMMUTABLE;
+				d3dBuffer_Desc.BindFlags = D3D11_BIND_INDEX_BUFFER;
+				d3dBuffer_Desc.CPUAccessFlags = NULL;
+				d3dBuffer_Desc.MiscFlags = 0;
+				d3dBuffer_Desc.StructureByteStride = 0;
+
+				ZeroMemory(&d3dSRD, sizeof(D3D11_SUBRESOURCE_DATA));
+				d3dSRD.pSysMem = nMage_Indicies;
+				d3dSRD.SysMemPitch = 0;
+				d3dSRD.SysMemSlicePitch = 0;
+
+				d3dDevice->CreateBuffer(&d3dBuffer_Desc, &d3dSRD, &d3d_test_mage_index_buffer);
+
+				// SRV
+
+				std::wstring d_tmp = std::wstring(mage_mats.tMats[0].szDiffuse_File_Path.begin(), mage_mats.tMats[0].szDiffuse_File_Path.end());
+				const wchar_t* diffuse_path = d_tmp.c_str();
+				CreateWICTextureFromFile(d3dDevice, d3dContext, diffuse_path, nullptr, &mage_srv_diffuse.p, 0);
+
+				std::wstring e_tmp = std::wstring(mage_mats.tMats[0].szEmissive_File_Path.begin(), mage_mats.tMats[0].szEmissive_File_Path.end());
+				const wchar_t* emissive_path = e_tmp.c_str();
+				CreateWICTextureFromFile(d3dDevice, d3dContext, emissive_path, nullptr, &mage_srv_emissive.p, 0);
+
+				std::wstring s_tmp = std::wstring(mage_mats.tMats[0].szSpecular_File_Path.begin(), mage_mats.tMats[0].szSpecular_File_Path.end());
+				const wchar_t* specular_path = s_tmp.c_str();
+				CreateWICTextureFromFile(d3dDevice, d3dContext, specular_path, nullptr, &mage_srv_specular.p, 0);
 			}
 		}
 	}
@@ -566,6 +672,16 @@ struct cRenderer::tImpl
 				d3dContext->VSSetConstantBuffers(0, 1, tmp_wvpc_buffer);
 			}
 
+			// CONSTANT BUFFER - DUMMY
+			{
+				// MAP DATA
+				d3dContext->Map(d3dConstant_Buffer_DUMMY, 0, D3D11_MAP_WRITE_DISCARD, 0, &d3dMSR);
+				memcpy(d3dMSR.pData, &tDUMMY, sizeof(tConstantBuffer_Float4));
+				d3dContext->Unmap(d3dConstant_Buffer_DUMMY, 0);
+				ID3D11Buffer *tmp_dummy_buffer[] = { d3dConstant_Buffer_DUMMY };
+				d3dContext->PSSetConstantBuffers(0, 1, tmp_dummy_buffer);
+			}
+
 			// CONSTANT BUFFER - BULLET
 			{
 				// MAP DATA
@@ -576,14 +692,50 @@ struct cRenderer::tImpl
 				d3dContext->VSSetConstantBuffers(1, 1, tmp_bullet_buffer);
 			}
 
-			// CONSTANT BUFFER - DUMMY
+
+			// CONSTANT BUFFER - MAGE
 			{
+				// STORE DATA
+				cps_mage.light_pos = { 15.0f, 20.0f, 15.0f, 1.0f };
+
+				cps_mage.ambient.x = mage_mats.tMats[0].tAmbient.fX;
+				cps_mage.ambient.y = mage_mats.tMats[0].tAmbient.fY;
+				cps_mage.ambient.z = mage_mats.tMats[0].tAmbient.fZ;
+				cps_mage.ambient.w = mage_mats.tMats[0].tAmbient.fW;
+
+				cps_mage.diffuse.x = mage_mats.tMats[0].tDiffuse.fX;
+				cps_mage.diffuse.y = mage_mats.tMats[0].tDiffuse.fY;
+				cps_mage.diffuse.z = mage_mats.tMats[0].tDiffuse.fZ;
+				cps_mage.diffuse.w = mage_mats.tMats[0].tDiffuse.fW;
+
+				cps_mage.emissive.x = mage_mats.tMats[0].tEmissive.fX;
+				cps_mage.emissive.y = mage_mats.tMats[0].tEmissive.fY;
+				cps_mage.emissive.z = mage_mats.tMats[0].tEmissive.fZ;
+				cps_mage.emissive.w = mage_mats.tMats[0].tEmissive.fW;
+
+				cps_mage.reflection.x = mage_mats.tMats[0].tReflection.fX;
+				cps_mage.reflection.y = mage_mats.tMats[0].tReflection.fY;
+				cps_mage.reflection.z = mage_mats.tMats[0].tReflection.fZ;
+				cps_mage.reflection.w = mage_mats.tMats[0].tReflection.fW;
+
+				cps_mage.shininess.x = mage_mats.tMats[0].fShininess;
+
+				cps_mage.specular.x = mage_mats.tMats[0].tSpecular.fX;
+				cps_mage.specular.y = mage_mats.tMats[0].tSpecular.fY;
+				cps_mage.specular.z = mage_mats.tMats[0].tSpecular.fZ;
+				cps_mage.specular.w = mage_mats.tMats[0].tSpecular.fW;
+
+				cps_mage.transparency.x = mage_mats.tMats[0].tTransparency.fX;
+				cps_mage.transparency.y = mage_mats.tMats[0].tTransparency.fY;
+				cps_mage.transparency.z = mage_mats.tMats[0].tTransparency.fZ;
+				cps_mage.transparency.w = mage_mats.tMats[0].tTransparency.fW;
+
 				// MAP DATA
-				d3dContext->Map(d3dConstant_Buffer_DUMMY, 0, D3D11_MAP_WRITE_DISCARD, 0, &d3dMSR);
-				memcpy(d3dMSR.pData, &tDUMMY, sizeof(tConstantBuffer_Float4));
-				d3dContext->Unmap(d3dConstant_Buffer_DUMMY, 0);
-				ID3D11Buffer *tmp_dummy_buffer[] = { d3dConstant_Buffer_DUMMY };
-				d3dContext->PSSetConstantBuffers(0, 1, tmp_dummy_buffer);
+				d3dContext->Map(d3dConstant_Buffer_MAGE, 0, D3D11_MAP_WRITE_DISCARD, 0, &d3dMSR);
+				memcpy(d3dMSR.pData, &cps_mage, sizeof(tConstantBuffer_PixelShader));
+				d3dContext->Unmap(d3dConstant_Buffer_MAGE, 0);
+				ID3D11Buffer *tmp_mage_buffer[] = { d3dConstant_Buffer_MAGE };
+				d3dContext->PSSetConstantBuffers(1, 1, tmp_mage_buffer);
 			}
 		}
 		// DRAWS
@@ -602,6 +754,7 @@ struct cRenderer::tImpl
 				d3dContext->PSSetShader(d3dPixel_Shader, NULL, 0);
 				d3dContext->DrawIndexed(36, 0, 0);
 			}
+
 			// BULLET
 			{
 				ID3D11Buffer *tmp_v_buffer[] = { d3d_test_bullet_vertex_buffer };
@@ -614,6 +767,25 @@ struct cRenderer::tImpl
 				if (test_bullet_toggle)
 					d3dContext->DrawIndexed(36, 0, 0);
 			}
+
+			// MAGE
+			{
+				ID3D11Buffer *tmp_v_buffer[] = { d3d_test_mage_vertex_buffer };
+				d3dContext->IASetVertexBuffers(0, 1, tmp_v_buffer, &verts_size, &off_set);
+				d3dContext->IASetIndexBuffer(d3d_test_mage_index_buffer, DXGI_FORMAT_R32_UINT, 0);
+				d3dContext->IASetInputLayout(d3dInput_Layout);
+				d3dContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+				d3dContext->VSSetShader(d3dVertex_Shader, NULL, 0);
+				d3dContext->PSSetShader(d3dPixel_Shader_Mage, NULL, 0);
+				ID3D11ShaderResourceView *mage_srv_d[] = { mage_srv_diffuse };
+				d3dContext->PSSetShaderResources(0, 1, mage_srv_d);
+				ID3D11ShaderResourceView *mage_srv_e[] = { mage_srv_emissive };
+				d3dContext->PSSetShaderResources(1, 1, mage_srv_e);
+				ID3D11ShaderResourceView *mage_srv_s[] = { mage_srv_specular };
+				d3dContext->PSSetShaderResources(2, 1, mage_srv_s);
+				d3dContext->DrawIndexed(nMage_Index_Count, 0, 0);
+			}
+
 			// PRESENT
 			d3dSwap_Chain->Present(1, 0);
 		}
