@@ -83,15 +83,15 @@ void dopeSoundSystem::play3DSound(const char* soundName, FMOD_MODE channel_mode)
 }
 void dopeSoundSystem::pauseNUnPause()
 {
-	//if (soundChannel->isPlaying(&isPlaying))
-	//{
+	if (isPlaying == true)
+	{
 		soundChannel->getPaused(&pauseSound);
 		soundChannel->setPaused(!pauseSound);
-	//}
-	/*else
+	}
+	else
 	{
 		return;
-	}*/
+	}
 }
 void dopeSoundSystem::stopSong()
 {
