@@ -64,6 +64,8 @@ void dopeSoundSystem::playSong(const char* soundName, FMOD_MODE channel_mode)
 	soundChannel->setMode(channel_mode);  // if i want sounds to cue them call default and play another song
 	// FMOD_LOOP_NORMAL
 	soundChannel->setLoopCount(-1);
+
+	isPlaying = true;
 }
 void dopeSoundSystem::play3DSound(const char* soundName, FMOD_MODE channel_mode)
 {
@@ -81,12 +83,21 @@ void dopeSoundSystem::play3DSound(const char* soundName, FMOD_MODE channel_mode)
 }
 void dopeSoundSystem::pauseNUnPause()
 {
-	soundChannel->getPaused(&pauseSound);
-	soundChannel->setPaused(!pauseSound);
+	if (soundChannel->isPlaying(&isPlaying))
+	{
+		soundChannel->getPaused(&pauseSound);
+		soundChannel->setPaused(!pauseSound);
+	}
+	else
+	{
+		return;
+	}
 }
 void dopeSoundSystem::stopSong()
 {
 	soundChannel->stop();
+
+	isPlaying = false;
 }
 
 void dopeSoundSystem::setSoundVelocity(float posX, float prevX, float posY, float prevY, float posZ, float prevZ, double deltaTime)
@@ -106,5 +117,10 @@ void dopeSoundSystem::set3DSoundSettings(float doppler_Scale, float distance_Sca
 void dopeSoundSystem::updateSoundSystem()
 {
 	System->update();
+}
+void dopeSoundSystem::muteAudio()
+{
+	soundChannel->getMute(&muteSound);
+	soundChannel->setMute(!muteSound);
 }
 
