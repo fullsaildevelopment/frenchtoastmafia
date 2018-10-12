@@ -141,4 +141,14 @@
       <Filter>Renderer</Filter>
     </FxCompile>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="dopeSoundSystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="dopeSoundSystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
 </Project>

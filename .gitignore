@@ -14,7 +14,6 @@
 # Compiled Dynamic libraries
 *.so
 *.dylib
-*.dll
 
 # Fortran module files
 *.mod
@@ -23,13 +22,11 @@
 # Compiled Static libraries
 *.lai
 *.la
-*.a
 
 # Executables
 *.exe
 *.out
 *.app
-
 
 # Extra Stuff
 *.tlog
@@ -40,10 +37,18 @@
 *.suo
 *.db
 *.xml
-
+*.opendb
+*.user
+*.iobj
 *.ilk
 *.pdb
+*.ipdb
 *.idb
-Debug
-Release
-.vs
+/.vs/
+/x64/
+/x86/
+/Debug/
+/Release/
+/Project/x64/
+/Project/Debug/
+/Project/Release/
