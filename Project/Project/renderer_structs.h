@@ -9,6 +9,7 @@
 #pragma once
 
 #include <DirectXMath.h>
+using namespace DirectX;
 #include "basic_structs.h"
 
 struct tConstantBuffer_VertexShader_WVPC
@@ -23,4 +24,49 @@ struct tConstantBuffer_VertexShader_WVPC
 struct tConstantBuffer_Float4
 {
 	XMFLOAT4 fData = { 0.0f, 0.0f, 0.0f, 0.0f };
+};
+
+struct tConstantBuffer_PixelShader
+{
+	XMFLOAT4 light_pos = { 0.0f, 0.0f, 0.0f, 0.0f };
+	XMFLOAT4 light_col = { 1.0f, 1.0f, 1.0f, 1.0f };
+	XMFLOAT4 light_nrm = { 0.0f, 0.0f, 0.0f, 0.0f };
+	XMFLOAT4 ambient = { 0.0f, 0.0f, 0.0f, 0.0f };
+	XMFLOAT4 diffuse = { 0.0f, 0.0f, 0.0f, 0.0f };
+	XMFLOAT4 emissive = { 0.0f, 0.0f, 0.0f, 0.0f };
+	XMFLOAT4 reflection = { 0.0f, 0.0f, 0.0f, 0.0f };
+	XMFLOAT4 shininess = { 0.0f, 0.0f, 0.0f, 0.0f };
+	XMFLOAT4 specular = { 0.0f, 0.0f, 0.0f, 0.0f };
+	XMFLOAT4 transparency = { 0.0f, 0.0f, 0.0f, 0.0f };
+};
+
+struct tMesh
+{
+	uint32_t nVertex_Count = 0;
+	uint32_t nIndex_Count = 0;
+	std::vector<tVertex> tVerts;
+	std::vector<int> nIndicies;
+};
+
+struct tMaterial
+{
+	tFloat4 tAmbient = { 0.0f, 0.0f, 0.0f, 0.0f };
+	std::string szAmbient_File_Path = "";
+	tFloat4 tDiffuse = { 0.0f, 0.0f, 0.0f, 0.0f };
+	std::string szDiffuse_File_Path = "";
+	tFloat4 tEmissive = { 0.0f, 0.0f, 0.0f, 0.0f };
+	std::string szEmissive_File_Path = "";
+	tFloat4 tReflection = { 0.0f, 0.0f, 0.0f, 0.0f };
+	std::string szReflection_File_Path = "";
+	float fShininess = 0.0f;
+	std::string szShininess_File_Path = "";
+	tFloat4 tSpecular = { 0.0f, 0.0f, 0.0f, 0.0f };
+	std::string szSpecular_File_Path = "";
+	tFloat4 tTransparency = { 0.0f, 0.0f, 0.0f, 0.0f };
+	std::string szTransparency_File_Path = "";
+};
+
+struct tMaterials
+{
+	std::vector<tMaterial> tMats;
 };
