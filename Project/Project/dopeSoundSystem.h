@@ -28,5 +28,6 @@ public:
 	void set3DSoundSettings(float doppler_Scale, float distance_ScaleFac, float rolloff_Scale);
 	void updateSoundSystem();
 	void muteAudio();
+	void playSoundEffect(const char* soundName, FMOD_MODE channel_mode);
 };
 

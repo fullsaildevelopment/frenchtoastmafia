@@ -143,4 +143,19 @@ void dopeSoundSystem::muteAudio()
 		return;
 	}
 }
+void dopeSoundSystem::playSoundEffect(const char* soundName, FMOD_MODE channel_mode)
+{
+	System->createSound(soundName, FMOD_DEFAULT, NULL, &song);
+	//System->createSound("celtic-harp-and-flute-music-call-of-the-ancients.mp3", FMOD_LOOP_NORMAL, NULL, &song2);
+	//FMOD::Sound *songStreaming;
+	System->createStream(soundName, FMOD_DEFAULT, 0, &songStreaming);
+
+	// system->playSound(FMOD_CHANNEL_FREE, audio, false, 0);  // to play a sound with no looping needed
+	//FMOD::Channel *soundChannel;
+	System->playSound(song, NULL, false, &soundChannel);
+	//resulty = FMOD::System::createStream()
+	soundChannel->setMode(channel_mode);  // if i want sounds to cue them call default and play another song
+	// FMOD_LOOP_NORMAL
+	soundChannel->setLoopCount(-1);
+}
 
