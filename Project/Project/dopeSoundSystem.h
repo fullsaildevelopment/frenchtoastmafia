@@ -9,11 +9,13 @@ class dopeSoundSystem
 private:
 	FMOD::System* System;
 	FMOD::Channel* soundChannel;
+	FMOD::Channel* soundEffectChannel;
 	FMOD::Channel* threeDSoundChannel;
 	FMOD::Sound* songStreaming;
 	bool pauseSound = false;
 	FMOD::Sound* song;
 	FMOD::Sound* soundEffect;
+	FMOD::Sound* threeD_SoundEffect;
 	FMOD::Sound* soundEffectStreaming;
 	bool isPlaying = false;
 	bool muteSound = false;
@@ -28,5 +30,6 @@ public:
 	void set3DSoundSettings(float doppler_Scale, float distance_ScaleFac, float rolloff_Scale);
 	void updateSoundSystem();
 	void muteAudio();
+	void playSoundEffect(const char* soundName, FMOD_MODE channel_mode);
 };
 
