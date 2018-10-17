@@ -75,11 +75,11 @@ void dopeSoundSystem::playSong(const char* soundName, FMOD_MODE channel_mode)
 }
 void dopeSoundSystem::play3DSound(const char* soundName, FMOD_MODE channel_mode)
 {
-	System->createSound(soundName, FMOD_3D, NULL, &soundEffect);
+	System->createSound(soundName, FMOD_3D, NULL, &threeD_SoundEffect);
 
 	System->createStream(soundName, FMOD_DEFAULT, 0, &soundEffectStreaming);
 
-	System->playSound(soundEffect, NULL, false, &threeDSoundChannel);
+	System->playSound(threeD_SoundEffect, NULL, false, &threeDSoundChannel);
 
 	threeDSoundChannel->setMode(channel_mode);   // if this doesn't work well makea whole new class for just 3D sounds initialize it with 3D_RIGHTHAND
 	// FMOD_3D_HEADRELATIVE // plays sound relative to players head
@@ -156,6 +156,6 @@ void dopeSoundSystem::playSoundEffect(const char* soundName, FMOD_MODE channel_m
 	//resulty = FMOD::System::createStream()
 	soundEffectChannel->setMode(channel_mode);  // if i want sounds to cue them call default and play another song
 	// FMOD_LOOP_NORMAL
-	soundEffectChannel->setLoopCount(-1);
+	//soundEffectChannel->setLoopCount(-1);
 }
 

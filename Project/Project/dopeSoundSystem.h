@@ -15,6 +15,7 @@ private:
 	bool pauseSound = false;
 	FMOD::Sound* song;
 	FMOD::Sound* soundEffect;
+	FMOD::Sound* threeD_SoundEffect;
 	FMOD::Sound* soundEffectStreaming;
 	bool isPlaying = false;
 	bool muteSound = false;
