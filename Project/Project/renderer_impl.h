@@ -32,9 +32,11 @@ using namespace DirectX;
 #include "PixelShader.csh"
 #include "PixelShader_Mage.csh"
 #include "PixelShader_Screen.csh"
+#include "dopeSoundSystem.h"
 
 struct cRenderer::tImpl
 {
+	dopeSoundSystem sound;
 	// platform/api specific members, functions, etc.
 	HWND _hWnd;
 	tImpl(native_handle_t hWnd) { _hWnd = (HWND)hWnd; }
@@ -732,6 +734,7 @@ struct cRenderer::tImpl
 				{
 					if (!test_bullet_toggle)
 					{
+						sound.playSoundEffect("Fireball+1.mp3", FMOD_DEFAULT);
 						test_bullet_toggle = true;
 						tBULLET.fData.w = 1;
 					}
