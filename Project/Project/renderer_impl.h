@@ -16,10 +16,12 @@
 #include <DirectXColors.h>
 #include <DirectXCollision.h>
 using namespace DirectX;
+#include <iostream>
 
 #include "basic_structs.h"
 #include "binary_reader.h"
 #include "collisions.h"
+#include "DDSTextureLoader.h"
 #include "renderer.h"
 #include "renderer_structs.h"
 #include "Object System.h"
@@ -34,9 +36,12 @@ using namespace DirectX;
 #include "PixelShader_Mage.csh"
 #include "PixelShader_Arena.csh"
 
+#include "PixelShader_Screen.csh"
+#include "dopeSoundSystem.h"
 
 struct cRenderer::tImpl
 {
+	dopeSoundSystem sound;
 	// platform/api specific members, functions, etc.
 	HWND _hWnd;
 	tImpl(native_handle_t hWnd) { _hWnd = (HWND)hWnd; }
@@ -63,13 +68,14 @@ struct cRenderer::tImpl
 	D3D11_BUFFER_DESC d3dConstant_Buffer_Desc;
 	D3D11_SUBRESOURCE_DATA d3dSRD;
 	D3D11_MAPPED_SUBRESOURCE d3dMSR;
-	
+
 	// SHADERS
 	CComPtr<ID3D11VertexShader> d3dVertex_Shader;
 	CComPtr<ID3D11VertexShader> d3dVertex_Shader_Bullet;
 
 	CComPtr<ID3D11PixelShader> d3dPixel_Shader;
 	CComPtr<ID3D11PixelShader> d3dPixel_Shader_Mage;
+	CComPtr<ID3D11PixelShader> d3dPixel_Shader_Screen;
 
 	//CComPtr<ID3D11DomainShader> d3dDomain_Shader;
 	//CComPtr<ID3D11GeometryShader> d3dGeometry_Shader;
@@ -123,6 +129,20 @@ struct cRenderer::tImpl
 	CComPtr<ID3D11ShaderResourceView> mage_srv_emissive;
 	CComPtr<ID3D11ShaderResourceView> mage_srv_specular;
 
+	// Scene Transition
+	int scene_toggle = 0;
+	// 0 - intro
+	// 1 - start menu
+	// 2 - game1
+	// 3 - game2
+	// 4 - replay
+
+	CComPtr<ID3D11Buffer> d3d_game_screen_vertex_buffer;
+	CComPtr<ID3D11Buffer> d3d_game_screen_index_buffer;
+	CComPtr<ID3D11ShaderResourceView> intro_srv;
+	CComPtr<ID3D11ShaderResourceView> menu_srv;
+	CComPtr<ID3D11ShaderResourceView> replay_srv;
+
 	// ARENA
 	pipeline_t tArenaIDs = { 0, 0, 0, 0 };
 	tConstantBuffer_PixelShader cps_arena;
@@ -138,8 +158,7 @@ struct cRenderer::tImpl
 
 	void initialize(cView& c_View)
 	{
-
-		
+		std::cout << "impl init" << std::endl;
 		// BACKEND SETUP
 		{
 			XMMATRIX mCamera_Matrix = XMMatrixInverse(nullptr, XMMatrixLookAtLH({ 0.0f, 15.0f, -25.0f, 0.0f }, { 0.0f, 0.0f, 0.0f, 0.0f }, { 0.0f, 1.0f, 0.0f, 0.0f }));
@@ -175,6 +194,7 @@ struct cRenderer::tImpl
 			d3dSwap_Chain->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&back_buffer);
 			d3dDevice->CreateRenderTargetView(back_buffer, NULL, &d3dRTV.p);
 			back_buffer->Release();
+
 
 			// VIEW PORT
 			d3dView_Port.Height = (float)d3dSwap_Chain_Desc.BufferDesc.Height;
@@ -244,6 +264,7 @@ struct cRenderer::tImpl
 			d3dDevice->CreatePixelShader(PixelShader, sizeof(PixelShader), NULL, &d3dPixel_Shader.p);
 			d3dDevice->CreatePixelShader(PixelShader_Mage, sizeof(PixelShader_Mage), NULL, &d3dPixel_Shader_Mage.p);
 			d3dDevice->CreatePixelShader(PixelShader_Arena, sizeof(PixelShader_Arena), NULL, &tscene_objects.pixel_shaders[tArenaIDs.pixel_shader_id].p);
+			d3dDevice->CreatePixelShader(PixelShader_Screen, sizeof(PixelShader_Screen), NULL, &d3dPixel_Shader_Screen.p);
 
 			// INPUT ELEMENT
 			D3D11_INPUT_ELEMENT_DESC d3dInput_Element[] =
@@ -259,7 +280,7 @@ struct cRenderer::tImpl
 
 		// CONSTANT BUFFERS
 		{
-			// CONSTANT BUFFER - WORLD VIEW PROJECTION
+			// CONSTANT BUFFER - WORLD VIEW PROJECTION CAMERA
 			{
 				ZeroMemory(&d3dConstant_Buffer_Desc, sizeof(D3D11_BUFFER_DESC));
 				d3dConstant_Buffer_Desc.ByteWidth = sizeof(tConstantBuffer_VertexShader_WVPC);
@@ -340,17 +361,17 @@ struct cRenderer::tImpl
 					test_dummy[i].fPosition.fY = 4.0f;
 					test_dummy[i].fPosition.fZ = 2.0f;
 					test_dummy[i].fPosition.fW = 1.0f;
-				
+
 					if (i % 2 == 0)
 						test_dummy[i].fPosition.fX *= -1.0f;
-				
+
 					if (i == 2 || i == 3 || i == 6 || i == 7)
 						test_dummy[i].fPosition.fY *= -1.0f;
-				
+
 					if (i < 4)
 						test_dummy[i].fPosition.fZ *= -1.0f;
 				}
-				
+
 
 				// Move
 				for (unsigned int i = 0; i < 8; i++)
@@ -561,6 +582,46 @@ struct cRenderer::tImpl
 
 				ZeroMemory(&d3dBuffer_Desc, sizeof(D3D11_BUFFER_DESC));
 				d3dBuffer_Desc.ByteWidth = sizeof(tVertex) * nArena_Vertex_Count;
+			// GAME SCREEN
+			{
+				// VERTEX BUFFER
+				tVertex *test_screen = new tVertex[4];
+				test_screen[0].fPosition.fX = -20.0f;
+				test_screen[0].fPosition.fY = 15.0f;
+				test_screen[0].fPosition.fZ = 1.0f;
+
+				test_screen[0].fTexture_Coordinate.fX = 0.0f;
+				test_screen[0].fTexture_Coordinate.fY = 0.0f;
+
+				test_screen[1].fPosition.fX = 20.0f;
+				test_screen[1].fPosition.fY = 15.0f;
+				test_screen[1].fPosition.fZ = 1.0f;
+
+				test_screen[1].fTexture_Coordinate.fX = 1.0f;
+				test_screen[1].fTexture_Coordinate.fY = 0.0f;
+
+				test_screen[2].fPosition.fX = -20.0f;
+				test_screen[2].fPosition.fY = -15.0f;
+				test_screen[2].fPosition.fZ = 1.0f;
+
+				test_screen[2].fTexture_Coordinate.fX = 0.0f;
+				test_screen[2].fTexture_Coordinate.fY = 1.0f;
+
+				test_screen[3].fPosition.fX = 20.0f;
+				test_screen[3].fPosition.fY = -15.0f;
+				test_screen[3].fPosition.fZ = 1.0f;
+
+				test_screen[3].fTexture_Coordinate.fX = 1.0f;
+				test_screen[3].fTexture_Coordinate.fY = 1.0f;
+
+				// Move
+				//for (unsigned int i = 0; i < 4; i++)
+				//{
+				//	test_dummy[i].fPosition.fZ += 5.0f;
+				//}
+
+				ZeroMemory(&d3dBuffer_Desc, sizeof(D3D11_BUFFER_DESC));
+				d3dBuffer_Desc.ByteWidth = sizeof(tVertex) * 4;
 				d3dBuffer_Desc.Usage = D3D11_USAGE_IMMUTABLE;
 				d3dBuffer_Desc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 				d3dBuffer_Desc.CPUAccessFlags = NULL;
@@ -584,6 +645,22 @@ struct cRenderer::tImpl
 
 				ZeroMemory(&d3dBuffer_Desc, sizeof(D3D11_BUFFER_DESC));
 				d3dBuffer_Desc.ByteWidth = sizeof(unsigned int) * nArena_Index_Count;
+				d3dSRD.pSysMem = test_screen;
+				d3dSRD.SysMemPitch = 0;
+				d3dSRD.SysMemSlicePitch = 0;
+
+				d3dDevice->CreateBuffer(&d3dBuffer_Desc, &d3dSRD, &d3d_game_screen_vertex_buffer);
+
+				// INDEX BUFFER
+
+				unsigned int test_screen_indicies[6] =
+				{
+					0,1,2,
+					1,3,2
+				};
+
+				ZeroMemory(&d3dBuffer_Desc, sizeof(D3D11_BUFFER_DESC));
+				d3dBuffer_Desc.ByteWidth = sizeof(unsigned int) * 6;
 				d3dBuffer_Desc.Usage = D3D11_USAGE_IMMUTABLE;
 				d3dBuffer_Desc.BindFlags = D3D11_BIND_INDEX_BUFFER;
 				d3dBuffer_Desc.CPUAccessFlags = NULL;
@@ -602,15 +679,19 @@ struct cRenderer::tImpl
 				std::wstring d_tmp = std::wstring(arena_mats.tMats[0].szDiffuse_File_Path.begin(), arena_mats.tMats[0].szDiffuse_File_Path.end());
 				const wchar_t* diffuse_path = d_tmp.c_str();
 				HRESULT result = CreateWICTextureFromFile(d3dDevice, d3dContext, diffuse_path, nullptr, &arena_srv_diffuse.p, 0);
-
-				//std::wstring e_tmp = std::wstring(arena_mats.tMats[0].szEmissive_File_Path.begin(), arena_mats.tMats[0].szEmissive_File_Path.end());
-				//const wchar_t* emissive_path = e_tmp.c_str();
-				//CreateWICTextureFromFile(d3dDevice, d3dContext, emissive_path, nullptr, &arena_srv_emissive.p, 0);
-				//
-				//std::wstring s_tmp = std::wstring(arena_mats.tMats[0].szSpecular_File_Path.begin(), arena_mats.tMats[0].szSpecular_File_Path.end());
-				//const wchar_t* specular_path = s_tmp.c_str();
-				//CreateWICTextureFromFile(d3dDevice, d3dContext, specular_path, nullptr, &arena_srv_specular.p, 0);
 			}
+				d3dSRD.pSysMem = test_screen_indicies;
+				d3dSRD.SysMemPitch = 0;
+				d3dSRD.SysMemSlicePitch = 0;
+
+				d3dDevice->CreateBuffer(&d3dBuffer_Desc, &d3dSRD, &d3d_game_screen_index_buffer);
+
+				// SRV
+				CreateDDSTextureFromFile(d3dDevice, L"1.dds", nullptr, &intro_srv.p);
+				CreateDDSTextureFromFile(d3dDevice, L"2.dds", nullptr, &menu_srv.p);
+				CreateDDSTextureFromFile(d3dDevice, L"3.dds", nullptr, &replay_srv.p);
+			}
+
 		}
 	}
 
@@ -620,29 +701,29 @@ struct cRenderer::tImpl
 		cTime.Signal();
 
 		// RESIZE / RESET RTV AND VP
-		{
-			d3dContext->OMSetRenderTargets(0, 0, 0);
-			d3dRTV.Release();
-			d3dSwap_Chain->ResizeBuffers(0, 0, 0, DXGI_FORMAT_UNKNOWN, DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH);
-			ID3D11Texture2D *back_buffer;
-			d3dSwap_Chain->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&back_buffer);
-			d3dDevice->CreateRenderTargetView(back_buffer, NULL, &d3dRTV);
-			ID3D11RenderTargetView *tmp_rtv[] = { d3dRTV };
-			d3dContext->OMSetRenderTargets(1, tmp_rtv, d3dDSV);
-			d3dContext->RSSetViewports(1, &d3dView_Port);
-			// SKY BLUE
-			float clear_color[4] = { 0.000000000f, 0.749019623f, 1.000000000f, 1.000000000f };
-			// WHITE
-			//float clear_color[4] = { 1.0f, 1.0f, 1.0f, 1.0f };
-			d3dContext->ClearRenderTargetView(d3dRTV, clear_color);
-			d3dContext->ClearDepthStencilView(d3dDSV, D3D11_CLEAR_DEPTH, 1.0f, 0);
-		}
+		d3dContext->OMSetRenderTargets(0, 0, 0);
+		d3dRTV.Release();
+		d3dSwap_Chain->ResizeBuffers(0, 0, 0, DXGI_FORMAT_UNKNOWN, DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH);
+		ID3D11Texture2D *back_buffer;
+		d3dSwap_Chain->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&back_buffer);
+		d3dDevice->CreateRenderTargetView(back_buffer, NULL, &d3dRTV);
+		ID3D11RenderTargetView *tmp_rtv[] = { d3dRTV };
+		d3dContext->OMSetRenderTargets(1, tmp_rtv, d3dDSV);
+		d3dContext->RSSetViewports(1, &d3dView_Port);
+		// SKY BLUE
+		float clear_color[4] = { 0.000000000f, 0.749019623f, 1.000000000f, 1.000000000f };
+		// WHITE
+		//float clear_color[4] = { 1.0f, 1.0f, 1.0f, 1.0f };
+		d3dContext->ClearRenderTargetView(d3dRTV, clear_color);
+		d3dContext->ClearDepthStencilView(d3dDSV, D3D11_CLEAR_DEPTH, 1.0f, 0);
+
 
 		if (didCollide)
 		{
 			tBULLET.fData.w = 0;
 			tBULLET.fData.z = 0;
 			test_bullet_toggle = false;
+			scene_toggle += 1;
 		}
 
 		// MOVE BULLET
@@ -671,75 +752,102 @@ struct cRenderer::tImpl
 		XMMATRIX mCamera_Matrix = XMLoadFloat4x4(&fCamera_Matrix);
 		XMMATRIX mCamera_Origin = XMLoadFloat4x4(&fCamera_Origin);
 
-		// CONTROLS
+		if (scene_toggle == 2 || scene_toggle == 3)
 		{
-			// A - move left
-			if (GetAsyncKeyState('A'))
-				mCamera_Matrix = XMMatrixMultiply(XMMatrixTranslation(-((float)cTime.Delta() * 25), 0.0f, 0.0f), mCamera_Matrix);
 
-			// D - move right
-			if (GetAsyncKeyState('D'))
-				mCamera_Matrix = XMMatrixMultiply(XMMatrixTranslation((float)cTime.Delta() * 25, 0.0f, 0.0f), mCamera_Matrix);
-
-			// Q - move up
-			if (GetAsyncKeyState('Q'))
-				mCamera_Matrix = XMMatrixMultiply(mCamera_Matrix, XMMatrixTranslation(0.0f, (float)cTime.Delta() * 25, 0.0f));
-
-			// E - move down
-			if (GetAsyncKeyState('E'))
-				mCamera_Matrix = XMMatrixMultiply(mCamera_Matrix, XMMatrixTranslation(0.0f, -((float)cTime.Delta() * 25), 0.0f));
-
-			// S - move out
-			if (GetAsyncKeyState('S'))
-				mCamera_Matrix = XMMatrixMultiply(XMMatrixTranslation(0.0f, 0.0f, -((float)cTime.Delta() * 25)), mCamera_Matrix);
-
-			// W - move in
-			if (GetAsyncKeyState('W'))
-				mCamera_Matrix = XMMatrixMultiply(XMMatrixTranslation(0.0f, 0.0f, (float)cTime.Delta() * 25), mCamera_Matrix);
-
-			// I - look up
-			if (GetAsyncKeyState('I'))
-				mCamera_Matrix = XMMatrixMultiply(XMMatrixRotationX(-((float)cTime.Delta())), mCamera_Matrix);
-
-			// K - look down
-			if (GetAsyncKeyState('K'))
-				mCamera_Matrix = XMMatrixMultiply(XMMatrixRotationX((float)cTime.Delta()), mCamera_Matrix);
-
-			// L - look right
-			if (GetAsyncKeyState('L'))
+			// CONTROLS
 			{
-				XMVECTOR pos = XMVectorSet(mCamera_Matrix.r[3].m128_f32[0], mCamera_Matrix.r[3].m128_f32[1], mCamera_Matrix.r[3].m128_f32[2], 1.0f);
-				mCamera_Matrix.r[3] = XMVectorSet(0, 0, 0, 1);
-				mCamera_Matrix = XMMatrixMultiply(mCamera_Matrix, XMMatrixRotationY((float)cTime.Delta()));
-				mCamera_Matrix.r[3] = pos;
-			}
+				// A - move left
+				if (GetAsyncKeyState('A'))
+					mCamera_Matrix = XMMatrixMultiply(XMMatrixTranslation(-((float)cTime.Delta() * 25), 0.0f, 0.0f), mCamera_Matrix);
 
-			// J - look left
-			if (GetAsyncKeyState('J'))
-			{
-				XMVECTOR pos = XMVectorSet(mCamera_Matrix.r[3].m128_f32[0], mCamera_Matrix.r[3].m128_f32[1], mCamera_Matrix.r[3].m128_f32[2], 1.0f);
-				mCamera_Matrix.r[3] = XMVectorSet(0, 0, 0, 1);
-				mCamera_Matrix = XMMatrixMultiply(mCamera_Matrix, XMMatrixRotationY(-((float)cTime.Delta())));
-				mCamera_Matrix.r[3] = pos;
-			}
+				// D - move right
+				if (GetAsyncKeyState('D'))
+					mCamera_Matrix = XMMatrixMultiply(XMMatrixTranslation((float)cTime.Delta() * 25, 0.0f, 0.0f), mCamera_Matrix);
 
-			// R - reset
-			if (GetAsyncKeyState('R'))
-			{
-				mCamera_Matrix = mCamera_Origin;
-				cTime.Restart();
-			}
+				// Q - move up
+				if (GetAsyncKeyState('Q'))
+					mCamera_Matrix = XMMatrixMultiply(mCamera_Matrix, XMMatrixTranslation(0.0f, (float)cTime.Delta() * 25, 0.0f));
 
-			// F - switch color
-			if (GetAsyncKeyState('F'))
-			{
-				if (!test_bullet_toggle)
+				// E - move down
+				if (GetAsyncKeyState('E'))
+					mCamera_Matrix = XMMatrixMultiply(mCamera_Matrix, XMMatrixTranslation(0.0f, -((float)cTime.Delta() * 25), 0.0f));
+
+				// S - move out
+				if (GetAsyncKeyState('S'))
+					mCamera_Matrix = XMMatrixMultiply(XMMatrixTranslation(0.0f, 0.0f, -((float)cTime.Delta() * 25)), mCamera_Matrix);
+
+				// W - move in
+				if (GetAsyncKeyState('W'))
+					mCamera_Matrix = XMMatrixMultiply(XMMatrixTranslation(0.0f, 0.0f, (float)cTime.Delta() * 25), mCamera_Matrix);
+
+				// I - look up
+				if (GetAsyncKeyState('I'))
+					mCamera_Matrix = XMMatrixMultiply(XMMatrixRotationX(-((float)cTime.Delta())), mCamera_Matrix);
+
+				// K - look down
+				if (GetAsyncKeyState('K'))
+					mCamera_Matrix = XMMatrixMultiply(XMMatrixRotationX((float)cTime.Delta()), mCamera_Matrix);
+
+				// L - look right
+				if (GetAsyncKeyState('L'))
 				{
-					test_bullet_toggle = true;
-					tBULLET.fData.w = 1;
+					XMVECTOR pos = XMVectorSet(mCamera_Matrix.r[3].m128_f32[0], mCamera_Matrix.r[3].m128_f32[1], mCamera_Matrix.r[3].m128_f32[2], 1.0f);
+					mCamera_Matrix.r[3] = XMVectorSet(0, 0, 0, 1);
+					mCamera_Matrix = XMMatrixMultiply(mCamera_Matrix, XMMatrixRotationY((float)cTime.Delta()));
+					mCamera_Matrix.r[3] = pos;
+				}
+
+				// J - look left
+				if (GetAsyncKeyState('J'))
+				{
+					XMVECTOR pos = XMVectorSet(mCamera_Matrix.r[3].m128_f32[0], mCamera_Matrix.r[3].m128_f32[1], mCamera_Matrix.r[3].m128_f32[2], 1.0f);
+					mCamera_Matrix.r[3] = XMVectorSet(0, 0, 0, 1);
+					mCamera_Matrix = XMMatrixMultiply(mCamera_Matrix, XMMatrixRotationY(-((float)cTime.Delta())));
+					mCamera_Matrix.r[3] = pos;
+				}
+
+				// R - reset
+				if (GetAsyncKeyState('R'))
+				{
+					mCamera_Matrix = mCamera_Origin;
+					cTime.Restart();
+				}
+
+				// F - switch color
+				if (GetAsyncKeyState('F'))
+				{
+					if (!test_bullet_toggle)
+					{
+						sound.playSoundEffect("Fireball+1.mp3", FMOD_DEFAULT);
+						test_bullet_toggle = true;
+						tBULLET.fData.w = 1;
+					}
 				}
 			}
 		}
+		else if (scene_toggle == 0)
+		{
+			if (GetAsyncKeyState('1'))
+				scene_toggle += 1;
+		}
+		else if (scene_toggle == 1)
+		{
+			if (GetAsyncKeyState('2'))
+				scene_toggle += 1;
+		}
+		else
+		{
+			if (GetAsyncKeyState('3'))
+				scene_toggle += 1;
+		}
+
+		if (scene_toggle > 4)
+		{
+			scene_toggle = 2;
+		}
+
+		std::cout << "scene_toggle: " << scene_toggle << std::endl;
 
 		// NORMALIZING ROTATIONS
 		XMVECTOR newZ = mCamera_Matrix.r[2];
@@ -893,52 +1001,82 @@ struct cRenderer::tImpl
 				d3dContext->PSSetConstantBuffers(1, 1, tmp_mage_buffer);
 			}
 		}
+
 		// DRAWS
 		{
 			unsigned int verts_size = sizeof(tVertex);
 			unsigned int off_set = 0;
 
-			// DUMMY
+			if (scene_toggle == 2 || scene_toggle == 3)
 			{
-				ID3D11Buffer *tmp_v_buffer[] = { d3d_test_dummy_vertex_buffer };
-				d3dContext->IASetVertexBuffers(0, 1, tmp_v_buffer, &verts_size, &off_set);
-				d3dContext->IASetIndexBuffer(d3d_test_dummy_index_buffer, DXGI_FORMAT_R32_UINT, 0);
-				d3dContext->IASetInputLayout(d3dInput_Layout);
-				d3dContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-				d3dContext->VSSetShader(d3dVertex_Shader, NULL, 0);
-				d3dContext->PSSetShader(d3dPixel_Shader, NULL, 0);
-				d3dContext->DrawIndexed(36, 0, 0);
-			}
-
-			// BULLET
-			{
-				ID3D11Buffer *tmp_v_buffer[] = { d3d_test_bullet_vertex_buffer };
-				d3dContext->IASetVertexBuffers(0, 1, tmp_v_buffer, &verts_size, &off_set);
-				d3dContext->IASetIndexBuffer(d3d_test_bullet_index_buffer, DXGI_FORMAT_R32_UINT, 0);
-				d3dContext->IASetInputLayout(d3dInput_Layout);
-				d3dContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-				d3dContext->VSSetShader(d3dVertex_Shader_Bullet, NULL, 0);
-				d3dContext->PSSetShader(d3dPixel_Shader, NULL, 0);
-				if (test_bullet_toggle)
+				// DUMMY
+				{
+					ID3D11Buffer *tmp_v_buffer[] = { d3d_test_dummy_vertex_buffer };
+					d3dContext->IASetVertexBuffers(0, 1, tmp_v_buffer, &verts_size, &off_set);
+					d3dContext->IASetIndexBuffer(d3d_test_dummy_index_buffer, DXGI_FORMAT_R32_UINT, 0);
+					d3dContext->IASetInputLayout(d3dInput_Layout);
+					d3dContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+					d3dContext->VSSetShader(d3dVertex_Shader, NULL, 0);
+					d3dContext->PSSetShader(d3dPixel_Shader, NULL, 0);
 					d3dContext->DrawIndexed(36, 0, 0);
-			}
+				}
 
-			// MAGE
+				// BULLET
+				{
+					ID3D11Buffer *tmp_v_buffer[] = { d3d_test_bullet_vertex_buffer };
+					d3dContext->IASetVertexBuffers(0, 1, tmp_v_buffer, &verts_size, &off_set);
+					d3dContext->IASetIndexBuffer(d3d_test_bullet_index_buffer, DXGI_FORMAT_R32_UINT, 0);
+					d3dContext->IASetInputLayout(d3dInput_Layout);
+					d3dContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+					d3dContext->VSSetShader(d3dVertex_Shader_Bullet, NULL, 0);
+					d3dContext->PSSetShader(d3dPixel_Shader, NULL, 0);
+					if (test_bullet_toggle)
+						d3dContext->DrawIndexed(36, 0, 0);
+				}
+
+				// MAGE
+				{
+					ID3D11Buffer *tmp_v_buffer[] = { d3d_test_mage_vertex_buffer };
+					d3dContext->IASetVertexBuffers(0, 1, tmp_v_buffer, &verts_size, &off_set);
+					d3dContext->IASetIndexBuffer(d3d_test_mage_index_buffer, DXGI_FORMAT_R32_UINT, 0);
+					d3dContext->IASetInputLayout(d3dInput_Layout);
+					d3dContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+					d3dContext->VSSetShader(d3dVertex_Shader, NULL, 0);
+					d3dContext->PSSetShader(d3dPixel_Shader_Mage, NULL, 0);
+					ID3D11ShaderResourceView *mage_srv_d[] = { mage_srv_diffuse };
+					d3dContext->PSSetShaderResources(0, 1, mage_srv_d);
+					ID3D11ShaderResourceView *mage_srv_e[] = { mage_srv_emissive };
+					d3dContext->PSSetShaderResources(1, 1, mage_srv_e);
+					ID3D11ShaderResourceView *mage_srv_s[] = { mage_srv_specular };
+					d3dContext->PSSetShaderResources(2, 1, mage_srv_s);
+					d3dContext->DrawIndexed(nMage_Index_Count, 0, 0);
+				}
+			}
+			else
 			{
-				ID3D11Buffer *tmp_v_buffer[] = { d3d_test_mage_vertex_buffer };
-				d3dContext->IASetVertexBuffers(0, 1, tmp_v_buffer, &verts_size, &off_set);
-				d3dContext->IASetIndexBuffer(d3d_test_mage_index_buffer, DXGI_FORMAT_R32_UINT, 0);
+				ID3D11Buffer *ts_v_buffer[] = { d3d_game_screen_vertex_buffer };
+				d3dContext->IASetVertexBuffers(0, 1, ts_v_buffer, &verts_size, &off_set);
+				d3dContext->IASetIndexBuffer(d3d_game_screen_index_buffer, DXGI_FORMAT_R32_UINT, 0);
 				d3dContext->IASetInputLayout(d3dInput_Layout);
 				d3dContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 				d3dContext->VSSetShader(d3dVertex_Shader, NULL, 0);
-				d3dContext->PSSetShader(d3dPixel_Shader_Mage, NULL, 0);
-				ID3D11ShaderResourceView *mage_srv_d[] = { mage_srv_diffuse };
-				d3dContext->PSSetShaderResources(0, 1, mage_srv_d);
-				ID3D11ShaderResourceView *mage_srv_e[] = { mage_srv_emissive };
-				d3dContext->PSSetShaderResources(1, 1, mage_srv_e);
-				ID3D11ShaderResourceView *mage_srv_s[] = { mage_srv_specular };
-				d3dContext->PSSetShaderResources(2, 1, mage_srv_s);
-				d3dContext->DrawIndexed(nMage_Index_Count, 0, 0);
+				d3dContext->PSSetShader(d3dPixel_Shader_Screen, NULL, 0);
+				if (scene_toggle == 0)
+				{
+					ID3D11ShaderResourceView *tmp_intro_srv[] = { intro_srv };
+					d3dContext->PSSetShaderResources(0, 1, tmp_intro_srv);
+				}
+				else if (scene_toggle == 1)
+				{
+					ID3D11ShaderResourceView *tmp_menu_srv[] = { menu_srv };
+					d3dContext->PSSetShaderResources(0, 1, tmp_menu_srv);
+				}
+				else if (scene_toggle > 3)
+				{
+					ID3D11ShaderResourceView *tmp_replay_srv[] = { replay_srv };
+					d3dContext->PSSetShaderResources(0, 1, tmp_replay_srv);
+				}
+				d3dContext->DrawIndexed(6, 0, 0);
 			}
 
 			// ARENA
@@ -971,12 +1109,6 @@ struct cRenderer::tImpl
 				d3dContext->PSSetShader(tscene_objects.pixel_shaders[tArenaIDs.pixel_shader_id], NULL, 0);
 				ID3D11ShaderResourceView *arena_srv_d[] = { arena_srv_diffuse };
 				d3dContext->PSSetShaderResources(0, 1, arena_srv_d);
-				//ID3D11ShaderResourceView *arena_srv_e[] = { arena_srv_emissive };
-				//d3dContext->PSSetShaderResources(1, 1, arena_srv_e);
-				//ID3D11ShaderResourceView *arena_srv_s[] = { arena_srv_specular };
-				//d3dContext->PSSetShaderResources(2, 1, arena_srv_s);
-
-
 
 				d3dContext->DrawIndexed(nArena_Index_Count, 0, 0);
 			}
