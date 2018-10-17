@@ -90,7 +90,7 @@ struct cRenderer::tImpl
 	cBinary_Reader cBinary_Read;
 
 	//OBJECT SYSYEM
-	object_system tObject_System;
+	scene_objects tscene_objects;
 
 	// DUMMY
 	tVertex *test_dummy = new tVertex[8];
@@ -142,7 +142,7 @@ struct cRenderer::tImpl
 		
 		// BACKEND SETUP
 		{
-			XMMATRIX mCamera_Matrix = XMMatrixInverse(nullptr, XMMatrixLookAtLH({ 0.0f, 15.0f, -15.0f, 0.0f }, { 0.0f, 0.0f, 0.0f, 0.0f }, { 0.0f, 1.0f, 0.0f, 0.0f }));
+			XMMATRIX mCamera_Matrix = XMMatrixInverse(nullptr, XMMatrixLookAtLH({ 0.0f, 15.0f, -25.0f, 0.0f }, { 0.0f, 0.0f, 0.0f, 0.0f }, { 0.0f, 1.0f, 0.0f, 0.0f }));
 			XMStoreFloat4x4(&fCamera_Matrix, mCamera_Matrix);
 			fCamera_Origin = fCamera_Matrix;
 
@@ -239,11 +239,11 @@ struct cRenderer::tImpl
 			// SHADERS
 			d3dDevice->CreateVertexShader(VertexShader, sizeof(VertexShader), NULL, &d3dVertex_Shader.p);
 			d3dDevice->CreateVertexShader(VertexShader_Bullet, sizeof(VertexShader_Bullet), NULL, &d3dVertex_Shader_Bullet.p);
-			d3dDevice->CreateVertexShader(VertexShader_Arena, sizeof(VertexShader_Arena), NULL, &tObject_System.vertex_shaders[tArenaIDs.vertex_shader_id].p);
+			d3dDevice->CreateVertexShader(VertexShader_Arena, sizeof(VertexShader_Arena), NULL, &tscene_objects.vertex_shaders[tArenaIDs.vertex_shader_id].p);
 
 			d3dDevice->CreatePixelShader(PixelShader, sizeof(PixelShader), NULL, &d3dPixel_Shader.p);
 			d3dDevice->CreatePixelShader(PixelShader_Mage, sizeof(PixelShader_Mage), NULL, &d3dPixel_Shader_Mage.p);
-			d3dDevice->CreatePixelShader(PixelShader_Arena, sizeof(PixelShader_Arena), NULL, &tObject_System.pixel_shaders[tArenaIDs.pixel_shader_id].p);
+			d3dDevice->CreatePixelShader(PixelShader_Arena, sizeof(PixelShader_Arena), NULL, &tscene_objects.pixel_shaders[tArenaIDs.pixel_shader_id].p);
 
 			// INPUT ELEMENT
 			D3D11_INPUT_ELEMENT_DESC d3dInput_Element[] =
@@ -320,7 +320,11 @@ struct cRenderer::tImpl
 				d3dConstant_Buffer_Desc.MiscFlags = 0;
 				d3dConstant_Buffer_Desc.StructureByteStride = 0;
 
-				d3dDevice->CreateBuffer(&d3dConstant_Buffer_Desc, nullptr, &tObject_System.constant_buffers[tArenaIDs.constant_buffer_wvp_id].p);
+				d3dDevice->CreateBuffer(&d3dConstant_Buffer_Desc, nullptr, &tscene_objects.constant_buffers[tArenaIDs.constant_buffer_wvp_id].p);
+
+				XMStoreFloat4x4(tscene_objects.world_position, XMMatrixTranslation(20.0f, 0.0f, 0.0f));
+
+
 			}
 		}
 
@@ -568,7 +572,7 @@ struct cRenderer::tImpl
 				d3dSRD.SysMemPitch = 0;
 				d3dSRD.SysMemSlicePitch = 0;
 
-				d3dDevice->CreateBuffer(&d3dBuffer_Desc, &d3dSRD, &tObject_System.vertex_buffers[tArenaIDs.pipeline_id]);
+				d3dDevice->CreateBuffer(&d3dBuffer_Desc, &d3dSRD, &tscene_objects.vertex_buffers[tArenaIDs.pipeline_id]);
 
 				// INDEX BUFFER
 
@@ -591,7 +595,7 @@ struct cRenderer::tImpl
 				d3dSRD.SysMemPitch = 0;
 				d3dSRD.SysMemSlicePitch = 0;
 
-				d3dDevice->CreateBuffer(&d3dBuffer_Desc, &d3dSRD, &tObject_System.index_buffers[tArenaIDs.pipeline_id]);
+				d3dDevice->CreateBuffer(&d3dBuffer_Desc, &d3dSRD, &tscene_objects.index_buffers[tArenaIDs.pipeline_id]);
 
 				// SRV
 
@@ -766,7 +770,7 @@ struct cRenderer::tImpl
 				// STORE DATA
 				XMStoreFloat4x4(&tWVPC.fWorld_Matrix, XMMatrixIdentity());
 				XMStoreFloat4x4(&tWVPC.fView_Matrix, XMMatrixInverse(nullptr, mCamera_Matrix));
-				XMStoreFloat4x4(&tWVPC.fProjection_Matrix, XMMatrixPerspectiveFovLH(XMConvertToRadians(45), fWindow_Width / fWindow_Height, 0.1f, 3000.0f));
+				XMStoreFloat4x4(&tWVPC.fProjection_Matrix, XMMatrixPerspectiveFovLH(XMConvertToRadians(45), fWindow_Width / fWindow_Height, 0.1f, 1000.0f));
 				XMStoreFloat4x4(&tWVPC.fCamera_Matrix, mCamera_Matrix);
 				XMStoreFloat4x4(&tWVPC.fCamera_Origin, mCamera_Origin);
 
@@ -882,10 +886,10 @@ struct cRenderer::tImpl
 				cps_arena.transparency.w = arena_mats.tMats[0].tTransparency.fW;
 
 				// MAP DATA
-				d3dContext->Map(tObject_System.constant_buffers[tArenaIDs.constant_buffer_wvp_id], 0, D3D11_MAP_WRITE_DISCARD, 0, &d3dMSR);
+				d3dContext->Map(tscene_objects.constant_buffers[tArenaIDs.constant_buffer_wvp_id], 0, D3D11_MAP_WRITE_DISCARD, 0, &d3dMSR);
 				memcpy(d3dMSR.pData, &cps_arena, sizeof(tConstantBuffer_PixelShader));
-				d3dContext->Unmap(tObject_System.constant_buffers[tArenaIDs.constant_buffer_wvp_id], 0);
-				ID3D11Buffer *tmp_mage_buffer[] = { tObject_System.constant_buffers[tArenaIDs.constant_buffer_wvp_id] };
+				d3dContext->Unmap(tscene_objects.constant_buffers[tArenaIDs.constant_buffer_wvp_id], 0);
+				ID3D11Buffer *tmp_mage_buffer[] = { tscene_objects.constant_buffers[tArenaIDs.constant_buffer_wvp_id] };
 				d3dContext->PSSetConstantBuffers(1, 1, tmp_mage_buffer);
 			}
 		}
@@ -939,19 +943,41 @@ struct cRenderer::tImpl
 
 			// ARENA
 			{
-				ID3D11Buffer *tmp_v_buffer[] = { tObject_System.vertex_buffers[tArenaIDs.pipeline_id] };
+				// CONSTANT BUFFER - WVPC
+				{
+					// STORE DATA
+					XMMATRIX tempWorld = XMMatrixIdentity();
+
+					tempWorld = XMMatrixMultiply(tempWorld, XMMatrixScaling(0.05, 0.05, 0.05));
+
+					tempWorld = XMMatrixMultiply(tempWorld, XMMatrixRotationX(-3.14/2));
+
+					XMStoreFloat4x4(&tWVPC.fWorld_Matrix, tempWorld);
+
+					// MAP DATA
+					d3dContext->Map(d3dConstant_Buffer_WVPC, 0, D3D11_MAP_WRITE_DISCARD, 0, &d3dMSR);
+					memcpy(d3dMSR.pData, &tWVPC, sizeof(tConstantBuffer_VertexShader_WVPC));
+					d3dContext->Unmap(d3dConstant_Buffer_WVPC, 0);
+					ID3D11Buffer *tmp_wvpc_buffer[] = { d3dConstant_Buffer_WVPC };
+					d3dContext->VSSetConstantBuffers(0, 1, tmp_wvpc_buffer);
+				}
+
+				ID3D11Buffer *tmp_v_buffer[] = { tscene_objects.vertex_buffers[tArenaIDs.pipeline_id] };
 				d3dContext->IASetVertexBuffers(0, 1, tmp_v_buffer, &verts_size, &off_set);
-				d3dContext->IASetIndexBuffer(tObject_System.index_buffers[tArenaIDs.pipeline_id], DXGI_FORMAT_R32_UINT, 0);
+				d3dContext->IASetIndexBuffer(tscene_objects.index_buffers[tArenaIDs.pipeline_id], DXGI_FORMAT_R32_UINT, 0);
 				d3dContext->IASetInputLayout(d3dInput_Layout);
 				d3dContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-				d3dContext->VSSetShader(tObject_System.vertex_shaders[tArenaIDs.vertex_shader_id], NULL, 0);
-				d3dContext->PSSetShader(tObject_System.pixel_shaders[tArenaIDs.pixel_shader_id], NULL, 0);
+				d3dContext->VSSetShader(tscene_objects.vertex_shaders[tArenaIDs.vertex_shader_id], NULL, 0);
+				d3dContext->PSSetShader(tscene_objects.pixel_shaders[tArenaIDs.pixel_shader_id], NULL, 0);
 				ID3D11ShaderResourceView *arena_srv_d[] = { arena_srv_diffuse };
 				d3dContext->PSSetShaderResources(0, 1, arena_srv_d);
 				//ID3D11ShaderResourceView *arena_srv_e[] = { arena_srv_emissive };
 				//d3dContext->PSSetShaderResources(1, 1, arena_srv_e);
 				//ID3D11ShaderResourceView *arena_srv_s[] = { arena_srv_specular };
 				//d3dContext->PSSetShaderResources(2, 1, arena_srv_s);
+
+
+
 				d3dContext->DrawIndexed(nArena_Index_Count, 0, 0);
 			}
 

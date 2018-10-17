@@ -4,7 +4,7 @@ using namespace DirectX;
 #include "basic_structs.h"
 #include "renderer_structs.h"
 
-struct object_system
+struct scene_objects
 {
 	CComPtr<ID3D11Buffer>			constant_buffers[32]{};
 
