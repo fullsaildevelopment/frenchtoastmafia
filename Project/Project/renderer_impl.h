@@ -22,13 +22,18 @@ using namespace DirectX;
 #include "collisions.h"
 #include "renderer.h"
 #include "renderer_structs.h"
+#include "Object System.h"
 #include "WICTextureLoader.h"
 #include "XTime.h"
 
 #include "VertexShader.csh"
 #include "VertexShader_Bullet.csh"
+#include "VertexShader_Arena.csh"
+
 #include "PixelShader.csh"
 #include "PixelShader_Mage.csh"
+#include "PixelShader_Arena.csh"
+
 
 struct cRenderer::tImpl
 {
@@ -84,6 +89,9 @@ struct cRenderer::tImpl
 	// OBJECTS
 	cBinary_Reader cBinary_Read;
 
+	//OBJECT SYSYEM
+	object_system tObject_System;
+
 	// DUMMY
 	tVertex *test_dummy = new tVertex[8];
 	CComPtr<ID3D11Buffer> d3dConstant_Buffer_DUMMY;
@@ -115,9 +123,23 @@ struct cRenderer::tImpl
 	CComPtr<ID3D11ShaderResourceView> mage_srv_emissive;
 	CComPtr<ID3D11ShaderResourceView> mage_srv_specular;
 
+	// ARENA
+	pipeline_t tArenaIDs = { 0, 0, 0, 0 };
+	tConstantBuffer_PixelShader cps_arena;
+	tMesh  tArena = cBinary_Read.Read_Mesh("ArenaMesh.bin");
+	int nArena_Vertex_Count = (int)tArena.nVertex_Count;
+	int nArena_Index_Count = (int)tArena.nIndex_Count;
+	tVertex *test_arena = new tVertex[nArena_Vertex_Count];
+	tMaterials arena_mats = cBinary_Read.Read_Material("ArenaMat.bin");
+	CComPtr<ID3D11ShaderResourceView> arena_srv_diffuse;
+	CComPtr<ID3D11ShaderResourceView> arena_srv_emissive;
+	CComPtr<ID3D11ShaderResourceView> arena_srv_specular;
+
 
 	void initialize(cView& c_View)
 	{
+
+		
 		// BACKEND SETUP
 		{
 			XMMATRIX mCamera_Matrix = XMMatrixInverse(nullptr, XMMatrixLookAtLH({ 0.0f, 15.0f, -15.0f, 0.0f }, { 0.0f, 0.0f, 0.0f, 0.0f }, { 0.0f, 1.0f, 0.0f, 0.0f }));
@@ -217,8 +239,11 @@ struct cRenderer::tImpl
 			// SHADERS
 			d3dDevice->CreateVertexShader(VertexShader, sizeof(VertexShader), NULL, &d3dVertex_Shader.p);
 			d3dDevice->CreateVertexShader(VertexShader_Bullet, sizeof(VertexShader_Bullet), NULL, &d3dVertex_Shader_Bullet.p);
+			d3dDevice->CreateVertexShader(VertexShader_Arena, sizeof(VertexShader_Arena), NULL, &tObject_System.vertex_shaders[tArenaIDs.vertex_shader_id].p);
+
 			d3dDevice->CreatePixelShader(PixelShader, sizeof(PixelShader), NULL, &d3dPixel_Shader.p);
 			d3dDevice->CreatePixelShader(PixelShader_Mage, sizeof(PixelShader_Mage), NULL, &d3dPixel_Shader_Mage.p);
+			d3dDevice->CreatePixelShader(PixelShader_Arena, sizeof(PixelShader_Arena), NULL, &tObject_System.pixel_shaders[tArenaIDs.pixel_shader_id].p);
 
 			// INPUT ELEMENT
 			D3D11_INPUT_ELEMENT_DESC d3dInput_Element[] =
@@ -283,6 +308,19 @@ struct cRenderer::tImpl
 				d3dConstant_Buffer_Desc.StructureByteStride = 0;
 
 				d3dDevice->CreateBuffer(&d3dConstant_Buffer_Desc, nullptr, &d3dConstant_Buffer_MAGE.p);
+			}
+
+			// CONSTANT BUFFER - ARENA
+			{
+				ZeroMemory(&d3dConstant_Buffer_Desc, sizeof(D3D11_BUFFER_DESC));
+				d3dConstant_Buffer_Desc.ByteWidth = sizeof(tConstantBuffer_PixelShader);
+				d3dConstant_Buffer_Desc.Usage = D3D11_USAGE_DYNAMIC;
+				d3dConstant_Buffer_Desc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+				d3dConstant_Buffer_Desc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+				d3dConstant_Buffer_Desc.MiscFlags = 0;
+				d3dConstant_Buffer_Desc.StructureByteStride = 0;
+
+				d3dDevice->CreateBuffer(&d3dConstant_Buffer_Desc, nullptr, &tObject_System.constant_buffers[tArenaIDs.constant_buffer_wvp_id].p);
 			}
 		}
 
@@ -491,7 +529,7 @@ struct cRenderer::tImpl
 
 				std::wstring d_tmp = std::wstring(mage_mats.tMats[0].szDiffuse_File_Path.begin(), mage_mats.tMats[0].szDiffuse_File_Path.end());
 				const wchar_t* diffuse_path = d_tmp.c_str();
-				CreateWICTextureFromFile(d3dDevice, d3dContext, diffuse_path, nullptr, &mage_srv_diffuse.p, 0);
+				HRESULT result = CreateWICTextureFromFile(d3dDevice, d3dContext, diffuse_path, nullptr, &mage_srv_diffuse.p, 0);
 
 				std::wstring e_tmp = std::wstring(mage_mats.tMats[0].szEmissive_File_Path.begin(), mage_mats.tMats[0].szEmissive_File_Path.end());
 				const wchar_t* emissive_path = e_tmp.c_str();
@@ -500,6 +538,74 @@ struct cRenderer::tImpl
 				std::wstring s_tmp = std::wstring(mage_mats.tMats[0].szSpecular_File_Path.begin(), mage_mats.tMats[0].szSpecular_File_Path.end());
 				const wchar_t* specular_path = s_tmp.c_str();
 				CreateWICTextureFromFile(d3dDevice, d3dContext, specular_path, nullptr, &mage_srv_specular.p, 0);
+			}
+
+			// ARENA
+			{
+				// VERTEX BUFFER
+
+				for (int i = 0; i < nArena_Vertex_Count; i++)
+				{
+					test_arena[i] = tArena.tVerts[i];
+				}
+
+				// Move
+				for (int i = 0; i < nArena_Vertex_Count; i++)
+				{
+					test_arena[i].fPosition.fX -= 15.0f;
+				}
+
+				ZeroMemory(&d3dBuffer_Desc, sizeof(D3D11_BUFFER_DESC));
+				d3dBuffer_Desc.ByteWidth = sizeof(tVertex) * nArena_Vertex_Count;
+				d3dBuffer_Desc.Usage = D3D11_USAGE_IMMUTABLE;
+				d3dBuffer_Desc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+				d3dBuffer_Desc.CPUAccessFlags = NULL;
+				d3dBuffer_Desc.MiscFlags = 0;
+				d3dBuffer_Desc.StructureByteStride = 0;
+
+				ZeroMemory(&d3dSRD, sizeof(D3D11_SUBRESOURCE_DATA));
+				d3dSRD.pSysMem = test_arena;
+				d3dSRD.SysMemPitch = 0;
+				d3dSRD.SysMemSlicePitch = 0;
+
+				d3dDevice->CreateBuffer(&d3dBuffer_Desc, &d3dSRD, &tObject_System.vertex_buffers[tArenaIDs.pipeline_id]);
+
+				// INDEX BUFFER
+
+				int* nArena_Indicies = new int[nArena_Index_Count];
+				for (int i = 0; i < nArena_Index_Count; i++)
+				{
+					nArena_Indicies[i] = tArena.nIndicies[i];
+				}
+
+				ZeroMemory(&d3dBuffer_Desc, sizeof(D3D11_BUFFER_DESC));
+				d3dBuffer_Desc.ByteWidth = sizeof(unsigned int) * nArena_Index_Count;
+				d3dBuffer_Desc.Usage = D3D11_USAGE_IMMUTABLE;
+				d3dBuffer_Desc.BindFlags = D3D11_BIND_INDEX_BUFFER;
+				d3dBuffer_Desc.CPUAccessFlags = NULL;
+				d3dBuffer_Desc.MiscFlags = 0;
+				d3dBuffer_Desc.StructureByteStride = 0;
+
+				ZeroMemory(&d3dSRD, sizeof(D3D11_SUBRESOURCE_DATA));
+				d3dSRD.pSysMem = nArena_Indicies;
+				d3dSRD.SysMemPitch = 0;
+				d3dSRD.SysMemSlicePitch = 0;
+
+				d3dDevice->CreateBuffer(&d3dBuffer_Desc, &d3dSRD, &tObject_System.index_buffers[tArenaIDs.pipeline_id]);
+
+				// SRV
+
+				std::wstring d_tmp = std::wstring(arena_mats.tMats[0].szDiffuse_File_Path.begin(), arena_mats.tMats[0].szDiffuse_File_Path.end());
+				const wchar_t* diffuse_path = d_tmp.c_str();
+				HRESULT result = CreateWICTextureFromFile(d3dDevice, d3dContext, diffuse_path, nullptr, &arena_srv_diffuse.p, 0);
+
+				//std::wstring e_tmp = std::wstring(arena_mats.tMats[0].szEmissive_File_Path.begin(), arena_mats.tMats[0].szEmissive_File_Path.end());
+				//const wchar_t* emissive_path = e_tmp.c_str();
+				//CreateWICTextureFromFile(d3dDevice, d3dContext, emissive_path, nullptr, &arena_srv_emissive.p, 0);
+				//
+				//std::wstring s_tmp = std::wstring(arena_mats.tMats[0].szSpecular_File_Path.begin(), arena_mats.tMats[0].szSpecular_File_Path.end());
+				//const wchar_t* specular_path = s_tmp.c_str();
+				//CreateWICTextureFromFile(d3dDevice, d3dContext, specular_path, nullptr, &arena_srv_specular.p, 0);
 			}
 		}
 	}
@@ -660,7 +766,7 @@ struct cRenderer::tImpl
 				// STORE DATA
 				XMStoreFloat4x4(&tWVPC.fWorld_Matrix, XMMatrixIdentity());
 				XMStoreFloat4x4(&tWVPC.fView_Matrix, XMMatrixInverse(nullptr, mCamera_Matrix));
-				XMStoreFloat4x4(&tWVPC.fProjection_Matrix, XMMatrixPerspectiveFovLH(XMConvertToRadians(45), fWindow_Width / fWindow_Height, 0.1f, 1000.0f));
+				XMStoreFloat4x4(&tWVPC.fProjection_Matrix, XMMatrixPerspectiveFovLH(XMConvertToRadians(45), fWindow_Width / fWindow_Height, 0.1f, 3000.0f));
 				XMStoreFloat4x4(&tWVPC.fCamera_Matrix, mCamera_Matrix);
 				XMStoreFloat4x4(&tWVPC.fCamera_Origin, mCamera_Origin);
 
@@ -737,6 +843,51 @@ struct cRenderer::tImpl
 				ID3D11Buffer *tmp_mage_buffer[] = { d3dConstant_Buffer_MAGE };
 				d3dContext->PSSetConstantBuffers(1, 1, tmp_mage_buffer);
 			}
+
+			// CONSTANT BUFFER - ARENA
+			{
+				// STORE DATA
+				cps_arena.light_pos = { 15.0f, 20.0f, 15.0f, 1.0f };
+
+				cps_arena.ambient.x = arena_mats.tMats[0].tAmbient.fX;
+				cps_arena.ambient.y = arena_mats.tMats[0].tAmbient.fY;
+				cps_arena.ambient.z = arena_mats.tMats[0].tAmbient.fZ;
+				cps_arena.ambient.w = arena_mats.tMats[0].tAmbient.fW;
+
+				cps_arena.diffuse.x = arena_mats.tMats[0].tDiffuse.fX;
+				cps_arena.diffuse.y = arena_mats.tMats[0].tDiffuse.fY;
+				cps_arena.diffuse.z = arena_mats.tMats[0].tDiffuse.fZ;
+				cps_arena.diffuse.w = arena_mats.tMats[0].tDiffuse.fW;
+
+				cps_arena.emissive.x = arena_mats.tMats[0].tEmissive.fX;
+				cps_arena.emissive.y = arena_mats.tMats[0].tEmissive.fY;
+				cps_arena.emissive.z = arena_mats.tMats[0].tEmissive.fZ;
+				cps_arena.emissive.w = arena_mats.tMats[0].tEmissive.fW;
+
+				cps_arena.reflection.x = arena_mats.tMats[0].tReflection.fX;
+				cps_arena.reflection.y = arena_mats.tMats[0].tReflection.fY;
+				cps_arena.reflection.z = arena_mats.tMats[0].tReflection.fZ;
+				cps_arena.reflection.w = arena_mats.tMats[0].tReflection.fW;
+
+				cps_arena.shininess.x = arena_mats.tMats[0].fShininess;
+
+				cps_arena.specular.x = arena_mats.tMats[0].tSpecular.fX;
+				cps_arena.specular.y = arena_mats.tMats[0].tSpecular.fY;
+				cps_arena.specular.z = arena_mats.tMats[0].tSpecular.fZ;
+				cps_arena.specular.w = arena_mats.tMats[0].tSpecular.fW;
+
+				cps_arena.transparency.x = arena_mats.tMats[0].tTransparency.fX;
+				cps_arena.transparency.y = arena_mats.tMats[0].tTransparency.fY;
+				cps_arena.transparency.z = arena_mats.tMats[0].tTransparency.fZ;
+				cps_arena.transparency.w = arena_mats.tMats[0].tTransparency.fW;
+
+				// MAP DATA
+				d3dContext->Map(tObject_System.constant_buffers[tArenaIDs.constant_buffer_wvp_id], 0, D3D11_MAP_WRITE_DISCARD, 0, &d3dMSR);
+				memcpy(d3dMSR.pData, &cps_arena, sizeof(tConstantBuffer_PixelShader));
+				d3dContext->Unmap(tObject_System.constant_buffers[tArenaIDs.constant_buffer_wvp_id], 0);
+				ID3D11Buffer *tmp_mage_buffer[] = { tObject_System.constant_buffers[tArenaIDs.constant_buffer_wvp_id] };
+				d3dContext->PSSetConstantBuffers(1, 1, tmp_mage_buffer);
+			}
 		}
 		// DRAWS
 		{
@@ -784,6 +935,24 @@ struct cRenderer::tImpl
 				ID3D11ShaderResourceView *mage_srv_s[] = { mage_srv_specular };
 				d3dContext->PSSetShaderResources(2, 1, mage_srv_s);
 				d3dContext->DrawIndexed(nMage_Index_Count, 0, 0);
+			}
+
+			// ARENA
+			{
+				ID3D11Buffer *tmp_v_buffer[] = { tObject_System.vertex_buffers[tArenaIDs.pipeline_id] };
+				d3dContext->IASetVertexBuffers(0, 1, tmp_v_buffer, &verts_size, &off_set);
+				d3dContext->IASetIndexBuffer(tObject_System.index_buffers[tArenaIDs.pipeline_id], DXGI_FORMAT_R32_UINT, 0);
+				d3dContext->IASetInputLayout(d3dInput_Layout);
+				d3dContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+				d3dContext->VSSetShader(tObject_System.vertex_shaders[tArenaIDs.vertex_shader_id], NULL, 0);
+				d3dContext->PSSetShader(tObject_System.pixel_shaders[tArenaIDs.pixel_shader_id], NULL, 0);
+				ID3D11ShaderResourceView *arena_srv_d[] = { arena_srv_diffuse };
+				d3dContext->PSSetShaderResources(0, 1, arena_srv_d);
+				//ID3D11ShaderResourceView *arena_srv_e[] = { arena_srv_emissive };
+				//d3dContext->PSSetShaderResources(1, 1, arena_srv_e);
+				//ID3D11ShaderResourceView *arena_srv_s[] = { arena_srv_specular };
+				//d3dContext->PSSetShaderResources(2, 1, arena_srv_s);
+				d3dContext->DrawIndexed(nArena_Index_Count, 0, 0);
 			}
 
 			// PRESENT

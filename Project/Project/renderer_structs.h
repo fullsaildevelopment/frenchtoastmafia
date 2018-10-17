@@ -12,6 +12,14 @@
 using namespace DirectX;
 #include "basic_structs.h"
 
+struct	pipeline_t
+{
+	uint8_t		pipeline_id;
+	uint8_t		vertex_shader_id;
+	uint8_t		pixel_shader_id;
+	uint8_t		constant_buffer_wvp_id;
+};
+
 struct tConstantBuffer_VertexShader_WVPC
 {
 	XMFLOAT4X4 fWorld_Matrix;
@@ -75,41 +83,3 @@ struct tMaterials
 {
 	std::vector<tMaterial> tMats;
 };
-
-struct	pipeline_t
-{
-	uint8_t		pipeline_id;
-	uint8_t		vertex_shader_id;
-	uint8_t		pixel_shader_id;
-	uint8_t		constant_buffer_wvp_id;
-};
-
-struct object_system
-{
-	//ID3D11VertexShader*	vertex_shaders[32]{};
-	//CComPtr<ID3D11PixelShader>		pixel_shaders[32]{};
-	//CComPtr<ID3D11Buffer>			constant_buffers[32]{};
-	//XMFLOAT4X4						world_position[32]{};
-	//
-	//CComPtr<ID3D11Buffer>	vertex_buffers[32]{};
-	//CComPtr<ID3D11Buffer>	index_buffers[32]{};
-	//tMeshes					meshes_data[32]{};
-	//
-	//CComPtr<ID3D11Buffer>	materials_buffers[32]{};
-	//tMaterials				materials_data[32]{};
-};
-
-//struct object_system
-//{
-//	CComPtr<ID3D11VertexShader>		vertex_shaders[32]{};
-//	CComPtr<ID3D11PixelShader>		pixel_shaders[32]{};
-//	CComPtr<ID3D11Buffer>			constant_buffers[32]{};
-//	XMFLOAT4X4						world_position[32]{};
-//
-//	CComPtr<ID3D11Buffer>	vertex_buffers[32]{};
-//	CComPtr<ID3D11Buffer>	index_buffers[32]{};
-//	tMeshes					meshes_data[32]{};
-//
-//	CComPtr<ID3D11Buffer>	materials_buffers[32]{};
-//	tMaterials				materials_data[32]{};
-//};

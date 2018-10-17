@@ -87,6 +87,9 @@
     <ClInclude Include="WICTextureLoader.h">
       <Filter>Helper files</Filter>
     </ClInclude>
+    <ClInclude Include="Object System.h">
+      <Filter>Renderer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Project.cpp">
@@ -138,6 +141,12 @@
       <Filter>Renderer</Filter>
     </FxCompile>
     <FxCompile Include="PixelShader_Mage.hlsl">
+      <Filter>Renderer</Filter>
+    </FxCompile>
+    <FxCompile Include="VertexShader_Arena.hlsl">
+      <Filter>Renderer</Filter>
+    </FxCompile>
+    <FxCompile Include="PixelShader_Arena.hlsl">
       <Filter>Renderer</Filter>
     </FxCompile>
   </ItemGroup>
