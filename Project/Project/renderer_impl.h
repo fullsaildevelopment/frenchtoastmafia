@@ -342,10 +342,7 @@ struct cRenderer::tImpl
 				d3dConstant_Buffer_Desc.StructureByteStride = 0;
 
 				d3dDevice->CreateBuffer(&d3dConstant_Buffer_Desc, nullptr, &tscene_objects.constant_buffers[tArenaIDs.constant_buffer_wvp_id].p);
-
 				XMStoreFloat4x4(tscene_objects.world_position, XMMatrixTranslation(20.0f, 0.0f, 0.0f));
-
-
 			}
 		}
 
@@ -565,23 +562,6 @@ struct cRenderer::tImpl
 				CreateWICTextureFromFile(d3dDevice, d3dContext, specular_path, nullptr, &mage_srv_specular.p, 0);
 			}
 
-			// ARENA
-			{
-				// VERTEX BUFFER
-
-				for (int i = 0; i < nArena_Vertex_Count; i++)
-				{
-					test_arena[i] = tArena.tVerts[i];
-				}
-
-				// Move
-				for (int i = 0; i < nArena_Vertex_Count; i++)
-				{
-					test_arena[i].fPosition.fX -= 15.0f;
-				}
-
-				ZeroMemory(&d3dBuffer_Desc, sizeof(D3D11_BUFFER_DESC));
-				d3dBuffer_Desc.ByteWidth = sizeof(tVertex) * nArena_Vertex_Count;
 			// GAME SCREEN
 			{
 				// VERTEX BUFFER
@@ -629,22 +609,6 @@ struct cRenderer::tImpl
 				d3dBuffer_Desc.StructureByteStride = 0;
 
 				ZeroMemory(&d3dSRD, sizeof(D3D11_SUBRESOURCE_DATA));
-				d3dSRD.pSysMem = test_arena;
-				d3dSRD.SysMemPitch = 0;
-				d3dSRD.SysMemSlicePitch = 0;
-
-				d3dDevice->CreateBuffer(&d3dBuffer_Desc, &d3dSRD, &tscene_objects.vertex_buffers[tArenaIDs.pipeline_id]);
-
-				// INDEX BUFFER
-
-				int* nArena_Indicies = new int[nArena_Index_Count];
-				for (int i = 0; i < nArena_Index_Count; i++)
-				{
-					nArena_Indicies[i] = tArena.nIndicies[i];
-				}
-
-				ZeroMemory(&d3dBuffer_Desc, sizeof(D3D11_BUFFER_DESC));
-				d3dBuffer_Desc.ByteWidth = sizeof(unsigned int) * nArena_Index_Count;
 				d3dSRD.pSysMem = test_screen;
 				d3dSRD.SysMemPitch = 0;
 				d3dSRD.SysMemSlicePitch = 0;
@@ -668,6 +632,65 @@ struct cRenderer::tImpl
 				d3dBuffer_Desc.StructureByteStride = 0;
 
 				ZeroMemory(&d3dSRD, sizeof(D3D11_SUBRESOURCE_DATA));
+				d3dSRD.pSysMem = test_screen_indicies;
+				d3dSRD.SysMemPitch = 0;
+				d3dSRD.SysMemSlicePitch = 0;
+
+				d3dDevice->CreateBuffer(&d3dBuffer_Desc, &d3dSRD, &d3d_game_screen_index_buffer);
+
+				// SRV
+				CreateDDSTextureFromFile(d3dDevice, L"1.dds", nullptr, &intro_srv.p);
+				CreateDDSTextureFromFile(d3dDevice, L"2.dds", nullptr, &menu_srv.p);
+				CreateDDSTextureFromFile(d3dDevice, L"3.dds", nullptr, &replay_srv.p);
+			}
+
+
+			// ARENA
+			{
+				// VERTEX BUFFER
+
+				for (int i = 0; i < nArena_Vertex_Count; i++)
+				{
+					test_arena[i] = tArena.tVerts[i];
+				}
+
+				// Move
+				for (int i = 0; i < nArena_Vertex_Count; i++)
+				{
+					test_arena[i].fPosition.fX -= 15.0f;
+				}
+
+				ZeroMemory(&d3dBuffer_Desc, sizeof(D3D11_BUFFER_DESC));
+				d3dBuffer_Desc.ByteWidth = sizeof(tVertex) * nArena_Vertex_Count;
+				d3dBuffer_Desc.Usage = D3D11_USAGE_IMMUTABLE;
+				d3dBuffer_Desc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+				d3dBuffer_Desc.CPUAccessFlags = NULL;
+				d3dBuffer_Desc.MiscFlags = 0;
+				d3dBuffer_Desc.StructureByteStride = 0;
+
+				ZeroMemory(&d3dSRD, sizeof(D3D11_SUBRESOURCE_DATA));
+				d3dSRD.pSysMem = test_arena;
+				d3dSRD.SysMemPitch = 0;
+				d3dSRD.SysMemSlicePitch = 0;
+
+				d3dDevice->CreateBuffer(&d3dBuffer_Desc, &d3dSRD, &tscene_objects.vertex_buffers[tArenaIDs.pipeline_id]);
+				// INDEX BUFFER
+
+				int* nArena_Indicies = new int[nArena_Index_Count];
+				for (int i = 0; i < nArena_Index_Count; i++)
+				{
+					nArena_Indicies[i] = tArena.nIndicies[i];
+				}
+
+				ZeroMemory(&d3dBuffer_Desc, sizeof(D3D11_BUFFER_DESC));
+				d3dBuffer_Desc.ByteWidth = sizeof(unsigned int) * nArena_Index_Count;
+				d3dBuffer_Desc.Usage = D3D11_USAGE_IMMUTABLE;
+				d3dBuffer_Desc.BindFlags = D3D11_BIND_INDEX_BUFFER;
+				d3dBuffer_Desc.CPUAccessFlags = NULL;
+				d3dBuffer_Desc.MiscFlags = 0;
+				d3dBuffer_Desc.StructureByteStride = 0;
+
+				ZeroMemory(&d3dSRD, sizeof(D3D11_SUBRESOURCE_DATA));
 				d3dSRD.pSysMem = nArena_Indicies;
 				d3dSRD.SysMemPitch = 0;
 				d3dSRD.SysMemSlicePitch = 0;
@@ -679,17 +702,6 @@ struct cRenderer::tImpl
 				std::wstring d_tmp = std::wstring(arena_mats.tMats[0].szDiffuse_File_Path.begin(), arena_mats.tMats[0].szDiffuse_File_Path.end());
 				const wchar_t* diffuse_path = d_tmp.c_str();
 				HRESULT result = CreateWICTextureFromFile(d3dDevice, d3dContext, diffuse_path, nullptr, &arena_srv_diffuse.p, 0);
-			}
-				d3dSRD.pSysMem = test_screen_indicies;
-				d3dSRD.SysMemPitch = 0;
-				d3dSRD.SysMemSlicePitch = 0;
-
-				d3dDevice->CreateBuffer(&d3dBuffer_Desc, &d3dSRD, &d3d_game_screen_index_buffer);
-
-				// SRV
-				CreateDDSTextureFromFile(d3dDevice, L"1.dds", nullptr, &intro_srv.p);
-				CreateDDSTextureFromFile(d3dDevice, L"2.dds", nullptr, &menu_srv.p);
-				CreateDDSTextureFromFile(d3dDevice, L"3.dds", nullptr, &replay_srv.p);
 			}
 
 		}
@@ -1051,6 +1063,40 @@ struct cRenderer::tImpl
 					d3dContext->PSSetShaderResources(2, 1, mage_srv_s);
 					d3dContext->DrawIndexed(nMage_Index_Count, 0, 0);
 				}
+
+				// ARENA
+				{
+					// CONSTANT BUFFER - WVPC
+					{
+						// STORE DATA
+						XMMATRIX tempWorld = XMMatrixIdentity();
+
+						tempWorld = XMMatrixMultiply(tempWorld, XMMatrixScaling(0.05, 0.05, 0.05));
+
+						tempWorld = XMMatrixMultiply(tempWorld, XMMatrixRotationX(-3.14 / 2));
+
+						XMStoreFloat4x4(&tWVPC.fWorld_Matrix, tempWorld);
+
+						// MAP DATA
+						d3dContext->Map(d3dConstant_Buffer_WVPC, 0, D3D11_MAP_WRITE_DISCARD, 0, &d3dMSR);
+						memcpy(d3dMSR.pData, &tWVPC, sizeof(tConstantBuffer_VertexShader_WVPC));
+						d3dContext->Unmap(d3dConstant_Buffer_WVPC, 0);
+						ID3D11Buffer *tmp_wvpc_buffer[] = { d3dConstant_Buffer_WVPC };
+						d3dContext->VSSetConstantBuffers(0, 1, tmp_wvpc_buffer);
+					}
+
+					ID3D11Buffer *tmp_v_buffer[] = { tscene_objects.vertex_buffers[tArenaIDs.pipeline_id] };
+					d3dContext->IASetVertexBuffers(0, 1, tmp_v_buffer, &verts_size, &off_set);
+					d3dContext->IASetIndexBuffer(tscene_objects.index_buffers[tArenaIDs.pipeline_id], DXGI_FORMAT_R32_UINT, 0);
+					d3dContext->IASetInputLayout(d3dInput_Layout);
+					d3dContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+					d3dContext->VSSetShader(tscene_objects.vertex_shaders[tArenaIDs.vertex_shader_id], NULL, 0);
+					d3dContext->PSSetShader(tscene_objects.pixel_shaders[tArenaIDs.pixel_shader_id], NULL, 0);
+					ID3D11ShaderResourceView *arena_srv_d[] = { arena_srv_diffuse };
+					d3dContext->PSSetShaderResources(0, 1, arena_srv_d);
+
+					d3dContext->DrawIndexed(nArena_Index_Count, 0, 0);
+				}
 			}
 			else
 			{
@@ -1077,40 +1123,6 @@ struct cRenderer::tImpl
 					d3dContext->PSSetShaderResources(0, 1, tmp_replay_srv);
 				}
 				d3dContext->DrawIndexed(6, 0, 0);
-			}
-
-			// ARENA
-			{
-				// CONSTANT BUFFER - WVPC
-				{
-					// STORE DATA
-					XMMATRIX tempWorld = XMMatrixIdentity();
-
-					tempWorld = XMMatrixMultiply(tempWorld, XMMatrixScaling(0.05, 0.05, 0.05));
-
-					tempWorld = XMMatrixMultiply(tempWorld, XMMatrixRotationX(-3.14/2));
-
-					XMStoreFloat4x4(&tWVPC.fWorld_Matrix, tempWorld);
-
-					// MAP DATA
-					d3dContext->Map(d3dConstant_Buffer_WVPC, 0, D3D11_MAP_WRITE_DISCARD, 0, &d3dMSR);
-					memcpy(d3dMSR.pData, &tWVPC, sizeof(tConstantBuffer_VertexShader_WVPC));
-					d3dContext->Unmap(d3dConstant_Buffer_WVPC, 0);
-					ID3D11Buffer *tmp_wvpc_buffer[] = { d3dConstant_Buffer_WVPC };
-					d3dContext->VSSetConstantBuffers(0, 1, tmp_wvpc_buffer);
-				}
-
-				ID3D11Buffer *tmp_v_buffer[] = { tscene_objects.vertex_buffers[tArenaIDs.pipeline_id] };
-				d3dContext->IASetVertexBuffers(0, 1, tmp_v_buffer, &verts_size, &off_set);
-				d3dContext->IASetIndexBuffer(tscene_objects.index_buffers[tArenaIDs.pipeline_id], DXGI_FORMAT_R32_UINT, 0);
-				d3dContext->IASetInputLayout(d3dInput_Layout);
-				d3dContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-				d3dContext->VSSetShader(tscene_objects.vertex_shaders[tArenaIDs.vertex_shader_id], NULL, 0);
-				d3dContext->PSSetShader(tscene_objects.pixel_shaders[tArenaIDs.pixel_shader_id], NULL, 0);
-				ID3D11ShaderResourceView *arena_srv_d[] = { arena_srv_diffuse };
-				d3dContext->PSSetShaderResources(0, 1, arena_srv_d);
-
-				d3dContext->DrawIndexed(nArena_Index_Count, 0, 0);
 			}
 
 			// PRESENT
