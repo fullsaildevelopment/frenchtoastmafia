@@ -145,17 +145,17 @@ void dopeSoundSystem::muteAudio()
 }
 void dopeSoundSystem::playSoundEffect(const char* soundName, FMOD_MODE channel_mode)
 {
-	System->createSound(soundName, FMOD_DEFAULT, NULL, &song);
+	System->createSound(soundName, FMOD_DEFAULT, NULL, &soundEffect);
 	//System->createSound("celtic-harp-and-flute-music-call-of-the-ancients.mp3", FMOD_LOOP_NORMAL, NULL, &song2);
 	//FMOD::Sound *songStreaming;
-	System->createStream(soundName, FMOD_DEFAULT, 0, &songStreaming);
+	System->createStream(soundName, FMOD_DEFAULT, 0, &soundEffectStreaming);
 
 	// system->playSound(FMOD_CHANNEL_FREE, audio, false, 0);  // to play a sound with no looping needed
 	//FMOD::Channel *soundChannel;
-	System->playSound(song, NULL, false, &soundChannel);
+	System->playSound(soundEffect, NULL, false, &soundEffectChannel);
 	//resulty = FMOD::System::createStream()
-	soundChannel->setMode(channel_mode);  // if i want sounds to cue them call default and play another song
+	soundEffectChannel->setMode(channel_mode);  // if i want sounds to cue them call default and play another song
 	// FMOD_LOOP_NORMAL
-	soundChannel->setLoopCount(-1);
+	soundEffectChannel->setLoopCount(-1);
 }
 

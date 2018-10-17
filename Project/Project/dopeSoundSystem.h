@@ -9,6 +9,7 @@ class dopeSoundSystem
 private:
 	FMOD::System* System;
 	FMOD::Channel* soundChannel;
+	FMOD::Channel* soundEffectChannel;
 	FMOD::Channel* threeDSoundChannel;
 	FMOD::Sound* songStreaming;
 	bool pauseSound = false;
