@@ -1308,6 +1308,7 @@ struct cRenderer::tImpl
 				}
 
 				// MAGE
+				if (scene_toggle == 2)
 				{
 					// CONSTANT BUFFER - WVPC
 					{
@@ -1373,6 +1374,7 @@ struct cRenderer::tImpl
 				}
 
 				// PRIEST
+				if (scene_toggle == 3)
 				{
 					// CONSTANT BUFFER - WVPC
 					{
