@@ -129,6 +129,7 @@ struct cRenderer::tImpl
 	CComPtr<ID3D11ShaderResourceView> mage_srv_diffuse;
 	CComPtr<ID3D11ShaderResourceView> mage_srv_emissive;
 	CComPtr<ID3D11ShaderResourceView> mage_srv_specular;
+	CComPtr<ID3D11ShaderResourceView> mage_srv_normal;
 
 	// Scene Transition
 	int scene_toggle = 0;
@@ -635,6 +636,10 @@ struct cRenderer::tImpl
 				std::wstring s_tmp = std::wstring(mage_mats.tMats[0].szSpecular_File_Path.begin(), mage_mats.tMats[0].szSpecular_File_Path.end());
 				const wchar_t* specular_path = s_tmp.c_str();
 				CreateWICTextureFromFile(d3dDevice, d3dContext, specular_path, nullptr, &mage_srv_specular.p, 0);
+
+				std::wstring n_tmp = std::wstring(mage_mats.tMats[0].szNormal_File_Path.begin(), mage_mats.tMats[0].szNormal_File_Path.end());
+				const wchar_t* normal_path = s_tmp.c_str();
+				CreateWICTextureFromFile(d3dDevice, d3dContext, normal_path, nullptr, &mage_srv_normal.p, 0);
 			}
 
 
@@ -1292,6 +1297,8 @@ struct cRenderer::tImpl
 					d3dContext->PSSetShaderResources(1, 1, mage_srv_e);
 					ID3D11ShaderResourceView *mage_srv_s[] = { mage_srv_specular };
 					d3dContext->PSSetShaderResources(2, 1, mage_srv_s);
+					ID3D11ShaderResourceView *mage_srv_n[] = { mage_srv_specular };
+					d3dContext->PSSetShaderResources(3, 1, mage_srv_n);
 					d3dContext->DrawIndexed(nMage_Index_Count, 0, 0);
 				}
 
@@ -1362,7 +1369,7 @@ struct cRenderer::tImpl
 					ID3D11ShaderResourceView *priest_srv_d[] = { priest_srv_diffuse };
 					d3dContext->PSSetShaderResources(0, 1, priest_srv_d);
 					ID3D11ShaderResourceView *priest_srv_n[] = { priest_srv_normal };
-					d3dContext->PSSetShaderResources(0, 1, priest_srv_n);
+					d3dContext->PSSetShaderResources(1, 1, priest_srv_n);
 
 					d3dContext->DrawIndexed(nPriest_Index_Count, 0, 0);
 				}
