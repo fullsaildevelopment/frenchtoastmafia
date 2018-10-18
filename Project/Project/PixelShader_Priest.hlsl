@@ -1,5 +1,7 @@
 texture2D tTexture : register(t0);
 
+texture2D tTexture2 : register(t1);
+
 SamplerState sSampler_State[2] : register(s0);
 
 cbuffer tConstant_Buffer : register(b0)
@@ -29,7 +31,7 @@ if (pointLightStrength < 0)
 {
 	pointLightStrength = 0;
 }
-float pointLightRatio = pointLightStrength * clamp(dot(pointLightDir, input.fNormal), 0, 1);
+float pointLightRatio = pointLightStrength * clamp(dot(pointLightDir, tTexture2.Sample(sSampler_State[0], input.fTexture)), 0, 1);
 
 
 return ambient * (tTexture.Sample(sSampler_State[0], input.fTexture) + (pointLightColor * pointLightRatio));

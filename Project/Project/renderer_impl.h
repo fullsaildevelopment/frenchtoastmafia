@@ -35,6 +35,7 @@ using namespace DirectX;
 #include "PixelShader.csh"
 #include "PixelShader_Mage.csh"
 #include "PixelShader_Arena.csh"
+#include "PixelShader_Priest.csh"
 
 #include "PixelShader_Screen.csh"
 #include "dopeSoundSystem.h"
@@ -154,7 +155,7 @@ struct cRenderer::tImpl
 	CComPtr<ID3D11ShaderResourceView> arena_srv_diffuse;
 
 	// PRIEST
-	pipeline_t tPriestIDs = { 1, 0, 0, 1 };
+	pipeline_t tPriestIDs = { 1, 0, 1, 1 };
 	tConstantBuffer_PixelShader cps_priest;
 	tMesh  tPriest = cBinary_Read.Read_Mesh("PriestDeathMesh.bin");
 	int nPriest_Vertex_Count = (int)tPriest.nVertex_Count;
@@ -162,6 +163,7 @@ struct cRenderer::tImpl
 	tVertex *test_priest = new tVertex[nPriest_Vertex_Count];
 	tMaterials priest_mats = cBinary_Read.Read_Material("PriestDeathMat.bin");
 	CComPtr<ID3D11ShaderResourceView> priest_srv_diffuse;
+	CComPtr<ID3D11ShaderResourceView> priest_srv_normal;
 
 	float priestWidth;
 	float priestHeight;
@@ -280,6 +282,7 @@ struct cRenderer::tImpl
 			d3dDevice->CreatePixelShader(PixelShader, sizeof(PixelShader), NULL, &d3dPixel_Shader.p);
 			d3dDevice->CreatePixelShader(PixelShader_Mage, sizeof(PixelShader_Mage), NULL, &d3dPixel_Shader_Mage.p);
 			d3dDevice->CreatePixelShader(PixelShader_Arena, sizeof(PixelShader_Arena), NULL, &tscene_objects.pixel_shaders[tArenaIDs.pixel_shader_id].p);
+			d3dDevice->CreatePixelShader(PixelShader_Priest, sizeof(PixelShader_Priest), NULL, &tscene_objects.pixel_shaders[tPriestIDs.pixel_shader_id].p);
 			d3dDevice->CreatePixelShader(PixelShader_Screen, sizeof(PixelShader_Screen), NULL, &d3dPixel_Shader_Screen.p);
 
 			// INPUT ELEMENT
@@ -879,6 +882,11 @@ struct cRenderer::tImpl
 				const wchar_t* diffuse_path = d_tmp.c_str();
 				HRESULT result = CreateWICTextureFromFile(d3dDevice, d3dContext, diffuse_path, nullptr, &priest_srv_diffuse.p, 0);
 
+				std::wstring n_tmp = std::wstring(priest_mats.tMats[0].szNormal_File_Path.begin(), priest_mats.tMats[0].szNormal_File_Path.end());
+				const wchar_t* normal_path = d_tmp.c_str();
+				result = CreateWICTextureFromFile(d3dDevice, d3dContext, diffuse_path, nullptr, &priest_srv_normal.p, 0);
+
+
 				bool tr = true;
 			}
 
@@ -1353,6 +1361,8 @@ struct cRenderer::tImpl
 					d3dContext->PSSetShader(tscene_objects.pixel_shaders[tPriestIDs.pixel_shader_id], NULL, 0);
 					ID3D11ShaderResourceView *priest_srv_d[] = { priest_srv_diffuse };
 					d3dContext->PSSetShaderResources(0, 1, priest_srv_d);
+					ID3D11ShaderResourceView *priest_srv_n[] = { priest_srv_normal };
+					d3dContext->PSSetShaderResources(0, 1, priest_srv_n);
 
 					d3dContext->DrawIndexed(nPriest_Index_Count, 0, 0);
 				}
