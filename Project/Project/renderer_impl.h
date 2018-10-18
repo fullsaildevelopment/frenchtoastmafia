@@ -362,7 +362,16 @@ struct cRenderer::tImpl
 				d3dConstant_Buffer_Desc.StructureByteStride = 0;
 
 				d3dDevice->CreateBuffer(&d3dConstant_Buffer_Desc, nullptr, &tscene_objects.constant_buffers[tArenaIDs.constant_buffer_wvp_id].p);
-				XMStoreFloat4x4(&tscene_objects.world_position[tArenaIDs.constant_buffer_wvp_id], XMMatrixTranslation(20.0f, 0.0f, 0.0f));
+
+				XMMATRIX tempWorld = XMMatrixIdentity();
+
+				tempWorld = XMMatrixMultiply(tempWorld, XMMatrixScaling(0.03, 0.03, 0.03));
+
+				tempWorld = XMMatrixMultiply(tempWorld, XMMatrixRotationX(-3.14/2));
+
+				//tempWorld = XMMatrixMultiply(tempWorld, XMMatrixTranslation(0, 0, 25));
+
+				XMStoreFloat4x4(&tscene_objects.world_position[tArenaIDs.constant_buffer_wvp_id], tempWorld);
 			}
 
 			// CONSTANT BUFFER - PRIEST
@@ -376,7 +385,16 @@ struct cRenderer::tImpl
 				d3dConstant_Buffer_Desc.StructureByteStride = 0;
 
 				d3dDevice->CreateBuffer(&d3dConstant_Buffer_Desc, nullptr, &tscene_objects.constant_buffers[tPriestIDs.constant_buffer_wvp_id].p);
-				XMStoreFloat4x4(&tscene_objects.world_position[tPriestIDs.constant_buffer_wvp_id], XMMatrixTranslation(20.0f, 0.0f, 0.0f));
+
+				XMMATRIX tempWorld = XMMatrixIdentity();
+
+				tempWorld = XMMatrixMultiply(tempWorld, XMMatrixScaling(0.03, 0.03, 0.03));
+
+				tempWorld = XMMatrixMultiply(tempWorld, XMMatrixRotationY(3.14));
+
+				tempWorld = XMMatrixMultiply(tempWorld, XMMatrixTranslation(0, 0, 25));
+
+				XMStoreFloat4x4(&tscene_objects.world_position[tPriestIDs.constant_buffer_wvp_id], tempWorld);
 			}
 		}
 
@@ -940,7 +958,7 @@ struct cRenderer::tImpl
 		aabb_bullet.center = { 0.0, 0.0f, 0.0f };
 		aabb_bullet.center.fZ += tBULLET.fData.z;
 		aabb_bullet.extents = { 1.0, 1.0f, 1.0f };
-		aabb_dummy.center = { 0.0, 0.0f, 15.0f };
+		aabb_dummy.center = {tscene_objects.world_position[tPriestIDs.constant_buffer_wvp_id]._41 , tscene_objects.world_position[tPriestIDs.constant_buffer_wvp_id]._42, tscene_objects.world_position[tPriestIDs.constant_buffer_wvp_id]._43 };
 		aabb_dummy.extents = { priestWidth/2, priestHeight/2, priestDepth/2 };
 		didCollide = tColl.Detect_AABB_To_AABB(aabb_bullet, aabb_dummy);
 
@@ -1307,13 +1325,9 @@ struct cRenderer::tImpl
 					// CONSTANT BUFFER - WVPC
 					{
 						// STORE DATA
-						XMMATRIX tempWorld = XMMatrixIdentity();
+						XMMATRIX newWorld = XMLoadFloat4x4(&tscene_objects.world_position[tArenaIDs.constant_buffer_wvp_id]);
 
-						tempWorld = XMMatrixMultiply(tempWorld, XMMatrixScaling(0.05, 0.05, 0.05));
-
-						tempWorld = XMMatrixMultiply(tempWorld, XMMatrixRotationX(-3.14 / 2));
-
-						XMStoreFloat4x4(&tWVPC.fWorld_Matrix, tempWorld);
+						XMStoreFloat4x4(&tWVPC.fWorld_Matrix, newWorld);
 
 						// MAP DATA
 						d3dContext->Map(d3dConstant_Buffer_WVPC, 0, D3D11_MAP_WRITE_DISCARD, 0, &d3dMSR);
@@ -1341,13 +1355,13 @@ struct cRenderer::tImpl
 					// CONSTANT BUFFER - WVPC
 					{
 						// STORE DATA
-						XMMATRIX tempWorld = XMMatrixIdentity();
+						XMMATRIX tempWorld = XMLoadFloat4x4(&tscene_objects.world_position[tPriestIDs.constant_buffer_wvp_id]);
 
-						tempWorld = XMMatrixMultiply(tempWorld, XMMatrixScaling(0.03, 0.03, 0.03));
+						//tempWorld = XMMatrixMultiply(tempWorld, XMMatrixScaling(0.03, 0.03, 0.03));
+						//
+						//tempWorld = XMMatrixMultiply(tempWorld, XMMatrixRotationY(3.14));
 
-						tempWorld = XMMatrixMultiply(tempWorld, XMMatrixRotationY(3.14));
-
-						tempWorld = XMMatrixMultiply(tempWorld, XMMatrixTranslation(0, 0, 25));
+						//tempWorld = XMMatrixMultiply(tempWorld, XMMatrixTranslation(0, 0, 25));
 
 						XMStoreFloat4x4(&tWVPC.fWorld_Matrix, tempWorld);
 
