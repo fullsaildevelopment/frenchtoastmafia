@@ -163,6 +163,14 @@ struct cRenderer::tImpl
 	tMaterials priest_mats = cBinary_Read.Read_Material("PriestDeathMat.bin");
 	CComPtr<ID3D11ShaderResourceView> priest_srv_diffuse;
 
+	float priestWidth;
+	float priestHeight;
+	float priestDepth;
+
+	float mageWidth;
+	float mageHeight;
+	float mageDepth;
+
 
 	void initialize(cView& c_View)
 	{
@@ -519,11 +527,53 @@ struct cRenderer::tImpl
 			// MAGE
 			{
 				// VERTEX BUFFER
+				float mageHighX = tMage.tVerts[0].fPosition.fX;
+				float mageLowX = tMage.tVerts[0].fPosition.fX;
+
+				float mageHighY = tMage.tVerts[0].fPosition.fY;
+				float mageLowY = tMage.tVerts[0].fPosition.fY;
+
+				float mageHighZ = tMage.tVerts[0].fPosition.fZ;
+				float mageLowZ = tMage.tVerts[0].fPosition.fZ;
 
 				for (int i = 0; i < nMage_Vertex_Count; i++)
 				{
 					test_mage[i] = tMage.tVerts[i];
+
+					//x
+					if (tMage.tVerts[i].fPosition.fX > mageHighX)
+					{
+						mageHighX = tMage.tVerts[i].fPosition.fX;
+					}
+					if (tMage.tVerts[i].fPosition.fX < mageLowX)
+					{
+						mageLowX = tMage.tVerts[i].fPosition.fX;
+					}
+
+					//y
+					if (tMage.tVerts[i].fPosition.fY > mageHighY)
+					{
+						mageHighY = tMage.tVerts[i].fPosition.fY;
+					}
+					if (tMage.tVerts[i].fPosition.fY < mageLowY)
+					{
+						mageLowY = tMage.tVerts[i].fPosition.fY;
+					}
+
+					//z
+					if (tMage.tVerts[i].fPosition.fZ > mageHighZ)
+					{
+						mageHighZ = tMage.tVerts[i].fPosition.fZ;
+					}
+					if (tMage.tVerts[i].fPosition.fZ < mageLowZ)
+					{
+						mageLowZ = tMage.tVerts[i].fPosition.fZ;
+					}
 				}
+
+				mageWidth = mageHighX - mageLowX;
+				mageHeight = mageHighY - mageLowY;
+				mageDepth = mageHighZ - mageLowZ;
 
 				// Move
 				for (int i = 0; i < nMage_Vertex_Count; i++)
@@ -583,6 +633,7 @@ struct cRenderer::tImpl
 				const wchar_t* specular_path = s_tmp.c_str();
 				CreateWICTextureFromFile(d3dDevice, d3dContext, specular_path, nullptr, &mage_srv_specular.p, 0);
 			}
+
 
 			// GAME SCREEN
 			{
@@ -729,11 +780,55 @@ struct cRenderer::tImpl
 			// PRIEST
 			{
 				// VERTEX BUFFER
+				float priestHighX = tPriest.tVerts[0].fPosition.fX;
+				float priestLowX = tPriest.tVerts[0].fPosition.fX;
+
+				float priestHighY = tPriest.tVerts[0].fPosition.fY;
+				float priestLowY = tPriest.tVerts[0].fPosition.fY;
+
+				float priestHighZ = tPriest.tVerts[0].fPosition.fZ;
+				float priestLowZ = tPriest.tVerts[0].fPosition.fZ;
 
 				for (int i = 0; i < nPriest_Vertex_Count; i++)
 				{
 					test_priest[i] = tPriest.tVerts[i];
+
+					//x
+					if (tPriest.tVerts[i].fPosition.fX > priestHighX)
+					{
+						priestHighX = tPriest.tVerts[i].fPosition.fX;
+					}
+					if (tPriest.tVerts[i].fPosition.fX < priestLowX)
+					{
+						priestLowX = tPriest.tVerts[i].fPosition.fX;
+					}
+
+					//y
+					if (tPriest.tVerts[i].fPosition.fY > priestHighY)
+					{
+						priestHighY = tPriest.tVerts[i].fPosition.fY;
+					}
+					if (tPriest.tVerts[i].fPosition.fY < priestLowY)
+					{
+						priestLowY = tPriest.tVerts[i].fPosition.fY;
+					}
+
+					//z
+					if (tPriest.tVerts[i].fPosition.fZ > priestHighZ)
+					{
+						priestHighZ = tPriest.tVerts[i].fPosition.fZ;
+					}
+					if (tPriest.tVerts[i].fPosition.fZ < priestLowZ)
+					{
+						priestLowZ = tPriest.tVerts[i].fPosition.fZ;
+					}
 				}
+
+				priestWidth = (priestHighX - priestLowX) * 0.03;
+				priestHeight = (priestHighY - priestLowY) * 0.03;
+				priestDepth = (priestHighZ - priestLowZ) * 0.03;
+
+				
 
 				// Move
 				for (int i = 0; i < nPriest_Vertex_Count; i++)
@@ -833,7 +928,7 @@ struct cRenderer::tImpl
 		aabb_bullet.center.fZ += tBULLET.fData.z;
 		aabb_bullet.extents = { 1.0, 1.0f, 1.0f };
 		aabb_dummy.center = { 0.0, 0.0f, 15.0f };
-		aabb_dummy.extents = { 2.0, 4.0f, 2.0f };
+		aabb_dummy.extents = { priestWidth/2, priestHeight/2, priestDepth/2 };
 		didCollide = tColl.Detect_AABB_To_AABB(aabb_bullet, aabb_dummy);
 
 		if (didCollide)
@@ -1237,7 +1332,7 @@ struct cRenderer::tImpl
 
 						tempWorld = XMMatrixMultiply(tempWorld, XMMatrixRotationY(3.14));
 
-						tempWorld = XMMatrixMultiply(tempWorld, XMMatrixTranslation(5.0, 0, 0));
+						tempWorld = XMMatrixMultiply(tempWorld, XMMatrixTranslation(0, 0, 25));
 
 						XMStoreFloat4x4(&tWVPC.fWorld_Matrix, tempWorld);
 
