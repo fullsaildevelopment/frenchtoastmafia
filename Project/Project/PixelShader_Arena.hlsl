@@ -33,7 +33,7 @@ float4 main(INPUT_DATA input) : SV_TARGET
 
 float4 pointLightColor = { 0.1, 0.1, 3.0, 1 };
 
-float3 pointLightPos = { 11.0f , 0.0, -5.0 };
+float3 pointLightPos = { 8.0f , 0.0, 25.0 };
 float3 pointLightDir = normalize(pointLightPos - input.fWorld_Position);
 float pointLightStrength = 8.0 - length(pointLightPos - input.fWorld_Position);
 if (pointLightStrength < 0)
