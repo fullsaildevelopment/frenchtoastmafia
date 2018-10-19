@@ -39,12 +39,24 @@ using namespace DirectX;
 #include "PixelShader_Screen.csh"
 #include "dopeSoundSystem.h"
 
+// VR INCLUDES
+#include "openvr-master/headers/openvr.h"
+//#include "openvr-master/samples/thirdparty/sdl2-2.0.3/include/SDL.h"
+// VR INCLUDES
+
 struct cRenderer::tImpl
 {
+
 	dopeSoundSystem sound;
 	// platform/api specific members, functions, etc.
 	HWND _hWnd;
 	tImpl(native_handle_t hWnd) { _hWnd = (HWND)hWnd; }
+
+	// VR
+	vr::EVRInitError VR_Error = vr::VRInitError_None;
+	vr::IVRSystem* m_p_VR_HMD = vr::VR_Init(&VR_Error, vr::VRApplication_Scene);
+
+	// VR
 
 	// BACKEND
 	CComPtr<ID3D11Device> d3dDevice;
@@ -56,6 +68,7 @@ struct cRenderer::tImpl
 	CComPtr<ID3D11SamplerState> d3dSampler_State;
 	CComPtr<ID3D11InputLayout> d3dInput_Layout;
 	CComPtr<ID3D11RenderTargetView> d3dRTV;
+	CComPtr<ID3D11Resource> d3d_Resource;
 
 	DXGI_SWAP_CHAIN_DESC d3dSwap_Chain_Desc;
 	D3D11_VIEWPORT d3dView_Port;
@@ -267,6 +280,7 @@ struct cRenderer::tImpl
 			d3dDevice->CreatePixelShader(PixelShader_Screen, sizeof(PixelShader_Screen), NULL, &d3dPixel_Shader_Screen.p);
 
 			// INPUT ELEMENT
+
 			D3D11_INPUT_ELEMENT_DESC d3dInput_Element[] =
 			{
 				{ "POSITION", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
@@ -276,6 +290,19 @@ struct cRenderer::tImpl
 			};
 
 			d3dDevice->CreateInputLayout(d3dInput_Element, ARRAYSIZE(d3dInput_Element), VertexShader, sizeof(VertexShader), &d3dInput_Layout.p);
+
+			// VR DRAW
+
+			vr::D3D12TextureData_t d3d12LeftEyeTexture = { m_leftEyeDesc.m_pTexture.Get(), m_pCommandQueue.Get(), 0 };
+			vr::Texture_t leftEyeTexture = { (void *)&d3d12LeftEyeTexture, vr::TextureType_DirectX12, vr::ColorSpace_Gamma };
+			vr::VRCompositor()->Submit(vr::Eye_Left, &leftEyeTexture, &bounds, vr::Submit_Default);
+
+			vr::D3D12TextureData_t d3d12RightEyeTexture = { m_rightEyeDesc.m_pTexture.Get(), m_pCommandQueue.Get(), 0 };
+			vr::Texture_t rightEyeTexture = { (void *)&d3d12RightEyeTexture, vr::TextureType_DirectX12, vr::ColorSpace_Gamma };
+			vr::VRCompositor()->Submit(vr::Eye_Right, &rightEyeTexture, &bounds, vr::Submit_Default);
+
+			// VR DRAW
+
 		}
 
 		// CONSTANT BUFFERS

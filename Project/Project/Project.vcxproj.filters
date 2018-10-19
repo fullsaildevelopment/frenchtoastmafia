@@ -111,6 +111,9 @@
     <ClInclude Include="Object System.h">
       <Filter>Renderer</Filter>
     </ClInclude>
+    <ClInclude Include="VR.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Project.cpp">
@@ -142,6 +145,9 @@
     </ClCompile>
     <ClCompile Include="renderer.cpp">
       <Filter>Renderer\Code</Filter>
+    </ClCompile>
+    <ClCompile Include="VR.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
