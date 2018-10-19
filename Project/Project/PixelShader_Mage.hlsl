@@ -10,6 +10,7 @@
 texture2D tTexture : register(t0);
 texture2D tTexture1 : register(t1);
 texture2D tTexture2 : register(t2);
+texture2D tTexture4 : register(t3);
 
 SamplerState sSampler_State[2] : register(s0);
 
@@ -69,7 +70,7 @@ float4 main(INPUT_DATA input) : SV_TARGET
 	light_dir = light_pos.xyz - input.fWorld_Position.xyz;
 	light_dir_norm = normalize(light_dir);
 	//	LIGHTRATIO = CLAMP(DOT(LIGHTDIR, SURFACENORMAL))
-	ratio = saturate(dot(light_dir_norm, normalize(input.fNormal.xyz)));
+	ratio = saturate(dot(light_dir_norm, normalize(tTexture4.Sample(sSampler_State[0], input.fTexture))));
 	//	RESULT = LIGHTRATIO * LIGHTCOLOR * SURFACECOLOR
 	final_color = combined_color * light_col * ratio;
 	//	ATTENUATION = 1.0 – CLAMP(MAGNITUDE(LIGHTPOS – SURFACEPOS) / LIGHTRADIUS)

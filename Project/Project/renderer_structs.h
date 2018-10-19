@@ -69,6 +69,8 @@ struct tMaterial
 	std::string szDiffuse_File_Path = "";
 	tFloat4 tEmissive = { 0.0f, 0.0f, 0.0f, 0.0f };
 	std::string szEmissive_File_Path = "";
+	tFloat4 tNormal = { 0.0f, 0.0f, 0.0f, 0.0f };
+	std::string szNormal_File_Path = "";
 	tFloat4 tReflection = { 0.0f, 0.0f, 0.0f, 0.0f };
 	std::string szReflection_File_Path = "";
 	float fShininess = 0.0f;

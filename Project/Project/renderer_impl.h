@@ -35,6 +35,7 @@ using namespace DirectX;
 #include "PixelShader.csh"
 #include "PixelShader_Mage.csh"
 #include "PixelShader_Arena.csh"
+#include "PixelShader_Priest.csh"
 
 #include "PixelShader_Screen.csh"
 #include "dopeSoundSystem.h"
@@ -95,8 +96,23 @@ struct cRenderer::tImpl
 	// OBJECTS
 	cBinary_Reader cBinary_Read;
 
+	// Scene Transition
+	int scene_toggle = 0;
+	// 0 - intro
+	// 1 - start menu
+	// 2 - game1
+	// 3 - game2
+	// 4 - replay
+
 	//OBJECT SYSYEM
 	scene_objects tscene_objects;
+
+	// SCENE
+	CComPtr<ID3D11Buffer> d3d_game_screen_vertex_buffer;
+	CComPtr<ID3D11Buffer> d3d_game_screen_index_buffer;
+	CComPtr<ID3D11ShaderResourceView> intro_srv;
+	CComPtr<ID3D11ShaderResourceView> menu_srv;
+	CComPtr<ID3D11ShaderResourceView> replay_srv;
 
 	// DUMMY
 	tVertex *test_dummy = new tVertex[8];
@@ -116,9 +132,7 @@ struct cRenderer::tImpl
 	bool didCollide = false;
 
 	// MAGE
-	CComPtr<ID3D11Buffer> d3dConstant_Buffer_MAGE;
-	CComPtr<ID3D11Buffer> d3d_test_mage_vertex_buffer;
-	CComPtr<ID3D11Buffer> d3d_test_mage_index_buffer;
+	pipeline_t tMageIDs = { 3, 0, 3, 3 };
 	tConstantBuffer_PixelShader cps_mage;
 	tMesh tMage = cBinary_Read.Read_Mesh("mesh.bin");
 	int nMage_Vertex_Count = (int)tMage.nVertex_Count;
@@ -128,20 +142,7 @@ struct cRenderer::tImpl
 	CComPtr<ID3D11ShaderResourceView> mage_srv_diffuse;
 	CComPtr<ID3D11ShaderResourceView> mage_srv_emissive;
 	CComPtr<ID3D11ShaderResourceView> mage_srv_specular;
-
-	// Scene Transition
-	int scene_toggle = 0;
-	// 0 - intro
-	// 1 - start menu
-	// 2 - game1
-	// 3 - game2
-	// 4 - replay
-
-	CComPtr<ID3D11Buffer> d3d_game_screen_vertex_buffer;
-	CComPtr<ID3D11Buffer> d3d_game_screen_index_buffer;
-	CComPtr<ID3D11ShaderResourceView> intro_srv;
-	CComPtr<ID3D11ShaderResourceView> menu_srv;
-	CComPtr<ID3D11ShaderResourceView> replay_srv;
+	CComPtr<ID3D11ShaderResourceView> mage_srv_normal;
 
 	// ARENA
 	pipeline_t tArenaIDs = { 0, 0, 0, 0 };
@@ -152,8 +153,25 @@ struct cRenderer::tImpl
 	tVertex *test_arena = new tVertex[nArena_Vertex_Count];
 	tMaterials arena_mats = cBinary_Read.Read_Material("ArenaMat.bin");
 	CComPtr<ID3D11ShaderResourceView> arena_srv_diffuse;
-	CComPtr<ID3D11ShaderResourceView> arena_srv_emissive;
-	CComPtr<ID3D11ShaderResourceView> arena_srv_specular;
+
+	// PRIEST
+	pipeline_t tPriestIDs = { 1, 0, 1, 1 };
+	tConstantBuffer_PixelShader cps_priest;
+	tMesh  tPriest = cBinary_Read.Read_Mesh("PriestDeathMesh.bin");
+	int nPriest_Vertex_Count = (int)tPriest.nVertex_Count;
+	int nPriest_Index_Count = (int)tPriest.nIndex_Count;
+	tVertex *test_priest = new tVertex[nPriest_Vertex_Count];
+	tMaterials priest_mats = cBinary_Read.Read_Material("PriestDeathMat.bin");
+	CComPtr<ID3D11ShaderResourceView> priest_srv_diffuse;
+	CComPtr<ID3D11ShaderResourceView> priest_srv_normal;
+
+	float priestWidth;
+	float priestHeight;
+	float priestDepth;
+
+	float mageWidth;
+	float mageHeight;
+	float mageDepth;
 
 
 	void initialize(cView& c_View)
@@ -259,11 +277,13 @@ struct cRenderer::tImpl
 			// SHADERS
 			d3dDevice->CreateVertexShader(VertexShader, sizeof(VertexShader), NULL, &d3dVertex_Shader.p);
 			d3dDevice->CreateVertexShader(VertexShader_Bullet, sizeof(VertexShader_Bullet), NULL, &d3dVertex_Shader_Bullet.p);
+			//d3dDevice->CreateVertexShader(VertexShader_Arena, sizeof(VertexShader_Mage), NULL, &tscene_objects.vertex_shaders[tMageIDs.vertex_shader_id].p);
 			d3dDevice->CreateVertexShader(VertexShader_Arena, sizeof(VertexShader_Arena), NULL, &tscene_objects.vertex_shaders[tArenaIDs.vertex_shader_id].p);
 
 			d3dDevice->CreatePixelShader(PixelShader, sizeof(PixelShader), NULL, &d3dPixel_Shader.p);
-			d3dDevice->CreatePixelShader(PixelShader_Mage, sizeof(PixelShader_Mage), NULL, &d3dPixel_Shader_Mage.p);
+			d3dDevice->CreatePixelShader(PixelShader_Mage, sizeof(PixelShader_Mage), NULL, &tscene_objects.pixel_shaders[tMageIDs.pixel_shader_id].p);
 			d3dDevice->CreatePixelShader(PixelShader_Arena, sizeof(PixelShader_Arena), NULL, &tscene_objects.pixel_shaders[tArenaIDs.pixel_shader_id].p);
+			d3dDevice->CreatePixelShader(PixelShader_Priest, sizeof(PixelShader_Priest), NULL, &tscene_objects.pixel_shaders[tPriestIDs.pixel_shader_id].p);
 			d3dDevice->CreatePixelShader(PixelShader_Screen, sizeof(PixelShader_Screen), NULL, &d3dPixel_Shader_Screen.p);
 
 			// INPUT ELEMENT
@@ -328,7 +348,15 @@ struct cRenderer::tImpl
 				d3dConstant_Buffer_Desc.MiscFlags = 0;
 				d3dConstant_Buffer_Desc.StructureByteStride = 0;
 
-				d3dDevice->CreateBuffer(&d3dConstant_Buffer_Desc, nullptr, &d3dConstant_Buffer_MAGE.p);
+				d3dDevice->CreateBuffer(&d3dConstant_Buffer_Desc, nullptr, &tscene_objects.constant_buffers[tMageIDs.constant_buffer_wvp_id].p);
+
+				XMMATRIX tempWorld = XMMatrixIdentity();
+
+				tempWorld = XMMatrixMultiply(tempWorld, XMMatrixRotationY(3.14));
+
+				tempWorld = XMMatrixMultiply(tempWorld, XMMatrixTranslation(0, 0, 25));
+
+				XMStoreFloat4x4(&tscene_objects.world_position[tMageIDs.constant_buffer_wvp_id], tempWorld);
 			}
 
 			// CONSTANT BUFFER - ARENA
@@ -342,7 +370,37 @@ struct cRenderer::tImpl
 				d3dConstant_Buffer_Desc.StructureByteStride = 0;
 
 				d3dDevice->CreateBuffer(&d3dConstant_Buffer_Desc, nullptr, &tscene_objects.constant_buffers[tArenaIDs.constant_buffer_wvp_id].p);
-				XMStoreFloat4x4(tscene_objects.world_position, XMMatrixTranslation(20.0f, 0.0f, 0.0f));
+
+				XMMATRIX tempWorld = XMMatrixIdentity();
+
+				tempWorld = XMMatrixMultiply(tempWorld, XMMatrixScaling(0.03, 0.03, 0.03));
+
+				tempWorld = XMMatrixMultiply(tempWorld, XMMatrixRotationX(-3.14/2));
+
+				XMStoreFloat4x4(&tscene_objects.world_position[tArenaIDs.constant_buffer_wvp_id], tempWorld);
+			}
+
+			// CONSTANT BUFFER - PRIEST
+			{
+				ZeroMemory(&d3dConstant_Buffer_Desc, sizeof(D3D11_BUFFER_DESC));
+				d3dConstant_Buffer_Desc.ByteWidth = sizeof(tConstantBuffer_PixelShader);
+				d3dConstant_Buffer_Desc.Usage = D3D11_USAGE_DYNAMIC;
+				d3dConstant_Buffer_Desc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+				d3dConstant_Buffer_Desc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+				d3dConstant_Buffer_Desc.MiscFlags = 0;
+				d3dConstant_Buffer_Desc.StructureByteStride = 0;
+
+				d3dDevice->CreateBuffer(&d3dConstant_Buffer_Desc, nullptr, &tscene_objects.constant_buffers[tPriestIDs.constant_buffer_wvp_id].p);
+
+				XMMATRIX tempWorld = XMMatrixIdentity();
+
+				tempWorld = XMMatrixMultiply(tempWorld, XMMatrixScaling(0.03, 0.03, 0.03));
+
+				tempWorld = XMMatrixMultiply(tempWorld, XMMatrixRotationY(3.14));
+
+				tempWorld = XMMatrixMultiply(tempWorld, XMMatrixTranslation(0, 0, 25));
+
+				XMStoreFloat4x4(&tscene_objects.world_position[tPriestIDs.constant_buffer_wvp_id], tempWorld);
 			}
 		}
 
@@ -497,16 +555,58 @@ struct cRenderer::tImpl
 			// MAGE
 			{
 				// VERTEX BUFFER
+				float mageHighX = tMage.tVerts[0].fPosition.fX;
+				float mageLowX = tMage.tVerts[0].fPosition.fX;
+
+				float mageHighY = tMage.tVerts[0].fPosition.fY;
+				float mageLowY = tMage.tVerts[0].fPosition.fY;
+
+				float mageHighZ = tMage.tVerts[0].fPosition.fZ;
+				float mageLowZ = tMage.tVerts[0].fPosition.fZ;
 
 				for (int i = 0; i < nMage_Vertex_Count; i++)
 				{
 					test_mage[i] = tMage.tVerts[i];
+
+					//x
+					if (tMage.tVerts[i].fPosition.fX > mageHighX)
+					{
+						mageHighX = tMage.tVerts[i].fPosition.fX;
+					}
+					if (tMage.tVerts[i].fPosition.fX < mageLowX)
+					{
+						mageLowX = tMage.tVerts[i].fPosition.fX;
+					}
+
+					//y
+					if (tMage.tVerts[i].fPosition.fY > mageHighY)
+					{
+						mageHighY = tMage.tVerts[i].fPosition.fY;
+					}
+					if (tMage.tVerts[i].fPosition.fY < mageLowY)
+					{
+						mageLowY = tMage.tVerts[i].fPosition.fY;
+					}
+
+					//z
+					if (tMage.tVerts[i].fPosition.fZ > mageHighZ)
+					{
+						mageHighZ = tMage.tVerts[i].fPosition.fZ;
+					}
+					if (tMage.tVerts[i].fPosition.fZ < mageLowZ)
+					{
+						mageLowZ = tMage.tVerts[i].fPosition.fZ;
+					}
 				}
+
+				mageWidth = mageHighX - mageLowX;
+				mageHeight = mageHighY - mageLowY;
+				mageDepth = mageHighZ - mageLowZ;
 
 				// Move
 				for (int i = 0; i < nMage_Vertex_Count; i++)
 				{
-					test_mage[i].fPosition.fX -= 15.0f;
+					//test_mage[i].fPosition.fX -= 15.0f;
 				}
 
 				ZeroMemory(&d3dBuffer_Desc, sizeof(D3D11_BUFFER_DESC));
@@ -522,7 +622,7 @@ struct cRenderer::tImpl
 				d3dSRD.SysMemPitch = 0;
 				d3dSRD.SysMemSlicePitch = 0;
 
-				d3dDevice->CreateBuffer(&d3dBuffer_Desc, &d3dSRD, &d3d_test_mage_vertex_buffer);
+				d3dDevice->CreateBuffer(&d3dBuffer_Desc, &d3dSRD, &tscene_objects.vertex_buffers[tMageIDs.pipeline_id]);
 
 				// INDEX BUFFER
 
@@ -545,7 +645,7 @@ struct cRenderer::tImpl
 				d3dSRD.SysMemPitch = 0;
 				d3dSRD.SysMemSlicePitch = 0;
 
-				d3dDevice->CreateBuffer(&d3dBuffer_Desc, &d3dSRD, &d3d_test_mage_index_buffer);
+				d3dDevice->CreateBuffer(&d3dBuffer_Desc, &d3dSRD, &tscene_objects.index_buffers[tMageIDs.pipeline_id]);
 
 				// SRV
 
@@ -560,9 +660,15 @@ struct cRenderer::tImpl
 				std::wstring s_tmp = std::wstring(mage_mats.tMats[0].szSpecular_File_Path.begin(), mage_mats.tMats[0].szSpecular_File_Path.end());
 				const wchar_t* specular_path = s_tmp.c_str();
 				CreateWICTextureFromFile(d3dDevice, d3dContext, specular_path, nullptr, &mage_srv_specular.p, 0);
+
+				std::wstring n_tmp = std::wstring(mage_mats.tMats[0].szNormal_File_Path.begin(), mage_mats.tMats[0].szNormal_File_Path.end());
+				const wchar_t* normal_path = s_tmp.c_str();
+				CreateWICTextureFromFile(d3dDevice, d3dContext, normal_path, nullptr, &mage_srv_normal.p, 0);
 			}
 
+
 			// GAME SCREEN
+			if(true)
 			{
 				// VERTEX BUFFER
 				tVertex *test_screen = new tVertex[4];
@@ -657,7 +763,7 @@ struct cRenderer::tImpl
 				// Move
 				for (int i = 0; i < nArena_Vertex_Count; i++)
 				{
-					test_arena[i].fPosition.fX -= 15.0f;
+					//test_arena[i].fPosition.fX -= 15.0f;
 				}
 
 				ZeroMemory(&d3dBuffer_Desc, sizeof(D3D11_BUFFER_DESC));
@@ -702,6 +808,116 @@ struct cRenderer::tImpl
 				std::wstring d_tmp = std::wstring(arena_mats.tMats[0].szDiffuse_File_Path.begin(), arena_mats.tMats[0].szDiffuse_File_Path.end());
 				const wchar_t* diffuse_path = d_tmp.c_str();
 				HRESULT result = CreateWICTextureFromFile(d3dDevice, d3dContext, diffuse_path, nullptr, &arena_srv_diffuse.p, 0);
+			}
+
+			// PRIEST
+			{
+				// VERTEX BUFFER
+				float priestHighX = tPriest.tVerts[0].fPosition.fX;
+				float priestLowX = tPriest.tVerts[0].fPosition.fX;
+
+				float priestHighY = tPriest.tVerts[0].fPosition.fY;
+				float priestLowY = tPriest.tVerts[0].fPosition.fY;
+
+				float priestHighZ = tPriest.tVerts[0].fPosition.fZ;
+				float priestLowZ = tPriest.tVerts[0].fPosition.fZ;
+
+				for (int i = 0; i < nPriest_Vertex_Count; i++)
+				{
+					test_priest[i] = tPriest.tVerts[i];
+
+					//x
+					if (tPriest.tVerts[i].fPosition.fX > priestHighX)
+					{
+						priestHighX = tPriest.tVerts[i].fPosition.fX;
+					}
+					if (tPriest.tVerts[i].fPosition.fX < priestLowX)
+					{
+						priestLowX = tPriest.tVerts[i].fPosition.fX;
+					}
+
+					//y
+					if (tPriest.tVerts[i].fPosition.fY > priestHighY)
+					{
+						priestHighY = tPriest.tVerts[i].fPosition.fY;
+					}
+					if (tPriest.tVerts[i].fPosition.fY < priestLowY)
+					{
+						priestLowY = tPriest.tVerts[i].fPosition.fY;
+					}
+
+					//z
+					if (tPriest.tVerts[i].fPosition.fZ > priestHighZ)
+					{
+						priestHighZ = tPriest.tVerts[i].fPosition.fZ;
+					}
+					if (tPriest.tVerts[i].fPosition.fZ < priestLowZ)
+					{
+						priestLowZ = tPriest.tVerts[i].fPosition.fZ;
+					}
+				}
+
+				priestWidth = (priestHighX - priestLowX) * 0.03;
+				priestHeight = (priestHighY - priestLowY) * 0.03;
+				priestDepth = (priestHighZ - priestLowZ) * 0.03;
+
+				
+
+				// Move
+				for (int i = 0; i < nPriest_Vertex_Count; i++)
+				{
+					//test_priest[i].fPosition.fX -= 15.0f;
+				}
+
+				ZeroMemory(&d3dBuffer_Desc, sizeof(D3D11_BUFFER_DESC));
+				d3dBuffer_Desc.ByteWidth = sizeof(tVertex) * nPriest_Vertex_Count;
+				d3dBuffer_Desc.Usage = D3D11_USAGE_IMMUTABLE;
+				d3dBuffer_Desc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+				d3dBuffer_Desc.CPUAccessFlags = NULL;
+				d3dBuffer_Desc.MiscFlags = 0;
+				d3dBuffer_Desc.StructureByteStride = 0;
+
+				ZeroMemory(&d3dSRD, sizeof(D3D11_SUBRESOURCE_DATA));
+				d3dSRD.pSysMem = test_priest;
+				d3dSRD.SysMemPitch = 0;
+				d3dSRD.SysMemSlicePitch = 0;
+
+				d3dDevice->CreateBuffer(&d3dBuffer_Desc, &d3dSRD, &tscene_objects.vertex_buffers[tPriestIDs.pipeline_id]);
+				// INDEX BUFFER
+
+				int* nPriest_Indicies = new int[nPriest_Index_Count];
+				for (int i = 0; i < nPriest_Index_Count; i++)
+				{
+					nPriest_Indicies[i] = tPriest.nIndicies[i];
+				}
+
+				ZeroMemory(&d3dBuffer_Desc, sizeof(D3D11_BUFFER_DESC));
+				d3dBuffer_Desc.ByteWidth = sizeof(unsigned int) * nPriest_Index_Count;
+				d3dBuffer_Desc.Usage = D3D11_USAGE_IMMUTABLE;
+				d3dBuffer_Desc.BindFlags = D3D11_BIND_INDEX_BUFFER;
+				d3dBuffer_Desc.CPUAccessFlags = NULL;
+				d3dBuffer_Desc.MiscFlags = 0;
+				d3dBuffer_Desc.StructureByteStride = 0;
+
+				ZeroMemory(&d3dSRD, sizeof(D3D11_SUBRESOURCE_DATA));
+				d3dSRD.pSysMem = nPriest_Indicies;
+				d3dSRD.SysMemPitch = 0;
+				d3dSRD.SysMemSlicePitch = 0;
+
+				d3dDevice->CreateBuffer(&d3dBuffer_Desc, &d3dSRD, &tscene_objects.index_buffers[tPriestIDs.pipeline_id]);
+
+				// SRV
+
+				std::wstring d_tmp = std::wstring(priest_mats.tMats[0].szDiffuse_File_Path.begin(), priest_mats.tMats[0].szDiffuse_File_Path.end());
+				const wchar_t* diffuse_path = d_tmp.c_str();
+				HRESULT result = CreateWICTextureFromFile(d3dDevice, d3dContext, diffuse_path, nullptr, &priest_srv_diffuse.p, 0);
+
+				std::wstring n_tmp = std::wstring(priest_mats.tMats[0].szNormal_File_Path.begin(), priest_mats.tMats[0].szNormal_File_Path.end());
+				const wchar_t* normal_path = d_tmp.c_str();
+				result = CreateWICTextureFromFile(d3dDevice, d3dContext, diffuse_path, nullptr, &priest_srv_normal.p, 0);
+
+
+				bool tr = true;
 			}
 
 		}
@@ -749,8 +965,8 @@ struct cRenderer::tImpl
 		aabb_bullet.center = { 0.0, 0.0f, 0.0f };
 		aabb_bullet.center.fZ += tBULLET.fData.z;
 		aabb_bullet.extents = { 1.0, 1.0f, 1.0f };
-		aabb_dummy.center = { 0.0, 0.0f, 15.0f };
-		aabb_dummy.extents = { 2.0, 4.0f, 2.0f };
+		aabb_dummy.center = {tscene_objects.world_position[tPriestIDs.constant_buffer_wvp_id]._41 , tscene_objects.world_position[tPriestIDs.constant_buffer_wvp_id]._42, tscene_objects.world_position[tPriestIDs.constant_buffer_wvp_id]._43 };
+		aabb_dummy.extents = { priestWidth/2, priestHeight/2, priestDepth/2 };
 		didCollide = tColl.Detect_AABB_To_AABB(aabb_bullet, aabb_dummy);
 
 		if (didCollide)
@@ -961,11 +1177,11 @@ struct cRenderer::tImpl
 				cps_mage.transparency.w = mage_mats.tMats[0].tTransparency.fW;
 
 				// MAP DATA
-				d3dContext->Map(d3dConstant_Buffer_MAGE, 0, D3D11_MAP_WRITE_DISCARD, 0, &d3dMSR);
+				d3dContext->Map(tscene_objects.constant_buffers[tMageIDs.constant_buffer_wvp_id], 0, D3D11_MAP_WRITE_DISCARD, 0, &d3dMSR);
 				memcpy(d3dMSR.pData, &cps_mage, sizeof(tConstantBuffer_PixelShader));
-				d3dContext->Unmap(d3dConstant_Buffer_MAGE, 0);
-				ID3D11Buffer *tmp_mage_buffer[] = { d3dConstant_Buffer_MAGE };
-				d3dContext->PSSetConstantBuffers(1, 1, tmp_mage_buffer);
+				d3dContext->Unmap(tscene_objects.constant_buffers[tArenaIDs.constant_buffer_wvp_id], 0);
+				ID3D11Buffer *tmp_con_buffer[] = { tscene_objects.constant_buffers[tArenaIDs.constant_buffer_wvp_id] };
+				d3dContext->PSSetConstantBuffers(1, 1, tmp_con_buffer);
 			}
 
 			// CONSTANT BUFFER - ARENA
@@ -1009,8 +1225,53 @@ struct cRenderer::tImpl
 				d3dContext->Map(tscene_objects.constant_buffers[tArenaIDs.constant_buffer_wvp_id], 0, D3D11_MAP_WRITE_DISCARD, 0, &d3dMSR);
 				memcpy(d3dMSR.pData, &cps_arena, sizeof(tConstantBuffer_PixelShader));
 				d3dContext->Unmap(tscene_objects.constant_buffers[tArenaIDs.constant_buffer_wvp_id], 0);
-				ID3D11Buffer *tmp_mage_buffer[] = { tscene_objects.constant_buffers[tArenaIDs.constant_buffer_wvp_id] };
-				d3dContext->PSSetConstantBuffers(1, 1, tmp_mage_buffer);
+				ID3D11Buffer *tmp_con_buffer[] = { tscene_objects.constant_buffers[tArenaIDs.constant_buffer_wvp_id] };
+				d3dContext->PSSetConstantBuffers(1, 1, tmp_con_buffer);
+			}
+
+			// CONSTANT BUFFER - Priest
+			{
+				// STORE DATA
+				cps_priest.light_pos = { 15.0f, 20.0f, 15.0f, 1.0f };
+
+				cps_priest.ambient.x = priest_mats.tMats[0].tAmbient.fX;
+				cps_priest.ambient.y = priest_mats.tMats[0].tAmbient.fY;
+				cps_priest.ambient.z = priest_mats.tMats[0].tAmbient.fZ;
+				cps_priest.ambient.w = priest_mats.tMats[0].tAmbient.fW;
+
+				cps_priest.diffuse.x = priest_mats.tMats[0].tDiffuse.fX;
+				cps_priest.diffuse.y = priest_mats.tMats[0].tDiffuse.fY;
+				cps_priest.diffuse.z = priest_mats.tMats[0].tDiffuse.fZ;
+				cps_priest.diffuse.w = priest_mats.tMats[0].tDiffuse.fW;
+
+				cps_priest.emissive.x = priest_mats.tMats[0].tEmissive.fX;
+				cps_priest.emissive.y = priest_mats.tMats[0].tEmissive.fY;
+				cps_priest.emissive.z = priest_mats.tMats[0].tEmissive.fZ;
+				cps_priest.emissive.w = priest_mats.tMats[0].tEmissive.fW;
+
+				cps_priest.reflection.x = priest_mats.tMats[0].tReflection.fX;
+				cps_priest.reflection.y = priest_mats.tMats[0].tReflection.fY;
+				cps_priest.reflection.z = priest_mats.tMats[0].tReflection.fZ;
+				cps_priest.reflection.w = priest_mats.tMats[0].tReflection.fW;
+
+				cps_priest.shininess.x = priest_mats.tMats[0].fShininess;
+
+				cps_priest.specular.x = priest_mats.tMats[0].tSpecular.fX;
+				cps_priest.specular.y = priest_mats.tMats[0].tSpecular.fY;
+				cps_priest.specular.z = priest_mats.tMats[0].tSpecular.fZ;
+				cps_priest.specular.w = priest_mats.tMats[0].tSpecular.fW;
+
+				cps_priest.transparency.x = priest_mats.tMats[0].tTransparency.fX;
+				cps_priest.transparency.y = priest_mats.tMats[0].tTransparency.fY;
+				cps_priest.transparency.z = priest_mats.tMats[0].tTransparency.fZ;
+				cps_priest.transparency.w = priest_mats.tMats[0].tTransparency.fW;
+
+				// MAP DATA
+				d3dContext->Map(tscene_objects.constant_buffers[tPriestIDs.constant_buffer_wvp_id], 0, D3D11_MAP_WRITE_DISCARD, 0, &d3dMSR);
+				memcpy(d3dMSR.pData, &cps_priest, sizeof(tConstantBuffer_PixelShader));
+				d3dContext->Unmap(tscene_objects.constant_buffers[tPriestIDs.constant_buffer_wvp_id], 0);
+				ID3D11Buffer *tmp_con_buffer[] = { tscene_objects.constant_buffers[tPriestIDs.constant_buffer_wvp_id] };
+				d3dContext->PSSetConstantBuffers(1, 1, tmp_con_buffer);
 			}
 		}
 
@@ -1030,7 +1291,7 @@ struct cRenderer::tImpl
 					d3dContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 					d3dContext->VSSetShader(d3dVertex_Shader, NULL, 0);
 					d3dContext->PSSetShader(d3dPixel_Shader, NULL, 0);
-					d3dContext->DrawIndexed(36, 0, 0);
+					//d3dContext->DrawIndexed(36, 0, 0);
 				}
 
 				// BULLET
@@ -1047,20 +1308,38 @@ struct cRenderer::tImpl
 				}
 
 				// MAGE
+				if (scene_toggle == 2)
 				{
-					ID3D11Buffer *tmp_v_buffer[] = { d3d_test_mage_vertex_buffer };
+					// CONSTANT BUFFER - WVPC
+					{
+						// STORE DATA
+						XMMATRIX newWorld = XMLoadFloat4x4(&tscene_objects.world_position[tMageIDs.constant_buffer_wvp_id]);
+
+						XMStoreFloat4x4(&tWVPC.fWorld_Matrix, newWorld);
+
+						// MAP DATA
+						d3dContext->Map(d3dConstant_Buffer_WVPC, 0, D3D11_MAP_WRITE_DISCARD, 0, &d3dMSR);
+						memcpy(d3dMSR.pData, &tWVPC, sizeof(tConstantBuffer_VertexShader_WVPC));
+						d3dContext->Unmap(d3dConstant_Buffer_WVPC, 0);
+						ID3D11Buffer *tmp_wvpc_buffer[] = { d3dConstant_Buffer_WVPC };
+						d3dContext->VSSetConstantBuffers(0, 1, tmp_wvpc_buffer);
+					}
+
+					ID3D11Buffer *tmp_v_buffer[] = { tscene_objects.vertex_buffers[tMageIDs.pipeline_id] };
 					d3dContext->IASetVertexBuffers(0, 1, tmp_v_buffer, &verts_size, &off_set);
-					d3dContext->IASetIndexBuffer(d3d_test_mage_index_buffer, DXGI_FORMAT_R32_UINT, 0);
+					d3dContext->IASetIndexBuffer(tscene_objects.index_buffers[tMageIDs.pipeline_id], DXGI_FORMAT_R32_UINT, 0);
 					d3dContext->IASetInputLayout(d3dInput_Layout);
 					d3dContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-					d3dContext->VSSetShader(d3dVertex_Shader, NULL, 0);
-					d3dContext->PSSetShader(d3dPixel_Shader_Mage, NULL, 0);
+					d3dContext->VSSetShader(tscene_objects.vertex_shaders[tMageIDs.vertex_shader_id], NULL, 0);
+					d3dContext->PSSetShader(tscene_objects.pixel_shaders[tMageIDs.pipeline_id], NULL, 0);
 					ID3D11ShaderResourceView *mage_srv_d[] = { mage_srv_diffuse };
 					d3dContext->PSSetShaderResources(0, 1, mage_srv_d);
 					ID3D11ShaderResourceView *mage_srv_e[] = { mage_srv_emissive };
 					d3dContext->PSSetShaderResources(1, 1, mage_srv_e);
 					ID3D11ShaderResourceView *mage_srv_s[] = { mage_srv_specular };
 					d3dContext->PSSetShaderResources(2, 1, mage_srv_s);
+					ID3D11ShaderResourceView *mage_srv_n[] = { mage_srv_specular };
+					d3dContext->PSSetShaderResources(3, 1, mage_srv_n);
 					d3dContext->DrawIndexed(nMage_Index_Count, 0, 0);
 				}
 
@@ -1069,13 +1348,9 @@ struct cRenderer::tImpl
 					// CONSTANT BUFFER - WVPC
 					{
 						// STORE DATA
-						XMMATRIX tempWorld = XMMatrixIdentity();
+						XMMATRIX newWorld = XMLoadFloat4x4(&tscene_objects.world_position[tArenaIDs.constant_buffer_wvp_id]);
 
-						tempWorld = XMMatrixMultiply(tempWorld, XMMatrixScaling(0.05, 0.05, 0.05));
-
-						tempWorld = XMMatrixMultiply(tempWorld, XMMatrixRotationX(-3.14 / 2));
-
-						XMStoreFloat4x4(&tWVPC.fWorld_Matrix, tempWorld);
+						XMStoreFloat4x4(&tWVPC.fWorld_Matrix, newWorld);
 
 						// MAP DATA
 						d3dContext->Map(d3dConstant_Buffer_WVPC, 0, D3D11_MAP_WRITE_DISCARD, 0, &d3dMSR);
@@ -1096,6 +1371,39 @@ struct cRenderer::tImpl
 					d3dContext->PSSetShaderResources(0, 1, arena_srv_d);
 
 					d3dContext->DrawIndexed(nArena_Index_Count, 0, 0);
+				}
+
+				// PRIEST
+				if (scene_toggle == 3)
+				{
+					// CONSTANT BUFFER - WVPC
+					{
+						// STORE DATA
+						XMMATRIX newWorld = XMLoadFloat4x4(&tscene_objects.world_position[tPriestIDs.constant_buffer_wvp_id]);
+
+						XMStoreFloat4x4(&tWVPC.fWorld_Matrix, newWorld);
+
+						// MAP DATA
+						d3dContext->Map(d3dConstant_Buffer_WVPC, 0, D3D11_MAP_WRITE_DISCARD, 0, &d3dMSR);
+						memcpy(d3dMSR.pData, &tWVPC, sizeof(tConstantBuffer_VertexShader_WVPC));
+						d3dContext->Unmap(d3dConstant_Buffer_WVPC, 0);
+						ID3D11Buffer *tmp_wvpc_buffer[] = { d3dConstant_Buffer_WVPC };
+						d3dContext->VSSetConstantBuffers(0, 1, tmp_wvpc_buffer);
+					}
+
+					ID3D11Buffer *tmp_v_buffer[] = { tscene_objects.vertex_buffers[tPriestIDs.pipeline_id] };
+					d3dContext->IASetVertexBuffers(0, 1, tmp_v_buffer, &verts_size, &off_set);
+					d3dContext->IASetIndexBuffer(tscene_objects.index_buffers[tPriestIDs.pipeline_id], DXGI_FORMAT_R32_UINT, 0);
+					d3dContext->IASetInputLayout(d3dInput_Layout);
+					d3dContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+					d3dContext->VSSetShader(tscene_objects.vertex_shaders[tPriestIDs.vertex_shader_id], NULL, 0);
+					d3dContext->PSSetShader(tscene_objects.pixel_shaders[tPriestIDs.pixel_shader_id], NULL, 0);
+					ID3D11ShaderResourceView *priest_srv_d[] = { priest_srv_diffuse };
+					d3dContext->PSSetShaderResources(0, 1, priest_srv_d);
+					ID3D11ShaderResourceView *priest_srv_n[] = { priest_srv_normal };
+					d3dContext->PSSetShaderResources(1, 1, priest_srv_n);
+
+					d3dContext->DrawIndexed(nPriest_Index_Count, 0, 0);
 				}
 			}
 			else

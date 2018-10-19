@@ -179,5 +179,8 @@
     <FxCompile Include="PixelShader_Arena.hlsl">
       <Filter>Renderer</Filter>
     </FxCompile>
+    <FxCompile Include="PixelShader_Priest.hlsl">
+      <Filter>Renderer\Pixel</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>
