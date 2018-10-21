@@ -28,11 +28,11 @@ using namespace DirectX;
 #include "WICTextureLoader.h"
 #include "XTime.h"
 
-#include "VertexShader.csh"
+//#include "VertexShader.csh"
 #include "VertexShader_Bullet.csh"
 #include "VertexShader_Arena.csh"
 
-#include "PixelShader.csh"
+//#include "PixelShader.csh"
 #include "PixelShader_Mage.csh"
 #include "PixelShader_Arena.csh"
 #include "PixelShader_Priest.csh"

@@ -8,45 +8,13 @@
 *************************************************************************/
 #pragma once
 
+#include <atlbase.h>
+#include <d3d11.h>
+#pragma comment(lib, "d3d11.lib")
 #include <DirectXMath.h>
 using namespace DirectX;
 #include "basic_structs.h"
 
-struct	pipeline_t
-{
-	uint8_t		pipeline_id;
-	uint8_t		vertex_shader_id;
-	uint8_t		pixel_shader_id;
-	uint8_t		constant_buffer_wvp_id;
-};
-
-struct tConstantBuffer_VertexShader_WVPC
-{
-	XMFLOAT4X4 fWorld_Matrix;
-	XMFLOAT4X4 fView_Matrix;
-	XMFLOAT4X4 fProjection_Matrix;
-	XMFLOAT4X4 fCamera_Matrix;
-	XMFLOAT4X4 fCamera_Origin;
-};
-
-struct tConstantBuffer_Float4
-{
-	XMFLOAT4 fData = { 0.0f, 0.0f, 0.0f, 0.0f };
-};
-
-struct tConstantBuffer_PixelShader
-{
-	XMFLOAT4 light_pos = { 0.0f, 0.0f, 0.0f, 0.0f };
-	XMFLOAT4 light_col = { 1.0f, 1.0f, 1.0f, 1.0f };
-	XMFLOAT4 light_nrm = { 0.0f, 0.0f, 0.0f, 0.0f };
-	XMFLOAT4 ambient = { 0.0f, 0.0f, 0.0f, 0.0f };
-	XMFLOAT4 diffuse = { 0.0f, 0.0f, 0.0f, 0.0f };
-	XMFLOAT4 emissive = { 0.0f, 0.0f, 0.0f, 0.0f };
-	XMFLOAT4 reflection = { 0.0f, 0.0f, 0.0f, 0.0f };
-	XMFLOAT4 shininess = { 0.0f, 0.0f, 0.0f, 0.0f };
-	XMFLOAT4 specular = { 0.0f, 0.0f, 0.0f, 0.0f };
-	XMFLOAT4 transparency = { 0.0f, 0.0f, 0.0f, 0.0f };
-};
 
 struct tMesh
 {
@@ -84,4 +52,60 @@ struct tMaterial
 struct tMaterials
 {
 	std::vector<tMaterial> tMats;
+};
+
+struct tConstantBuffer_VertexShader_WVPC
+{
+	XMFLOAT4X4 fWorld_Matrix;
+	XMFLOAT4X4 fView_Matrix;
+	XMFLOAT4X4 fProjection_Matrix;
+	XMFLOAT4X4 fCamera_Matrix;
+	XMFLOAT4X4 fCamera_Origin;
+};
+
+
+struct	tObject_Id
+{
+	uint8_t		nObject_Id;
+	uint8_t		nVertex_Shader_Id;
+	uint8_t		nPixel_Shader_Id;
+	uint8_t		nSRV_Id;
+	bool		bIsShowing;
+};
+
+struct tScene_Objects
+{
+	tFloat3								fWorld_Position[32]{};
+
+	CComPtr<ID3D11Buffer>				d3d_Vertex_Buffers[32]{};
+	CComPtr<ID3D11Buffer>				d3d_Index_Buffers[32]{};
+
+	CComPtr<ID3D11VertexShader>			d3d_Vertex_Shaders[32]{};
+	CComPtr<ID3D11PixelShader>			d3d_Pixel_Shaders[32]{};
+	
+	tMeshes								tMeshes_Data[32]{};
+
+	CComPtr<ID3D11Buffer>				tMaterials_Buffers[32]{};
+	tMaterials							tMaterials_Data[32]{};
+
+	CComPtr<ID3D11ShaderResourceView>	d3d_SRV[32]{};
+};
+
+struct tConstantBuffer_Float4
+{
+	XMFLOAT4 fData = { 0.0f, 0.0f, 0.0f, 0.0f };
+};
+
+struct tConstantBuffer_PixelShader
+{
+	XMFLOAT4 light_pos = { 0.0f, 0.0f, 0.0f, 0.0f };
+	XMFLOAT4 light_col = { 1.0f, 1.0f, 1.0f, 1.0f };
+	XMFLOAT4 light_nrm = { 0.0f, 0.0f, 0.0f, 0.0f };
+	XMFLOAT4 ambient = { 0.0f, 0.0f, 0.0f, 0.0f };
+	XMFLOAT4 diffuse = { 0.0f, 0.0f, 0.0f, 0.0f };
+	XMFLOAT4 emissive = { 0.0f, 0.0f, 0.0f, 0.0f };
+	XMFLOAT4 reflection = { 0.0f, 0.0f, 0.0f, 0.0f };
+	XMFLOAT4 shininess = { 0.0f, 0.0f, 0.0f, 0.0f };
+	XMFLOAT4 specular = { 0.0f, 0.0f, 0.0f, 0.0f };
+	XMFLOAT4 transparency = { 0.0f, 0.0f, 0.0f, 0.0f };
 };

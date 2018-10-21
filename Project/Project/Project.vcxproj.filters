@@ -49,6 +49,12 @@
     <Filter Include="Renderer\Vertex">
       <UniqueIdentifier>{ff52454c-38e7-4fa6-87b7-159e582e940e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Camera">
+      <UniqueIdentifier>{af698bc9-1e7c-4f04-ac9b-f32256499293}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scene Manager">
+      <UniqueIdentifier>{a2706948-9f47-4f8b-b50a-f737cb3a3550}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="header.h">
@@ -96,12 +102,6 @@
     <ClInclude Include="WICTextureLoader.h">
       <Filter>Assets\Helper</Filter>
     </ClInclude>
-    <ClInclude Include="renderer.h">
-      <Filter>Renderer\Code</Filter>
-    </ClInclude>
-    <ClInclude Include="renderer_impl.h">
-      <Filter>Renderer\Code</Filter>
-    </ClInclude>
     <ClInclude Include="renderer_structs.h">
       <Filter>Renderer\Code</Filter>
     </ClInclude>
@@ -109,7 +109,16 @@
       <Filter>Renderer\Code</Filter>
     </ClInclude>
     <ClInclude Include="Object System.h">
-      <Filter>Renderer</Filter>
+      <Filter>Renderer\Code</Filter>
+    </ClInclude>
+    <ClInclude Include="Render_Manager.h">
+      <Filter>Renderer\Code</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene_Manager.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -140,8 +149,14 @@
     <ClCompile Include="WICTextureLoader.cpp">
       <Filter>Assets\Helper</Filter>
     </ClCompile>
-    <ClCompile Include="renderer.cpp">
+    <ClCompile Include="Render_Manager.cpp">
       <Filter>Renderer\Code</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene_Manager.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -173,14 +188,14 @@
     <FxCompile Include="VertexShader_Bullet.hlsl">
       <Filter>Renderer\Vertex</Filter>
     </FxCompile>
-    <FxCompile Include="VertexShader_Arena.hlsl">
-      <Filter>Renderer</Filter>
-    </FxCompile>
-    <FxCompile Include="PixelShader_Arena.hlsl">
-      <Filter>Renderer</Filter>
-    </FxCompile>
     <FxCompile Include="PixelShader_Priest.hlsl">
       <Filter>Renderer\Pixel</Filter>
+    </FxCompile>
+    <FxCompile Include="PixelShader_Arena.hlsl">
+      <Filter>Renderer\Pixel</Filter>
+    </FxCompile>
+    <FxCompile Include="VertexShader_Arena.hlsl">
+      <Filter>Renderer\Vertex</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>

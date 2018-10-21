@@ -1,31 +1,33 @@
-/************************************************************************
-* Filename:  		renderer.cpp
-* Date:      		10/02/2018
-* Mod. Date: 		10/09/2018
-* Mod. Initials:	WM
-* Author:    		Wichet Manawanitjarern
-* Purpose:   		Class to pass data from game loop to renderer_impl
-*************************************************************************/
 #pragma once
-#include <memory>
-#include "view.h"
 
-class cRenderer
-{
-public:
-	using native_handle_t = void*;
+#include <atlbase.h>
+#include <d3d11.h>
+#pragma comment(lib, "d3d11.lib")
+#include <DirectXMath.h>
+#include <DirectXPackedVector.h>
+#include <DirectXColors.h>
+#include <DirectXCollision.h>
+using namespace DirectX;
+#include <iostream>
 
-	cRenderer(native_handle_t hwnd, cView cDefault_View_In);
-	
-	~cRenderer();
-	
-	cView cDefault_View;
-	
-	void draw();
+#include "basic_structs.h"
+#include "binary_reader.h"
+#include "collisions.h"
+#include "DDSTextureLoader.h"
+#include "Render_Manager.h"
+#include "renderer_structs.h"
+#include "Object System.h"
+#include "WICTextureLoader.h"
+#include "XTime.h"
 
-private:
+#include "VertexShader.csh"
+#include "VertexShader_Bullet.csh"
+#include "VertexShader_Arena.csh"
 
-	struct tImpl;
+#include "PixelShader.csh"
+#include "PixelShader_Mage.csh"
+#include "PixelShader_Arena.csh"
+#include "PixelShader_Priest.csh"
 
-	std::unique_ptr<cRenderer::tImpl> pcRendererImpl;
-};
+#include "PixelShader_Screen.csh"
+#include "dopeSoundSystem.h"
