@@ -118,7 +118,7 @@
       <Filter>Camera</Filter>
     </ClInclude>
     <ClInclude Include="Scene_Manager.h">
-      <Filter>Header Files</Filter>
+      <Filter>Scene Manager</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -156,7 +156,7 @@
       <Filter>Camera</Filter>
     </ClCompile>
     <ClCompile Include="Scene_Manager.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Scene Manager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

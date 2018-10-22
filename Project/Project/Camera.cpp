@@ -39,16 +39,45 @@ void cCamera::Rotation(tFloat4 fRotation_Vect)
 {
 	XMFLOAT4X4 xm_fView_Matrix = tFloat4x4_to_XMFLOAT4x4(fView_Matrix);
 	XMMATRIX mView_Matrix = XMLoadFloat4x4(&xm_fView_Matrix);
-	XMMATRIX mRotation_Matrix = XMMatrixTranslation(fRotation_Vect.fX, fRotation_Vect.fY, fRotation_Vect.fZ);
-
-	if (fRotation_Vect.fW == 0)
-		mView_Matrix = XMMatrixMultiply(mRotation_Matrix, mView_Matrix);
-	else
+	XMMATRIX mRotation_Matrix;
+	switch ((int)fRotation_Vect.fW)
 	{
+	case 0:
+	{
+		mRotation_Matrix = XMMatrixRotationX(fRotation_Vect.fX);
+		mView_Matrix = XMMatrixMultiply(mRotation_Matrix, mView_Matrix);
+		break;
+	}
+	case 1:
+	{
+		mRotation_Matrix = XMMatrixRotationX(fRotation_Vect.fX);
+		mView_Matrix = XMMatrixMultiply(mRotation_Matrix, mView_Matrix);
+		break;
+	}
+	case 2:
+	{
+		mRotation_Matrix = XMMatrixRotationY(fRotation_Vect.fY);
+
 		XMVECTOR vPosition = XMVectorSet(mView_Matrix.r[3].m128_f32[0], mView_Matrix.r[3].m128_f32[1], mView_Matrix.r[3].m128_f32[2], 1.0f);
 		mView_Matrix.r[3] = XMVectorSet(0, 0, 0, 1);
 		mView_Matrix = XMMatrixMultiply(mView_Matrix, mRotation_Matrix);
 		mView_Matrix.r[3] = vPosition;
+
+		break;
+	}
+	case 3:
+	{
+		mRotation_Matrix = XMMatrixRotationY(fRotation_Vect.fY);
+
+		XMVECTOR vPosition = XMVectorSet(mView_Matrix.r[3].m128_f32[0], mView_Matrix.r[3].m128_f32[1], mView_Matrix.r[3].m128_f32[2], 1.0f);
+		mView_Matrix.r[3] = XMVectorSet(0, 0, 0, 1);
+		mView_Matrix = XMMatrixMultiply(mView_Matrix, mRotation_Matrix);
+		mView_Matrix.r[3] = vPosition;
+
+		break;
+	}
+	default:
+		break;
 	}
 
 	XMStoreFloat4x4(&xm_fView_Matrix, mView_Matrix);

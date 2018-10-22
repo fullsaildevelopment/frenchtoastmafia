@@ -3,11 +3,16 @@
 #include "Camera.h"
 #include "renderer_structs.h"
 #include "Scene_Manager.h"
+#include "XTime.h"
 
 // Basic Shaders
 #include "VertexShader.csh"
 #include "PixelShader.csh"
 #include "PixelShader_Screen.csh"
+
+// Object Shaders
+#include "VertexShader_Arena.csh"
+#include "PixelShader_Arena.csh"
 
 class cRender_Manager
 {
@@ -51,6 +56,9 @@ private:
 	tConstantBuffer_VertexShader_WVPC tWVPC;
 	XMFLOAT4X4 fCamera_Matrix;
 	XMFLOAT4X4 fCamera_Origin;
+
+	// TIME
+	XTime cTime;
 
 	// Scene
 	cScene_Manager cSM;

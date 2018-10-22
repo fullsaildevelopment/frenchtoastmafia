@@ -203,11 +203,25 @@ void cRender_Manager::Load(tScene_Objects *tScene)
 		d3dDevice->CreateBuffer(&d3dBuffer_Desc, &d3dSRD, &d3d_tmp_index_buffer.p);
 		tScene->d3d_Index_Buffers[i] = d3d_tmp_index_buffer;
 
-		// SRV
-		std::wstring ws_tmp_srv = std::wstring(tScene->szSRV_File_Path[0].begin(), tScene->szSRV_File_Path[0].end());
-		const wchar_t* tmp_srv = ws_tmp_srv.c_str();
-		CreateDDSTextureFromFile(d3dDevice, tmp_srv, nullptr, &d3d_tmp_srv.p);
-		tScene->d3d_SRV[i] = d3d_tmp_srv;
+		//VERTEX SHADERS
+		if (i == 1)
+			d3dDevice->CreateVertexShader(VertexShader_Arena, sizeof(VertexShader_Arena), NULL, &tScene->d3d_Vertex_Shaders[1]);
+
+		//PIXEL SHADERS
+		if(i == 1)
+			d3dDevice->CreatePixelShader(PixelShader_Arena, sizeof(PixelShader_Arena), NULL, &tScene->d3d_Pixel_Shaders[1]);
+
+		// MATERIALS	
+
+		//// SRV
+		if (i == 1)
+		{
+			std::wstring ws_tmp_srv = std::wstring(tScene->tMaterials_Data[1].tMats[0].szDiffuse_File_Path.begin(), tScene->tMaterials_Data[1].tMats[0].szDiffuse_File_Path.end());
+			const wchar_t* tmp_srv = ws_tmp_srv.c_str();
+			CreateWICTextureFromFile(d3dDevice, d3dContext, tmp_srv, nullptr, &tScene->d3d_SRV[i], 0);
+		}
+		
+		//tScene->d3d_SRV[i] = d3d_tmp_srv;
 	}
 
 }
@@ -219,7 +233,7 @@ void cRender_Manager::Unload(tScene_Objects tScene)
 void cRender_Manager::Draw(tScene_Objects tScene)
 {
 	// SIGNALS
-	//cTime.Signal();
+	cTime.Signal();
 
 	// RESIZE / RESET RTV AND VP
 	d3dContext->OMSetRenderTargets(0, 0, 0);
@@ -247,15 +261,117 @@ void cRender_Manager::Draw(tScene_Objects tScene)
 	float fWindow_Height = (float)current_window_size.bottom - (float)current_window_size.top;
 	float fWindow_Width = (float)current_window_size.right - (float)current_window_size.left;
 	
-	// CONSTANT BUFFERS
+	// CONTROLS
+	{
+		tFloat4 change_data;
+
+		// A - move left
+		if (GetAsyncKeyState('A'))
+		{
+			change_data = { ((float)cTime.Delta() * 25), 0.0f, 0.0f, 0.0f };
+			cCam.Translation(change_data);
+		}
+
+		// D - move right
+		if (GetAsyncKeyState('D'))
+		{
+			change_data = { -((float)cTime.Delta() * 25), 0.0f, 0.0f, 0.0f };
+			cCam.Translation(change_data);
+		}
+
+		// Q - move up
+		if (GetAsyncKeyState('Q'))
+		{
+			change_data = { 0.0f, -((float)cTime.Delta() * 25), 0.0f, 1.0f };
+			cCam.Translation(change_data);
+		}
+
+		// E - move down
+		if (GetAsyncKeyState('E'))
+		{
+			change_data = { 0.0f, ((float)cTime.Delta() * 25), 0.0f, 1.0f };
+			cCam.Translation(change_data);
+		}
+
+		// S - move out
+		if (GetAsyncKeyState('S'))
+		{
+			change_data = { 0.0f, 0.0f, ((float)cTime.Delta() * 25), 0.0f };
+			cCam.Translation(change_data);
+		}
+
+		// W - move in
+		if (GetAsyncKeyState('W'))
+		{
+			change_data = { 0.0f, 0.0f, -((float)cTime.Delta() * 25), 0.0f };
+			cCam.Translation(change_data);
+		}
+
+		// I - look up
+		if (GetAsyncKeyState('I'))
+		{
+			change_data = { -(float)cTime.Delta(), 0.0f, 0.0f, 0.0f };
+			cCam.Rotation(change_data);
+		}
+
+		// K - look down
+		if (GetAsyncKeyState('K'))
+		{
+			change_data = { (float)cTime.Delta(), 0.0f, 0.0f, 1.0f };
+			cCam.Rotation(change_data);
+		}
+
+		// L - look right
+		if (GetAsyncKeyState('L'))
+		{
+			change_data = { 0.0f, (float)cTime.Delta(), 0.0f, 2.0f };
+			cCam.Rotation(change_data);
+		}
+
+		// J - look left
+		if (GetAsyncKeyState('J'))
+		{
+			change_data = { 0.0f, -(float)cTime.Delta(), 0.0f, 3.0f };
+			cCam.Rotation(change_data);
+		}
+
+		cCam.Normalize();
+	}
+//	// CONSTANT BUFFERS
+//	{
+//		// CONSTANT BUFFER - WVPC
+//		{
+//			// STORE DATA
+//
+//			XMStoreFloat4x4(&tWVPC.fWorld_Matrix, XMMatrixIdentity());
+//			XMStoreFloat4x4(&tWVPC.fView_Matrix, XMMatrixInverse(nullptr, mCamera_Matrix));
+//			XMStoreFloat4x4(&tWVPC.fProjection_Matrix, XMMatrixPerspectiveFovLH(XMConvertToRadians(45), fWindow_Width / fWindow_Height, 0.1f, 1000.0f));
+//			XMStoreFloat4x4(&tWVPC.fCamera_Matrix, mCamera_Matrix);
+//
+//			// MAP DATA
+//			d3dContext->Map(d3dConstant_Buffer_WVPC, 0, D3D11_MAP_WRITE_DISCARD, 0, &d3dMSR);
+//			memcpy(d3dMSR.pData, &tWVPC, sizeof(tConstantBuffer_VertexShader_WVPC));
+//			d3dContext->Unmap(d3dConstant_Buffer_WVPC, 0);
+//			ID3D11Buffer *tmp_wvpc_buffer[] = { d3dConstant_Buffer_WVPC };
+//			d3dContext->VSSetConstantBuffers(0, 1, tmp_wvpc_buffer);
+//		}
+//	}
+
+
+	unsigned int verts_size = sizeof(tVertex);
+	unsigned int off_set = 0;
+
+	XMStoreFloat4x4(&tWVPC.fView_Matrix, XMMatrixInverse(nullptr, mCamera_Matrix));
+	XMStoreFloat4x4(&tWVPC.fProjection_Matrix, XMMatrixPerspectiveFovLH(XMConvertToRadians(45), fWindow_Width / fWindow_Height, 0.1f, 1000.0f));
+	XMStoreFloat4x4(&tWVPC.fCamera_Matrix, mCamera_Matrix);
+
+	for (int i = 0; i < 3; i++)
 	{
 		// CONSTANT BUFFER - WVPC
 		{
 			// STORE DATA
-			XMStoreFloat4x4(&tWVPC.fWorld_Matrix, XMMatrixIdentity());
-			XMStoreFloat4x4(&tWVPC.fView_Matrix, XMMatrixInverse(nullptr, mCamera_Matrix));
-			XMStoreFloat4x4(&tWVPC.fProjection_Matrix, XMMatrixPerspectiveFovLH(XMConvertToRadians(45), fWindow_Width / fWindow_Height, 0.1f, 1000.0f));
-			XMStoreFloat4x4(&tWVPC.fCamera_Matrix, mCamera_Matrix);
+
+			tWVPC.fWorld_Matrix = tScene.fWorld_Matrix[i];
 
 			// MAP DATA
 			d3dContext->Map(d3dConstant_Buffer_WVPC, 0, D3D11_MAP_WRITE_DISCARD, 0, &d3dMSR);
@@ -264,22 +380,32 @@ void cRender_Manager::Draw(tScene_Objects tScene)
 			ID3D11Buffer *tmp_wvpc_buffer[] = { d3dConstant_Buffer_WVPC };
 			d3dContext->VSSetConstantBuffers(0, 1, tmp_wvpc_buffer);
 		}
+
+		ID3D11Buffer *ts_v_buffer[] = { tScene.d3d_Vertex_Buffers[i] };
+		d3dContext->IASetVertexBuffers(0, 1, ts_v_buffer, &verts_size, &off_set);
+		d3dContext->IASetIndexBuffer(tScene.d3d_Index_Buffers[i], DXGI_FORMAT_R32_UINT, 0);
+		d3dContext->IASetInputLayout(d3dInput_Layout);
+		d3dContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+		if (i != 1)
+		{
+			d3dContext->VSSetShader(d3dVertex_Shader, NULL, 0);
+			d3dContext->PSSetShader(d3dPixel_Shader, NULL, 0);
+		}
+		else
+		{
+			d3dContext->VSSetShader( tScene.d3d_Vertex_Shaders[1], NULL, 0);
+			d3dContext->PSSetShader( tScene.d3d_Pixel_Shaders[1], NULL, 0);
+			d3dContext->PSSetShaderResources(0, 1, &tScene.d3d_SRV[1].p);
+		}
+		//d3dContext->PSSetShader(d3dPixel_Shader_Screen, NULL, 0);
+		//ID3D11ShaderResourceView *tmp_intro_srv[] = { tScene.d3d_SRV[0] };
+		//d3dContext->PSSetShaderResources(0, 1, tmp_intro_srv);
+		//if (i != 1)
+			d3dContext->DrawIndexed(tScene.tMesh_Data[i].nIndex_Count, 0, 0);
 	}
+	
 
-
-	unsigned int verts_size = sizeof(tVertex);
-	unsigned int off_set = 0;
-
-	ID3D11Buffer *ts_v_buffer[] = { tScene.d3d_Vertex_Buffers[0] };
-	d3dContext->IASetVertexBuffers(0, 1, ts_v_buffer, &verts_size, &off_set);
-	d3dContext->IASetIndexBuffer(tScene.d3d_Index_Buffers[0], DXGI_FORMAT_R32_UINT, 0);
-	d3dContext->IASetInputLayout(d3dInput_Layout);
-	d3dContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-	d3dContext->VSSetShader(d3dVertex_Shader, NULL, 0);
-	d3dContext->PSSetShader(d3dPixel_Shader_Screen, NULL, 0);
-	ID3D11ShaderResourceView *tmp_intro_srv[] = { tScene.d3d_SRV[0] };
-	d3dContext->PSSetShaderResources(0, 1, tmp_intro_srv);
-	d3dContext->DrawIndexed(tScene.tMesh_Data[0].nIndex_Count, 0, 0);
+	d3dSwap_Chain->Present(1, 0);
 }
 
 void cRender_Manager::DrawToTexture()
