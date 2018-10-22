@@ -24,11 +24,6 @@ struct tMesh
 	std::vector<int> nIndicies;
 };
 
-struct tMeshes
-{
-	std::vector<tMesh> tMes;
-};
-
 struct tMaterial
 {
 	tFloat4 tAmbient = { 0.0f, 0.0f, 0.0f, 0.0f };
@@ -75,6 +70,7 @@ struct	tObject_Id
 
 struct tScene_Objects
 {
+	int nObject_Count;
 	tFloat3								fWorld_Position[32]{};
 
 	CComPtr<ID3D11Buffer>				d3d_Vertex_Buffers[32]{};
@@ -82,13 +78,13 @@ struct tScene_Objects
 
 	CComPtr<ID3D11VertexShader>			d3d_Vertex_Shaders[32]{};
 	CComPtr<ID3D11PixelShader>			d3d_Pixel_Shaders[32]{};
-	
-	tMeshes								tMeshes_Data[32]{};
+	tMesh								tMesh_Data[32]{};
 
 	CComPtr<ID3D11Buffer>				tMaterials_Buffers[32]{};
 	tMaterials							tMaterials_Data[32]{};
 
 	CComPtr<ID3D11ShaderResourceView>	d3d_SRV[32]{};
+	std::string							szSRV_File_Path[32]{};
 };
 
 struct tConstantBuffer_Float4

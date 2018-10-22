@@ -16,18 +16,15 @@ void cScene_Manager::SetDevice(CComPtr<ID3D11Device> _d3dDevice)
 	d3dDevice = _d3dDevice;
 }
 
-tScene_Objects cScene_Manager::GetIntro()
+tScene_Objects cScene_Manager::GetScene(int nScene_Id)
 {
-	tScene_Objects tIntro;
 
-	tIntro.fWorld_Position[0] = { 0,0,0 };
+	tScene_Objects tScene;
 
-	CComPtr<ID3D11Buffer> d3d_game_screen_vertex_buffer;
-	CComPtr<ID3D11Buffer> d3d_game_screen_index_buffer;
-	CComPtr<ID3D11ShaderResourceView> intro_srv;
+	tScene.nObject_Count = 1;
+	tScene.fWorld_Position[0] = { 0,0,0 };
 
-	D3D11_BUFFER_DESC d3dBuffer_Desc;
-	D3D11_SUBRESOURCE_DATA d3dSRD;
+
 
 	// VERTEX BUFFER
 	tVertex *test_screen = new tVertex[4];
@@ -59,20 +56,12 @@ tScene_Objects cScene_Manager::GetIntro()
 	test_screen[3].fTexture_Coordinate.fX = 1.0f;
 	test_screen[3].fTexture_Coordinate.fY = 1.0f;
 
-	ZeroMemory(&d3dBuffer_Desc, sizeof(D3D11_BUFFER_DESC));
-	d3dBuffer_Desc.ByteWidth = sizeof(tVertex) * 4;
-	d3dBuffer_Desc.Usage = D3D11_USAGE_IMMUTABLE;
-	d3dBuffer_Desc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-	d3dBuffer_Desc.CPUAccessFlags = NULL;
-	d3dBuffer_Desc.MiscFlags = 0;
-	d3dBuffer_Desc.StructureByteStride = 0;
+	for (int i = 0; i < 4; i++)
+	{
+		tScene.tMesh_Data[0].tVerts.push_back(test_screen[i]);
+	}
 
-	ZeroMemory(&d3dSRD, sizeof(D3D11_SUBRESOURCE_DATA));
-	d3dSRD.pSysMem = test_screen;
-	d3dSRD.SysMemPitch = 0;
-	d3dSRD.SysMemSlicePitch = 0;
-
-	HRESULT hr = d3dDevice->CreateBuffer(&d3dBuffer_Desc, &d3dSRD, &d3d_game_screen_vertex_buffer);
+	tScene.tMesh_Data[0].nVertex_Count = 4;
 
 	// INDEX BUFFER
 
@@ -82,27 +71,13 @@ tScene_Objects cScene_Manager::GetIntro()
 		1,3,2
 	};
 
-	ZeroMemory(&d3dBuffer_Desc, sizeof(D3D11_BUFFER_DESC));
-	d3dBuffer_Desc.ByteWidth = sizeof(unsigned int) * 6;
-	d3dBuffer_Desc.Usage = D3D11_USAGE_IMMUTABLE;
-	d3dBuffer_Desc.BindFlags = D3D11_BIND_INDEX_BUFFER;
-	d3dBuffer_Desc.CPUAccessFlags = NULL;
-	d3dBuffer_Desc.MiscFlags = 0;
-	d3dBuffer_Desc.StructureByteStride = 0;
+	for (int i = 0; i < 6; i++)
+	{
+		tScene.tMesh_Data[0].nIndicies.push_back(test_screen_indicies[i]);
+	}
+	tScene.tMesh_Data[0].nIndex_Count = 6;
 
-	ZeroMemory(&d3dSRD, sizeof(D3D11_SUBRESOURCE_DATA));
-	d3dSRD.pSysMem = test_screen_indicies;
-	d3dSRD.SysMemPitch = 0;
-	d3dSRD.SysMemSlicePitch = 0;
+	tScene.szSRV_File_Path[0] = "1.dds";
 
-	d3dDevice->CreateBuffer(&d3dBuffer_Desc, &d3dSRD, &d3d_game_screen_index_buffer.p);
-
-	// SRV
-	CreateDDSTextureFromFile(d3dDevice, L"1.dds", nullptr, &intro_srv.p);
-
-	tIntro.d3d_Vertex_Buffers[0] = d3d_game_screen_vertex_buffer;
-	tIntro.d3d_Index_Buffers[0] = d3d_game_screen_index_buffer;
-	tIntro.d3d_SRV[0] = intro_srv;
-
-	return tIntro;
+	return tScene;
 }

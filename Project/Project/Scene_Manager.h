@@ -13,6 +13,6 @@ public:
 	~cScene_Manager();
 
 	void SetDevice(CComPtr<ID3D11Device> _d3dDevice);
-	tScene_Objects GetIntro();
+	tScene_Objects GetScene(int nScene_Id);
 };
 

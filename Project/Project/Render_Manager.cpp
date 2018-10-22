@@ -140,17 +140,79 @@ void cRender_Manager::Initialize()
 	cSM.SetDevice(d3dDevice);
 }
 
-tScene_Objects cRender_Manager::GetScene()
+tScene_Objects cRender_Manager::GetScene(int nScene_Id)
 {
-	tScene_Objects tScene = cSM.GetIntro();
+	tScene_Objects tScene = cSM.GetScene(nScene_Id);
 	return tScene;
 }
 
-void cRender_Manager::Load()
+void cRender_Manager::Load(tScene_Objects *tScene)
 {
+	for (int i = 0; i < tScene->nObject_Count; i++)
+	{
+		CComPtr<ID3D11Buffer> d3d_tmp_vertex_buffer;
+		CComPtr<ID3D11Buffer> d3d_tmp_index_buffer;
+		CComPtr<ID3D11ShaderResourceView> d3d_tmp_srv;
+
+		D3D11_BUFFER_DESC d3dBuffer_Desc;
+		D3D11_SUBRESOURCE_DATA d3dSRD;
+
+		// VERTEX
+		tVertex *tmp_verts = new tVertex[tScene->tMesh_Data[i].nVertex_Count];
+		for (int j = 0; j < tScene->tMesh_Data[i].nVertex_Count; j++)
+		{
+			tmp_verts[j] = tScene->tMesh_Data[i].tVerts[j];
+		}
+
+		ZeroMemory(&d3dBuffer_Desc, sizeof(D3D11_BUFFER_DESC));
+		d3dBuffer_Desc.ByteWidth = sizeof(tVertex) * tScene->tMesh_Data[i].nVertex_Count;
+		d3dBuffer_Desc.Usage = D3D11_USAGE_IMMUTABLE;
+		d3dBuffer_Desc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+		d3dBuffer_Desc.CPUAccessFlags = NULL;
+		d3dBuffer_Desc.MiscFlags = 0;
+		d3dBuffer_Desc.StructureByteStride = 0;
+
+		ZeroMemory(&d3dSRD, sizeof(D3D11_SUBRESOURCE_DATA));
+		d3dSRD.pSysMem = tmp_verts;
+		d3dSRD.SysMemPitch = 0;
+		d3dSRD.SysMemSlicePitch = 0;
+
+		d3dDevice->CreateBuffer(&d3dBuffer_Desc, &d3dSRD, &d3d_tmp_vertex_buffer);
+		tScene->d3d_Vertex_Buffers[i] = d3d_tmp_vertex_buffer;
+
+		// INDEX
+		int *tmp_inds = new int[tScene->tMesh_Data[i].nIndex_Count];
+		for (int j = 0; j < tScene->tMesh_Data[i].nIndex_Count; j++)
+		{
+			tmp_inds[j] = tScene->tMesh_Data[i].nIndicies[j];
+		}
+
+		ZeroMemory(&d3dBuffer_Desc, sizeof(D3D11_BUFFER_DESC));
+		d3dBuffer_Desc.ByteWidth = sizeof(unsigned int) * tScene->tMesh_Data[i].nIndex_Count;
+		d3dBuffer_Desc.Usage = D3D11_USAGE_IMMUTABLE;
+		d3dBuffer_Desc.BindFlags = D3D11_BIND_INDEX_BUFFER;
+		d3dBuffer_Desc.CPUAccessFlags = NULL;
+		d3dBuffer_Desc.MiscFlags = 0;
+		d3dBuffer_Desc.StructureByteStride = 0;
+
+		ZeroMemory(&d3dSRD, sizeof(D3D11_SUBRESOURCE_DATA));
+		d3dSRD.pSysMem = tmp_inds;
+		d3dSRD.SysMemPitch = 0;
+		d3dSRD.SysMemSlicePitch = 0;
+
+		d3dDevice->CreateBuffer(&d3dBuffer_Desc, &d3dSRD, &d3d_tmp_index_buffer.p);
+		tScene->d3d_Index_Buffers[i] = d3d_tmp_index_buffer;
+
+		// SRV
+		std::wstring ws_tmp_srv = std::wstring(tScene->szSRV_File_Path[0].begin(), tScene->szSRV_File_Path[0].end());
+		const wchar_t* tmp_srv = ws_tmp_srv.c_str();
+		CreateDDSTextureFromFile(d3dDevice, tmp_srv, nullptr, &d3d_tmp_srv.p);
+		tScene->d3d_SRV[i] = d3d_tmp_srv;
+	}
+
 }
 
-void cRender_Manager::Unload()
+void cRender_Manager::Unload(tScene_Objects tScene)
 {
 }
 
@@ -217,7 +279,7 @@ void cRender_Manager::Draw(tScene_Objects tScene)
 	d3dContext->PSSetShader(d3dPixel_Shader_Screen, NULL, 0);
 	ID3D11ShaderResourceView *tmp_intro_srv[] = { tScene.d3d_SRV[0] };
 	d3dContext->PSSetShaderResources(0, 1, tmp_intro_srv);
-	d3dContext->DrawIndexed(6, 0, 0);
+	d3dContext->DrawIndexed(tScene.tMesh_Data[0].nIndex_Count, 0, 0);
 }
 
 void cRender_Manager::DrawToTexture()

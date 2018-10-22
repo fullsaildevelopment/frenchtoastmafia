@@ -60,9 +60,9 @@ public:
 	~cRender_Manager();
 
 	void Initialize();
-	tScene_Objects GetScene();
-	void Load();
-	void Unload();
+	tScene_Objects GetScene(int nScene_Id);
+	void Load(tScene_Objects *tScene);
+	void Unload(tScene_Objects tScene);
 	void Draw(tScene_Objects tScene);
 	void DrawToTexture();
 };
