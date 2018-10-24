@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Camera.h"
+#include "defines.h"
 #include "renderer_structs.h"
 #include "Scene_Manager.h"
 #include "XTime.h"
@@ -26,6 +27,8 @@ private:
 	CComPtr<IDXGISwapChain> d3dSwap_Chain;
 	CComPtr<ID3D11Texture2D> d3dZ_Buffer;
 	CComPtr<ID3D11DepthStencilView> d3dDSV;
+	CComPtr<ID3D11DepthStencilState> d3dDSS;
+	CComPtr<ID3D11DepthStencilState> d3dDSS_2;
 	CComPtr<ID3D11RasterizerState> d3dRasterizer_State;
 	CComPtr<ID3D11SamplerState> d3dSampler_State;
 	CComPtr<ID3D11InputLayout> d3dInput_Layout;
@@ -34,6 +37,7 @@ private:
 	DXGI_SWAP_CHAIN_DESC d3dSwap_Chain_Desc;
 	D3D11_VIEWPORT d3dView_Port;
 	D3D11_TEXTURE2D_DESC d3dZ_Buffer_Desc;
+	D3D11_DEPTH_STENCIL_DESC d3dDSS_Desc;
 	D3D11_DEPTH_STENCIL_VIEW_DESC d3dDSV_Desc;
 	D3D11_RASTERIZER_DESC d3dRasterizer_Desc;
 	D3D11_SAMPLER_DESC d3dSampler_State_Desc;

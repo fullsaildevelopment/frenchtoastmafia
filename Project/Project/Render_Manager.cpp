@@ -62,7 +62,7 @@ void cRender_Manager::Initialize()
 	d3dZ_Buffer_Desc.Height = (unsigned int)d3dSwap_Chain_Desc.BufferDesc.Height;
 	d3dZ_Buffer_Desc.MipLevels = 1;
 	d3dZ_Buffer_Desc.ArraySize = 1;
-	d3dZ_Buffer_Desc.Format = DXGI_FORMAT_D32_FLOAT;
+	d3dZ_Buffer_Desc.Format = DXGI_FORMAT_D32_FLOAT_S8X24_UINT; //DXGI_FORMAT_D32_FLOAT
 	d3dZ_Buffer_Desc.SampleDesc.Count = 1;
 	d3dZ_Buffer_Desc.SampleDesc.Quality = 0;
 	d3dZ_Buffer_Desc.Usage = D3D11_USAGE_DEFAULT;
@@ -72,7 +72,28 @@ void cRender_Manager::Initialize()
 
 	d3dDevice->CreateTexture2D(&d3dZ_Buffer_Desc, nullptr, &d3dZ_Buffer.p);
 
-	// DEPTH STENCIL
+	// DEPTH STENCIL STATE
+	ZeroMemory(&d3dDSS_Desc, sizeof(D3D11_DEPTH_STENCIL_DESC));
+	d3dDSS_Desc.DepthEnable = true;
+	d3dDSS_Desc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
+	d3dDSS_Desc.DepthFunc = D3D11_COMPARISON_LESS;
+	// Stencil test parameters
+	d3dDSS_Desc.StencilEnable = true;
+	d3dDSS_Desc.StencilReadMask = 0xFF;
+	d3dDSS_Desc.StencilWriteMask = 0xFF;
+	// Stencil operations if pixel is front-facing
+	d3dDSS_Desc.FrontFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+	d3dDSS_Desc.FrontFace.StencilDepthFailOp = D3D11_STENCIL_OP_INCR;
+	d3dDSS_Desc.FrontFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
+	d3dDSS_Desc.FrontFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
+	// Stencil operations if pixel is back-facing
+	d3dDSS_Desc.BackFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+	d3dDSS_Desc.BackFace.StencilDepthFailOp = D3D11_STENCIL_OP_DECR;
+	d3dDSS_Desc.BackFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
+	d3dDSS_Desc.BackFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
+	d3dDevice->CreateDepthStencilState(&d3dDSS_Desc, &d3dDSS);
+
+	// DEPTH STENCIL VIEW
 	ZeroMemory(&d3dDSV_Desc, sizeof(D3D11_DEPTH_STENCIL_VIEW_DESC));
 	d3dDSV_Desc.Format = d3dZ_Buffer_Desc.Format;
 	d3dDSV_Desc.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
@@ -243,6 +264,7 @@ void cRender_Manager::Draw(tScene_Objects tScene)
 	d3dSwap_Chain->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&back_buffer);
 	d3dDevice->CreateRenderTargetView(back_buffer, NULL, &d3dRTV);
 	ID3D11RenderTargetView *tmp_rtv[] = { d3dRTV };
+	d3dContext->OMSetDepthStencilState(d3dDSS, 1);
 	d3dContext->OMSetRenderTargets(1, tmp_rtv, d3dDSV);
 	d3dContext->RSSetViewports(1, &d3dView_Port);
 	// SKY BLUE
@@ -362,7 +384,7 @@ void cRender_Manager::Draw(tScene_Objects tScene)
 	unsigned int off_set = 0;
 
 	XMStoreFloat4x4(&tWVPC.fView_Matrix, XMMatrixInverse(nullptr, mCamera_Matrix));
-	XMStoreFloat4x4(&tWVPC.fProjection_Matrix, XMMatrixPerspectiveFovLH(XMConvertToRadians(45), fWindow_Width / fWindow_Height, 0.1f, 1000.0f));
+	XMStoreFloat4x4(&tWVPC.fProjection_Matrix, XMMatrixPerspectiveFovLH(XMConvertToRadians(45), fWindow_Width / fWindow_Height, fNearClip, fFarClip));
 	XMStoreFloat4x4(&tWVPC.fCamera_Matrix, mCamera_Matrix);
 
 	for (int i = 0; i < 3; i++)

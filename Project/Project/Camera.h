@@ -12,6 +12,7 @@ public:
 	cCamera();
 	~cCamera();
 
+	void SetPostion(tFloat4 fPosition);
 	void SetPostion(tFloat4x4 fPosition);
 	tFloat4x4 GetPosition();
 
