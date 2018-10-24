@@ -58,6 +58,9 @@
     <Filter Include="VR">
       <UniqueIdentifier>{46449eaf-25b5-4265-8da7-6ef7c74e0741}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Game Loop">
+      <UniqueIdentifier>{b57b7e53-2356-4808-b2a3-54a9fe187f7f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="header.h">
@@ -123,14 +126,17 @@
     <ClInclude Include="Scene_Manager.h">
       <Filter>Scene Manager</Filter>
     </ClInclude>
-    <ClInclude Include="VR.h">
-      <Filter>VR</Filter>
-    </ClInclude>
     <ClInclude Include="defines.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="EngineMath.h">
       <Filter>Helper</Filter>
+    </ClInclude>
+    <ClInclude Include="Game_Loop.h">
+      <Filter>Game Loop</Filter>
+    </ClInclude>
+    <ClInclude Include="VR.h">
+      <Filter>VR</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -170,11 +176,14 @@
     <ClCompile Include="Scene_Manager.cpp">
       <Filter>Scene Manager</Filter>
     </ClCompile>
-    <ClCompile Include="VR.cpp">
-      <Filter>VR</Filter>
-    </ClCompile>
     <ClCompile Include="EngineMath.cpp">
       <Filter>Helper</Filter>
+    </ClCompile>
+    <ClCompile Include="Game_Loop.cpp">
+      <Filter>Game Loop</Filter>
+    </ClCompile>
+    <ClCompile Include="VR.cpp">
+      <Filter>VR</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

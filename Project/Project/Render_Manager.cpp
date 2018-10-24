@@ -1,17 +1,18 @@
 #include "Render_Manager.h"
 
-cRender_Manager::cRender_Manager(HWND _hwnd)
+cRender_Manager::cRender_Manager()
 {
-	hWnd = _hwnd;
 }
 
 cRender_Manager::~cRender_Manager()
 {
 }
 
-void cRender_Manager::Initialize()
+void cRender_Manager::Initialize(HWND _hwnd)
 {
 	// BACKEND SETUP
+	hWnd = _hwnd;
+
 	XMFLOAT4X4 fCamera_Matrix;
 	XMMATRIX mCamera_Matrix = XMMatrixInverse(nullptr, XMMatrixLookAtLH({ 0.0f, 15.0f, -25.0f, 0.0f }, { 0.0f, 0.0f, 0.0f, 0.0f }, { 0.0f, 1.0f, 0.0f, 0.0f }));
 	XMStoreFloat4x4(&fCamera_Matrix, mCamera_Matrix);

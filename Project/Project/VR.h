@@ -3,7 +3,7 @@
 #include "openvr\headers\openvr.h"
 #include "Render_Manager.h"
 #include "EngineMath.h"
-#include "D3D11_Template_Gateware_v5d\D3D11_Template_Gateware\Gateware Redistribution R5d\Interface\G_Math\GMatrix.h"
+#include "GWR5d\Interface\G_Math\GMatrix.h"
 class cVR
 {
 	cCamera *m_cCameraLeft = nullptr,
@@ -81,6 +81,6 @@ public:
 	tFloat4x4 GetHMDMatrixPoseEye(vr::Hmd_Eye nEye);
 	tFloat4x4 GetHMDMatrixProjectionEye(vr::Hmd_Eye nEye);
 	void SetupCameras();
-	bool init(HWND hWnd);
+	bool Initialize(HWND hWnd);
 };
 

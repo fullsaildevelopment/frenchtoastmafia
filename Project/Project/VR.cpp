@@ -17,7 +17,7 @@ tFloat4x4 cVR::GetHMDMatrixPoseEye(vr::Hmd_Eye nEye)
 		return tFloat4x4();
 	}
 
-	HmdMatrix34_t matEyeRight = m_pHMD->GetEyeToHeadTransform(nEye);
+	vr::HmdMatrix34_t matEyeRight = m_pHMD->GetEyeToHeadTransform(nEye);
 	tFloat4x4 in_mat, out_mat;
 
 	in_mat.tX.fX = matEyeRight.m[0][0];
@@ -41,7 +41,7 @@ tFloat4x4 cVR::GetHMDMatrixPoseEye(vr::Hmd_Eye nEye)
 	in_mat.tW.fW = 1.0f;
 
 	out_mat = TMATRIX_To_tFloat4x4(Matrix_Inverse(tFloat4x4_To_TMATRIX(in_mat)));
-	GW:
+
 	return out_mat;
 }
 
@@ -169,7 +169,7 @@ void UpdateHMDMatrixPose()
 	}
 }
 
-bool cVR::init(HWND hWnd)
+bool cVR::Initialize(HWND hWnd)
 {
 	// Create the camera object.
 	m_cCameraLeft = new cCamera;

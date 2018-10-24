@@ -68,10 +68,10 @@ private:
 	cScene_Manager cSM;
 
 public:
-	cRender_Manager(HWND _hwnd);
+	cRender_Manager();
 	~cRender_Manager();
 
-	void Initialize();
+	void Initialize(HWND _hwnd);
 	tScene_Objects GetScene(int nScene_Id);
 	void Load(tScene_Objects *tScene);
 	void Unload(tScene_Objects tScene);
