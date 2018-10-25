@@ -15,7 +15,7 @@ cGame_Loop::~cGame_Loop()
 void cGame_Loop::Setup()
 {
 	c_VR.Initialize(hWnd);
-	cRender.Initialize(hWnd);
+	cRender.Initialize();
 	sound.playSong("fionnulas-tale-celtic-flute-music.mp3", FMOD_LOOP_NORMAL);
 }
 

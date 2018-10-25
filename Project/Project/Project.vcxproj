@@ -221,6 +221,7 @@
     <ClInclude Include="targetver.h" />
     <ClInclude Include="view.h" />
     <ClInclude Include="VR.h" />
+    <ClInclude Include="VR_Renderer.h" />
     <ClInclude Include="WICTextureLoader.h" />
     <ClInclude Include="XTime.h" />
   </ItemGroup>
@@ -235,6 +236,7 @@
     <ClCompile Include="Render_Manager.cpp" />
     <ClCompile Include="Scene_Manager.cpp" />
     <ClCompile Include="VR.cpp" />
+    <ClCompile Include="VR_Renderer.cpp" />
     <ClCompile Include="WICTextureLoader.cpp" />
     <ClCompile Include="XTime.cpp" />
   </ItemGroup>
