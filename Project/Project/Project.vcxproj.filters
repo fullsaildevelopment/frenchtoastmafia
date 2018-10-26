@@ -135,6 +135,9 @@
     <ClInclude Include="Game_Loop.h">
       <Filter>Game Loop</Filter>
     </ClInclude>
+    <ClInclude Include="Graphic_Setup.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="VR.h">
       <Filter>VR</Filter>
     </ClInclude>
@@ -181,6 +184,9 @@
     </ClCompile>
     <ClCompile Include="Game_Loop.cpp">
       <Filter>Game Loop</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphic_Setup.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="VR.cpp">
       <Filter>VR</Filter>

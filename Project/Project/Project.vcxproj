@@ -209,6 +209,7 @@
     <ClInclude Include="collisions.h" />
     <ClInclude Include="EngineMath.h" />
     <ClInclude Include="Game_Loop.h" />
+    <ClInclude Include="Graphic_Setup.h" />
     <ClInclude Include="header.h" />
     <ClInclude Include="math_conversion.h" />
     <ClInclude Include="Object System.h" />
@@ -231,6 +232,7 @@
     <ClCompile Include="collisions.cpp" />
     <ClCompile Include="EngineMath.cpp" />
     <ClCompile Include="Game_Loop.cpp" />
+    <ClCompile Include="Graphic_Setup.cpp" />
     <ClCompile Include="Project.cpp" />
     <ClCompile Include="Render_Manager.cpp" />
     <ClCompile Include="Scene_Manager.cpp" />

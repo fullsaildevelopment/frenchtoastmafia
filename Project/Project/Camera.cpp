@@ -9,14 +9,14 @@ cCamera::~cCamera()
 {
 }
 
-void cCamera::SetPostion(tFloat4 fPosition)
+void cCamera::SetPosition(tFloat4 fPosition)
 {
 	fView_Matrix.tW.fX = fPosition.fX;
 	fView_Matrix.tW.fY = fPosition.fY;
 	fView_Matrix.tW.fZ = fPosition.fZ;
 }
 
-void cCamera::SetPostion(tFloat4x4 fPosition)
+void cCamera::SetPosition(tFloat4x4 fPosition)
 {
 	fView_Matrix = fPosition;
 }
