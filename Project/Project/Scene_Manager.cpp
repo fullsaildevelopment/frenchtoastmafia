@@ -11,21 +11,33 @@ cScene_Manager::~cScene_Manager()
 {
 }
 
-void cScene_Manager::SetDevice(CComPtr<ID3D11Device> _d3dDevice)
-{
-	d3dDevice = _d3dDevice;
-}
-
 tScene_Objects cScene_Manager::GetScene(int nScene_Id)
 {
 	tScene_Objects tScene;
-	tScene.nObject_Count = 3;
-	tScene.fWorld_Position[0] = { 0,0,0 };
-
 	// SCREEN
 	if (nScene_Id < 2 || nScene_Id > 3)
 	{
-		// VERTEX BUFFER
+		//tBinary_Screen tBS;
+		//if (nScene_Id == 0)
+		//	tBS = cBinary_Read.Read_Screen_Binary("intro.bin");
+		//else if (nScene_Id == 1)
+		//	tBS = cBinary_Read.Read_Screen_Binary("menu.bin");
+		//else
+		//	tBS = cBinary_Read.Read_Screen_Binary("replay.bin");
+		//
+		//
+		//tScene.nObject_Count = tBS.nObject_Count;
+		//tScene.fWorld_Position[0] = { 0,0,0 };
+		//tScene.tMesh_Data[0] = tBS.tMes;
+		//if (tBS.vs_check != 0)
+		//	tScene.szVS_File_Path[0] = tBS.vs_name;
+		//if (tBS.ps_check != 0)
+		//	tScene.szPS_File_Path[0] = tBS.ps_name;
+		//if (tBS.srv_check != 0)
+		//	tScene.szSRV_File_Path[0] = tBS.srv_name;
+		tScene.nObject_Count = 1;
+		tScene.fWorld_Position[0] = { 0, 0, 15 };
+
 		tVertex *test_screen = new tVertex[4];
 		test_screen[0].fPosition.fX = -20.0f;
 		test_screen[0].fPosition.fY = 15.0f;
@@ -80,12 +92,18 @@ tScene_Objects cScene_Manager::GetScene(int nScene_Id)
 			tScene.szSRV_File_Path[0] = "1.dds";
 		else if (nScene_Id == 1)
 			tScene.szSRV_File_Path[0] = "2.dds";
-		else if (nScene_Id == 4)
+		else if (nScene_Id > 3)
 			tScene.szSRV_File_Path[0] = "3.dds";
+
+
+		return tScene;
 	}
 	// GAME
 	else
 	{
+		tScene.nObject_Count = 3;
+		tScene.fWorld_Position[0] = { 0, 0, 15};
+
 		// GAME 1 with mage
 		if (nScene_Id == 2)
 		{
@@ -133,7 +151,7 @@ tScene_Objects cScene_Manager::GetScene(int nScene_Id)
 				XMMATRIX tempMat = XMMatrixIdentity();
 
 				tempMat = XMMatrixMultiply(tempMat, XMMatrixScaling(0.05, 0.05, 0.05));
-				tempMat = XMMatrixMultiply(tempMat, XMMatrixRotationX(-3.14/2));
+				tempMat = XMMatrixMultiply(tempMat, XMMatrixRotationX(-3.14 / 2));
 				tempMat = XMMatrixMultiply(tempMat, XMMatrixTranslation(0, 0, 0));
 
 				XMStoreFloat4x4(&tScene.fWorld_Matrix[1], tempMat);
@@ -198,6 +216,7 @@ tScene_Objects cScene_Manager::GetScene(int nScene_Id)
 		}
 		else
 			tMesh  tPriest = cBinary_Read.Read_Mesh("PriestDeathMesh.bin");
+		
+		return tScene;
 	}
-	return tScene;
 }

@@ -2,10 +2,13 @@
 
 #include "Camera.h"
 #include "defines.h"
-#include "EngineMath.h"
 #include "math_conversion.h"
+#include "Matrices.h"
 #include "openvr\headers\openvr.h"
+//#include "openvr-master\headers\openvr.h"
+//#pragma comment (lib, "openvr_api.lib")
 #include "renderer_structs.h"
+//#include "Matrices.h"
 
 // Basic Shaders
 #include "VertexShader.csh"
@@ -67,18 +70,18 @@ private:
 	float m_fScaleSpacing;
 	float m_fScale;
 
-	tFloat4x4 m_mat4HMDPose;
-	tFloat4x4 m_mat4eyePosLeft;
-	tFloat4x4 m_mat4eyePosRight;
+	Matrix4 m_mat4HMDPose;
+	Matrix4 m_mat4eyePosLeft;
+	Matrix4 m_mat4eyePosRight;
 
-	tFloat4x4 m_mat4ProjectionCenter;
-	tFloat4x4 m_mat4ProjectionLeft;
-	tFloat4x4 m_mat4ProjectionRight;
+	Matrix4 m_mat4ProjectionCenter;
+	Matrix4 m_mat4ProjectionLeft;
+	Matrix4 m_mat4ProjectionRight;
 
 	vr::IVRSystem *m_pHMD;
 	vr::IVRRenderModels *m_pRenderModels;
 	vr::TrackedDevicePose_t m_rTrackedDevicePose[vr::k_unMaxTrackedDeviceCount];
-	tFloat4x4 m_rmat4DevicePose[vr::k_unMaxTrackedDeviceCount];
+	Matrix4 m_rmat4DevicePose[vr::k_unMaxTrackedDeviceCount];
 
 	int m_iTrackedControllerCount;
 	int m_iTrackedControllerCount_Last;
@@ -128,12 +131,26 @@ public:
 	void Initialize();
 	void Clean_Up();
 
-	tFloat4x4 GetHMDMatrixPoseEye(vr::Hmd_Eye nEye);
-	tFloat4x4 GetHMDMatrixProjectionEye(vr::Hmd_Eye nEye);
+	Matrix4 GetHMDMatrixPoseEye(vr::Hmd_Eye nEye);
+	Matrix4 GetHMDMatrixProjectionEye(vr::Hmd_Eye nEye);
 	void SetupCameras();
 	tFloat4x4 GetCurrentViewProjectionMatrix(vr::Hmd_Eye nEye);
-	tFloat4x4 ConvertSteamVRMatrixToMatrix4(const vr::HmdMatrix34_t &matPose);
+	Matrix4 ConvertSteamVRMatrixToMatrix4(const vr::HmdMatrix34_t &matPose);
 	void UpdateHMDMatrixPose();
-	CComPtr<ID3D11Device> GetDevice();
+
+	CComPtr<ID3D11Device> Get_Device();
+	CComPtr<ID3D11DeviceContext> Get_Context();
+	CComPtr<ID3D11RenderTargetView> Get_RTV();
+	CComPtr<ID3D11RenderTargetView> Get_RTV_Left();
+	CComPtr<ID3D11RenderTargetView> Get_RTV_Right();
+	CComPtr<ID3D11DepthStencilView> Get_DSV();
+	CComPtr<ID3D11InputLayout> Get_Input_Layout();
+	CComPtr<ID3D11VertexShader> Get_Vertex_Shader();
+	CComPtr<ID3D11PixelShader> Get_Pixel_Shader();
+	CComPtr<IDXGISwapChain> Get_Swap_Chain();
+	D3D11_VIEWPORT Get_View_Port();
+	CComPtr<ID3D11DepthStencilState> Get_Depth_Stencil_State();
+	CComPtr<ID3D11Texture2D> Get_Texture_Left_Eye();
+	CComPtr<ID3D11Texture2D> Get_Texture_Right_Eye();
 };
 

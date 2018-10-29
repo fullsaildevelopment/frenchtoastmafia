@@ -129,9 +129,6 @@
     <ClInclude Include="defines.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="EngineMath.h">
-      <Filter>Helper</Filter>
-    </ClInclude>
     <ClInclude Include="Game_Loop.h">
       <Filter>Game Loop</Filter>
     </ClInclude>
@@ -140,6 +137,15 @@
     </ClInclude>
     <ClInclude Include="VR.h">
       <Filter>VR</Filter>
+    </ClInclude>
+    <ClInclude Include="specific_structs.h">
+      <Filter>Helper</Filter>
+    </ClInclude>
+    <ClInclude Include="Matrices.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Vectors.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -179,9 +185,6 @@
     <ClCompile Include="Scene_Manager.cpp">
       <Filter>Scene Manager</Filter>
     </ClCompile>
-    <ClCompile Include="EngineMath.cpp">
-      <Filter>Helper</Filter>
-    </ClCompile>
     <ClCompile Include="Game_Loop.cpp">
       <Filter>Game Loop</Filter>
     </ClCompile>
@@ -190,6 +193,9 @@
     </ClCompile>
     <ClCompile Include="VR.cpp">
       <Filter>VR</Filter>
+    </ClCompile>
+    <ClCompile Include="Matrices.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

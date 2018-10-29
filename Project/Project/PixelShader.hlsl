@@ -34,7 +34,7 @@ float4 main(INPUT_DATA input) : SV_TARGET
 	if (fData.w == 1)
 		fEnd_Color = RED;
 	else
-		fEnd_Color = BLACK;
+		fEnd_Color = RED;
 
 	return fEnd_Color;
 }

@@ -17,7 +17,6 @@ public:
 	cScene_Manager();
 	~cScene_Manager();
 
-	void SetDevice(CComPtr<ID3D11Device> _d3dDevice);
 	tScene_Objects GetScene(int nScene_Id);
 };
 

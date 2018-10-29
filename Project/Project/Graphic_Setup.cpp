@@ -13,7 +13,6 @@ cGraphics_Setup::~cGraphics_Setup()
 
 void cGraphics_Setup::Initialize()
 {
-
 	UINT createDeviceFlags = 0;
 
 	vr::EVRInitError eError = vr::VRInitError_None;
@@ -49,7 +48,7 @@ void cGraphics_Setup::Initialize()
 
 	ZeroMemory(&d3d_Swap_Chain_Desc, sizeof(DXGI_SWAP_CHAIN_DESC));
 	d3d_Swap_Chain_Desc.BufferCount = 1;
-	d3d_Swap_Chain_Desc.BufferDesc.Width = m_nRenderHeight;
+	d3d_Swap_Chain_Desc.BufferDesc.Width = m_nRenderWidth;
 	d3d_Swap_Chain_Desc.BufferDesc.Height = m_nRenderHeight;
 	d3d_Swap_Chain_Desc.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM; // unsigned normal
 	d3d_Swap_Chain_Desc.BufferDesc.RefreshRate.Numerator = 60;
@@ -80,7 +79,13 @@ void cGraphics_Setup::Initialize()
 	d3d_RTV_Desc.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2D;
 	d3d_RTV_Desc.Texture2D.MipSlice = 0;
 
-	d3d_Device->CreateRenderTargetView(back_buffer, NULL, &d3d_RTV.p);
+	d3d_Device->CreateRenderTargetView(back_buffer, &d3d_RTV_Desc, &d3d_RTV.p);
+
+	d3d_Swap_Chain->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&d3d_Render_Left_Eye);
+	d3d_Device->CreateRenderTargetView(d3d_Render_Left_Eye, &d3d_RTV_Desc, &d3d_RTV_Left_Eye.p);
+
+	d3d_Swap_Chain->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&d3d_Render_Right_Eye);
+	d3d_Device->CreateRenderTargetView(d3d_Render_Right_Eye, &d3d_RTV_Desc, &d3d_RTV_Right_Eye.p);
 	back_buffer->Release();
 	
 	// Z BUFFER / DEPTH STENCIL
@@ -143,8 +148,8 @@ void cGraphics_Setup::Initialize()
 	//BIND RENDER TARGET VIEW
 	//d3d_Context->OMSetRenderTargets(1, &d3d_RTV, d3d_DSV); // depth stencil view is for shadow map
 
-	ID3D11RenderTargetView *tmp_rtv[] = { d3d_RTV };
 	d3d_Context->OMSetDepthStencilState(d3d_DSS, 1);
+	ID3D11RenderTargetView *tmp_rtv[] = { d3d_RTV };
 	d3d_Context->OMSetRenderTargets(1, tmp_rtv, d3d_DSV);
 	// Clear the second depth stencil state before setting the parameters.
 	//ZeroMemory(&d3d_2D_DS_Desc, sizeof(D3D11_DEPTH_STENCIL_DESC));
@@ -170,8 +175,8 @@ void cGraphics_Setup::Initialize()
 	//d3d_Device->CreateDepthStencilState(&d3d_2D_DS_Desc, &d3d_2D_DSS);
 
 	//d3d_View_Port CREATION
-	d3d_View_Port.Width = static_cast<float>(m_nRenderWidth);
-	d3d_View_Port.Height = static_cast<float>(m_nRenderHeight);
+	d3d_View_Port.Width =  m_nRenderWidth;
+	d3d_View_Port.Height = m_nRenderHeight;
 	d3d_View_Port.TopLeftX = 0;
 	d3d_View_Port.TopLeftY = 0;
 	d3d_View_Port.MinDepth = 0.0f;
@@ -227,13 +232,13 @@ void cGraphics_Setup::Initialize()
 	m_cCameraLeft = new cCamera;
 	
 	// Set the initial position of the camera.
-	m_cCameraLeft->SetPosition(tFloat4{ 0.0f, 0.0f, -10.0f, 1.0f });
+	m_cCameraLeft->SetPosition(tFloat4{ 0.0f, 0.0f, -20.0f, 1.0f });
 
 	// Create the camera object.
 	m_cCameraRight = new cCamera;
 
 	// Set the initial position of the camera.
-	m_cCameraRight->SetPosition(tFloat4{ 0.0f, 0.0f, -10.0f, 1.0f });
+	m_cCameraRight->SetPosition(tFloat4{ 0.0f, 0.0f, -20.0f, 1.0f });
 
 	//Removed model and shader class declaration
 
@@ -263,80 +268,44 @@ void cGraphics_Setup::Initialize()
 
 //	return true;
 
-
+	UpdateHMDMatrixPose();
 }
 
 void cGraphics_Setup::Clean_Up()
 {
 }
 
-
-tFloat4x4 cGraphics_Setup::GetHMDMatrixPoseEye(vr::Hmd_Eye nEye)
+Matrix4 cGraphics_Setup::GetHMDMatrixPoseEye(vr::Hmd_Eye nEye)
 {
 	if (!m_pHMD)
-	{
-		return tFloat4x4();
-	}
+		return Matrix4();
 
 	vr::HmdMatrix34_t matEyeRight = m_pHMD->GetEyeToHeadTransform(nEye);
-	tFloat4x4 in_mat, out_mat;
+	Matrix4 matrixObj(
+		matEyeRight.m[0][0], matEyeRight.m[1][0], matEyeRight.m[2][0], 0.0,
+		matEyeRight.m[0][1], matEyeRight.m[1][1], matEyeRight.m[2][1], 0.0,
+		matEyeRight.m[0][2], matEyeRight.m[1][2], matEyeRight.m[2][2], 0.0,
+		matEyeRight.m[0][3], matEyeRight.m[1][3], matEyeRight.m[2][3], 1.0f
+	);
 
-	in_mat.tX.fX = matEyeRight.m[0][0];
-	in_mat.tX.fY = matEyeRight.m[1][0];
-	in_mat.tX.fZ = matEyeRight.m[2][0];
-	in_mat.tX.fW = 0.0f;
-
-	in_mat.tY.fX = matEyeRight.m[0][1];
-	in_mat.tY.fY = matEyeRight.m[1][1];
-	in_mat.tY.fZ = matEyeRight.m[2][1];
-	in_mat.tY.fW = 0.0f;
-
-	in_mat.tZ.fX = matEyeRight.m[0][2];
-	in_mat.tZ.fY = matEyeRight.m[1][2];
-	in_mat.tZ.fZ = matEyeRight.m[2][2];
-	in_mat.tZ.fW = 0.0f;
-
-	in_mat.tW.fX = matEyeRight.m[0][3];
-	in_mat.tW.fY = matEyeRight.m[1][3];
-	in_mat.tW.fZ = matEyeRight.m[2][3];
-	in_mat.tW.fW = 1.0f;
-
-	out_mat = TMATRIX_To_tFloat4x4(Matrix_Inverse(tFloat4x4_To_TMATRIX(in_mat)));
-
-	return out_mat;
+	return matrixObj.invert();
 }
 
-
-tFloat4x4 cGraphics_Setup::GetHMDMatrixProjectionEye(vr::Hmd_Eye nEye)
+Matrix4 cGraphics_Setup::GetHMDMatrixProjectionEye(vr::Hmd_Eye nEye)
 {
 	if (!m_pHMD)
-		return tFloat4x4();
+		return Matrix4();
 	// TODO check here
 	vr::HmdMatrix44_t mat = m_pHMD->GetProjectionMatrix(nEye, m_fNearClip, m_fFarClip);
 
-	tFloat4x4 out_mat;
+	Matrix4 tmpMatrix(
+		mat.m[0][0], mat.m[1][0], mat.m[2][0], mat.m[3][0],
+		mat.m[0][1], mat.m[1][1], mat.m[2][1], mat.m[3][1],
+		mat.m[0][2], mat.m[1][2], mat.m[2][2], mat.m[3][2],
+		mat.m[0][3], mat.m[1][3], mat.m[2][3], mat.m[3][3]
+	);
 
-	out_mat.tX.fX = mat.m[0][0];
-	out_mat.tX.fY = mat.m[1][0];
-	out_mat.tX.fZ = mat.m[2][0];
-	out_mat.tX.fW = mat.m[3][0];
-
-	out_mat.tY.fX = mat.m[0][1];
-	out_mat.tY.fY = mat.m[1][1];
-	out_mat.tY.fZ = mat.m[2][1];
-	out_mat.tY.fW = mat.m[3][1];
-
-	out_mat.tZ.fX = mat.m[0][2];
-	out_mat.tZ.fY = mat.m[1][2];
-	out_mat.tZ.fZ = mat.m[2][2];
-	out_mat.tZ.fW = mat.m[3][2];
-
-	out_mat.tW.fX = mat.m[0][3];
-	out_mat.tW.fY = mat.m[1][3];
-	out_mat.tW.fZ = mat.m[2][3];
-	out_mat.tW.fW = mat.m[3][3];
-
-	return out_mat;
+	return tmpMatrix;
 }
 
 void cGraphics_Setup::SetupCameras()
@@ -350,43 +319,34 @@ void cGraphics_Setup::SetupCameras()
 tFloat4x4 cGraphics_Setup::GetCurrentViewProjectionMatrix(vr::Hmd_Eye nEye)
 {
 	tFloat4x4 out_mat;
+	Matrix4 matMVP;
 	if (nEye == vr::Eye_Left)
 	{
-		out_mat = TMATRIX_To_tFloat4x4(Matrix_Matrix_Multiply(Matrix_Matrix_Multiply(tFloat4x4_To_TMATRIX(m_mat4ProjectionLeft), tFloat4x4_To_TMATRIX(m_mat4eyePosLeft)), tFloat4x4_To_TMATRIX(m_mat4HMDPose)));
+		matMVP = m_mat4ProjectionLeft * m_mat4eyePosLeft * m_mat4HMDPose;
 	}
 	else if (nEye == vr::Eye_Right)
 	{
-		out_mat = TMATRIX_To_tFloat4x4(Matrix_Matrix_Multiply(Matrix_Matrix_Multiply(tFloat4x4_To_TMATRIX(m_mat4ProjectionRight), tFloat4x4_To_TMATRIX(m_mat4eyePosRight)), tFloat4x4_To_TMATRIX(m_mat4HMDPose)));
+		matMVP = m_mat4ProjectionRight * m_mat4eyePosRight *  m_mat4HMDPose;
 	}
+
+	matMVP[8] *= -1;
+	matMVP[9] *= -1;
+	matMVP[10] *= -1;
+	matMVP.transpose();
+	out_mat = Matrix4_To_tFloat4x4(matMVP);
 
 	return out_mat;
 }
 
-tFloat4x4 cGraphics_Setup::ConvertSteamVRMatrixToMatrix4(const vr::HmdMatrix34_t &matPose)
+Matrix4 cGraphics_Setup::ConvertSteamVRMatrixToMatrix4(const vr::HmdMatrix34_t &matPose)
 {
-	tFloat4x4 out_mat;
-
-	out_mat.tX.fX = matPose.m[0][0];
-	out_mat.tX.fY = matPose.m[1][0];
-	out_mat.tX.fZ = matPose.m[2][0];
-	out_mat.tX.fW = 0.0f;
-
-	out_mat.tY.fX = matPose.m[0][1];
-	out_mat.tY.fY = matPose.m[1][1];
-	out_mat.tY.fZ = matPose.m[2][1];
-	out_mat.tY.fW = 0.0f;
-
-	out_mat.tZ.fX = matPose.m[0][2];
-	out_mat.tZ.fY = matPose.m[1][2];
-	out_mat.tZ.fZ = matPose.m[2][2];
-	out_mat.tZ.fW = 0.0f;
-
-	out_mat.tW.fX = matPose.m[0][3];
-	out_mat.tW.fY = matPose.m[1][3];
-	out_mat.tW.fZ = matPose.m[2][3];
-	out_mat.tW.fW = 1.0f;
-
-	return out_mat;
+	Matrix4 matrixObj(
+		matPose.m[0][0], matPose.m[1][0], matPose.m[2][0], 0.0,
+		matPose.m[0][1], matPose.m[1][1], matPose.m[2][1], 0.0,
+		matPose.m[0][2], matPose.m[1][2], matPose.m[2][2], 0.0,
+		matPose.m[0][3], matPose.m[1][3], matPose.m[2][3], 1.0f
+	);
+	return matrixObj;
 }
 
 void cGraphics_Setup::UpdateHMDMatrixPose()
@@ -403,26 +363,7 @@ void cGraphics_Setup::UpdateHMDMatrixPose()
 		if (m_rTrackedDevicePose[nDevice].bPoseIsValid)
 		{
 			m_iValidPoseCount++;
-
-			m_mat4HMDPose.tX.fX = ConvertSteamVRMatrixToMatrix4(m_rTrackedDevicePose[nDevice].mDeviceToAbsoluteTracking).tX.fX;
-			m_mat4HMDPose.tX.fY = ConvertSteamVRMatrixToMatrix4(m_rTrackedDevicePose[nDevice].mDeviceToAbsoluteTracking).tX.fY;
-			m_mat4HMDPose.tX.fZ = ConvertSteamVRMatrixToMatrix4(m_rTrackedDevicePose[nDevice].mDeviceToAbsoluteTracking).tX.fZ;
-			m_mat4HMDPose.tX.fW = ConvertSteamVRMatrixToMatrix4(m_rTrackedDevicePose[nDevice].mDeviceToAbsoluteTracking).tX.fW;
-
-			m_mat4HMDPose.tY.fX = ConvertSteamVRMatrixToMatrix4(m_rTrackedDevicePose[nDevice].mDeviceToAbsoluteTracking).tY.fX;
-			m_mat4HMDPose.tY.fY = ConvertSteamVRMatrixToMatrix4(m_rTrackedDevicePose[nDevice].mDeviceToAbsoluteTracking).tY.fY;
-			m_mat4HMDPose.tY.fZ = ConvertSteamVRMatrixToMatrix4(m_rTrackedDevicePose[nDevice].mDeviceToAbsoluteTracking).tY.fZ;
-			m_mat4HMDPose.tY.fW = ConvertSteamVRMatrixToMatrix4(m_rTrackedDevicePose[nDevice].mDeviceToAbsoluteTracking).tY.fW;
-
-			m_mat4HMDPose.tZ.fX = ConvertSteamVRMatrixToMatrix4(m_rTrackedDevicePose[nDevice].mDeviceToAbsoluteTracking).tZ.fX;
-			m_mat4HMDPose.tZ.fY = ConvertSteamVRMatrixToMatrix4(m_rTrackedDevicePose[nDevice].mDeviceToAbsoluteTracking).tZ.fY;
-			m_mat4HMDPose.tZ.fZ = ConvertSteamVRMatrixToMatrix4(m_rTrackedDevicePose[nDevice].mDeviceToAbsoluteTracking).tZ.fZ;
-			m_mat4HMDPose.tZ.fW = ConvertSteamVRMatrixToMatrix4(m_rTrackedDevicePose[nDevice].mDeviceToAbsoluteTracking).tZ.fW;
-
-			m_mat4HMDPose.tW.fX = ConvertSteamVRMatrixToMatrix4(m_rTrackedDevicePose[nDevice].mDeviceToAbsoluteTracking).tW.fX;
-			m_mat4HMDPose.tW.fY = ConvertSteamVRMatrixToMatrix4(m_rTrackedDevicePose[nDevice].mDeviceToAbsoluteTracking).tW.fY;
-			m_mat4HMDPose.tW.fZ = ConvertSteamVRMatrixToMatrix4(m_rTrackedDevicePose[nDevice].mDeviceToAbsoluteTracking).tW.fZ;
-			m_mat4HMDPose.tW.fW = ConvertSteamVRMatrixToMatrix4(m_rTrackedDevicePose[nDevice].mDeviceToAbsoluteTracking).tW.fW;
+			m_rmat4DevicePose[nDevice] = ConvertSteamVRMatrixToMatrix4(m_rTrackedDevicePose[nDevice].mDeviceToAbsoluteTracking);
 
 			if (m_rDevClassChar[nDevice] == 0)
 			{
@@ -442,7 +383,7 @@ void cGraphics_Setup::UpdateHMDMatrixPose()
 
 	if (m_rTrackedDevicePose[vr::k_unTrackedDeviceIndex_Hmd].bPoseIsValid)
 	{
-		m_mat4HMDPose = TMATRIX_To_tFloat4x4(Matrix_Inverse(tFloat4x4_To_TMATRIX(m_rmat4DevicePose[vr::k_unTrackedDeviceIndex_Hmd])));
+		m_mat4HMDPose = m_rmat4DevicePose[vr::k_unTrackedDeviceIndex_Hmd].invert();
 	}
 	else
 	{
@@ -450,7 +391,72 @@ void cGraphics_Setup::UpdateHMDMatrixPose()
 	}
 }
 
-CComPtr<ID3D11Device> cGraphics_Setup::GetDevice()
+CComPtr<ID3D11Device> cGraphics_Setup::Get_Device()
 {
 	return d3d_Device;
+}
+
+CComPtr<ID3D11DeviceContext> cGraphics_Setup::Get_Context()
+{
+	return d3d_Context;
+}
+
+CComPtr<ID3D11RenderTargetView> cGraphics_Setup::Get_RTV()
+{
+	return d3d_RTV;
+}
+
+CComPtr<ID3D11RenderTargetView> cGraphics_Setup::Get_RTV_Left()
+{
+	return d3d_RTV_Left_Eye;
+}
+
+CComPtr<ID3D11RenderTargetView> cGraphics_Setup::Get_RTV_Right()
+{
+	return d3d_RTV_Right_Eye;
+}
+
+CComPtr<ID3D11DepthStencilView> cGraphics_Setup::Get_DSV()
+{
+	return d3d_DSV;
+}
+
+CComPtr<ID3D11InputLayout> cGraphics_Setup::Get_Input_Layout()
+{
+	return d3d_Input_Layout;
+}
+
+CComPtr<ID3D11VertexShader> cGraphics_Setup::Get_Vertex_Shader()
+{
+	return d3d_Vertex_Shader;
+}
+
+CComPtr<ID3D11PixelShader> cGraphics_Setup::Get_Pixel_Shader()
+{
+	return d3d_Pixel_Shader;
+}
+
+CComPtr<IDXGISwapChain> cGraphics_Setup::Get_Swap_Chain()
+{
+	return d3d_Swap_Chain;
+}
+
+D3D11_VIEWPORT cGraphics_Setup::Get_View_Port()
+{
+	return d3d_View_Port;
+}
+
+CComPtr<ID3D11DepthStencilState> cGraphics_Setup::Get_Depth_Stencil_State()
+{
+	return d3d_DSS;
+}
+
+CComPtr<ID3D11Texture2D> cGraphics_Setup::Get_Texture_Left_Eye()
+{
+	return d3d_Render_Left_Eye;
+}
+
+CComPtr<ID3D11Texture2D> cGraphics_Setup::Get_Texture_Right_Eye()
+{
+	return d3d_Render_Right_Eye;
 }

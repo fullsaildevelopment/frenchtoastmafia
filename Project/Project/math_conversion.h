@@ -16,7 +16,7 @@
 #include <DirectXCollision.h>
 using namespace DirectX;
 #include "basic_structs.h"
-#include "EngineMath.h"
+#include "Matrices.h"
 
 inline XMFLOAT4X4 tFloat4x4_to_XMFLOAT4x4(tFloat4x4 fIn)
 {
@@ -72,79 +72,29 @@ inline tFloat4x4 XMFLOAT4x4_to_tFloat4x4(XMFLOAT4X4 fIn)
 	return fOut;
 }
 
-
-inline TVECTOR tFloat4_to_TVECTOR(tFloat4 in)
+inline tFloat4x4 Matrix4_To_tFloat4x4(Matrix4 fIn)
 {
-	TVECTOR out;
-	out.x = in.fX;
-	out.y = in.fY;
-	out.z = in.fZ;
-	out.w = in.fW;
+	tFloat4x4 fOut;
 
-	return out;
-}
+	fOut.tX.fX = fIn[0];
+	fOut.tX.fY = fIn[1];
+	fOut.tX.fZ = fIn[2];
+	fOut.tX.fW = fIn[3];
 
-inline tFloat4 TVECTOR_To_tFloat4(TVECTOR in)
-{
-	tFloat4 out;
-	out.fX = in.x;
-	out.fY = in.y;
-	out.fZ = in.z;
-	out.fW = in.w;
+	fOut.tY.fX = fIn[4];
+	fOut.tY.fY = fIn[5];
+	fOut.tY.fZ = fIn[6];
+	fOut.tY.fW = fIn[7];
 
-	return out;
-}
+	fOut.tZ.fX = fIn[8];
+	fOut.tZ.fY = fIn[9];
+	fOut.tZ.fZ = fIn[10];
+	fOut.tZ.fW = fIn[11];
 
-inline tFloat4x4 TMATRIX_To_tFloat4x4(TMATRIX in)
-{
-	tFloat4x4 out;
+	fOut.tW.fX = fIn[12];
+	fOut.tW.fY = fIn[13];
+	fOut.tW.fZ = fIn[14];
+	fOut.tW.fW = fIn[15];
 
-	out.tX.fX = in._e11;
-	out.tX.fY = in._e12;
-	out.tX.fZ = in._e13;
-	out.tX.fW = in._e14;
-
-	out.tY.fX = in._e21;
-	out.tY.fY = in._e22;
-	out.tY.fZ = in._e23;
-	out.tY.fW = in._e24;
-
-	out.tZ.fX = in._e31;
-	out.tZ.fY = in._e32;
-	out.tZ.fZ = in._e33;
-	out.tZ.fW = in._e34;
-
-	out.tW.fX = in._e41;
-	out.tW.fY = in._e42;
-	out.tW.fZ = in._e43;
-	out.tW.fW = in._e44;
-
-	return out;
-}
-
-inline TMATRIX tFloat4x4_To_TMATRIX(tFloat4x4 in)
-{
-	TMATRIX out;
-
-	out._e11 = in.tX.fX;
-	out._e12 = in.tX.fY;
-	out._e13 = in.tX.fZ;
-	out._e14 = in.tX.fW;
-
-	out._e21 = in.tY.fX;
-	out._e22 = in.tY.fY;
-	out._e23 = in.tY.fZ;
-	out._e24 = in.tY.fW;
-
-	out._e31 = in.tZ.fX;
-	out._e32 = in.tZ.fY;
-	out._e33 = in.tZ.fZ;
-	out._e34 = in.tZ.fW;
-
-	out._e41 = in.tW.fX;
-	out._e42 = in.tW.fY;
-	out._e43 = in.tW.fZ;
-	out._e44 = in.tW.fW;
-
-	return out;
+	return fOut;
 }

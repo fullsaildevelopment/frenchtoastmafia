@@ -2,6 +2,7 @@
 #include <vector>
 
 #include "renderer_structs.h"
+#include "specific_structs.h"
 
 class cBinary_Reader
 {
@@ -13,5 +14,6 @@ public:
 	tMaterials Read_Material(const char* szRead_Path);
 	//anim_clip read_skeleton(const char * read_path);
 	//mesh_skinned read_skinned(const char* read_path);
+	tBinary_Screen Read_Screen_Binary(const char* read_file_path);
 };
 

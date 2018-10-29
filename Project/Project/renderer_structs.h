@@ -49,13 +49,13 @@ struct tMaterials
 	std::vector<tMaterial> tMats;
 };
 
-struct tConstantBuffer_VertexShader_WVPC
+struct tConstantBuffer_VertexShader_WVP
 {
 	XMFLOAT4X4 fWorld_Matrix;
 	XMFLOAT4X4 fView_Matrix;
 	XMFLOAT4X4 fProjection_Matrix;
-	XMFLOAT4X4 fCamera_Matrix;
-	XMFLOAT4X4 fCamera_Origin;
+	//XMFLOAT4X4 fCamera_Matrix;
+	//XMFLOAT4X4 fCamera_Origin;
 };
 
 
@@ -76,10 +76,13 @@ struct tScene_Objects
 
 	CComPtr<ID3D11Buffer>				d3d_Vertex_Buffers[32]{};
 	CComPtr<ID3D11Buffer>				d3d_Index_Buffers[32]{};
+	tMesh								tMesh_Data[32]{};
 
 	CComPtr<ID3D11VertexShader>			d3d_Vertex_Shaders[32]{};
+	std::string							szVS_File_Path[32]{};
+
 	CComPtr<ID3D11PixelShader>			d3d_Pixel_Shaders[32]{};
-	tMesh								tMesh_Data[32]{};
+	std::string							szPS_File_Path[32]{};
 
 	CComPtr<ID3D11Buffer>				tMaterials_Buffers[32]{};
 	tMaterials							tMaterials_Data[32]{};
@@ -87,6 +90,9 @@ struct tScene_Objects
 	CComPtr<ID3D11ShaderResourceView>	d3d_SRV[32]{};
 	std::string							szSRV_File_Path[32]{};
 };
+
+
+
 
 struct tConstantBuffer_Float4
 {

@@ -137,3 +137,91 @@ tMaterials cBinary_Reader::Read_Material(const char * szRead_Path)
 
 	return tOutput;
 }
+
+tBinary_Screen cBinary_Reader::Read_Screen_Binary(const char* read_file_name)
+{
+	tBinary_Screen tOutput;
+	std::fstream fs;
+	fs.open(read_file_name, std::ios::in | std::ios::binary);
+	int obj_count = 0;
+	uint32_t nVert_Size = 0;
+	uint32_t nInd_Size = 0;
+	int nFile_Path_Size = 0;
+	char *szFile_Path = nullptr;
+	int nVS_Check, nPS_Check, nSRV_Check = 0;
+	std::string szVS_FP, szPS_FP, szSRV_FP;
+	
+	// Object Count
+	fs.read((char *)&obj_count, sizeof(uint32_t));
+	// tMesh.nVertex_Count
+	fs.read((char *)&nVert_Size, sizeof(uint32_t));
+	// tMesh.tVerts
+	vector<tVertex> tUnique_Verts;
+	tUnique_Verts.resize(nVert_Size);
+	fs.read((char*)tUnique_Verts.data(), sizeof(tVertex) * nVert_Size);
+	// tMesh.nIndex_Count
+	fs.read((char *)&nInd_Size, sizeof(uint32_t));
+	// tMesh.nIndicies
+	vector<int> nIndicies;
+	nIndicies.resize(nInd_Size);
+	fs.read((char*)nIndicies.data(), sizeof(int) * nInd_Size);
+	// vs_check
+	fs.read((char*)&nVS_Check, sizeof(int));
+	if (nVS_Check != 0)
+	{
+		// vs_fp
+		fs.read((char*)&nFile_Path_Size, sizeof(int));
+		szFile_Path = new char[nFile_Path_Size + 1];
+		fs.read((char*)szFile_Path, nFile_Path_Size);
+		szFile_Path[nFile_Path_Size] = '\0';
+		szVS_FP = szFile_Path;
+		delete[] szFile_Path;
+	}
+	// ps_check
+	fs.read((char*)&nPS_Check, sizeof(int));
+	if (nPS_Check != 0)
+	{
+		// ps_fp
+		fs.read((char*)&nFile_Path_Size, sizeof(int));
+		szFile_Path = new char[nFile_Path_Size + 1];
+		fs.read((char*)szFile_Path, nFile_Path_Size);
+		szFile_Path[nFile_Path_Size] = '\0';
+		szPS_FP = szFile_Path;
+		delete[] szFile_Path;
+	}
+	// srv_check
+	fs.read((char*)&nSRV_Check, sizeof(int));
+	if (nSRV_Check != 0)
+	{
+		// srv_fp
+		fs.read((char*)&nFile_Path_Size, sizeof(int));
+		szFile_Path = new char[nFile_Path_Size + 1];
+		fs.read((char*)szFile_Path, nFile_Path_Size);
+		szFile_Path[nFile_Path_Size] = '\0';
+		szSRV_FP = szFile_Path;
+		delete[] szFile_Path;
+	}
+	bool vs_check;
+	std::string vs_name;
+	bool ps_check;
+	std::string ps_name;
+	bool srv_check;
+	std::string srv_name;
+
+	tOutput.nObject_Count = obj_count;
+	tOutput.tMes.nVertex_Count = nVert_Size;
+	tOutput.tMes.tVerts = tUnique_Verts;
+	tOutput.tMes.nIndex_Count = nInd_Size;
+	tOutput.tMes.nIndicies = nIndicies;
+	tOutput.vs_check = nVS_Check;
+	if (nVS_Check != 0)
+		tOutput.vs_name = szVS_FP;
+	tOutput.ps_check = nPS_Check;
+	if (nPS_Check != 0)
+		tOutput.ps_name = szPS_FP;
+	tOutput.srv_check = nSRV_Check;
+	if (nSRV_Check != 0)
+		tOutput.srv_name = szSRV_FP;
+
+	return tOutput;
+}

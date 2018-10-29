@@ -13,8 +13,6 @@ cbuffer tConstant_Buffer : register(b0)
 	float4x4 fWorld_Matrix;
 	float4x4 fView_Matrix;
 	float4x4 fProjection_Matrix;
-	float4x4 fCamera_Matrix;
-	float4x4 fCamera_Origin;
 };
 
 struct INPUT_DATA

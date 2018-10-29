@@ -207,11 +207,11 @@
     <ClInclude Include="basic_structs.h" />
     <ClInclude Include="binary_reader.h" />
     <ClInclude Include="collisions.h" />
-    <ClInclude Include="EngineMath.h" />
     <ClInclude Include="Game_Loop.h" />
     <ClInclude Include="Graphic_Setup.h" />
     <ClInclude Include="header.h" />
     <ClInclude Include="math_conversion.h" />
+    <ClInclude Include="Matrices.h" />
     <ClInclude Include="Object System.h" />
     <ClInclude Include="physic_structs.h" />
     <ClInclude Include="Project.h" />
@@ -219,7 +219,9 @@
     <ClInclude Include="Render_Manager.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="Scene_Manager.h" />
+    <ClInclude Include="specific_structs.h" />
     <ClInclude Include="targetver.h" />
+    <ClInclude Include="Vectors.h" />
     <ClInclude Include="view.h" />
     <ClInclude Include="VR.h" />
     <ClInclude Include="WICTextureLoader.h" />
@@ -230,9 +232,9 @@
     <ClCompile Include="Base_Spell.cpp" />
     <ClCompile Include="binary_reader.cpp" />
     <ClCompile Include="collisions.cpp" />
-    <ClCompile Include="EngineMath.cpp" />
     <ClCompile Include="Game_Loop.cpp" />
     <ClCompile Include="Graphic_Setup.cpp" />
+    <ClCompile Include="Matrices.cpp" />
     <ClCompile Include="Project.cpp" />
     <ClCompile Include="Render_Manager.cpp" />
     <ClCompile Include="Scene_Manager.cpp" />
