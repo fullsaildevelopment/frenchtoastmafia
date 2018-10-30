@@ -19,5 +19,6 @@ public:
 	void Translation(tFloat4 fMovement_Vect);
 	void Rotation(tFloat4 fRotation_Vect);
 	void Normalize();
+	tFloat4x4 Normalize2(tFloat4x4 temp_MATRIX);
 };
 

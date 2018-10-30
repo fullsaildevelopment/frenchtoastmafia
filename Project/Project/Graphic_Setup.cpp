@@ -332,7 +332,7 @@ tFloat4x4 cGraphics_Setup::GetCurrentViewProjectionMatrix(vr::Hmd_Eye nEye)
 	matMVP[8] *= -1;
 	matMVP[9] *= -1;
 	matMVP[10] *= -1;
-	matMVP.transpose();
+	matMVP.invert();
 	out_mat = Matrix4_To_tFloat4x4(matMVP);
 
 	return out_mat;
@@ -459,4 +459,14 @@ CComPtr<ID3D11Texture2D> cGraphics_Setup::Get_Texture_Left_Eye()
 CComPtr<ID3D11Texture2D> cGraphics_Setup::Get_Texture_Right_Eye()
 {
 	return d3d_Render_Right_Eye;
+}
+
+cCamera cGraphics_Setup::get_Camera_Left()
+{
+	return *m_cCameraLeft;
+}
+
+cCamera cGraphics_Setup::get_Camera_Right()
+{
+	return *m_cCameraRight;
 }

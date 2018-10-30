@@ -152,5 +152,7 @@ public:
 	CComPtr<ID3D11DepthStencilState> Get_Depth_Stencil_State();
 	CComPtr<ID3D11Texture2D> Get_Texture_Left_Eye();
 	CComPtr<ID3D11Texture2D> Get_Texture_Right_Eye();
+	cCamera get_Camera_Left();
+	cCamera get_Camera_Right();
 };
 

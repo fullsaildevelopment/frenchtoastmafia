@@ -112,3 +112,29 @@ void cCamera::Normalize()
 	XMStoreFloat4x4(&xm_fView_Matrix, mView_Matrix);
 	fView_Matrix = XMFLOAT4x4_to_tFloat4x4(xm_fView_Matrix);
 }
+
+tFloat4x4 cCamera::Normalize2(tFloat4x4 temp_MATRIX)
+{
+	tFloat4x4 result;
+
+	XMFLOAT4X4 xm_fView_Matrix = tFloat4x4_to_XMFLOAT4x4(temp_MATRIX);
+	XMMATRIX mView_Matrix = XMLoadFloat4x4(&xm_fView_Matrix);
+
+	// NORMALIZING ROTATIONS
+	XMVECTOR newZ = mView_Matrix.r[2];
+	newZ = XMVector3Normalize(newZ);
+	XMVECTOR worldY = XMMatrixIdentity().r[1];
+	XMVECTOR newX = XMVector3Cross(worldY, newZ);
+	newX = XMVector3Normalize(newX);
+	XMVECTOR newY = XMVector3Cross(newZ, newX);
+	newY = XMVector3Normalize(newY);
+
+	mView_Matrix.r[0] = newX;
+	mView_Matrix.r[1] = newY;
+	mView_Matrix.r[2] = newZ;
+
+	XMStoreFloat4x4(&xm_fView_Matrix, mView_Matrix);
+	result = XMFLOAT4x4_to_tFloat4x4(xm_fView_Matrix);
+
+	return result;
+}

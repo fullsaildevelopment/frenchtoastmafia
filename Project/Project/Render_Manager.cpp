@@ -258,18 +258,32 @@ void cRender_Manager::Draw(int nScene_Id, tScene_Objects t_Object_List)
 		//			d3dContext->VSSetConstantBuffers(0, 1, tmp_wvpc_buffer);
 		//		}
 		//	}
-
+		
 		XMStoreFloat4x4(&tWVP.fView_Matrix, XMMatrixIdentity());
 		if (_eyeID == 0)
 		{
-			tWVP.fProjection_Matrix = tFloat4x4_to_XMFLOAT4x4(c_Graphics_Setup->GetCurrentViewProjectionMatrix(vr::Eye_Left));
+			tFloat4x4 temp_Projection;
+
+			temp_Projection = c_Graphics_Setup->GetCurrentViewProjectionMatrix(vr::Eye_Left);
+
+			tWVP.fProjection_Matrix = tFloat4x4_to_XMFLOAT4x4(c_Graphics_Setup->get_Camera_Left().Normalize2(temp_Projection));
+
+			//tWVP.fProjection_Matrix = tFloat4x4_to_XMFLOAT4x4(c_Graphics_Setup->GetCurrentViewProjectionMatrix(vr::Eye_Left));
+
 			//tWVP.fProjection_Matrix._31 *= -1;
 			//tWVP.fProjection_Matrix._32 *= -1;
 			//tWVP.fProjection_Matrix._33 *= -1;
 		}
 		else
 		{
-			tWVP.fProjection_Matrix = tFloat4x4_to_XMFLOAT4x4(c_Graphics_Setup->GetCurrentViewProjectionMatrix(vr::Eye_Right));
+			tFloat4x4 temp_Projection;
+
+			temp_Projection = c_Graphics_Setup->GetCurrentViewProjectionMatrix(vr::Eye_Right);
+
+			tWVP.fProjection_Matrix = tFloat4x4_to_XMFLOAT4x4(c_Graphics_Setup->get_Camera_Right().Normalize2(temp_Projection));
+
+			//tWVP.fProjection_Matrix = tFloat4x4_to_XMFLOAT4x4(c_Graphics_Setup->GetCurrentViewProjectionMatrix(vr::Eye_Right));
+
 			//tWVP.fProjection_Matrix._31 *= -1;
 			//tWVP.fProjection_Matrix._32 *= -1;
 			//tWVP.fProjection_Matrix._33 *= -1;
