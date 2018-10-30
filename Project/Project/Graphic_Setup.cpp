@@ -185,7 +185,7 @@ void cGraphics_Setup::Initialize()
 	// RASTERIZER STATE
 	ZeroMemory(& d3d_Rasterizer_Desc, sizeof(D3D11_RASTERIZER_DESC));
 	 d3d_Rasterizer_Desc.FillMode = D3D11_FILL_SOLID;
-	 d3d_Rasterizer_Desc.CullMode = D3D11_CULL_BACK;
+	 d3d_Rasterizer_Desc.CullMode = D3D11_CULL_NONE;
 	 d3d_Rasterizer_Desc.DepthBias = 0;
 	 d3d_Rasterizer_Desc.SlopeScaledDepthBias = 0.0f;
 	 d3d_Rasterizer_Desc.DepthBiasClamp = 0.0f;
@@ -318,21 +318,38 @@ void cGraphics_Setup::SetupCameras()
 
 tFloat4x4 cGraphics_Setup::GetCurrentViewProjectionMatrix(vr::Hmd_Eye nEye)
 {
+	RHS_to_LHS out_r2l;
 	tFloat4x4 out_mat;
 	Matrix4 matMVP;
 	if (nEye == vr::Eye_Left)
 	{
-		matMVP = m_mat4ProjectionLeft * m_mat4eyePosLeft * m_mat4HMDPose;
+
+		//m_mat4ProjectionLeft[8] *= -1;
+		//m_mat4ProjectionLeft[9] *= -1;
+		//m_mat4ProjectionLeft[10] *= -1;
+		//out_r2l.head = Matrix4_To_tFloat4x4(m_mat4HMDPose);
+		//out_r2l.pose = Matrix4_To_tFloat4x4(m_mat4eyePosLeft);
+		//out_r2l.proj = Matrix4_To_tFloat4x4(m_mat4ProjectionLeft);
+		matMVP = m_mat4ProjectionLeft * m_mat4eyePosLeft * m_mat4HMDPose;   // OG
+		//matMVP = m_mat4HMDPose * m_mat4eyePosLeft * m_mat4ProjectionLeft;  // tried swapping around these multiplies
 	}
 	else if (nEye == vr::Eye_Right)
 	{
-		matMVP = m_mat4ProjectionRight * m_mat4eyePosRight *  m_mat4HMDPose;
+		//m_mat4ProjectionLeft[8] *= -1;
+		//m_mat4ProjectionLeft[9] *= -1;
+		//m_mat4ProjectionLeft[10] *= -1;
+		//out_r2l.head = Matrix4_To_tFloat4x4(m_mat4HMDPose);
+		//out_r2l.pose = Matrix4_To_tFloat4x4(m_mat4eyePosRight);
+		//out_r2l.proj = Matrix4_To_tFloat4x4(m_mat4ProjectionRight);
+		matMVP = m_mat4ProjectionRight * m_mat4eyePosRight * m_mat4HMDPose;  // OG
+		//matMVP = m_mat4HMDPose * m_mat4eyePosRight * m_mat4ProjectionRight;  // tried swapping around these multiplies
 	}
 
 	matMVP[8] *= -1;
 	matMVP[9] *= -1;
 	matMVP[10] *= -1;
 	matMVP.invert();
+	//matMVP.transpose();
 	out_mat = Matrix4_To_tFloat4x4(matMVP);
 
 	return out_mat;

@@ -14,3 +14,10 @@ struct tBinary_Screen
 	bool srv_check;
 	std::string srv_name;
 };
+
+struct RHS_to_LHS
+{
+	tFloat4x4 head;
+	tFloat4x4 pose;
+	tFloat4x4 proj;
+};

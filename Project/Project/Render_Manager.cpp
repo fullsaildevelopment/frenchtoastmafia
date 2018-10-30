@@ -262,10 +262,14 @@ void cRender_Manager::Draw(int nScene_Id, tScene_Objects t_Object_List)
 		XMStoreFloat4x4(&tWVP.fView_Matrix, XMMatrixIdentity());
 		if (_eyeID == 0)
 		{
+			//RHS_to_LHS tmp3 = c_Graphics_Setup->GetCurrentViewProjectionMatrix(vr::Eye_Left);
+			//tWVP.fProjection_Matrix = tFloat4x4_to_XMFLOAT4x4(tmp3.proj);
+			//tWVP.fHead_Matrix = tFloat4x4_to_XMFLOAT4x4(tmp3.head);
+			//tWVP.fPose_Matrix = tFloat4x4_to_XMFLOAT4x4(tmp3.pose);
 			tFloat4x4 temp_Projection;
-
+			
 			temp_Projection = c_Graphics_Setup->GetCurrentViewProjectionMatrix(vr::Eye_Left);
-
+			
 			tWVP.fProjection_Matrix = tFloat4x4_to_XMFLOAT4x4(c_Graphics_Setup->get_Camera_Left().Normalize2(temp_Projection));
 
 			//tWVP.fProjection_Matrix = tFloat4x4_to_XMFLOAT4x4(c_Graphics_Setup->GetCurrentViewProjectionMatrix(vr::Eye_Left));
@@ -276,10 +280,16 @@ void cRender_Manager::Draw(int nScene_Id, tScene_Objects t_Object_List)
 		}
 		else
 		{
+
+			//RHS_to_LHS tmp3 = c_Graphics_Setup->GetCurrentViewProjectionMatrix(vr::Eye_Right);
+			//tWVP.fProjection_Matrix = tFloat4x4_to_XMFLOAT4x4(tmp3.proj);
+			//tWVP.fHead_Matrix = tFloat4x4_to_XMFLOAT4x4(tmp3.head);
+			//tWVP.fPose_Matrix = tFloat4x4_to_XMFLOAT4x4(tmp3.pose);
+			
 			tFloat4x4 temp_Projection;
-
+			
 			temp_Projection = c_Graphics_Setup->GetCurrentViewProjectionMatrix(vr::Eye_Right);
-
+			
 			tWVP.fProjection_Matrix = tFloat4x4_to_XMFLOAT4x4(c_Graphics_Setup->get_Camera_Right().Normalize2(temp_Projection));
 
 			//tWVP.fProjection_Matrix = tFloat4x4_to_XMFLOAT4x4(c_Graphics_Setup->GetCurrentViewProjectionMatrix(vr::Eye_Right));

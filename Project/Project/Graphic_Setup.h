@@ -8,6 +8,7 @@
 //#include "openvr-master\headers\openvr.h"
 //#pragma comment (lib, "openvr_api.lib")
 #include "renderer_structs.h"
+#include "specific_structs.h"
 //#include "Matrices.h"
 
 // Basic Shaders
