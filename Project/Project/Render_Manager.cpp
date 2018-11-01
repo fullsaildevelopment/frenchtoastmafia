@@ -97,6 +97,21 @@ void cRender_Manager::Load(int nScene_Id, tScene_Objects* t_Object_List)
 			else
 				c_Graphics_Setup->Get_Device()->CreatePixelShader(PixelShader_Priest, sizeof(PixelShader_Priest), NULL, &t_Object_List->d3d_Pixel_Shaders[i]);
 
+			//WORLD MATRIX ADJUST
+			if (i == 1)
+			{
+				XMFLOAT4X4 temp4x4 = tFloat4x4_to_XMFLOAT4x4(t_Object_List->fWorld_Matrix[0]);
+				XMMATRIX tempMatrix = XMLoadFloat4x4(&temp4x4);
+
+				//tempMatrix = XMMatrixMultiply(tempMatrix, XMMatrixRotationY(3.14));
+				tempMatrix = XMMatrixMultiply(tempMatrix, XMMatrixIdentity());
+
+				XMStoreFloat4x4(&temp4x4, tempMatrix);
+				t_Object_List->fWorld_Matrix[0] = XMFLOAT4x4_to_tFloat4x4(temp4x4);
+
+				//XMStoreFloat4x4(&t_Object_List->fWorld_Matrix[0], XMMatrixMultiply(XMLoadFloat4x4(t_Object_List->fWorld_Matrix[0]), XMMatrixScaling(0.5, 0.5, 0.5);
+			}
+
 			//// SRV
 			//if (t_Object_List->tMaterials_Data[i].tMats[0].szAmbient_File_Path)
 			//{

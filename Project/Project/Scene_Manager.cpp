@@ -110,7 +110,7 @@ tScene_Objects cScene_Manager::GetScene(int nScene_Id)
 			{
 				XMFLOAT4X4 temp;
 
-				XMStoreFloat4x4(&temp, XMMatrixMultiply(XMMatrixIdentity(), XMMatrixTranslation(0, 0, 2.5)));
+				XMStoreFloat4x4(&temp, XMMatrixMultiply(XMMatrixIdentity(), XMMatrixTranslation(0, 0, -2.5)));
 
 				tScene.fWorld_Matrix[0] = XMFLOAT4x4_to_tFloat4x4(temp);
 				tMesh tMage = cBinary_Read.Read_Mesh("mesh.bin");

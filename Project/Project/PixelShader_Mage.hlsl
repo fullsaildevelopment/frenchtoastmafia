@@ -67,13 +67,19 @@ float4 main(INPUT_DATA input) : SV_TARGET
 
 	// Point Light
 	//	LIGHTDIR = NORMALIZE(LIGHTPOS – SURFACEPOS)
+
 	light_dir = light_pos.xyz - input.fWorld_Position.xyz;
 	light_dir_norm = normalize(light_dir);
+
 	//	LIGHTRATIO = CLAMP(DOT(LIGHTDIR, SURFACENORMAL))
 	//ratio = saturate(dot(light_dir_norm, normalize(tTexture4.Sample(sSampler_State[0], input.fTexture))));
+
 	ratio = saturate(dot(light_dir_norm, normalize(input.fNormal.xyz)));
+
 	//	RESULT = LIGHTRATIO * LIGHTCOLOR * SURFACECOLOR
-	final_color = combined_color * light_col * ratio;
+
+	final_color = combined_color + (light_col * ratio);
+
 	//	ATTENUATION = 1.0 – CLAMP(MAGNITUDE(LIGHTPOS – SURFACEPOS) / LIGHTRADIUS)
 	//attenuation = 1.0f - saturate(length(light_dir) / 13.0f);
 	//attenuation *= attenuation;
@@ -81,4 +87,6 @@ float4 main(INPUT_DATA input) : SV_TARGET
 	final_color.a = combined_color.a;
 
 	return final_color;
+
+	//return light_col;
 }
