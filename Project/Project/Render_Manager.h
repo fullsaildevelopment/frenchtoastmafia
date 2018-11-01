@@ -6,6 +6,10 @@
 #include "WICTextureLoader.h"
 #include "XTime.h"
 #include "PixelShader_Screen.csh"
+#include "VertexShader_Arena.csh"
+#include "PixelShader_Arena.csh"
+#include "PixelShader_Mage.csh"
+#include "PixelShader_Priest.csh"
 
 class cRender_Manager
 {
@@ -15,7 +19,9 @@ private:
 
 	// WVPC
 	CComPtr<ID3D11Buffer> d3d_Constant_Buffer_WVP;
-	
+	CComPtr<ID3D11Buffer> d3d_Constant_Buffer_Mage;
+	tConstantBuffer_PixelShader cps_mage;
+
 	D3D11_BUFFER_DESC d3d_Constant_Buffer_Desc;
 	D3D11_MAPPED_SUBRESOURCE d3d_MSR;
 

@@ -74,7 +74,7 @@ struct tScene_Objects
 {
 	int nObject_Count;
 	tFloat3								fWorld_Position[32]{};
-	XMFLOAT4X4							fWorld_Matrix[32]{};
+	tFloat4x4							fWorld_Matrix[32]{};
 
 	CComPtr<ID3D11Buffer>				d3d_Vertex_Buffers[32]{};
 	CComPtr<ID3D11Buffer>				d3d_Index_Buffers[32]{};

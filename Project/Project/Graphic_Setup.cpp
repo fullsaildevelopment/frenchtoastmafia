@@ -345,10 +345,10 @@ tFloat4x4 cGraphics_Setup::GetCurrentViewProjectionMatrix(vr::Hmd_Eye nEye)
 		//matMVP = m_mat4HMDPose * m_mat4eyePosRight * m_mat4ProjectionRight;  // tried swapping around these multiplies
 	}
 
-	matMVP[8] *= -1;
-	matMVP[9] *= -1;
-	matMVP[10] *= -1;
-	matMVP.invert();
+	//matMVP[8] *= -1;
+	//matMVP[9] *= -1;
+	//matMVP[10] *= -1;
+	//matMVP.invert();
 	//matMVP.transpose();
 	out_mat = Matrix4_To_tFloat4x4(matMVP);
 
