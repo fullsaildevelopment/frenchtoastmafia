@@ -21,6 +21,7 @@ private:
 	CComPtr<ID3D11Buffer> d3d_Constant_Buffer_WVP;
 	CComPtr<ID3D11Buffer> d3d_Constant_Buffer_Mage;
 	tConstantBuffer_PixelShader cps_mage;
+	tConstantBuffer_PixelShader cps_arena;
 
 	D3D11_BUFFER_DESC d3d_Constant_Buffer_Desc;
 	D3D11_MAPPED_SUBRESOURCE d3d_MSR;

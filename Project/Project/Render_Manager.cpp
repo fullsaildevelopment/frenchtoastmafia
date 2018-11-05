@@ -95,23 +95,9 @@ void cRender_Manager::Load(int nScene_Id, tScene_Objects* t_Object_List)
 			else if (i == 1)
 				c_Graphics_Setup->Get_Device()->CreatePixelShader(PixelShader_Arena, sizeof(PixelShader_Arena), NULL, &t_Object_List->d3d_Pixel_Shaders[i]);
 			else
-				c_Graphics_Setup->Get_Device()->CreatePixelShader(PixelShader_Priest, sizeof(PixelShader_Priest), NULL, &t_Object_List->d3d_Pixel_Shaders[i]);
+				c_Graphics_Setup->Get_Device()->CreatePixelShader(PixelShader, sizeof(PixelShader), NULL, &t_Object_List->d3d_Pixel_Shaders[i]);
 
-			//WORLD MATRIX ADJUST
-			if (i == 1)
-			{
-				XMFLOAT4X4 temp4x4 = tFloat4x4_to_XMFLOAT4x4(t_Object_List->fWorld_Matrix[0]);
-				XMMATRIX tempMatrix = XMLoadFloat4x4(&temp4x4);
-
-				//tempMatrix = XMMatrixMultiply(tempMatrix, XMMatrixRotationY(3.14));
-				tempMatrix = XMMatrixMultiply(tempMatrix, XMMatrixIdentity());
-
-				XMStoreFloat4x4(&temp4x4, tempMatrix);
-				t_Object_List->fWorld_Matrix[0] = XMFLOAT4x4_to_tFloat4x4(temp4x4);
-
-				//XMStoreFloat4x4(&t_Object_List->fWorld_Matrix[0], XMMatrixMultiply(XMLoadFloat4x4(t_Object_List->fWorld_Matrix[0]), XMMatrixScaling(0.5, 0.5, 0.5);
-			}
-
+			
 			//// SRV
 			//if (t_Object_List->tMaterials_Data[i].tMats[0].szAmbient_File_Path)
 			//{
@@ -124,8 +110,6 @@ void cRender_Manager::Load(int nScene_Id, tScene_Objects* t_Object_List)
 		}
 		// MATERIALS	
 		
-	
-
 		//if (nScene_Id < 2 || nScene_Id > 3)
 		//{
 		//	c_Graphics_Setup->Get_Device()->CreateVertexShader(VertexShader, sizeof(VertexShader), NULL, &t_Object_List->d3d_Vertex_Shaders[0]);
@@ -214,9 +198,55 @@ void cRender_Manager::Load(int nScene_Id, tScene_Objects* t_Object_List)
 
 	// ARENA
 
-	//d_tmp = std::wstring(t_Object_List->tMaterials_Data[1].tMats[0].szDiffuse_File_Path.begin(), t_Object_List->tMaterials_Data[1].tMats[0].szDiffuse_File_Path.end());
-	//diffuse_path = d_tmp.c_str();
-	//result = CreateWICTextureFromFile(c_Graphics_Setup->Get_Device(), c_Graphics_Setup->Get_Context(), diffuse_path, nullptr, &t_Object_List->d3d_SRV[4], 0);
+	d_tmp = std::wstring(t_Object_List->tMaterials_Data[1].tMats[0].szDiffuse_File_Path.begin(), t_Object_List->tMaterials_Data[1].tMats[0].szDiffuse_File_Path.end());
+	diffuse_path = d_tmp.c_str();
+	result = CreateWICTextureFromFile(c_Graphics_Setup->Get_Device(), c_Graphics_Setup->Get_Context(), diffuse_path, nullptr, &t_Object_List->d3d_SRV[4], 0);
+	{
+		cps_arena.light_pos = { 0.0f, 0.0f, -2.0f, 1.0f };
+
+		cps_arena.ambient.x = t_Object_List->tMaterials_Data[1].tMats[0].tAmbient.fX;
+		cps_arena.ambient.y = t_Object_List->tMaterials_Data[1].tMats[0].tAmbient.fY;
+		cps_arena.ambient.z = t_Object_List->tMaterials_Data[1].tMats[0].tAmbient.fZ;
+		cps_arena.ambient.w = t_Object_List->tMaterials_Data[1].tMats[0].tAmbient.fW;
+
+		cps_arena.diffuse.x = t_Object_List->tMaterials_Data[1].tMats[0].tDiffuse.fX;
+		cps_arena.diffuse.y = t_Object_List->tMaterials_Data[1].tMats[0].tDiffuse.fY;
+		cps_arena.diffuse.z = t_Object_List->tMaterials_Data[1].tMats[0].tDiffuse.fZ;
+		cps_arena.diffuse.w = t_Object_List->tMaterials_Data[1].tMats[0].tDiffuse.fW;
+
+		cps_mage.emissive.x = t_Object_List->tMaterials_Data[0].tMats[0].tEmissive.fX;
+		cps_mage.emissive.y = t_Object_List->tMaterials_Data[0].tMats[0].tEmissive.fY;
+		cps_mage.emissive.z = t_Object_List->tMaterials_Data[0].tMats[0].tEmissive.fZ;
+		cps_mage.emissive.w = t_Object_List->tMaterials_Data[0].tMats[0].tEmissive.fW;
+
+		cps_arena.reflection.x = t_Object_List->tMaterials_Data[1].tMats[0].tReflection.fX;
+		cps_arena.reflection.y = t_Object_List->tMaterials_Data[1].tMats[0].tReflection.fY;
+		cps_arena.reflection.z = t_Object_List->tMaterials_Data[1].tMats[0].tReflection.fZ;
+		cps_arena.reflection.w = t_Object_List->tMaterials_Data[1].tMats[0].tReflection.fW;
+
+		cps_arena.shininess.x = t_Object_List->tMaterials_Data[1].tMats[0].fShininess;
+
+		cps_mage.specular.x = t_Object_List->tMaterials_Data[0].tMats[0].tSpecular.fX;
+		cps_mage.specular.y = t_Object_List->tMaterials_Data[0].tMats[0].tSpecular.fY;
+		cps_mage.specular.z = t_Object_List->tMaterials_Data[0].tMats[0].tSpecular.fZ;
+		cps_mage.specular.w = t_Object_List->tMaterials_Data[0].tMats[0].tSpecular.fW;
+
+		cps_arena.transparency.x = t_Object_List->tMaterials_Data[1].tMats[0].tTransparency.fX;
+		cps_arena.transparency.y = t_Object_List->tMaterials_Data[1].tMats[0].tTransparency.fY;
+		cps_arena.transparency.z = t_Object_List->tMaterials_Data[1].tMats[0].tTransparency.fZ;
+		cps_arena.transparency.w = t_Object_List->tMaterials_Data[1].tMats[0].tTransparency.fW;
+
+		// CONSTANT BUFFER - Arena
+		ZeroMemory(&d3d_Constant_Buffer_Desc, sizeof(D3D11_BUFFER_DESC));
+		d3d_Constant_Buffer_Desc.ByteWidth = sizeof(tConstantBuffer_PixelShader);
+		d3d_Constant_Buffer_Desc.Usage = D3D11_USAGE_DYNAMIC;
+		d3d_Constant_Buffer_Desc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+		d3d_Constant_Buffer_Desc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+		d3d_Constant_Buffer_Desc.MiscFlags = 0;
+		d3d_Constant_Buffer_Desc.StructureByteStride = 0;
+
+		c_Graphics_Setup->Get_Device()->CreateBuffer(&d3d_Constant_Buffer_Desc, nullptr, &t_Object_List->tMaterials_Buffers[1].p);
+	}
 	//
 	//// PRIEST
 	//
@@ -371,7 +401,7 @@ void cRender_Manager::Draw(int nScene_Id, tScene_Objects t_Object_List)
 		unsigned int verts_size = sizeof(tVertex);
 		unsigned int off_set = 0;
 
-		for (int i = 0; i < 1; i++)
+		for (int i = 0; i < t_Object_List.nObject_Count; i++)
 		{
 			// CONSTANT BUFFER - WVPC
 			{
@@ -389,7 +419,12 @@ void cRender_Manager::Draw(int nScene_Id, tScene_Objects t_Object_List)
 			c_Graphics_Setup->Get_Context()->IASetVertexBuffers(0, 1, ts_v_buffer, &verts_size, &off_set);
 			c_Graphics_Setup->Get_Context()->IASetIndexBuffer(t_Object_List.d3d_Index_Buffers[i], DXGI_FORMAT_R32_UINT, 0);
 			c_Graphics_Setup->Get_Context()->IASetInputLayout(c_Graphics_Setup->Get_Input_Layout());
-			c_Graphics_Setup->Get_Context()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+			if (i != 2)
+				c_Graphics_Setup->Get_Context()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+			else
+			{
+				c_Graphics_Setup->Get_Context()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
+			}
 			//if (i != 1)
 			//{
 			//	c_Graphics_Setup->Get_Context()->VSSetShader(c_Graphics_Setup->Get_Vertex_Shader(), NULL, 0);
@@ -414,22 +449,28 @@ void cRender_Manager::Draw(int nScene_Id, tScene_Objects t_Object_List)
 				c_Graphics_Setup->Get_Context()->PSSetConstantBuffers(0, 1, tmp_con_buffer);
 
 			}
-			if (i == 1)
+			else if (i == 1)
 			{
 				c_Graphics_Setup->Get_Context()->PSSetShaderResources(0, 1, &t_Object_List.d3d_SRV[4].p);
+
+				c_Graphics_Setup->Get_Context()->Map(t_Object_List.tMaterials_Buffers[1], 0, D3D11_MAP_WRITE_DISCARD, 0, &d3d_MSR);
+				memcpy(d3d_MSR.pData, &cps_arena, sizeof(tConstantBuffer_PixelShader));
+				c_Graphics_Setup->Get_Context()->Unmap(t_Object_List.tMaterials_Buffers[1], 0);
+				ID3D11Buffer *tmp_con_buffer[] = { t_Object_List.tMaterials_Buffers[1] };
+				c_Graphics_Setup->Get_Context()->PSSetConstantBuffers(0, 1, tmp_con_buffer);
 			}
-			if (i == 2)
-			{
-				c_Graphics_Setup->Get_Context()->PSSetShaderResources(0, 1, &t_Object_List.d3d_SRV[5].p);
-				c_Graphics_Setup->Get_Context()->PSSetShaderResources(0, 1, &t_Object_List.d3d_SRV[6].p);
-			}
+			//else if (i == 2)
+			//{
+			//	c_Graphics_Setup->Get_Context()->PSSetShaderResources(0, 1, &t_Object_List.d3d_SRV[5].p);
+			//	c_Graphics_Setup->Get_Context()->PSSetShaderResources(0, 1, &t_Object_List.d3d_SRV[6].p);
+			//}
 
 			//}
 			//d3dContext->PSSetShader(d3dPixel_Shader_Screen, NULL, 0);
 			//ID3D11ShaderResourceView *tmp_intro_srv[] = { tScene.d3d_SRV[0] };
 			//d3dContext->PSSetShaderResources(0, 1, tmp_intro_srv);
-			//if (i != 1)
-			c_Graphics_Setup->Get_Context()->DrawIndexed(t_Object_List.tMesh_Data[i].nIndex_Count, 0, 0);
+			if (i != 2)
+				c_Graphics_Setup->Get_Context()->DrawIndexed(t_Object_List.tMesh_Data[i].nIndex_Count, 0, 0);
 		}
 	}
 

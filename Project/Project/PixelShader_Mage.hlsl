@@ -78,7 +78,7 @@ float4 main(INPUT_DATA input) : SV_TARGET
 
 	//	RESULT = LIGHTRATIO * LIGHTCOLOR * SURFACECOLOR
 
-	final_color = combined_color + (light_col * ratio);
+	final_color = combined_color;// +(light_col * ratio);
 
 	//	ATTENUATION = 1.0 – CLAMP(MAGNITUDE(LIGHTPOS – SURFACEPOS) / LIGHTRADIUS)
 	//attenuation = 1.0f - saturate(length(light_dir) / 13.0f);

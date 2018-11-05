@@ -238,7 +238,7 @@ void cGraphics_Setup::Initialize()
 	m_cCameraRight = new cCamera;
 
 	// Set the initial position of the camera.
-	m_cCameraRight->SetPosition(tFloat4{ 0.0f, 0.0f, -20.0f, 1.0f });
+	m_cCameraRight->SetPosition(tFloat4{ 1.5f, 0.0f, -20.0f, 1.0f });
 
 	//Removed model and shader class declaration
 
