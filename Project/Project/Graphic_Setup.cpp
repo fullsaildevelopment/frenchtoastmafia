@@ -220,7 +220,9 @@ void cGraphics_Setup::Initialize()
 		{ "POSITION", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 		{ "NORMAL", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 		{ "COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-		{ "TEXTURE", 0, DXGI_FORMAT_R32G32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 }
+		{ "TEXTURE", 0, DXGI_FORMAT_R32G32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+		{ "JOINTS", 0, DXGI_FORMAT_R32G32B32A32_UINT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+		{ "WEIGHTS", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 }
 	};
 
 	d3d_Device->CreateInputLayout(d3d_Input_Element, ARRAYSIZE(d3d_Input_Element), VertexShader, sizeof(VertexShader), &d3d_Input_Layout.p);
@@ -238,7 +240,7 @@ void cGraphics_Setup::Initialize()
 	m_cCameraRight = new cCamera;
 
 	// Set the initial position of the camera.
-	m_cCameraRight->SetPosition(tFloat4{ 1.5f, 0.0f, -20.0f, 1.0f });
+	m_cCameraRight->SetPosition(tFloat4{ 100.5f, 0.0f, -20.0f, 1.0f });
 
 	//Removed model and shader class declaration
 

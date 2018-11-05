@@ -105,3 +105,30 @@ struct tVertex
 	tFloat4 fColor;
 	tFloat2 fTexture_Coordinate;
 };
+
+struct tVertex_Skinned
+{
+	tFloat4 fPosition;
+	tFloat4 fNormal;
+	tFloat4 fColor;
+	tFloat2 fTexture_Coordinate;
+	int nJoints[4];
+	tFloat4 fWeights;
+};
+struct tJoint
+{
+	tFloat4x4 tData;
+	int nParent_Index;
+};
+
+struct tKeyframe
+{
+	double dTime;
+	std::vector<tJoint> tJoints;
+};
+
+struct tAnimation_Clip
+{
+	double dDuration;
+	std::vector<tKeyframe> tKeyFrames;
+};

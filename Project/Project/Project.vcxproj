@@ -19,11 +19,13 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Animation_Manager.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="DDSTextureLoader.cpp" />
     <ClCompile Include="dopeSoundSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Animation_Manager.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="DDSTextureLoader.h" />
     <ClInclude Include="defines.h" />

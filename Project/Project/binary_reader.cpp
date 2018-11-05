@@ -138,6 +138,33 @@ tMaterials cBinary_Reader::Read_Material(const char * szRead_Path)
 	return tOutput;
 }
 
+
+tMesh_Skinned cBinary_Reader::Read_Mesh_Skinned(const char * szRead_Path)
+{
+	tMesh_Skinned tOutput;
+
+	std::fstream fs;
+	fs.open(szRead_Path, std::ios::in | std::ios::binary);
+	uint32_t nVert_Size = 0;
+	fs.read((char *)&nVert_Size, sizeof(uint32_t));
+	vector<tVertex_Skinned> tUnique_Verts;
+	tUnique_Verts.resize(nVert_Size);
+	fs.read((char*)tUnique_Verts.data(), sizeof(tVertex_Skinned) * nVert_Size);
+	uint32_t nInd_Size = 0;
+	fs.read((char *)&nInd_Size, sizeof(uint32_t));
+	vector<int> nIndicies;
+	nIndicies.resize(nInd_Size);
+	fs.read((char*)nIndicies.data(), sizeof(int) * nInd_Size);
+
+	tOutput.nVertex_Count = nVert_Size;
+	tOutput.tVerts = tUnique_Verts;
+	tOutput.nIndex_Count = nInd_Size;
+	tOutput.nIndicies = nIndicies;
+
+	return tOutput;
+}
+
+
 tBinary_Screen cBinary_Reader::Read_Screen_Binary(const char* read_file_name)
 {
 	tBinary_Screen tOutput;

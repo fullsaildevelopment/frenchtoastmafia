@@ -13,8 +13,6 @@ cbuffer tConstant_Buffer : register(b0)
 	float4x4 fWorld_Matrix;
 	float4x4 fView_Matrix;
 	float4x4 fProjection_Matrix;
-	float4x4 fHead_Matrix;
-	float4x4 fPose_Matrix;
 };
 
 struct INPUT_DATA
@@ -23,6 +21,8 @@ struct INPUT_DATA
 	float4 fNormal : NORMAL;
 	float4 fColor : COLOR;
 	float2 fTexture : TEXTURE;
+	uint4 joints : JOINTS;
+	float4 weights : WEIGHTS;
 };
 
 struct OUTPUT_DATA

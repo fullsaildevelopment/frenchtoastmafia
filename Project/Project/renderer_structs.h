@@ -23,6 +23,13 @@ struct tMesh
 	std::vector<tVertex> tVerts;
 	std::vector<int> nIndicies;
 };
+struct tMesh_Skinned
+{
+	uint32_t nVertex_Count = 0;
+	uint32_t nIndex_Count = 0;
+	std::vector<tVertex_Skinned> tVerts;
+	std::vector<int> nIndicies;
+};
 
 struct tMaterial
 {
@@ -54,10 +61,6 @@ struct tConstantBuffer_VertexShader_WVP
 	XMFLOAT4X4 fWorld_Matrix;
 	XMFLOAT4X4 fView_Matrix;
 	XMFLOAT4X4 fProjection_Matrix;
-	XMFLOAT4X4 fPose_Matrix;
-	XMFLOAT4X4 fHead_Matrix;
-	//XMFLOAT4X4 fCamera_Matrix;
-	//XMFLOAT4X4 fCamera_Origin;
 };
 
 
@@ -74,11 +77,14 @@ struct tScene_Objects
 {
 	int nObject_Count;
 	tFloat3								fWorld_Position[32]{};
-	tFloat4x4							fWorld_Matrix[32]{};
+	tFloat4x4							fWorld_Matrix[32][32]{};
 
 	CComPtr<ID3D11Buffer>				d3d_Vertex_Buffers[32]{};
 	CComPtr<ID3D11Buffer>				d3d_Index_Buffers[32]{};
+	bool								bMesh_Has_Skinned[32]{};
 	tMesh								tMesh_Data[32]{};
+	tMesh_Skinned						tMesh_Skinned_Data[32]{};
+	CComPtr<ID3D11Buffer>				d3d_Animation[32]{};
 
 	CComPtr<ID3D11VertexShader>			d3d_Vertex_Shaders[32]{};
 	std::string							szVS_File_Path[32]{};
@@ -86,8 +92,8 @@ struct tScene_Objects
 	CComPtr<ID3D11PixelShader>			d3d_Pixel_Shaders[32]{};
 	std::string							szPS_File_Path[32]{};
 
-	CComPtr<ID3D11Buffer>				tMaterials_Buffers[32]{};
-	tMaterials							tMaterials_Data[32]{};
+	CComPtr<ID3D11Buffer>				tMaterials_Buffers[32][32]{};
+	tMaterials							tMaterials_Data[32][32]{};
 
 	CComPtr<ID3D11ShaderResourceView>	d3d_SRV[32]{};
 	std::string							szSRV_File_Path[32]{};
