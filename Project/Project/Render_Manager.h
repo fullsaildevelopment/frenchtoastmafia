@@ -5,11 +5,13 @@
 #include "renderer_structs.h"
 #include "WICTextureLoader.h"
 #include "XTime.h"
-#include "PixelShader_Screen.csh"
+
 #include "VertexShader_Arena.csh"
+
 #include "PixelShader_Arena.csh"
 #include "PixelShader_Mage.csh"
 #include "PixelShader_Priest.csh"
+#include "PixelShader_Screen.csh"
 
 class cRender_Manager
 {
