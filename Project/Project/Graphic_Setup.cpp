@@ -79,13 +79,13 @@ void cGraphics_Setup::Initialize()
 	d3d_RTV_Desc.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2D;
 	d3d_RTV_Desc.Texture2D.MipSlice = 0;
 
-	d3d_Device->CreateRenderTargetView(back_buffer, &d3d_RTV_Desc, &d3d_RTV.p);
+	d3d_Device->CreateRenderTargetView(back_buffer, &d3d_RTV_Desc, &d3d_RTV);
 
 	d3d_Swap_Chain->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&d3d_Render_Left_Eye);
-	d3d_Device->CreateRenderTargetView(d3d_Render_Left_Eye, &d3d_RTV_Desc, &d3d_RTV_Left_Eye.p);
+	d3d_Device->CreateRenderTargetView(d3d_Render_Left_Eye, &d3d_RTV_Desc, &d3d_RTV_Left_Eye);
 
 	d3d_Swap_Chain->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&d3d_Render_Right_Eye);
-	d3d_Device->CreateRenderTargetView(d3d_Render_Right_Eye, &d3d_RTV_Desc, &d3d_RTV_Right_Eye.p);
+	d3d_Device->CreateRenderTargetView(d3d_Render_Right_Eye, &d3d_RTV_Desc, &d3d_RTV_Right_Eye);
 	back_buffer->Release();
 	
 	// Z BUFFER / DEPTH STENCIL
@@ -102,7 +102,7 @@ void cGraphics_Setup::Initialize()
 	d3d_Z_Buffer_Desc.CPUAccessFlags = 0;
 	d3d_Z_Buffer_Desc.MiscFlags = 0;
 
-	d3d_Device->CreateTexture2D(&d3d_Z_Buffer_Desc, nullptr, &d3d_Z_Buffer.p);
+	d3d_Device->CreateTexture2D(&d3d_Z_Buffer_Desc, nullptr, &d3d_Z_Buffer);
 
 	ZeroMemory(&d3d_DSS_Desc, sizeof(D3D11_DEPTH_STENCIL_DESC));
 	// Depth test parameters
@@ -142,7 +142,7 @@ void cGraphics_Setup::Initialize()
 	// Create the depth stencil view
 	d3d_Device->CreateDepthStencilView(d3d_Z_Buffer, // Depth stencil texture
 		&d3d_DSV_Desc, // Depth stencil desc
-		&d3d_DSV.p);  // [out] Depth stencil view
+		&d3d_DSV);  // [out] Depth stencil view
 
 
 	//BIND RENDER TARGET VIEW
@@ -208,11 +208,11 @@ void cGraphics_Setup::Initialize()
 	d3d_Sampler_State_Desc.MinLOD = 0;
 	d3d_Sampler_State_Desc.MaxLOD = 0;
 
-	d3d_Device->CreateSamplerState(&d3d_Sampler_State_Desc, &d3d_Sampler_State.p);
+	d3d_Device->CreateSamplerState(&d3d_Sampler_State_Desc, &d3d_Sampler_State);
 
 	// SHADERS
-	d3d_Device->CreateVertexShader(VertexShader, sizeof(VertexShader), NULL, &d3d_Vertex_Shader.p);
-	d3d_Device->CreatePixelShader(PixelShader, sizeof(PixelShader), NULL, &d3d_Pixel_Shader.p);
+	d3d_Device->CreateVertexShader(VertexShader, sizeof(VertexShader), NULL, &d3d_Vertex_Shader);
+	d3d_Device->CreatePixelShader(PixelShader, sizeof(PixelShader), NULL, &d3d_Pixel_Shader);
 
 	// INPUT ELEMENT
 	D3D11_INPUT_ELEMENT_DESC d3d_Input_Element[] =
@@ -223,7 +223,7 @@ void cGraphics_Setup::Initialize()
 		{ "TEXTURE", 0, DXGI_FORMAT_R32G32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 }
 	};
 
-	d3d_Device->CreateInputLayout(d3d_Input_Element, ARRAYSIZE(d3d_Input_Element), VertexShader, sizeof(VertexShader), &d3d_Input_Layout.p);
+	d3d_Device->CreateInputLayout(d3d_Input_Element, ARRAYSIZE(d3d_Input_Element), VertexShader, sizeof(VertexShader), &d3d_Input_Layout);
 
 
 	// BIND d3d_View_Port
@@ -408,52 +408,52 @@ void cGraphics_Setup::UpdateHMDMatrixPose()
 	}
 }
 
-CComPtr<ID3D11Device> cGraphics_Setup::Get_Device()
+ComPtr<ID3D11Device> cGraphics_Setup::Get_Device()
 {
 	return d3d_Device;
 }
 
-CComPtr<ID3D11DeviceContext> cGraphics_Setup::Get_Context()
+ComPtr<ID3D11DeviceContext> cGraphics_Setup::Get_Context()
 {
 	return d3d_Context;
 }
 
-CComPtr<ID3D11RenderTargetView> cGraphics_Setup::Get_RTV()
+ComPtr<ID3D11RenderTargetView> cGraphics_Setup::Get_RTV()
 {
 	return d3d_RTV;
 }
 
-CComPtr<ID3D11RenderTargetView> cGraphics_Setup::Get_RTV_Left()
+ComPtr<ID3D11RenderTargetView> cGraphics_Setup::Get_RTV_Left()
 {
 	return d3d_RTV_Left_Eye;
 }
 
-CComPtr<ID3D11RenderTargetView> cGraphics_Setup::Get_RTV_Right()
+ComPtr<ID3D11RenderTargetView> cGraphics_Setup::Get_RTV_Right()
 {
 	return d3d_RTV_Right_Eye;
 }
 
-CComPtr<ID3D11DepthStencilView> cGraphics_Setup::Get_DSV()
+ComPtr<ID3D11DepthStencilView> cGraphics_Setup::Get_DSV()
 {
 	return d3d_DSV;
 }
 
-CComPtr<ID3D11InputLayout> cGraphics_Setup::Get_Input_Layout()
+ComPtr<ID3D11InputLayout> cGraphics_Setup::Get_Input_Layout()
 {
 	return d3d_Input_Layout;
 }
 
-CComPtr<ID3D11VertexShader> cGraphics_Setup::Get_Vertex_Shader()
+ComPtr<ID3D11VertexShader> cGraphics_Setup::Get_Vertex_Shader()
 {
 	return d3d_Vertex_Shader;
 }
 
-CComPtr<ID3D11PixelShader> cGraphics_Setup::Get_Pixel_Shader()
+ComPtr<ID3D11PixelShader> cGraphics_Setup::Get_Pixel_Shader()
 {
 	return d3d_Pixel_Shader;
 }
 
-CComPtr<IDXGISwapChain> cGraphics_Setup::Get_Swap_Chain()
+ComPtr<IDXGISwapChain> cGraphics_Setup::Get_Swap_Chain()
 {
 	return d3d_Swap_Chain;
 }
@@ -463,17 +463,17 @@ D3D11_VIEWPORT cGraphics_Setup::Get_View_Port()
 	return d3d_View_Port;
 }
 
-CComPtr<ID3D11DepthStencilState> cGraphics_Setup::Get_Depth_Stencil_State()
+ComPtr<ID3D11DepthStencilState> cGraphics_Setup::Get_Depth_Stencil_State()
 {
 	return d3d_DSS;
 }
 
-CComPtr<ID3D11Texture2D> cGraphics_Setup::Get_Texture_Left_Eye()
+ComPtr<ID3D11Texture2D> cGraphics_Setup::Get_Texture_Left_Eye()
 {
 	return d3d_Render_Left_Eye;
 }
 
-CComPtr<ID3D11Texture2D> cGraphics_Setup::Get_Texture_Right_Eye()
+ComPtr<ID3D11Texture2D> cGraphics_Setup::Get_Texture_Right_Eye()
 {
 	return d3d_Render_Right_Eye;
 }

@@ -9,7 +9,7 @@
 class cScene_Manager
 {
 private:
-	CComPtr<ID3D11Device> d3dDevice;
+	ComPtr<ID3D11Device> d3dDevice;
 
 	// OBJECTS
 	cBinary_Reader cBinary_Read;

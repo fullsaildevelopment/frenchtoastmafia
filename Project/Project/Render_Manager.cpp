@@ -21,7 +21,7 @@ void cRender_Manager::Initialize(cGraphics_Setup* _setup)
 	d3d_Constant_Buffer_Desc.MiscFlags = 0;
 	d3d_Constant_Buffer_Desc.StructureByteStride = 0;
 
-	c_Graphics_Setup->Get_Device()->CreateBuffer(&d3d_Constant_Buffer_Desc, nullptr, &d3d_Constant_Buffer_WVP.p);
+	c_Graphics_Setup->Get_Device()->CreateBuffer(&d3d_Constant_Buffer_Desc, nullptr, &d3d_Constant_Buffer_WVP);
 
 }
 
@@ -79,7 +79,7 @@ void cRender_Manager::Load(int nScene_Id, tScene_Objects* t_Object_List)
 		d3dSRD.SysMemPitch = 0;
 		d3dSRD.SysMemSlicePitch = 0;
 
-		c_Graphics_Setup->Get_Device()->CreateBuffer(&d3dBuffer_Desc, &d3dSRD, &d3d_tmp_index_buffer.p);
+		c_Graphics_Setup->Get_Device()->CreateBuffer(&d3dBuffer_Desc, &d3dSRD, &d3d_tmp_index_buffer);
 		t_Object_List->d3d_Index_Buffers[i] = d3d_tmp_index_buffer;
 
 		if (nScene_Id == 2)
@@ -132,7 +132,7 @@ void cRender_Manager::Load(int nScene_Id, tScene_Objects* t_Object_List)
 		//	c_Graphics_Setup->Get_Device()->CreatePixelShader(PixelShader_Screen, sizeof(PixelShader_Screen), NULL, &t_Object_List->d3d_Pixel_Shaders[0]);
 		//	std::wstring ws_tmp_srv = std::wstring(t_Object_List->szSRV_File_Path[0].begin(), t_Object_List->szSRV_File_Path[0].end());
 		//	const wchar_t* tmp_srv = ws_tmp_srv.c_str();
-		//	CreateDDSTextureFromFile(c_Graphics_Setup->Get_Device(), tmp_srv, nullptr, &t_Object_List->d3d_SRV[0].p);
+		//	CreateDDSTextureFromFile(c_Graphics_Setup->Get_Device(), tmp_srv, nullptr, &t_Object_List->d3d_SRV[0]);
 		//}
 	}
 
@@ -209,7 +209,7 @@ void cRender_Manager::Load(int nScene_Id, tScene_Objects* t_Object_List)
 		d3d_Constant_Buffer_Desc.MiscFlags = 0;
 		d3d_Constant_Buffer_Desc.StructureByteStride = 0;
 
-		c_Graphics_Setup->Get_Device()->CreateBuffer(&d3d_Constant_Buffer_Desc, nullptr, &t_Object_List->tMaterials_Buffers[0].p);
+		c_Graphics_Setup->Get_Device()->CreateBuffer(&d3d_Constant_Buffer_Desc, nullptr, &t_Object_List->tMaterials_Buffers[0]);
 	}
 
 	// ARENA
@@ -402,10 +402,10 @@ void cRender_Manager::Draw(int nScene_Id, tScene_Objects t_Object_List)
 
 			if (i == 0)
 			{
-				c_Graphics_Setup->Get_Context()->PSSetShaderResources(0, 1, &t_Object_List.d3d_SRV[0].p);
-				c_Graphics_Setup->Get_Context()->PSSetShaderResources(1, 1, &t_Object_List.d3d_SRV[1].p);
-				c_Graphics_Setup->Get_Context()->PSSetShaderResources(2, 1, &t_Object_List.d3d_SRV[2].p);
-				//c_Graphics_Setup->Get_Context()->PSSetShaderResources(3, 1, &t_Object_List.d3d_SRV[3].p);
+				c_Graphics_Setup->Get_Context()->PSSetShaderResources(0, 1, &t_Object_List.d3d_SRV[0]);
+				c_Graphics_Setup->Get_Context()->PSSetShaderResources(1, 1, &t_Object_List.d3d_SRV[1]);
+				c_Graphics_Setup->Get_Context()->PSSetShaderResources(2, 1, &t_Object_List.d3d_SRV[2]);
+				//c_Graphics_Setup->Get_Context()->PSSetShaderResources(3, 1, &t_Object_List.d3d_SRV[3]);
 
 				c_Graphics_Setup->Get_Context()->Map(t_Object_List.tMaterials_Buffers[0], 0, D3D11_MAP_WRITE_DISCARD, 0, &d3d_MSR);
 				memcpy(d3d_MSR.pData, &cps_mage, sizeof(tConstantBuffer_PixelShader));
@@ -416,12 +416,12 @@ void cRender_Manager::Draw(int nScene_Id, tScene_Objects t_Object_List)
 			}
 			if (i == 1)
 			{
-				c_Graphics_Setup->Get_Context()->PSSetShaderResources(0, 1, &t_Object_List.d3d_SRV[4].p);
+				c_Graphics_Setup->Get_Context()->PSSetShaderResources(0, 1, &t_Object_List.d3d_SRV[4]);
 			}
 			if (i == 2)
 			{
-				c_Graphics_Setup->Get_Context()->PSSetShaderResources(0, 1, &t_Object_List.d3d_SRV[5].p);
-				c_Graphics_Setup->Get_Context()->PSSetShaderResources(0, 1, &t_Object_List.d3d_SRV[6].p);
+				c_Graphics_Setup->Get_Context()->PSSetShaderResources(0, 1, &t_Object_List.d3d_SRV[5]);
+				c_Graphics_Setup->Get_Context()->PSSetShaderResources(0, 1, &t_Object_List.d3d_SRV[6]);
 			}
 
 			//}

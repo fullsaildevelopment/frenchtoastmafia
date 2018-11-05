@@ -20,11 +20,13 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="controller_input.cpp" />
     <ClCompile Include="DDSTextureLoader.cpp" />
     <ClCompile Include="dopeSoundSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="controller_input.h" />
     <ClInclude Include="DDSTextureLoader.h" />
     <ClInclude Include="defines.h" />
     <ClInclude Include="dopeSoundSystem.h" />

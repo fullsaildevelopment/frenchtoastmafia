@@ -18,8 +18,8 @@ private:
 	cGraphics_Setup *c_Graphics_Setup;
 
 	// WVPC
-	CComPtr<ID3D11Buffer> d3d_Constant_Buffer_WVP;
-	CComPtr<ID3D11Buffer> d3d_Constant_Buffer_Mage;
+	ComPtr<ID3D11Buffer> d3d_Constant_Buffer_WVP;
+	ComPtr<ID3D11Buffer> d3d_Constant_Buffer_Mage;
 	tConstantBuffer_PixelShader cps_mage;
 
 	D3D11_BUFFER_DESC d3d_Constant_Buffer_Desc;

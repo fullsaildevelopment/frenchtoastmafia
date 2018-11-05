@@ -147,6 +147,9 @@
     <ClInclude Include="Vectors.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="controller_input.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Project.cpp">
@@ -195,6 +198,9 @@
       <Filter>VR</Filter>
     </ClCompile>
     <ClCompile Include="Matrices.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="controller_input.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

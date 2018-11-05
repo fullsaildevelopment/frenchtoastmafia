@@ -8,12 +8,15 @@
 *************************************************************************/
 #pragma once
 
-#include <atlbase.h>
+//#include <atlbase.h>
 #include <d3d11.h>
 #pragma comment(lib, "d3d11.lib")
 #include <DirectXMath.h>
 using namespace DirectX;
 #include "basic_structs.h"
+//#include <Windows.h>
+#include <wrl.h>
+using Microsoft::WRL::ComPtr;
 
 
 struct tMesh
@@ -76,20 +79,20 @@ struct tScene_Objects
 	tFloat3								fWorld_Position[32]{};
 	tFloat4x4							fWorld_Matrix[32]{};
 
-	CComPtr<ID3D11Buffer>				d3d_Vertex_Buffers[32]{};
-	CComPtr<ID3D11Buffer>				d3d_Index_Buffers[32]{};
+	ComPtr<ID3D11Buffer>				d3d_Vertex_Buffers[32]{};
+	ComPtr<ID3D11Buffer>				d3d_Index_Buffers[32]{};
 	tMesh								tMesh_Data[32]{};
 
-	CComPtr<ID3D11VertexShader>			d3d_Vertex_Shaders[32]{};
+	ComPtr<ID3D11VertexShader>			d3d_Vertex_Shaders[32]{};
 	std::string							szVS_File_Path[32]{};
 
-	CComPtr<ID3D11PixelShader>			d3d_Pixel_Shaders[32]{};
+	ComPtr<ID3D11PixelShader>			d3d_Pixel_Shaders[32]{};
 	std::string							szPS_File_Path[32]{};
 
-	CComPtr<ID3D11Buffer>				tMaterials_Buffers[32]{};
+	ComPtr<ID3D11Buffer>				tMaterials_Buffers[32]{};
 	tMaterials							tMaterials_Data[32]{};
 
-	CComPtr<ID3D11ShaderResourceView>	d3d_SRV[32]{};
+	ComPtr<ID3D11ShaderResourceView>	d3d_SRV[32]{};
 	std::string							szSRV_File_Path[32]{};
 };
 
