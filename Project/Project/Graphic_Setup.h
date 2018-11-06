@@ -84,7 +84,9 @@ private:
 	vr::TrackedDevicePose_t m_rTrackedDevicePose[vr::k_unMaxTrackedDeviceCount];
 	Matrix4 m_rmat4DevicePose[vr::k_unMaxTrackedDeviceCount];
 
-	int m_iTrackedControllerCount;
+	unsigned int m_uiControllerVertcount = 0;
+
+	int m_iTrackedControllerCount = 0;
 	int m_iTrackedControllerCount_Last;
 	int m_iValidPoseCount;
 	int m_iValidPoseCount_Last;
@@ -155,5 +157,10 @@ public:
 	CComPtr<ID3D11Texture2D> Get_Texture_Right_Eye();
 	cCamera get_Camera_Left();
 	cCamera get_Camera_Right();
+	vr::IVRSystem get_m_pHMD();
+	unsigned int get_controller_vert_count();
+	int get_tracked_controller_count();
+	vr::TrackedDevicePose_t get_tracked_device_pose();
+	Matrix4 get_matrix4_device_pose();
 };
 

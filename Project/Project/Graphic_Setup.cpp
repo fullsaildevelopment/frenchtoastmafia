@@ -487,3 +487,28 @@ cCamera cGraphics_Setup::get_Camera_Right()
 {
 	return *m_cCameraRight;
 }
+
+vr::IVRSystem cGraphics_Setup::get_m_pHMD()
+{
+	return *m_pHMD;
+}
+
+unsigned int cGraphics_Setup::get_controller_vert_count()
+{
+	return m_uiControllerVertcount;
+}
+
+int cGraphics_Setup::get_tracked_controller_count()
+{
+	return m_iTrackedControllerCount;
+}
+
+vr::TrackedDevicePose_t cGraphics_Setup::get_tracked_device_pose()
+{
+	return m_rTrackedDevicePose;
+}
+
+Matrix4 cGraphics_Setup::get_matrix4_device_pose()
+{
+	return m_rmat4DevicePose;
+}
