@@ -89,12 +89,16 @@ void cRender_Manager::Load(int nScene_Id, tScene_Objects* t_Object_List)
 				c_Graphics_Setup->Get_Device()->CreateVertexShader(VertexShader_Arena, sizeof(VertexShader_Arena), NULL, &t_Object_List->d3d_Vertex_Shaders[i]);
 			else
 				c_Graphics_Setup->Get_Device()->CreateVertexShader(VertexShader, sizeof(VertexShader), NULL, &t_Object_List->d3d_Vertex_Shaders[i]);
+
+
 			//PIXEL SHADERS
 			if (i == 0)
 				c_Graphics_Setup->Get_Device()->CreatePixelShader(PixelShader_Mage, sizeof(PixelShader_Mage), NULL, &t_Object_List->d3d_Pixel_Shaders[i]);
 			else if (i == 1)
 				c_Graphics_Setup->Get_Device()->CreatePixelShader(PixelShader_Arena, sizeof(PixelShader_Arena), NULL, &t_Object_List->d3d_Pixel_Shaders[i]);
-			else
+			else if (i == 2)
+				c_Graphics_Setup->Get_Device()->CreatePixelShader(PixelShader, sizeof(PixelShader), NULL, &t_Object_List->d3d_Pixel_Shaders[i]);
+			else if (i == 3)
 				c_Graphics_Setup->Get_Device()->CreatePixelShader(PixelShader, sizeof(PixelShader), NULL, &t_Object_List->d3d_Pixel_Shaders[i]);
 
 			

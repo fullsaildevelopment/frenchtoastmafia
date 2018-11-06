@@ -101,12 +101,12 @@ tScene_Objects cScene_Manager::GetScene(int nScene_Id)
 	// GAME
 	else
 	{
-		tScene.nObject_Count = 3;
+		tScene.nObject_Count = 4;
 
 		// GAME 1 with mage
 		if (nScene_Id == 2)
 		{
-			// Battle Mage
+			// Battle Mage - 0
 			{
 				XMFLOAT4X4 temp;
 				
@@ -147,7 +147,7 @@ tScene_Objects cScene_Manager::GetScene(int nScene_Id)
 			}
 			// Battle Mage
 
-			// Arena
+			// Arena - 1
 			{
 				
 				XMFLOAT4X4 temp;
@@ -262,7 +262,7 @@ tScene_Objects cScene_Manager::GetScene(int nScene_Id)
 			}
 			// Bullet
 
-			// GRID
+			// GRID - 2
 			{
 				tScene.tMesh_Data[2].nVertex_Count = 44;
 				tVertex *test_grid = new tVertex[tScene.tMesh_Data[2].nVertex_Count];
@@ -345,6 +345,48 @@ tScene_Objects cScene_Manager::GetScene(int nScene_Id)
 				tScene.fWorld_Matrix[2] = XMFLOAT4x4_to_tFloat4x4(tmp);
 			}
 			// GRID
+
+			// Dragon - 3
+			{
+				XMFLOAT4X4 temp;
+
+				XMMATRIX tempMatrix = XMMatrixIdentity();
+				//tempMatrix = XMMatrixMultiply(XMMatrixTranslation(2, -3, 0), tempMatrix);
+				//tempMatrix = XMMatrixMultiply(XMMatrixRotationY(3.14 / 2), tempMatrix);
+				//tempMatrix = XMMatrixMultiply(XMMatrixScaling(0.9, 0.9, 0.9), tempMatrix);
+
+
+				XMStoreFloat4x4(&temp, tempMatrix);
+
+				tScene.fWorld_Matrix[3] = XMFLOAT4x4_to_tFloat4x4(temp);
+				tMesh tDragon = cBinary_Read.Read_Mesh("dragonMesh.bin");
+
+				for (int i = 0; i < tDragon.nVertex_Count; i++)
+				{
+					tDragon.tVerts[i].fPosition.fZ *= -1;
+				}
+
+				for (int i = 0; i < tDragon.nVertex_Count; i++)
+				{
+					tScene.tMesh_Data[3].tVerts.push_back(tDragon.tVerts[i]);
+				}
+
+				tScene.tMesh_Data[3].nVertex_Count = tDragon.nVertex_Count;
+
+
+				for (int i = 0; i < tDragon.nIndex_Count; i++)
+				{
+					tScene.tMesh_Data[3].nIndicies.push_back(tDragon.nIndicies[i]);
+				}
+				tScene.tMesh_Data[3].nIndex_Count = tDragon.nIndex_Count;
+
+				//XMStoreFloat4x4(&tScene.fWorld_Matrix[0], XMMatrixIdentity());
+
+				tScene.tMaterials_Data[3] = cBinary_Read.Read_Material("dragonMaterial.bin");
+				//tScene.tMaterials_Data[0].tMats[0].tNormal.fX = 1.0f;
+			}
+			// Dragon
+
 		}
 		else
 			tMesh  tPriest = cBinary_Read.Read_Mesh("PriestDeathMesh.bin");
