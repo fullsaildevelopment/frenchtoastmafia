@@ -63,11 +63,10 @@ void cVR::update_controller()
 		{
 			continue;
 		}
-		cGraphics_Setup::tTracked_device_pose track_pose;
 
-		
+		cGraphics_Setup::tMatrix4_device_pose matrix_pose;
 
-		const Matrix4 &matrix = gx_setup.get_matrix4_device_pose()[non_tracking_device];
+		const Matrix4 &matrix = matrix_pose.m_rmat4DevicePose[non_tracking_device];
 
 		Vector4 center_point;
 		Vector4 temp_vec;

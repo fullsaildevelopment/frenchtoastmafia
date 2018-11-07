@@ -508,10 +508,10 @@ int cGraphics_Setup::get_tracked_controller_count()
 //	return m_rTrackedDevicePose;
 //}
 
-Matrix4 cGraphics_Setup::get_matrix4_device_pose()
-{
-	return m_rmat4DevicePose;
-}
+//Matrix4 cGraphics_Setup::get_matrix4_device_pose()
+//{
+//	return m_rmat4DevicePose;
+//}
 
 CComPtr<ID3D11Resource> cGraphics_Setup::get_controller_axis_vertex_buffer()
 {
