@@ -13,5 +13,7 @@ public:
 	void Initialize(cGraphics_Setup* c_Graphics_Setup);
 
 	void VR_Render();
+
+	void update_controller();
 };
 

@@ -15,6 +15,8 @@
 #include "VertexShader.csh"
 #include "PixelShader.csh"
 
+using namespace vr;
+
 class cGraphics_Setup
 {
 private:
@@ -63,6 +65,8 @@ private:
 	CComPtr<ID3D11ShaderResourceView> d3d_SRV_Right_Eye;
 	CComPtr<ID3D11RenderTargetView> d3d_RTV_Right_Eye;
 
+	CComPtr<ID3D11Resource> m_pControllerAxisVertexBuffer;
+
 	uint32_t m_nRenderWidth;
 	uint32_t m_nRenderHeight;
 
@@ -95,7 +99,7 @@ private:
 	std::string m_strPoseClasses;                            // what classes we saw poses for this frame
 	char m_rDevClassChar[vr::k_unMaxTrackedDeviceCount];   // for each device, a character representing its class
 
-
+	
 /*
 	namespace Memory
 	{
@@ -134,6 +138,11 @@ public:
 	void Initialize();
 	void Clean_Up();
 
+	struct tTracked_device_pose
+	{
+		vr::TrackedDevicePose_t m_rTrackedDevicePose[64];
+	};
+
 	Matrix4 GetHMDMatrixPoseEye(vr::Hmd_Eye nEye);
 	Matrix4 GetHMDMatrixProjectionEye(vr::Hmd_Eye nEye);
 	void SetupCameras();
@@ -157,10 +166,11 @@ public:
 	CComPtr<ID3D11Texture2D> Get_Texture_Right_Eye();
 	cCamera get_Camera_Left();
 	cCamera get_Camera_Right();
-	vr::IVRSystem get_m_pHMD();
+	//IVRSystem get_m_pHMD();
 	unsigned int get_controller_vert_count();
 	int get_tracked_controller_count();
-	vr::TrackedDevicePose_t get_tracked_device_pose();
+	//tTracked_device_pose get_tracked_device_pose();
 	Matrix4 get_matrix4_device_pose();
+	CComPtr<ID3D11Resource> get_controller_axis_vertex_buffer();
 };
 
