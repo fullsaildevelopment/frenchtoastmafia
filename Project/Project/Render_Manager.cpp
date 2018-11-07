@@ -99,7 +99,7 @@ void cRender_Manager::Load(int nScene_Id, tScene_Objects* t_Object_List)
 			else if (i == 2)
 				c_Graphics_Setup->Get_Device()->CreatePixelShader(PixelShader, sizeof(PixelShader), NULL, &t_Object_List->d3d_Pixel_Shaders[i]);
 			else if (i == 3)
-				c_Graphics_Setup->Get_Device()->CreatePixelShader(PixelShader, sizeof(PixelShader), NULL, &t_Object_List->d3d_Pixel_Shaders[i]);
+				c_Graphics_Setup->Get_Device()->CreatePixelShader(PixelShader, sizeof(PixelShader_Dragon), NULL, &t_Object_List->d3d_Pixel_Shaders[i]);
 
 			
 			//// SRV
@@ -134,6 +134,8 @@ void cRender_Manager::Load(int nScene_Id, tScene_Objects* t_Object_List)
 
 	// 5 - priest - diffuse
 	// 6 - priest - normal
+
+	// 7 - dragon - diffuse
 
 
 	HRESULT result;
@@ -218,10 +220,10 @@ void cRender_Manager::Load(int nScene_Id, tScene_Objects* t_Object_List)
 		cps_arena.diffuse.z = t_Object_List->tMaterials_Data[1].tMats[0].tDiffuse.fZ;
 		cps_arena.diffuse.w = t_Object_List->tMaterials_Data[1].tMats[0].tDiffuse.fW;
 
-		cps_mage.emissive.x = t_Object_List->tMaterials_Data[0].tMats[0].tEmissive.fX;
-		cps_mage.emissive.y = t_Object_List->tMaterials_Data[0].tMats[0].tEmissive.fY;
-		cps_mage.emissive.z = t_Object_List->tMaterials_Data[0].tMats[0].tEmissive.fZ;
-		cps_mage.emissive.w = t_Object_List->tMaterials_Data[0].tMats[0].tEmissive.fW;
+		cps_arena.emissive.x = t_Object_List->tMaterials_Data[1].tMats[0].tEmissive.fX;
+		cps_arena.emissive.y = t_Object_List->tMaterials_Data[1].tMats[0].tEmissive.fY;
+		cps_arena.emissive.z = t_Object_List->tMaterials_Data[1].tMats[0].tEmissive.fZ;
+		cps_arena.emissive.w = t_Object_List->tMaterials_Data[1].tMats[0].tEmissive.fW;
 
 		cps_arena.reflection.x = t_Object_List->tMaterials_Data[1].tMats[0].tReflection.fX;
 		cps_arena.reflection.y = t_Object_List->tMaterials_Data[1].tMats[0].tReflection.fY;
@@ -230,10 +232,10 @@ void cRender_Manager::Load(int nScene_Id, tScene_Objects* t_Object_List)
 
 		cps_arena.shininess.x = t_Object_List->tMaterials_Data[1].tMats[0].fShininess;
 
-		cps_mage.specular.x = t_Object_List->tMaterials_Data[0].tMats[0].tSpecular.fX;
-		cps_mage.specular.y = t_Object_List->tMaterials_Data[0].tMats[0].tSpecular.fY;
-		cps_mage.specular.z = t_Object_List->tMaterials_Data[0].tMats[0].tSpecular.fZ;
-		cps_mage.specular.w = t_Object_List->tMaterials_Data[0].tMats[0].tSpecular.fW;
+		cps_arena.specular.x = t_Object_List->tMaterials_Data[1].tMats[0].tSpecular.fX;
+		cps_arena.specular.y = t_Object_List->tMaterials_Data[1].tMats[0].tSpecular.fY;
+		cps_arena.specular.z = t_Object_List->tMaterials_Data[1].tMats[0].tSpecular.fZ;
+		cps_arena.specular.w = t_Object_List->tMaterials_Data[1].tMats[0].tSpecular.fW;
 
 		cps_arena.transparency.x = t_Object_List->tMaterials_Data[1].tMats[0].tTransparency.fX;
 		cps_arena.transparency.y = t_Object_List->tMaterials_Data[1].tMats[0].tTransparency.fY;
@@ -261,6 +263,58 @@ void cRender_Manager::Load(int nScene_Id, tScene_Objects* t_Object_List)
 	//n_tmp = std::wstring(t_Object_List->tMaterials_Data[2].tMats[0].szNormal_File_Path.begin(), t_Object_List->tMaterials_Data[2].tMats[0].szNormal_File_Path.end());
 	//normal_path = n_tmp.c_str();
 	//result = CreateWICTextureFromFile(c_Graphics_Setup->Get_Device(), c_Graphics_Setup->Get_Context(), normal_path, nullptr, &t_Object_List->d3d_SRV[6], 0);
+
+	// Dragon
+
+	d_tmp = std::wstring(t_Object_List->tMaterials_Data[3].tMats[0].szDiffuse_File_Path.begin(), t_Object_List->tMaterials_Data[3].tMats[0].szDiffuse_File_Path.end());
+	diffuse_path = d_tmp.c_str();
+	result = CreateWICTextureFromFile(c_Graphics_Setup->Get_Device(), c_Graphics_Setup->Get_Context(), diffuse_path, nullptr, &t_Object_List->d3d_SRV[7], 0);
+	{
+		cps_dragon.light_pos = { 0.0f, 0.0f, -2.0f, 1.0f };
+
+		cps_dragon.ambient.x = t_Object_List->tMaterials_Data[3].tMats[0].tAmbient.fX;
+		cps_dragon.ambient.y = t_Object_List->tMaterials_Data[3].tMats[0].tAmbient.fY;
+		cps_dragon.ambient.z = t_Object_List->tMaterials_Data[3].tMats[0].tAmbient.fZ;
+		cps_dragon.ambient.w = t_Object_List->tMaterials_Data[3].tMats[0].tAmbient.fW;
+
+		cps_dragon.diffuse.x = t_Object_List->tMaterials_Data[3].tMats[0].tDiffuse.fX;
+		cps_dragon.diffuse.y = t_Object_List->tMaterials_Data[3].tMats[0].tDiffuse.fY;
+		cps_dragon.diffuse.z = t_Object_List->tMaterials_Data[3].tMats[0].tDiffuse.fZ;
+		cps_dragon.diffuse.w = t_Object_List->tMaterials_Data[3].tMats[0].tDiffuse.fW;
+
+		cps_dragon.emissive.x = t_Object_List->tMaterials_Data[3].tMats[0].tEmissive.fX;
+		cps_dragon.emissive.y = t_Object_List->tMaterials_Data[3].tMats[0].tEmissive.fY;
+		cps_dragon.emissive.z = t_Object_List->tMaterials_Data[3].tMats[0].tEmissive.fZ;
+		cps_dragon.emissive.w = t_Object_List->tMaterials_Data[3].tMats[0].tEmissive.fW;
+
+		cps_dragon.reflection.x = t_Object_List->tMaterials_Data[3].tMats[0].tReflection.fX;
+		cps_dragon.reflection.y = t_Object_List->tMaterials_Data[3].tMats[0].tReflection.fY;
+		cps_dragon.reflection.z = t_Object_List->tMaterials_Data[3].tMats[0].tReflection.fZ;
+		cps_dragon.reflection.w = t_Object_List->tMaterials_Data[3].tMats[0].tReflection.fW;
+
+		cps_dragon.shininess.x = t_Object_List->tMaterials_Data[3].tMats[0].fShininess;
+
+		cps_dragon.specular.x = t_Object_List->tMaterials_Data[3].tMats[0].tSpecular.fX;
+		cps_dragon.specular.y = t_Object_List->tMaterials_Data[3].tMats[0].tSpecular.fY;
+		cps_dragon.specular.z = t_Object_List->tMaterials_Data[3].tMats[0].tSpecular.fZ;
+		cps_dragon.specular.w = t_Object_List->tMaterials_Data[3].tMats[0].tSpecular.fW;
+
+		cps_dragon.transparency.x = t_Object_List->tMaterials_Data[3].tMats[0].tTransparency.fX;
+		cps_dragon.transparency.y = t_Object_List->tMaterials_Data[3].tMats[0].tTransparency.fY;
+		cps_dragon.transparency.z = t_Object_List->tMaterials_Data[3].tMats[0].tTransparency.fZ;
+		cps_dragon.transparency.w = t_Object_List->tMaterials_Data[3].tMats[0].tTransparency.fW;
+
+		// CONSTANT BUFFER - dragon
+		ZeroMemory(&d3d_Constant_Buffer_Desc, sizeof(D3D11_BUFFER_DESC));
+		d3d_Constant_Buffer_Desc.ByteWidth = sizeof(tConstantBuffer_PixelShader);
+		d3d_Constant_Buffer_Desc.Usage = D3D11_USAGE_DYNAMIC;
+		d3d_Constant_Buffer_Desc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+		d3d_Constant_Buffer_Desc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+		d3d_Constant_Buffer_Desc.MiscFlags = 0;
+		d3d_Constant_Buffer_Desc.StructureByteStride = 0;
+
+		c_Graphics_Setup->Get_Device()->CreateBuffer(&d3d_Constant_Buffer_Desc, nullptr, &t_Object_List->tMaterials_Buffers[3].p);
+	}
 }
 
 void cRender_Manager::Unload()
@@ -461,6 +515,16 @@ void cRender_Manager::Draw(int nScene_Id, tScene_Objects t_Object_List)
 				memcpy(d3d_MSR.pData, &cps_arena, sizeof(tConstantBuffer_PixelShader));
 				c_Graphics_Setup->Get_Context()->Unmap(t_Object_List.tMaterials_Buffers[1], 0);
 				ID3D11Buffer *tmp_con_buffer[] = { t_Object_List.tMaterials_Buffers[1] };
+				c_Graphics_Setup->Get_Context()->PSSetConstantBuffers(0, 1, tmp_con_buffer);
+			}
+			else if (i == 3)
+			{
+				c_Graphics_Setup->Get_Context()->PSSetShaderResources(0, 1, &t_Object_List.d3d_SRV[7].p);
+
+				c_Graphics_Setup->Get_Context()->Map(t_Object_List.tMaterials_Buffers[3], 0, D3D11_MAP_WRITE_DISCARD, 0, &d3d_MSR);
+				memcpy(d3d_MSR.pData, &cps_arena, sizeof(tConstantBuffer_PixelShader));
+				c_Graphics_Setup->Get_Context()->Unmap(t_Object_List.tMaterials_Buffers[3], 0);
+				ID3D11Buffer *tmp_con_buffer[] = { t_Object_List.tMaterials_Buffers[3] };
 				c_Graphics_Setup->Get_Context()->PSSetConstantBuffers(0, 1, tmp_con_buffer);
 			}
 			//else if (i == 2)

@@ -10,6 +10,7 @@
 #include "PixelShader_Arena.csh"
 #include "PixelShader_Mage.csh"
 #include "PixelShader_Priest.csh"
+#include "PixelShader_Dragon.csh"
 
 class cRender_Manager
 {
@@ -22,6 +23,7 @@ private:
 	CComPtr<ID3D11Buffer> d3d_Constant_Buffer_Mage;
 	tConstantBuffer_PixelShader cps_mage;
 	tConstantBuffer_PixelShader cps_arena;
+	tConstantBuffer_PixelShader cps_dragon;
 
 	D3D11_BUFFER_DESC d3d_Constant_Buffer_Desc;
 	D3D11_MAPPED_SUBRESOURCE d3d_MSR;

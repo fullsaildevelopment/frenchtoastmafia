@@ -236,5 +236,8 @@
     <FxCompile Include="VertexShader_Arena.hlsl">
       <Filter>Renderer\Vertex</Filter>
     </FxCompile>
+    <FxCompile Include="PixelShader_Dragon.hlsl">
+      <Filter>Renderer\Pixel</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>
