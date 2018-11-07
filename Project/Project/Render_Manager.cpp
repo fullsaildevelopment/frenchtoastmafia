@@ -86,20 +86,37 @@ void cRender_Manager::Load(int nScene_Id, tScene_Objects* t_Object_List)
 		{
 			//VERTEX SHADERS
 			if (i == 1)
-				c_Graphics_Setup->Get_Device()->CreateVertexShader(VertexShader_Arena, sizeof(VertexShader_Arena), NULL, &t_Object_List->d3d_Vertex_Shaders[i]);
+			{
+				HRESULT error = c_Graphics_Setup->Get_Device()->CreateVertexShader(VertexShader_Arena, sizeof(VertexShader_Arena), NULL, &t_Object_List->d3d_Vertex_Shaders[i]);
+				int one = 1;
+			}
 			else
+			{
 				c_Graphics_Setup->Get_Device()->CreateVertexShader(VertexShader, sizeof(VertexShader), NULL, &t_Object_List->d3d_Vertex_Shaders[i]);
+			}
 
 
 			//PIXEL SHADERS
 			if (i == 0)
+			{
 				c_Graphics_Setup->Get_Device()->CreatePixelShader(PixelShader_Mage, sizeof(PixelShader_Mage), NULL, &t_Object_List->d3d_Pixel_Shaders[i]);
+			}
 			else if (i == 1)
+			{
 				c_Graphics_Setup->Get_Device()->CreatePixelShader(PixelShader_Arena, sizeof(PixelShader_Arena), NULL, &t_Object_List->d3d_Pixel_Shaders[i]);
+			}
 			else if (i == 2)
+			{
 				c_Graphics_Setup->Get_Device()->CreatePixelShader(PixelShader, sizeof(PixelShader), NULL, &t_Object_List->d3d_Pixel_Shaders[i]);
+			}
 			else if (i == 3)
-				c_Graphics_Setup->Get_Device()->CreatePixelShader(PixelShader, sizeof(PixelShader_Dragon), NULL, &t_Object_List->d3d_Pixel_Shaders[i]);
+			{
+				HRESULT error = c_Graphics_Setup->Get_Device()->CreatePixelShader(PixelShader_Dragon, sizeof(PixelShader_Dragon), NULL, &t_Object_List->d3d_Pixel_Shaders[i]);
+			}
+			else
+			{
+				int one = 1;
+			}
 
 			
 			//// SRV
@@ -522,7 +539,7 @@ void cRender_Manager::Draw(int nScene_Id, tScene_Objects t_Object_List)
 				c_Graphics_Setup->Get_Context()->PSSetShaderResources(0, 1, &t_Object_List.d3d_SRV[7].p);
 
 				c_Graphics_Setup->Get_Context()->Map(t_Object_List.tMaterials_Buffers[3], 0, D3D11_MAP_WRITE_DISCARD, 0, &d3d_MSR);
-				memcpy(d3d_MSR.pData, &cps_arena, sizeof(tConstantBuffer_PixelShader));
+				memcpy(d3d_MSR.pData, &cps_dragon, sizeof(tConstantBuffer_PixelShader));
 				c_Graphics_Setup->Get_Context()->Unmap(t_Object_List.tMaterials_Buffers[3], 0);
 				ID3D11Buffer *tmp_con_buffer[] = { t_Object_List.tMaterials_Buffers[3] };
 				c_Graphics_Setup->Get_Context()->PSSetConstantBuffers(0, 1, tmp_con_buffer);
