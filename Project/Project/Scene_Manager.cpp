@@ -389,6 +389,7 @@ tScene_Objects cScene_Manager::GetScene(int nScene_Id)
 				//XMStoreFloat4x4(&tScene.fWorld_Matrix[0], XMMatrixIdentity());
 
 				tScene.tMaterials_Data[3] = cBinary_Read.Read_Material("dragonMaterial.bin");
+				tScene.tMaterials_Data[3].tMats[0].szDiffuse_File_Path = "Dragon.fbm\\DarkDragon_D.png";
 				//tScene.tMaterials_Data[0].tMats[0].tNormal.fX = 1.0f;
 			}
 			// Dragon
