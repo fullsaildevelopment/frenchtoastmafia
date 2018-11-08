@@ -322,15 +322,32 @@ void cRender_Manager::Load(int nScene_Id, tScene_Objects* t_Object_List)
 		cps_dragon.transparency.w = t_Object_List->tMaterials_Data[3].tMats[0].tTransparency.fW;
 
 		// CONSTANT BUFFER - dragon
+		//ZeroMemory(&d3d_Constant_Buffer_Desc, sizeof(D3D11_BUFFER_DESC));
+		//d3d_Constant_Buffer_Desc.ByteWidth = sizeof(tConstantBuffer_PixelShader);
+		//d3d_Constant_Buffer_Desc.Usage = D3D11_USAGE_DYNAMIC;
+		//d3d_Constant_Buffer_Desc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+		//d3d_Constant_Buffer_Desc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+		//d3d_Constant_Buffer_Desc.MiscFlags = 0;
+		//d3d_Constant_Buffer_Desc.StructureByteStride = 0;
+
+		//test
 		ZeroMemory(&d3d_Constant_Buffer_Desc, sizeof(D3D11_BUFFER_DESC));
-		d3d_Constant_Buffer_Desc.ByteWidth = sizeof(tConstantBuffer_PixelShader);
+		d3d_Constant_Buffer_Desc.ByteWidth = sizeof(tConstantBuffer_Dragon);
 		d3d_Constant_Buffer_Desc.Usage = D3D11_USAGE_DYNAMIC;
 		d3d_Constant_Buffer_Desc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
 		d3d_Constant_Buffer_Desc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
 		d3d_Constant_Buffer_Desc.MiscFlags = 0;
 		d3d_Constant_Buffer_Desc.StructureByteStride = 0;
 
-		c_Graphics_Setup->Get_Device()->CreateBuffer(&d3d_Constant_Buffer_Desc, nullptr, &t_Object_List->tMaterials_Buffers[3].p);
+		cps_dragonColor.addColor = { 0.0f, 0.0f, 0.0f, 1.0f };
+
+		D3D11_SUBRESOURCE_DATA InitData;
+		InitData.pSysMem = &cps_dragonColor;
+		InitData.SysMemPitch = 0;
+		InitData.SysMemSlicePitch = 0;
+
+
+		c_Graphics_Setup->Get_Device()->CreateBuffer(&d3d_Constant_Buffer_Desc, &InitData, &t_Object_List->tMaterials_Buffers[3].p);
 	}
 }
 
@@ -463,6 +480,60 @@ void cRender_Manager::Draw(int nScene_Id, tScene_Objects t_Object_List)
 		}
 		*/
 		
+		//dragon controls
+		if (GetAsyncKeyState('E') && flashTimer == 0.0f)
+		{
+			isHit = true;
+		}
+		if (isHit)
+		{
+			isHit = false;
+			flashTimer = flashTime;
+			dragonHealth -= 1;
+			if (dragonHealth == 6)
+			{
+				cps_dragonColor.addColor = { 0.0f, 0.0f, 1.0f, 1.0f };
+			}
+			if (dragonHealth == 5)
+			{
+				cps_dragonColor.addColor = { 0.0f, 1.0f, 1.0f, 1.0f };
+			}
+			if (dragonHealth == 4)
+			{
+				cps_dragonColor.addColor = { 0.0f, 1.0f, 0.0f, 1.0f };
+			}
+			if (dragonHealth == 3)
+			{
+				cps_dragonColor.addColor = { 1.0f, 1.0f, 0.0f, 1.0f };
+			}
+			if (dragonHealth == 2)
+			{
+				cps_dragonColor.addColor = { 1.0f, 0.5f, 0.0f, 1.0f };
+			}
+			if (dragonHealth == 1)
+			{
+				cps_dragonColor.addColor = { 1.0f, 0.0f, 0.0f, 1.0f };
+			}
+
+			if (dragonHealth <= 0)
+			{
+				dragonAlive = false;
+			}
+
+		}
+
+		if (flashTimer < 0.0f)
+		{
+			flashTimer = 0.0f;
+			cps_dragonColor.addColor = { 0.0f, 0.0f, 0.0f, 1.0f };
+		}
+		if (flashTimer > 0.0f)
+		{
+			flashTimer -= cTime.Delta();
+		}
+		
+
+
 		XMStoreFloat4x4(&tWVP.fView_Matrix, XMMatrixIdentity());
 		if (_eyeID == 0)
 		{
@@ -478,6 +549,8 @@ void cRender_Manager::Draw(int nScene_Id, tScene_Objects t_Object_List)
 
 		for (int i = 0; i < t_Object_List.nObject_Count; i++)
 		{
+			if (i == 3 && !dragonAlive)
+				continue;
 			// CONSTANT BUFFER - WVPC
 			{
 				tWVP.fWorld_Matrix = tFloat4x4_to_XMFLOAT4x4(t_Object_List.fWorld_Matrix[i]);
@@ -539,7 +612,7 @@ void cRender_Manager::Draw(int nScene_Id, tScene_Objects t_Object_List)
 				c_Graphics_Setup->Get_Context()->PSSetShaderResources(0, 1, &t_Object_List.d3d_SRV[7].p);
 
 				c_Graphics_Setup->Get_Context()->Map(t_Object_List.tMaterials_Buffers[3], 0, D3D11_MAP_WRITE_DISCARD, 0, &d3d_MSR);
-				memcpy(d3d_MSR.pData, &cps_dragon, sizeof(tConstantBuffer_PixelShader));
+				memcpy(d3d_MSR.pData, &cps_dragonColor, sizeof(tConstantBuffer_Dragon));
 				c_Graphics_Setup->Get_Context()->Unmap(t_Object_List.tMaterials_Buffers[3], 0);
 				ID3D11Buffer *tmp_con_buffer[] = { t_Object_List.tMaterials_Buffers[3] };
 				c_Graphics_Setup->Get_Context()->PSSetConstantBuffers(0, 1, tmp_con_buffer);
@@ -564,4 +637,9 @@ void cRender_Manager::Draw(int nScene_Id, tScene_Objects t_Object_List)
 
 void cRender_Manager::DrawToTexture()
 {
+}
+
+void cRender_Manager::setDragonColor(float _color)
+{
+	
 }

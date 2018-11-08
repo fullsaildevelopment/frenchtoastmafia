@@ -24,6 +24,7 @@ private:
 	tConstantBuffer_PixelShader cps_mage;
 	tConstantBuffer_PixelShader cps_arena;
 	tConstantBuffer_PixelShader cps_dragon;
+	tConstantBuffer_Dragon cps_dragonColor;
 
 	D3D11_BUFFER_DESC d3d_Constant_Buffer_Desc;
 	D3D11_MAPPED_SUBRESOURCE d3d_MSR;
@@ -32,9 +33,16 @@ private:
 	XMFLOAT4X4 fCamera_Matrix;
 	XMFLOAT4X4 fCamera_Origin;
 
-
 	// TIME
 	XTime cTime;
+
+	// Dragon Behavior
+	bool isHit = false;
+	float flashTime = 0.5f;
+	float flashTimer = 0.0f;
+
+	bool dragonAlive = true;
+	int dragonHealth = 7;
 public:
 	cRender_Manager();
 	~cRender_Manager();
@@ -44,6 +52,8 @@ public:
 	void Unload();
 	void Draw(int nScene_Id, tScene_Objects t_Object_List);
 	void DrawToTexture();
+
+	void setDragonColor(float _color);
 
 	bool objSet = false;
 	XMMATRIX tempWorld = XMMatrixIdentity();

@@ -32,5 +32,5 @@ if (pointLightStrength < 0)
 float pointLightRatio = pointLightStrength * clamp(dot(pointLightDir, input.fNormal), 0, 1);
 
 
-return ambient * (tTexture.Sample(sSampler_State[0], input.fTexture) + (pointLightColor * pointLightRatio));
+return ambient * (tTexture.Sample(sSampler_State[0], input.fTexture) + (pointLightColor * pointLightRatio) + fData);
 }
