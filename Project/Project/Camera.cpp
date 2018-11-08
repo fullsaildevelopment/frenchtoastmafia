@@ -1,9 +1,16 @@
+/************************************************************************
+* Filename:  		Camera.cpp
+* Date:      		26/10/2018
+* Mod. Date: 		08/11/2018
+* Mod. Initials:	WM
+* Author:    		Wichet Manawanitjarern
+* Purpose:   		Camera Class for Player's View
+*************************************************************************/
 #include "Camera.h"
 
 cCamera::cCamera()
 {
 }
-
 
 cCamera::~cCamera()
 {

@@ -1,19 +1,21 @@
 /************************************************************************
-* Filename:  		renderer_structs.h
-* Date:      		10/02/2018
-* Mod. Date: 		10/11/2018
+* Filename:  		Renderer_Structs.h
+* Date:      		02/10/2018
+* Mod. Date: 		08/11/2018
 * Mod. Initials:	WM
 * Author:    		Wichet Manawanitjarern
-* Purpose:   		Additional structs to hold different datatype and make accessing them easier.
+* Purpose:   		Additional render-specific structs to hold different datatype and make accessing them easier.
 *************************************************************************/
 #pragma once
 
-#include <atlbase.h>
+#include <wrl.h>
+using Microsoft::WRL::ComPtr;
+//#include <atlbase.h>
 #include <d3d11.h>
 #pragma comment(lib, "d3d11.lib")
 #include <DirectXMath.h>
 using namespace DirectX;
-#include "basic_structs.h"
+#include "Basic_Structs.h"
 
 
 struct tMesh
@@ -21,6 +23,13 @@ struct tMesh
 	uint32_t nVertex_Count = 0;
 	uint32_t nIndex_Count = 0;
 	std::vector<tVertex> tVerts;
+	std::vector<int> nIndicies;
+};
+struct tMesh_Skinned
+{
+	uint32_t nVertex_Count = 0;
+	uint32_t nIndex_Count = 0;
+	std::vector<tVertex_Skinned> tVerts;
 	std::vector<int> nIndicies;
 };
 
@@ -49,18 +58,6 @@ struct tMaterials
 	std::vector<tMaterial> tMats;
 };
 
-struct tConstantBuffer_VertexShader_WVP
-{
-	XMFLOAT4X4 fWorld_Matrix;
-	XMFLOAT4X4 fView_Matrix;
-	XMFLOAT4X4 fProjection_Matrix;
-	XMFLOAT4X4 fPose_Matrix;
-	XMFLOAT4X4 fHead_Matrix;
-	//XMFLOAT4X4 fCamera_Matrix;
-	//XMFLOAT4X4 fCamera_Origin;
-};
-
-
 struct	tObject_Id
 {
 	uint8_t		nObject_Id;
@@ -72,33 +69,55 @@ struct	tObject_Id
 
 struct tScene_Objects
 {
+	// Count
 	int nObject_Count;
+
+	// Position
 	tFloat3								fWorld_Position[32]{};
-	tFloat4x4							fWorld_Matrix[32]{};
+	tFloat4x4							fWorld_Matrix[32][32]{};
 
-	CComPtr<ID3D11Buffer>				d3d_Vertex_Buffers[32]{};
-	CComPtr<ID3D11Buffer>				d3d_Index_Buffers[32]{};
+	// Vertex and Index Data
+	bool								bMesh_Has_Skinned[32]{};
+
 	tMesh								tMesh_Data[32]{};
+	tMesh_Skinned						tMesh_Skinned_Data[32]{};
 
-	CComPtr<ID3D11VertexShader>			d3d_Vertex_Shaders[32]{};
-	std::string							szVS_File_Path[32]{};
+	ComPtr<ID3D11Buffer>				d3d_Vertex_Buffers[32]{};
+	ComPtr<ID3D11Buffer>				d3d_Index_Buffers[32]{};
 
-	CComPtr<ID3D11PixelShader>			d3d_Pixel_Shaders[32]{};
-	std::string							szPS_File_Path[32]{};
+	// Material
+	tMaterials							tMaterials_Data[32][32]{};
+	ComPtr<ID3D11Buffer>				tMaterials_Buffers[32][32]{};
 
-	CComPtr<ID3D11Buffer>				tMaterials_Buffers[32]{};
-	tMaterials							tMaterials_Data[32]{};
-
-	CComPtr<ID3D11ShaderResourceView>	d3d_SRV[32]{};
+	// SRV
 	std::string							szSRV_File_Path[32]{};
+	ComPtr<ID3D11ShaderResourceView>	d3d_SRV[32]{};
+
+	// Animation
+	bool								bHas_Animation[32]{};
+	tAnimation_Clip						tAnim_Clip[32]{};
+	tAnimation_Data						tAnim_Data[32]{}; // try to combine with clip when create binary writer
+
+	// Vertex Shaders
+	std::string							szVS_File_Path[32]{};
+	ComPtr<ID3D11VertexShader>			d3d_Vertex_Shaders[32]{};
+
+	// Pixel Shaders
+	std::string							szPS_File_Path[32]{};
+	ComPtr<ID3D11PixelShader>			d3d_Pixel_Shaders[32]{};
 };
 
 
-
-
-struct tConstantBuffer_Float4
+struct tConstantBuffer_VertexShader_WVP
 {
-	XMFLOAT4 fData = { 0.0f, 0.0f, 0.0f, 0.0f };
+	XMFLOAT4X4 fWorld_Matrix;
+	XMFLOAT4X4 fView_Matrix;
+	XMFLOAT4X4 fProjection_Matrix;
+};
+
+struct tConstantBuffer_VertexShader_Animation
+{
+	XMFLOAT4X4 fAnimation_Data[99];
 };
 
 struct tConstantBuffer_PixelShader
@@ -113,4 +132,9 @@ struct tConstantBuffer_PixelShader
 	XMFLOAT4 shininess = { 0.0f, 0.0f, 0.0f, 0.0f };
 	XMFLOAT4 specular = { 0.0f, 0.0f, 0.0f, 0.0f };
 	XMFLOAT4 transparency = { 0.0f, 0.0f, 0.0f, 0.0f };
+};
+
+struct tConstantBuffer_Dragon
+{
+	XMFLOAT4 addColor = { 0.0f, 0.0f, 0.0f, 1.0f };
 };

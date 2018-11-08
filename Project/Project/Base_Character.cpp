@@ -1,7 +1,7 @@
 /************************************************************************
 * Filename:  		Base_Character.cpp
-* Date:      		10/05/2018
-* Mod. Date: 		10/09/2018
+* Date:      		05/10/2018
+* Mod. Date: 		09/10/2018
 * Mod. Initials:	WM
 * Author:    		Wichet Manawanitjarern
 * Purpose:   		Base Character Module to be inherit by Player and AI

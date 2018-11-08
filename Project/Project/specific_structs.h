@@ -1,7 +1,15 @@
+/************************************************************************
+* Filename:  		Specific_Structs.h
+* Date:      		02/10/2018
+* Mod. Date: 		08/11/2018
+* Mod. Initials:	WM
+* Author:    		Wichet Manawanitjarern
+* Purpose:   		Additional specific structs to hold different datatype and make accessing them easier.
+*************************************************************************/
 #pragma once
 
-#include "basic_structs.h"
-#include "renderer_structs.h"
+#include "Basic_Structs.h"
+#include "Renderer_Structs.h"
 
 struct tBinary_Screen
 {

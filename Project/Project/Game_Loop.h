@@ -1,20 +1,32 @@
+/************************************************************************
+* Filename:  		Game_Loop.h
+* Date:      		24/10/2018
+* Mod. Date: 		08/11/2018
+* Mod. Initials:	WM
+* Author:    		Wichet Manawanitjarern
+* Purpose:   		Main Loop of the Game, System Initialization, System Procedure
+*************************************************************************/
 #pragma once
 
+#include "Animation_Manager.h"
 #include "Graphic_Setup.h"
 #include "Render_Manager.h"
-#include "VR.h"
 #include "Scene_Manager.h"
+#include "VR.h"
+#include "XTime.h"
 
 class cGame_Loop
 {
 private:
-	int nScene_Id;
+	cAnimation_Manager c_Animation_Manager;
 	cGraphics_Setup *c_Graphics_Setup;
 	cRender_Manager c_Render_Manager;
-	cVR c_VR;
 	cScene_Manager c_Scene_Manager;
-	tScene_Objects t_Object_List;
+	cVR c_VR;
+	tScene_Objects tObject_List;
+	XTime c_XTime;
 
+	int m_nScene_Id;
 public:
 	cGame_Loop();
 	~cGame_Loop();

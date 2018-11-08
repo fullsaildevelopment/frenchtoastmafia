@@ -1,3 +1,12 @@
+/************************************************************************
+* Filename:  		Graphic_Setup.cpp
+* Date:      		26/10/2018
+* Mod. Date: 		08/11/2018
+* Mod. Initials:	WM
+* Author:    		Wichet Manawanitjarern
+* Purpose:   		Combine Initialization of Render system and VR system to remove circular requirment.
+					(Concept idea suggested by Lari Norri)
+*************************************************************************/
 #include "Graphic_Setup.h"
 
 
@@ -5,7 +14,6 @@ cGraphics_Setup::cGraphics_Setup(HWND _hwnd)
 {
 	hWnd = _hwnd;
 }
-
 
 cGraphics_Setup::~cGraphics_Setup()
 {
@@ -65,11 +73,11 @@ void cGraphics_Setup::Initialize()
 	d3d_Swap_Chain_Desc.BufferDesc.Scaling = DXGI_MODE_SCALING_UNSPECIFIED;
 
 	D3D_FEATURE_LEVEL d3d_Feature_Level = D3D_FEATURE_LEVEL_10_0;
-	D3D11CreateDeviceAndSwapChain(NULL, D3D_DRIVER_TYPE_HARDWARE, NULL, D3D11_CREATE_DEVICE_DEBUG, nullptr, 0, D3D11_SDK_VERSION, &d3d_Swap_Chain_Desc, &d3d_Swap_Chain, &d3d_Device, &d3d_Feature_Level, &d3d_Context);
+	D3D11CreateDeviceAndSwapChain(NULL, D3D_DRIVER_TYPE_HARDWARE, NULL, D3D11_CREATE_DEVICE_DEBUG, nullptr, 0, D3D11_SDK_VERSION, &d3d_Swap_Chain_Desc, d3d_Swap_Chain.GetAddressOf(), d3d_Device.GetAddressOf(), &d3d_Feature_Level, d3d_Context.GetAddressOf());
 
 	// SWAPPING BACK BUFFER
 	ID3D11Texture2D *back_buffer;
-	d3d_Swap_Chain->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&back_buffer);
+	d3d_Swap_Chain.Get()->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&back_buffer);
 
 	ZeroMemory(&d3d_Z_Buffer_Desc, sizeof(D3D11_TEXTURE2D_DESC));
 	back_buffer->GetDesc(&d3d_Z_Buffer_Desc);
@@ -79,13 +87,13 @@ void cGraphics_Setup::Initialize()
 	d3d_RTV_Desc.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2D;
 	d3d_RTV_Desc.Texture2D.MipSlice = 0;
 
-	d3d_Device->CreateRenderTargetView(back_buffer, &d3d_RTV_Desc, &d3d_RTV.p);
+	d3d_Device.Get()->CreateRenderTargetView(back_buffer, &d3d_RTV_Desc, d3d_RTV.GetAddressOf());
 
-	d3d_Swap_Chain->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&d3d_Render_Left_Eye);
-	d3d_Device->CreateRenderTargetView(d3d_Render_Left_Eye, &d3d_RTV_Desc, &d3d_RTV_Left_Eye.p);
+	d3d_Swap_Chain.Get()->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&d3d_Render_Left_Eye);
+	d3d_Device.Get()->CreateRenderTargetView(d3d_Render_Left_Eye.Get(), &d3d_RTV_Desc, d3d_RTV_Left_Eye.GetAddressOf());
 
-	d3d_Swap_Chain->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&d3d_Render_Right_Eye);
-	d3d_Device->CreateRenderTargetView(d3d_Render_Right_Eye, &d3d_RTV_Desc, &d3d_RTV_Right_Eye.p);
+	d3d_Swap_Chain.Get()->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&d3d_Render_Right_Eye);
+	d3d_Device.Get()->CreateRenderTargetView(d3d_Render_Right_Eye.Get(), &d3d_RTV_Desc, d3d_RTV_Right_Eye.GetAddressOf());
 	back_buffer->Release();
 	
 	// Z BUFFER / DEPTH STENCIL
@@ -102,7 +110,7 @@ void cGraphics_Setup::Initialize()
 	d3d_Z_Buffer_Desc.CPUAccessFlags = 0;
 	d3d_Z_Buffer_Desc.MiscFlags = 0;
 
-	d3d_Device->CreateTexture2D(&d3d_Z_Buffer_Desc, nullptr, &d3d_Z_Buffer.p);
+	d3d_Device.Get()->CreateTexture2D(&d3d_Z_Buffer_Desc, nullptr, d3d_Z_Buffer.GetAddressOf());
 
 	ZeroMemory(&d3d_DSS_Desc, sizeof(D3D11_DEPTH_STENCIL_DESC));
 	// Depth test parameters
@@ -128,10 +136,10 @@ void cGraphics_Setup::Initialize()
 	d3d_DSS_Desc.BackFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
 
 	// Create depth stencil state
-	d3d_Device->CreateDepthStencilState(&d3d_DSS_Desc, &d3d_DSS);
+	d3d_Device.Get()->CreateDepthStencilState(&d3d_DSS_Desc, &d3d_DSS);
 
 	// Bind depth stencil state
-	d3d_Context->OMSetDepthStencilState(d3d_DSS, 1);
+	d3d_Context.Get()->OMSetDepthStencilState(d3d_DSS.Get(), 1);
 
 	ZeroMemory(&d3d_DSV_Desc, sizeof(D3D11_DEPTH_STENCIL_VIEW_DESC));
 	d3d_DSV_Desc.Format = d3d_Z_Buffer_Desc.Format;// DXGI_FORMAT_D32_FLOAT_S8X24_UINT;
@@ -140,17 +148,17 @@ void cGraphics_Setup::Initialize()
 	d3d_DSV_Desc.Texture2D.MipSlice = 0;
 
 	// Create the depth stencil view
-	d3d_Device->CreateDepthStencilView(d3d_Z_Buffer, // Depth stencil texture
+	d3d_Device.Get()->CreateDepthStencilView(d3d_Z_Buffer.Get(), // Depth stencil texture
 		&d3d_DSV_Desc, // Depth stencil desc
-		&d3d_DSV.p);  // [out] Depth stencil view
+		d3d_DSV.GetAddressOf());  // [out] Depth stencil view
 
 
 	//BIND RENDER TARGET VIEW
-	//d3d_Context->OMSetRenderTargets(1, &d3d_RTV, d3d_DSV); // depth stencil view is for shadow map
+	//d3d_Context.Get()->OMSetRenderTargets(1, &d3d_RTV, d3d_DSV); // depth stencil view is for shadow map
 
-	d3d_Context->OMSetDepthStencilState(d3d_DSS, 1);
-	ID3D11RenderTargetView *tmp_rtv[] = { d3d_RTV };
-	d3d_Context->OMSetRenderTargets(1, tmp_rtv, d3d_DSV);
+	d3d_Context.Get()->OMSetDepthStencilState(d3d_DSS.Get(), 1);
+	ID3D11RenderTargetView *tmp_rtv[] = { d3d_RTV.Get() };
+	d3d_Context.Get()->OMSetRenderTargets(1, tmp_rtv, d3d_DSV.Get());
 	// Clear the second depth stencil state before setting the parameters.
 	//ZeroMemory(&d3d_2D_DS_Desc, sizeof(D3D11_DEPTH_STENCIL_DESC));
 
@@ -172,7 +180,7 @@ void cGraphics_Setup::Initialize()
 	//d3d_2D_DS_Desc.BackFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
 
 	// Create the state using the device.
-	//d3d_Device->CreateDepthStencilState(&d3d_2D_DS_Desc, &d3d_2D_DSS);
+	//d3d_Device.Get()->CreateDepthStencilState(&d3d_2D_DS_Desc, &d3d_2D_DSS);
 
 	//d3d_View_Port CREATION
 	d3d_View_Port.Width =  m_nRenderWidth;
@@ -194,7 +202,7 @@ void cGraphics_Setup::Initialize()
 	 d3d_Rasterizer_Desc.MultisampleEnable = FALSE;
 	 d3d_Rasterizer_Desc.AntialiasedLineEnable = FALSE;
 
-	d3d_Device->CreateRasterizerState(& d3d_Rasterizer_Desc, &d3d_Rasterizer_State);
+	d3d_Device.Get()->CreateRasterizerState(& d3d_Rasterizer_Desc, &d3d_Rasterizer_State);
 
 	// SAMPLER STATE
 	ZeroMemory(&d3d_Sampler_State_Desc, sizeof(D3D11_SAMPLER_DESC));
@@ -208,11 +216,11 @@ void cGraphics_Setup::Initialize()
 	d3d_Sampler_State_Desc.MinLOD = 0;
 	d3d_Sampler_State_Desc.MaxLOD = 0;
 
-	d3d_Device->CreateSamplerState(&d3d_Sampler_State_Desc, &d3d_Sampler_State.p);
+	d3d_Device.Get()->CreateSamplerState(&d3d_Sampler_State_Desc, d3d_Sampler_State.GetAddressOf());
 
 	// SHADERS
-	d3d_Device->CreateVertexShader(VertexShader, sizeof(VertexShader), NULL, &d3d_Vertex_Shader.p);
-	d3d_Device->CreatePixelShader(PixelShader, sizeof(PixelShader), NULL, &d3d_Pixel_Shader.p);
+	d3d_Device.Get()->CreateVertexShader(VertexShader, sizeof(VertexShader), NULL, d3d_Vertex_Shader.GetAddressOf());
+	d3d_Device.Get()->CreatePixelShader(PixelShader, sizeof(PixelShader), NULL, d3d_Pixel_Shader.GetAddressOf());
 
 	// INPUT ELEMENT
 	D3D11_INPUT_ELEMENT_DESC d3d_Input_Element[] =
@@ -220,14 +228,16 @@ void cGraphics_Setup::Initialize()
 		{ "POSITION", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 		{ "NORMAL", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 		{ "COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-		{ "TEXTURE", 0, DXGI_FORMAT_R32G32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 }
+		{ "TEXTURE", 0, DXGI_FORMAT_R32G32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+		{ "JOINTS", 0, DXGI_FORMAT_R32G32B32A32_UINT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+		{ "WEIGHTS", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 }
 	};
 
-	d3d_Device->CreateInputLayout(d3d_Input_Element, ARRAYSIZE(d3d_Input_Element), VertexShader, sizeof(VertexShader), &d3d_Input_Layout.p);
+	d3d_Device.Get()->CreateInputLayout(d3d_Input_Element, ARRAYSIZE(d3d_Input_Element), VertexShader, sizeof(VertexShader), d3d_Input_Layout.GetAddressOf());
 
 
 	// BIND d3d_View_Port
-	d3d_Context->RSSetViewports(1, &d3d_View_Port);
+	d3d_Context.Get()->RSSetViewports(1, &d3d_View_Port);
 
 	m_cCameraLeft = new cCamera;
 	
@@ -238,7 +248,7 @@ void cGraphics_Setup::Initialize()
 	m_cCameraRight = new cCamera;
 
 	// Set the initial position of the camera.
-	m_cCameraRight->SetPosition(tFloat4{ 1.5f, 0.0f, -20.0f, 1.0f });
+	m_cCameraRight->SetPosition(tFloat4{ 100.5f, 0.0f, -20.0f, 1.0f });
 
 	//Removed model and shader class declaration
 
@@ -408,52 +418,52 @@ void cGraphics_Setup::UpdateHMDMatrixPose()
 	}
 }
 
-CComPtr<ID3D11Device> cGraphics_Setup::Get_Device()
+ComPtr<ID3D11Device> cGraphics_Setup::Get_Device()
 {
 	return d3d_Device;
 }
 
-CComPtr<ID3D11DeviceContext> cGraphics_Setup::Get_Context()
+ComPtr<ID3D11DeviceContext> cGraphics_Setup::Get_Context()
 {
 	return d3d_Context;
 }
 
-CComPtr<ID3D11RenderTargetView> cGraphics_Setup::Get_RTV()
+ComPtr<ID3D11RenderTargetView> cGraphics_Setup::Get_RTV()
 {
 	return d3d_RTV;
 }
 
-CComPtr<ID3D11RenderTargetView> cGraphics_Setup::Get_RTV_Left()
+ComPtr<ID3D11RenderTargetView> cGraphics_Setup::Get_RTV_Left()
 {
 	return d3d_RTV_Left_Eye;
 }
 
-CComPtr<ID3D11RenderTargetView> cGraphics_Setup::Get_RTV_Right()
+ComPtr<ID3D11RenderTargetView> cGraphics_Setup::Get_RTV_Right()
 {
 	return d3d_RTV_Right_Eye;
 }
 
-CComPtr<ID3D11DepthStencilView> cGraphics_Setup::Get_DSV()
+ComPtr<ID3D11DepthStencilView> cGraphics_Setup::Get_DSV()
 {
 	return d3d_DSV;
 }
 
-CComPtr<ID3D11InputLayout> cGraphics_Setup::Get_Input_Layout()
+ComPtr<ID3D11InputLayout> cGraphics_Setup::Get_Input_Layout()
 {
 	return d3d_Input_Layout;
 }
 
-CComPtr<ID3D11VertexShader> cGraphics_Setup::Get_Vertex_Shader()
+ComPtr<ID3D11VertexShader> cGraphics_Setup::Get_Vertex_Shader()
 {
 	return d3d_Vertex_Shader;
 }
 
-CComPtr<ID3D11PixelShader> cGraphics_Setup::Get_Pixel_Shader()
+ComPtr<ID3D11PixelShader> cGraphics_Setup::Get_Pixel_Shader()
 {
 	return d3d_Pixel_Shader;
 }
 
-CComPtr<IDXGISwapChain> cGraphics_Setup::Get_Swap_Chain()
+ComPtr<IDXGISwapChain> cGraphics_Setup::Get_Swap_Chain()
 {
 	return d3d_Swap_Chain;
 }
@@ -463,17 +473,17 @@ D3D11_VIEWPORT cGraphics_Setup::Get_View_Port()
 	return d3d_View_Port;
 }
 
-CComPtr<ID3D11DepthStencilState> cGraphics_Setup::Get_Depth_Stencil_State()
+ComPtr<ID3D11DepthStencilState> cGraphics_Setup::Get_Depth_Stencil_State()
 {
 	return d3d_DSS;
 }
 
-CComPtr<ID3D11Texture2D> cGraphics_Setup::Get_Texture_Left_Eye()
+ComPtr<ID3D11Texture2D> cGraphics_Setup::Get_Texture_Left_Eye()
 {
 	return d3d_Render_Left_Eye;
 }
 
-CComPtr<ID3D11Texture2D> cGraphics_Setup::Get_Texture_Right_Eye()
+ComPtr<ID3D11Texture2D> cGraphics_Setup::Get_Texture_Right_Eye()
 {
 	return d3d_Render_Right_Eye;
 }
