@@ -400,6 +400,8 @@ tScene_Objects cScene_Manager::GetScene(int nScene_Id)
 
 				XMMATRIX tempMatrix = XMMatrixIdentity();
 
+				tempMatrix = XMMatrixMultiply(tempMatrix, XMMatrixTranslation(-10, 10, 0));
+
 				XMStoreFloat4x4(&temp, tempMatrix);
 
 				tScene.fWorld_Matrix[4] = XMFLOAT4x4_to_tFloat4x4(temp);

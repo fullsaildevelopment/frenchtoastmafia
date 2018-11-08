@@ -52,7 +52,7 @@ public:
 	void Initialize(cGraphics_Setup* c_Graphics_Setup);
 	void Load(int nScene_Id, tScene_Objects* t_Object_List);
 	void Unload();
-	void Draw(int nScene_Id, tScene_Objects t_Object_List);
+	void Draw(int nScene_Id, tScene_Objects* t_Object_List);
 	void DrawToTexture();
 
 	void setDragonColor(float _color);
