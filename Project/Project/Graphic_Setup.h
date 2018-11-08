@@ -179,5 +179,7 @@ public:
 	CComPtr<ID3D11Resource> get_controller_axis_vertex_buffer();
 	bool is_right_hand_controller(EVREventType vr_event);
 	void controller_input();
+	void get_controller_pose();
+	void update_controller();
 };
 

@@ -26,10 +26,11 @@ void cGame_Loop::Setup()
 }
 
 
-void cGame_Loop::Update()
+void cGame_Loop::Update(cGraphics_Setup* _setup)
 {
 	c_Render_Manager.Draw(nScene_Id, t_Object_List);
 	c_VR.VR_Render();
+	_setup->update_controller();
 	//c_VR.update_controller();
 	//sound.updateSoundSystem();
 }

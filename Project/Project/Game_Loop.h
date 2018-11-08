@@ -21,6 +21,6 @@ public:
 
 	void Initialize(cGraphics_Setup* _setup);
 	void Setup();
-	void Update();
+	void Update(cGraphics_Setup* _setup);
 	void Clean_Up();
 };
