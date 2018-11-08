@@ -113,6 +113,10 @@ void cRender_Manager::Load(int nScene_Id, tScene_Objects* t_Object_List)
 			{
 				HRESULT error = c_Graphics_Setup->Get_Device()->CreatePixelShader(PixelShader_Dragon, sizeof(PixelShader_Dragon), NULL, &t_Object_List->d3d_Pixel_Shaders[i]);
 			}
+			else if (i == 4)
+			{
+				HRESULT error = c_Graphics_Setup->Get_Device()->CreatePixelShader(PixelShader_Fireball, sizeof(PixelShader_Fireball), NULL, &t_Object_List->d3d_Pixel_Shaders[i]);
+			}
 			else
 			{
 				int one = 1;
@@ -154,6 +158,7 @@ void cRender_Manager::Load(int nScene_Id, tScene_Objects* t_Object_List)
 
 	// 7 - dragon - diffuse
 
+	// 8 - fireball - diffuse
 
 	HRESULT result;
 	// MAGE
@@ -287,50 +292,8 @@ void cRender_Manager::Load(int nScene_Id, tScene_Objects* t_Object_List)
 	diffuse_path = d_tmp.c_str();
 	result = CreateWICTextureFromFile(c_Graphics_Setup->Get_Device(), c_Graphics_Setup->Get_Context(), diffuse_path, nullptr, &t_Object_List->d3d_SRV[7], 0);
 	{
-		cps_dragon.light_pos = { 0.0f, 0.0f, -2.0f, 1.0f };
-
-		cps_dragon.ambient.x = t_Object_List->tMaterials_Data[3].tMats[0].tAmbient.fX;
-		cps_dragon.ambient.y = t_Object_List->tMaterials_Data[3].tMats[0].tAmbient.fY;
-		cps_dragon.ambient.z = t_Object_List->tMaterials_Data[3].tMats[0].tAmbient.fZ;
-		cps_dragon.ambient.w = t_Object_List->tMaterials_Data[3].tMats[0].tAmbient.fW;
-
-		cps_dragon.diffuse.x = t_Object_List->tMaterials_Data[3].tMats[0].tDiffuse.fX;
-		cps_dragon.diffuse.y = t_Object_List->tMaterials_Data[3].tMats[0].tDiffuse.fY;
-		cps_dragon.diffuse.z = t_Object_List->tMaterials_Data[3].tMats[0].tDiffuse.fZ;
-		cps_dragon.diffuse.w = t_Object_List->tMaterials_Data[3].tMats[0].tDiffuse.fW;
-
-		cps_dragon.emissive.x = t_Object_List->tMaterials_Data[3].tMats[0].tEmissive.fX;
-		cps_dragon.emissive.y = t_Object_List->tMaterials_Data[3].tMats[0].tEmissive.fY;
-		cps_dragon.emissive.z = t_Object_List->tMaterials_Data[3].tMats[0].tEmissive.fZ;
-		cps_dragon.emissive.w = t_Object_List->tMaterials_Data[3].tMats[0].tEmissive.fW;
-
-		cps_dragon.reflection.x = t_Object_List->tMaterials_Data[3].tMats[0].tReflection.fX;
-		cps_dragon.reflection.y = t_Object_List->tMaterials_Data[3].tMats[0].tReflection.fY;
-		cps_dragon.reflection.z = t_Object_List->tMaterials_Data[3].tMats[0].tReflection.fZ;
-		cps_dragon.reflection.w = t_Object_List->tMaterials_Data[3].tMats[0].tReflection.fW;
-
-		cps_dragon.shininess.x = t_Object_List->tMaterials_Data[3].tMats[0].fShininess;
-
-		cps_dragon.specular.x = t_Object_List->tMaterials_Data[3].tMats[0].tSpecular.fX;
-		cps_dragon.specular.y = t_Object_List->tMaterials_Data[3].tMats[0].tSpecular.fY;
-		cps_dragon.specular.z = t_Object_List->tMaterials_Data[3].tMats[0].tSpecular.fZ;
-		cps_dragon.specular.w = t_Object_List->tMaterials_Data[3].tMats[0].tSpecular.fW;
-
-		cps_dragon.transparency.x = t_Object_List->tMaterials_Data[3].tMats[0].tTransparency.fX;
-		cps_dragon.transparency.y = t_Object_List->tMaterials_Data[3].tMats[0].tTransparency.fY;
-		cps_dragon.transparency.z = t_Object_List->tMaterials_Data[3].tMats[0].tTransparency.fZ;
-		cps_dragon.transparency.w = t_Object_List->tMaterials_Data[3].tMats[0].tTransparency.fW;
-
-		// CONSTANT BUFFER - dragon
-		//ZeroMemory(&d3d_Constant_Buffer_Desc, sizeof(D3D11_BUFFER_DESC));
-		//d3d_Constant_Buffer_Desc.ByteWidth = sizeof(tConstantBuffer_PixelShader);
-		//d3d_Constant_Buffer_Desc.Usage = D3D11_USAGE_DYNAMIC;
-		//d3d_Constant_Buffer_Desc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
-		//d3d_Constant_Buffer_Desc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
-		//d3d_Constant_Buffer_Desc.MiscFlags = 0;
-		//d3d_Constant_Buffer_Desc.StructureByteStride = 0;
-
-		//test
+		
+		// Constant Buffer
 		ZeroMemory(&d3d_Constant_Buffer_Desc, sizeof(D3D11_BUFFER_DESC));
 		d3d_Constant_Buffer_Desc.ByteWidth = sizeof(tConstantBuffer_Dragon);
 		d3d_Constant_Buffer_Desc.Usage = D3D11_USAGE_DYNAMIC;
@@ -348,6 +311,33 @@ void cRender_Manager::Load(int nScene_Id, tScene_Objects* t_Object_List)
 
 
 		c_Graphics_Setup->Get_Device()->CreateBuffer(&d3d_Constant_Buffer_Desc, &InitData, &t_Object_List->tMaterials_Buffers[3].p);
+	}
+
+	// Fireball
+
+	d_tmp = std::wstring(t_Object_List->tMaterials_Data[4].tMats[0].szDiffuse_File_Path.begin(), t_Object_List->tMaterials_Data[4].tMats[0].szDiffuse_File_Path.end());
+	diffuse_path = d_tmp.c_str();
+	result = CreateWICTextureFromFile(c_Graphics_Setup->Get_Device(), c_Graphics_Setup->Get_Context(), diffuse_path, nullptr, &t_Object_List->d3d_SRV[8], 0);
+	{
+
+		// Constant Buffer
+		ZeroMemory(&d3d_Constant_Buffer_Desc, sizeof(D3D11_BUFFER_DESC));
+		d3d_Constant_Buffer_Desc.ByteWidth = sizeof(tConstantBuffer_Dragon);
+		d3d_Constant_Buffer_Desc.Usage = D3D11_USAGE_DYNAMIC;
+		d3d_Constant_Buffer_Desc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+		d3d_Constant_Buffer_Desc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+		d3d_Constant_Buffer_Desc.MiscFlags = 0;
+		d3d_Constant_Buffer_Desc.StructureByteStride = 0;
+
+		cps_fireballColor.addColor = { 0.0f, 0.0f, 0.0f, 1.0f };
+
+		D3D11_SUBRESOURCE_DATA InitData;
+		InitData.pSysMem = &cps_fireballColor;
+		InitData.SysMemPitch = 0;
+		InitData.SysMemSlicePitch = 0;
+
+
+		c_Graphics_Setup->Get_Device()->CreateBuffer(&d3d_Constant_Buffer_Desc, &InitData, &t_Object_List->tMaterials_Buffers[4].p);
 	}
 }
 
@@ -615,6 +605,16 @@ void cRender_Manager::Draw(int nScene_Id, tScene_Objects t_Object_List)
 				memcpy(d3d_MSR.pData, &cps_dragonColor, sizeof(tConstantBuffer_Dragon));
 				c_Graphics_Setup->Get_Context()->Unmap(t_Object_List.tMaterials_Buffers[3], 0);
 				ID3D11Buffer *tmp_con_buffer[] = { t_Object_List.tMaterials_Buffers[3] };
+				c_Graphics_Setup->Get_Context()->PSSetConstantBuffers(0, 1, tmp_con_buffer);
+			}
+			else if (i == 4)
+			{
+				c_Graphics_Setup->Get_Context()->PSSetShaderResources(0, 1, &t_Object_List.d3d_SRV[8].p);
+
+				c_Graphics_Setup->Get_Context()->Map(t_Object_List.tMaterials_Buffers[4], 0, D3D11_MAP_WRITE_DISCARD, 0, &d3d_MSR);
+				memcpy(d3d_MSR.pData, &cps_dragonColor, sizeof(tConstantBuffer_Dragon));
+				c_Graphics_Setup->Get_Context()->Unmap(t_Object_List.tMaterials_Buffers[4], 0);
+				ID3D11Buffer *tmp_con_buffer[] = { t_Object_List.tMaterials_Buffers[4] };
 				c_Graphics_Setup->Get_Context()->PSSetConstantBuffers(0, 1, tmp_con_buffer);
 			}
 			//else if (i == 2)

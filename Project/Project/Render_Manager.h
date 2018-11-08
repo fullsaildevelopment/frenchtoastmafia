@@ -11,6 +11,7 @@
 #include "PixelShader_Mage.csh"
 #include "PixelShader_Priest.csh"
 #include "PixelShader_Dragon.csh"
+#include "PixelShader_Fireball.csh"
 
 class cRender_Manager
 {
@@ -25,6 +26,7 @@ private:
 	tConstantBuffer_PixelShader cps_arena;
 	tConstantBuffer_PixelShader cps_dragon;
 	tConstantBuffer_Dragon cps_dragonColor;
+	tConstantBuffer_Dragon cps_fireballColor;
 
 	D3D11_BUFFER_DESC d3d_Constant_Buffer_Desc;
 	D3D11_MAPPED_SUBRESOURCE d3d_MSR;

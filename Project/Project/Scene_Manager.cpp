@@ -394,7 +394,7 @@ tScene_Objects cScene_Manager::GetScene(int nScene_Id)
 			}
 			// Dragon
 
-			// Fireball - 3
+			// Fireball - 4
 			{
 				XMFLOAT4X4 temp;
 
@@ -402,35 +402,35 @@ tScene_Objects cScene_Manager::GetScene(int nScene_Id)
 
 				XMStoreFloat4x4(&temp, tempMatrix);
 
-				tScene.fWorld_Matrix[3] = XMFLOAT4x4_to_tFloat4x4(temp);
-				tMesh tDragon = cBinary_Read.Read_Mesh("dragonMesh.bin");
+				tScene.fWorld_Matrix[4] = XMFLOAT4x4_to_tFloat4x4(temp);
+				tMesh tFireball = cBinary_Read.Read_Mesh("fireballMesh.bin");
 
-				for (int i = 0; i < tDragon.nVertex_Count; i++)
+				for (int i = 0; i < tFireball.nVertex_Count; i++)
 				{
-					tDragon.tVerts[i].fPosition.fZ *= -1;
+					tFireball.tVerts[i].fPosition.fZ *= -1;
 				}
 
-				for (int i = 0; i < tDragon.nVertex_Count; i++)
+				for (int i = 0; i < tFireball.nVertex_Count; i++)
 				{
-					tScene.tMesh_Data[3].tVerts.push_back(tDragon.tVerts[i]);
+					tScene.tMesh_Data[4].tVerts.push_back(tFireball.tVerts[i]);
 				}
 
-				tScene.tMesh_Data[3].nVertex_Count = tDragon.nVertex_Count;
+				tScene.tMesh_Data[4].nVertex_Count = tFireball.nVertex_Count;
 
 
-				for (int i = 0; i < tDragon.nIndex_Count; i++)
+				for (int i = 0; i < tFireball.nIndex_Count; i++)
 				{
-					tScene.tMesh_Data[3].nIndicies.push_back(tDragon.nIndicies[i]);
+					tScene.tMesh_Data[4].nIndicies.push_back(tFireball.nIndicies[i]);
 				}
-				tScene.tMesh_Data[3].nIndex_Count = tDragon.nIndex_Count;
+				tScene.tMesh_Data[4].nIndex_Count = tFireball.nIndex_Count;
 
 				//XMStoreFloat4x4(&tScene.fWorld_Matrix[0], XMMatrixIdentity());
 
-				tScene.tMaterials_Data[3] = cBinary_Read.Read_Material("dragonMaterial.bin");
-				tScene.tMaterials_Data[3].tMats[0].szDiffuse_File_Path = "Dragon.fbm\\DarkDragon_D.png";
+				tScene.tMaterials_Data[4] = cBinary_Read.Read_Material("fireballMaterial.bin");
+				tScene.tMaterials_Data[4].tMats[0].szDiffuse_File_Path = "Fireball.fbm\\Fireball_D.png";
 				//tScene.tMaterials_Data[0].tMats[0].tNormal.fX = 1.0f;
 			}
-			// Dragon
+			// Fireball
 
 		}
 		else
