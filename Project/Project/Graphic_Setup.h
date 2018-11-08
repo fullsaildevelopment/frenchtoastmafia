@@ -74,7 +74,7 @@ private:
 	ComPtr<ID3D11ShaderResourceView> d3d_SRV_Right_Eye;
 	ComPtr<ID3D11RenderTargetView> d3d_RTV_Right_Eye;
 
-	CComPtr<ID3D11Resource> m_pControllerAxisVertexBuffer;
+	ComPtr<ID3D11Resource> m_pControllerAxisVertexBuffer;
 
 	uint32_t m_nRenderWidth;
 	uint32_t m_nRenderHeight;
@@ -153,7 +153,7 @@ public:
 	int get_tracked_controller_count();
 	//tTracked_device_pose get_tracked_device_pose();
 	//Matrix4 get_matrix4_device_pose();
-	CComPtr<ID3D11Resource> get_controller_axis_vertex_buffer();
+	ComPtr<ID3D11Resource> get_controller_axis_vertex_buffer();
 	bool is_right_hand_controller(EVREventType vr_event);
 	void controller_input();
 	void get_controller_pose();

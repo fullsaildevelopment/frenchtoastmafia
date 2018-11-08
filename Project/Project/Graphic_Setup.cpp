@@ -523,7 +523,7 @@ int cGraphics_Setup::get_tracked_controller_count()
 //	return m_rmat4DevicePose;
 //}
 
-CComPtr<ID3D11Resource> cGraphics_Setup::get_controller_axis_vertex_buffer()
+ComPtr<ID3D11Resource> cGraphics_Setup::get_controller_axis_vertex_buffer()
 {
 	return m_pControllerAxisVertexBuffer;
 }

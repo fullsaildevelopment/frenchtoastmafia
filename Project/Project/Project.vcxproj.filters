@@ -251,11 +251,7 @@
     <FxCompile Include="VertexShader_Animation.hlsl">
       <Filter>Renderer Manager\Shaders\Vertex</Filter>
     </FxCompile>
-    <FxCompile Include="PixelShader_Dragon.hlsl">
-      <Filter>Renderer\Pixel</Filter>
-    </FxCompile>
-    <FxCompile Include="PixelShader_Fireball.hlsl">
-      <Filter>Renderer\Pixel</Filter>
-    </FxCompile>
+    <FxCompile Include="PixelShader_Dragon.hlsl" />
+    <FxCompile Include="PixelShader_Fireball.hlsl" />
   </ItemGroup>
 </Project>
