@@ -117,7 +117,7 @@ struct tConstantBuffer_VertexShader_WVP
 
 struct tConstantBuffer_VertexShader_Animation
 {
-	XMFLOAT4X4 fAnimation_Data[99];
+	XMFLOAT4X4 fAnimation_Data[999];
 };
 
 struct tConstantBuffer_PixelShader

@@ -106,96 +106,97 @@ tScene_Objects cScene_Manager::GetScene(int nScene_Id)
 	// GAME
 	else
 	{
-		tScene.nObject_Count = 5;
+		tScene.nObject_Count = 1;
 
 		// GAME 1 with mage
 		if (nScene_Id == 2)
 		{
 			// Battle Mage - 0
 			{
-				XMFLOAT4X4 temp;
-
-				XMMATRIX tempMatrix = XMMatrixIdentity();
-				tempMatrix = XMMatrixMultiply(XMMatrixTranslation(2, -3, 0), tempMatrix);
-				tempMatrix = XMMatrixMultiply(XMMatrixRotationY(180), tempMatrix);
-				//tempMatrix = XMMatrixMultiply(XMMatrixScaling(0.9, 0.9, 0.9), tempMatrix);
-
-
-				XMStoreFloat4x4(&temp, tempMatrix);
-
-				tScene.fWorld_Matrix[0][0] = XMFLOAT4x4_to_tFloat4x4(temp);
-				tScene.bMesh_Has_Skinned[0] = true;
-				tMesh_Skinned tMage = cBinary_Read.Read_Mesh_Skinned("mesh.bin");
-
-				for (int i = 0; i < tMage.nVertex_Count; i++)
-				{
-					//tMage.tVerts[i].fPosition.fZ *= -1;
-					//tMage.tVerts[i].fNormal.fZ *= -1;
-				}
-
-				for (int i = 0; i < tMage.nVertex_Count; i++)
-				{
-					tScene.tMesh_Skinned_Data[0].tVerts.push_back(tMage.tVerts[i]);
-				}
-
-				tScene.tMesh_Skinned_Data[0].nVertex_Count = tMage.nVertex_Count;
-
-
-				for (int i = 0; i < tMage.nIndex_Count; i++)
-				{
-					tScene.tMesh_Skinned_Data[0].nIndicies.push_back(tMage.nIndicies[i]);
-				}
-				tScene.tMesh_Skinned_Data[0].nIndex_Count = tMage.nIndex_Count;
-
-				tScene.tMaterials_Data[0][0] = cBinary_Read.Read_Material("material.bin");
-				tScene.bHas_Animation[0] = true;
-				tScene.tAnim_Clip[0] = cBinary_Read.Read_Skeleton("skeleton.bin");
-				tScene.tAnim_Data[0] = Create_Inverse_Bind_Pose(tScene.tAnim_Clip[0].tKeyFrames[0]);
+				//XMFLOAT4X4 temp;
+				//
+				//XMMATRIX tempMatrix = XMMatrixIdentity();
+				////tempMatrix = XMMatrixMultiply(XMMatrixTranslation(2, -3, 0), tempMatrix);
+				//tempMatrix = XMMatrixMultiply(XMMatrixRotationY(180), tempMatrix);
+				//tempMatrix = XMMatrixMultiply(tempMatrix, XMMatrixTranslation(75, -150, 150));
+				////tempMatrix = XMMatrixMultiply(XMMatrixScaling(0.9, 0.9, 0.9), tempMatrix);
+				//
+				//
+				//XMStoreFloat4x4(&temp, tempMatrix);
+				//
+				//tScene.fWorld_Matrix[0][0] = XMFLOAT4x4_to_tFloat4x4(temp);
+				//tScene.bMesh_Has_Skinned[0] = true;
+				//tMesh_Skinned tMage = cBinary_Read.Read_Mesh_Skinned("dragon_mesh.bin");
+				//
+				//for (int i = 0; i < tMage.nVertex_Count; i++)
+				//{
+				//	//tMage.tVerts[i].fPosition.fZ *= -1;
+				//	//tMage.tVerts[i].fNormal.fZ *= -1;
+				//}
+				//
+				//for (int i = 0; i < tMage.nVertex_Count; i++)
+				//{
+				//	tScene.tMesh_Skinned_Data[0].tVerts.push_back(tMage.tVerts[i]);
+				//}
+				//
+				//tScene.tMesh_Skinned_Data[0].nVertex_Count = tMage.nVertex_Count;
+				//
+				//
+				//for (int i = 0; i < tMage.nIndex_Count; i++)
+				//{
+				//	tScene.tMesh_Skinned_Data[0].nIndicies.push_back(tMage.nIndicies[i]);
+				//}
+				//tScene.tMesh_Skinned_Data[0].nIndex_Count = tMage.nIndex_Count;
+				//
+				////tScene.tMaterials_Data[0][0] = cBinary_Read.Read_Material("material.bin");
+				//tScene.bHas_Animation[0] = true;
+				//tScene.tAnim_Clip[0] = cBinary_Read.Read_Skeleton("dragon_skeleton.bin");
+				//tScene.tAnim_Data[0] = Create_Inverse_Bind_Pose(tScene.tAnim_Clip[0].tKeyFrames[0]);
 			}
 			// Battle Mage
 
 			// Arena - 1
 			{
 
-				XMFLOAT4X4 temp;
-
-				XMMATRIX tempMatrix = XMMatrixIdentity();
-
-				tempMatrix = XMMatrixMultiply(XMMatrixTranslation(0, -3, 0), tempMatrix);
+				//XMFLOAT4X4 temp;
 				//
-				//tempMatrix = XMMatrixMultiply(XMMatrixRotationX(3.14 / 2), tempMatrix);
-
-				//tempMatrix = XMMatrixMultiply(XMMatrixScaling(0.1, 0.1, 0.1), tempMatrix);
-
-
-				XMStoreFloat4x4(&temp, tempMatrix);
-
-				tScene.fWorld_Matrix[1][0] = XMFLOAT4x4_to_tFloat4x4(temp);
-				tScene.bMesh_Has_Skinned[1] = false;
-
-				tMesh tArena = cBinary_Read.Read_Mesh("arena_3_mesh.bin");
-				tScene.tMesh_Data[1].nIndex_Count = tArena.nIndex_Count;
-				tScene.tMaterials_Data[1][0] = cBinary_Read.Read_Material("arena_3_material.bin");
-				tMaterials tMat_Arena = cBinary_Read.Read_Material("arenaMat.bin");
-				tScene.tMaterials_Data[1][0].tMats[0].tDiffuse = tMat_Arena.tMats[0].tDiffuse;
-				tScene.tMaterials_Data[1][0].tMats[0].szDiffuse_File_Path = tMat_Arena.tMats[0].szDiffuse_File_Path;
-
-				for (int i = 0; i < tArena.nVertex_Count; i++)
-				{
-					tArena.tVerts[i].fPosition.fZ *= -1;
-				}
-
-				for (int i = 0; i < tArena.nVertex_Count; i++)
-				{
-					tScene.tMesh_Data[1].tVerts.push_back(tArena.tVerts[i]);
-				}
-
-				tScene.tMesh_Data[1].nVertex_Count = tArena.nVertex_Count;
-
-				for (int i = 0; i < tArena.nIndex_Count; i++)
-				{
-					tScene.tMesh_Data[1].nIndicies.push_back(tArena.nIndicies[i]);
-				}
+				//XMMATRIX tempMatrix = XMMatrixIdentity();
+				//
+				//tempMatrix = XMMatrixMultiply(XMMatrixTranslation(0, -3, 0), tempMatrix);
+				////
+				////tempMatrix = XMMatrixMultiply(XMMatrixRotationX(3.14 / 2), tempMatrix);
+				//
+				////tempMatrix = XMMatrixMultiply(XMMatrixScaling(0.1, 0.1, 0.1), tempMatrix);
+				//
+				//
+				//XMStoreFloat4x4(&temp, tempMatrix);
+				//
+				//tScene.fWorld_Matrix[1][0] = XMFLOAT4x4_to_tFloat4x4(temp);
+				//tScene.bMesh_Has_Skinned[1] = false;
+				//
+				//tMesh tArena = cBinary_Read.Read_Mesh("arena_3_mesh.bin");
+				//tScene.tMesh_Data[1].nIndex_Count = tArena.nIndex_Count;
+				//tScene.tMaterials_Data[1][0] = cBinary_Read.Read_Material("arena_3_material.bin");
+				//tMaterials tMat_Arena = cBinary_Read.Read_Material("arenaMat.bin");
+				//tScene.tMaterials_Data[1][0].tMats[0].tDiffuse = tMat_Arena.tMats[0].tDiffuse;
+				//tScene.tMaterials_Data[1][0].tMats[0].szDiffuse_File_Path = tMat_Arena.tMats[0].szDiffuse_File_Path;
+				//
+				//for (int i = 0; i < tArena.nVertex_Count; i++)
+				//{
+				//	tArena.tVerts[i].fPosition.fZ *= -1;
+				//}
+				//
+				//for (int i = 0; i < tArena.nVertex_Count; i++)
+				//{
+				//	tScene.tMesh_Data[1].tVerts.push_back(tArena.tVerts[i]);
+				//}
+				//
+				//tScene.tMesh_Data[1].nVertex_Count = tArena.nVertex_Count;
+				//
+				//for (int i = 0; i < tArena.nIndex_Count; i++)
+				//{
+				//	tScene.tMesh_Data[1].nIndicies.push_back(tArena.nIndicies[i]);
+				//}
 			}
 			// Arena
 
@@ -369,10 +370,12 @@ tScene_Objects cScene_Manager::GetScene(int nScene_Id)
 
 				tempMatrix = XMMatrixMultiply(tempMatrix, XMMatrixRotationY(3.14));
 
+				tempMatrix = XMMatrixMultiply(XMMatrixRotationZ(3.14/4), tempMatrix);
+
 
 				XMStoreFloat4x4(&temp, tempMatrix);
 
-				tScene.fWorld_Matrix[3][0] = XMFLOAT4x4_to_tFloat4x4(temp);
+				tScene.fWorld_Matrix[0][0] = XMFLOAT4x4_to_tFloat4x4(temp);
 				tMesh tDragon = cBinary_Read.Read_Mesh("dragonMesh.bin");
 
 				for (int i = 0; i < tDragon.nVertex_Count; i++)
@@ -382,22 +385,25 @@ tScene_Objects cScene_Manager::GetScene(int nScene_Id)
 
 				for (int i = 0; i < tDragon.nVertex_Count; i++)
 				{
-					tScene.tMesh_Data[3].tVerts.push_back(tDragon.tVerts[i]);
+					tScene.tMesh_Data[0].tVerts.push_back(tDragon.tVerts[i]);
 				}
 
-				tScene.tMesh_Data[3].nVertex_Count = tDragon.nVertex_Count;
+				tScene.tMesh_Data[0].nVertex_Count = tDragon.nVertex_Count;
 
 
 				for (int i = 0; i < tDragon.nIndex_Count; i++)
 				{
-					tScene.tMesh_Data[3].nIndicies.push_back(tDragon.nIndicies[i]);
+					tScene.tMesh_Data[0].nIndicies.push_back(tDragon.nIndicies[i]);
 				}
-				tScene.tMesh_Data[3].nIndex_Count = tDragon.nIndex_Count;
+				tScene.tMesh_Data[0].nIndex_Count = tDragon.nIndex_Count;
 
 				//XMStoreFloat4x4(&tScene.fWorld_Matrix[0], XMMatrixIdentity());
 
-				tScene.tMaterials_Data[3][0] = cBinary_Read.Read_Material("dragonMaterial.bin");
-				tScene.tMaterials_Data[3][0].tMats[0].szDiffuse_File_Path = "Dragon.fbm\\DarkDragon_D.png";
+				tScene.tMaterials_Data[0][0] = cBinary_Read.Read_Material("dragonMaterial.bin");
+				tScene.tMaterials_Data[0][0].tMats[0].szDiffuse_File_Path = "Dragon.fbm\\DarkDragon_D.png";
+				tScene.bHas_Animation[0] = true;
+				tScene.tAnim_Clip[0] = cBinary_Read.Read_Skeleton("dragon_skeleton.bin");
+				tScene.tAnim_Data[0] = Create_Inverse_Bind_Pose(tScene.tAnim_Clip[0].tKeyFrames[0]);
 				//tScene.tMaterials_Data[0].tMats[0].tNormal.fX = 1.0f;
 			}
 			// Dragon
