@@ -61,9 +61,6 @@ private:
 	int nAnimation_Frame;
 	ComPtr<ID3D11Buffer> d3d_Constant_Buffer_Animation;
 
-	// TIME
-	XTime cTime;
-
 public:
 	cRender_Manager();
 	~cRender_Manager();

@@ -372,7 +372,7 @@ tScene_Objects cScene_Manager::GetScene(int nScene_Id)
 
 				XMStoreFloat4x4(&temp, tempMatrix);
 
-				tScene.fWorld_Matrix[3] = XMFLOAT4x4_to_tFloat4x4(temp);
+				tScene.fWorld_Matrix[3][0] = XMFLOAT4x4_to_tFloat4x4(temp);
 				tMesh tDragon = cBinary_Read.Read_Mesh("dragonMesh.bin");
 
 				for (int i = 0; i < tDragon.nVertex_Count; i++)
@@ -396,8 +396,8 @@ tScene_Objects cScene_Manager::GetScene(int nScene_Id)
 
 				//XMStoreFloat4x4(&tScene.fWorld_Matrix[0], XMMatrixIdentity());
 
-				tScene.tMaterials_Data[3] = cBinary_Read.Read_Material("dragonMaterial.bin");
-				tScene.tMaterials_Data[3].tMats[0].szDiffuse_File_Path = "Dragon.fbm\\DarkDragon_D.png";
+				tScene.tMaterials_Data[3][0] = cBinary_Read.Read_Material("dragonMaterial.bin");
+				tScene.tMaterials_Data[3][0].tMats[0].szDiffuse_File_Path = "Dragon.fbm\\DarkDragon_D.png";
 				//tScene.tMaterials_Data[0].tMats[0].tNormal.fX = 1.0f;
 			}
 			// Dragon
@@ -412,7 +412,7 @@ tScene_Objects cScene_Manager::GetScene(int nScene_Id)
 
 				XMStoreFloat4x4(&temp, tempMatrix);
 
-				tScene.fWorld_Matrix[4] = XMFLOAT4x4_to_tFloat4x4(temp);
+				tScene.fWorld_Matrix[4][0] = XMFLOAT4x4_to_tFloat4x4(temp);
 				tMesh tFireball = cBinary_Read.Read_Mesh("fireballMesh.bin");
 
 				for (int i = 0; i < tFireball.nVertex_Count; i++)
@@ -436,8 +436,8 @@ tScene_Objects cScene_Manager::GetScene(int nScene_Id)
 
 				//XMStoreFloat4x4(&tScene.fWorld_Matrix[0], XMMatrixIdentity());
 
-				tScene.tMaterials_Data[4] = cBinary_Read.Read_Material("fireballMaterial.bin");
-				tScene.tMaterials_Data[4].tMats[0].szDiffuse_File_Path = "Fireball.fbm\\Fireball_D.png";
+				tScene.tMaterials_Data[4][0] = cBinary_Read.Read_Material("fireballMaterial.bin");
+				tScene.tMaterials_Data[4][0].tMats[0].szDiffuse_File_Path = "Fireball.fbm\\Fireball_D.png";
 				//tScene.tMaterials_Data[0].tMats[0].tNormal.fX = 1.0f;
 			}
 			// Fireball

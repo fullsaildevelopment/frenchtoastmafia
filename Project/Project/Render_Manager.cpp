@@ -168,23 +168,23 @@ void cRender_Manager::Load_Data(int nScene_Id, tScene_Objects* tObject_List)
 			//PIXEL SHADERS
 			if (i == 0)
 			{
-				c_Graphics_Setup->Get_Device().Get()->CreatePixelShader(PixelShader_Mage, sizeof(PixelShader_Mage), NULL, &t_Object_List->d3d_Pixel_Shaders[i]);
+				c_Graphics_Setup->Get_Device().Get()->CreatePixelShader(PixelShader_Mage, sizeof(PixelShader_Mage), NULL, &tObject_List->d3d_Pixel_Shaders[i]);
 			}
 			else if (i == 1)
 			{
-				c_Graphics_Setup->Get_Device().Get()->CreatePixelShader(PixelShader_Arena, sizeof(PixelShader_Arena), NULL, &t_Object_List->d3d_Pixel_Shaders[i]);
+				c_Graphics_Setup->Get_Device().Get()->CreatePixelShader(PixelShader_Arena, sizeof(PixelShader_Arena), NULL, &tObject_List->d3d_Pixel_Shaders[i]);
 			}
 			else if (i == 2)
 			{
-				c_Graphics_Setup->Get_Device().Get()->CreatePixelShader(PixelShader, sizeof(PixelShader), NULL, &t_Object_List->d3d_Pixel_Shaders[i]);
+				c_Graphics_Setup->Get_Device().Get()->CreatePixelShader(PixelShader, sizeof(PixelShader), NULL, &tObject_List->d3d_Pixel_Shaders[i]);
 			}
 			else if (i == 3)
 			{
-				HRESULT error = c_Graphics_Setup->Get_Device().Get()->CreatePixelShader(PixelShader_Dragon, sizeof(PixelShader_Dragon), NULL, &t_Object_List->d3d_Pixel_Shaders[i]);
+				HRESULT error = c_Graphics_Setup->Get_Device().Get()->CreatePixelShader(PixelShader_Dragon, sizeof(PixelShader_Dragon), NULL, &tObject_List->d3d_Pixel_Shaders[i]);
 			}
 			else //if (i == 4)
 			{
-				HRESULT error = c_Graphics_Setup->Get_Device().Get()->CreatePixelShader(PixelShader_Fireball, sizeof(PixelShader_Fireball), NULL, &t_Object_List->d3d_Pixel_Shaders[i]);
+				HRESULT error = c_Graphics_Setup->Get_Device().Get()->CreatePixelShader(PixelShader_Fireball, sizeof(PixelShader_Fireball), NULL, &tObject_List->d3d_Pixel_Shaders[i]);
 			}
 
 
@@ -349,13 +349,13 @@ void cRender_Manager::Load_Data(int nScene_Id, tScene_Objects* tObject_List)
 	//
 	//n_tmp = std::wstring(tObject_List->tMaterials_Data[2].tMats[0].szNormal_File_Path.begin(), tObject_List->tMaterials_Data[2].tMats[0].szNormal_File_Path.end());
 	//normal_path = n_tmp.c_str();
-	//result = CreateWICTextureFromFile(c_Graphics_Setup->Get_Device(), c_Graphics_Setup->Get_Context(), normal_path, nullptr, &t_Object_List->d3d_SRV[6], 0);
+	//result = CreateWICTextureFromFile(c_Graphics_Setup->Get_Device(), c_Graphics_Setup->Get_Context(), normal_path, nullptr, &tObject_List->d3d_SRV[6], 0);
 
 	// Dragon
 
-	d_tmp = std::wstring(t_Object_List->tMaterials_Data[3].tMats[0].szDiffuse_File_Path.begin(), t_Object_List->tMaterials_Data[3].tMats[0].szDiffuse_File_Path.end());
+	d_tmp = std::wstring(tObject_List->tMaterials_Data[3][0].tMats[0].szDiffuse_File_Path.begin(), tObject_List->tMaterials_Data[3][0].tMats[0].szDiffuse_File_Path.end());
 	diffuse_path = d_tmp.c_str();
-	result = CreateWICTextureFromFile(c_Graphics_Setup->Get_Device(), c_Graphics_Setup->Get_Context(), diffuse_path, nullptr, &t_Object_List->d3d_SRV[7], 0);
+	result = CreateWICTextureFromFile(c_Graphics_Setup->Get_Device().Get(), c_Graphics_Setup->Get_Context().Get(), diffuse_path, nullptr, &tObject_List->d3d_SRV[7], 0);
 	{
 
 		// Constant Buffer
@@ -375,14 +375,14 @@ void cRender_Manager::Load_Data(int nScene_Id, tScene_Objects* tObject_List)
 		InitData.SysMemSlicePitch = 0;
 
 
-		c_Graphics_Setup->Get_Device()->CreateBuffer(&d3d_Constant_Buffer_Desc, &InitData, &t_Object_List->tMaterials_Buffers[3].p);
+		c_Graphics_Setup->Get_Device()->CreateBuffer(&d3d_Constant_Buffer_Desc, &InitData, &tObject_List->tMaterials_Buffers[3][0]);
 	}
 
 	// Fireball
 
-	d_tmp = std::wstring(t_Object_List->tMaterials_Data[4].tMats[0].szDiffuse_File_Path.begin(), t_Object_List->tMaterials_Data[4].tMats[0].szDiffuse_File_Path.end());
+	d_tmp = std::wstring(tObject_List->tMaterials_Data[4][0].tMats[0].szDiffuse_File_Path.begin(), tObject_List->tMaterials_Data[4][0].tMats[0].szDiffuse_File_Path.end());
 	diffuse_path = d_tmp.c_str();
-	result = CreateWICTextureFromFile(c_Graphics_Setup->Get_Device(), c_Graphics_Setup->Get_Context(), diffuse_path, nullptr, &t_Object_List->d3d_SRV[8], 0);
+	result = CreateWICTextureFromFile(c_Graphics_Setup->Get_Device().Get(), c_Graphics_Setup->Get_Context().Get(), diffuse_path, nullptr, &tObject_List->d3d_SRV[8], 0);
 	{
 
 		// Constant Buffer
@@ -402,7 +402,7 @@ void cRender_Manager::Load_Data(int nScene_Id, tScene_Objects* tObject_List)
 		InitData.SysMemSlicePitch = 0;
 
 
-		c_Graphics_Setup->Get_Device()->CreateBuffer(&d3d_Constant_Buffer_Desc, &InitData, &t_Object_List->tMaterials_Buffers[4].p);
+		c_Graphics_Setup->Get_Device()->CreateBuffer(&d3d_Constant_Buffer_Desc, &InitData, &tObject_List->tMaterials_Buffers[4][0]);
 	}
 }
 
@@ -410,7 +410,7 @@ void cRender_Manager::Unload()
 {
 }
 
-void cRender_Manager::Draw(int nScene_Id, tScene_Objects* t_Object_List)
+void cRender_Manager::Draw(int nScene_Id, tScene_Objects* tObject_List)
 {
 	for (int _eyeID = 0; _eyeID < 2; _eyeID++)
 	{
@@ -589,19 +589,19 @@ void cRender_Manager::Draw(int nScene_Id, tScene_Objects* t_Object_List)
 
 		if (dragonHealth > 3)
 		{
-			t_Object_List->fWorld_Matrix[4].tW.fX += 0.1;
-			t_Object_List->fWorld_Matrix[4].tW.fY -= 0.1;
+			tObject_List->fWorld_Matrix[4][0].tW.fX += 0.1;
+			tObject_List->fWorld_Matrix[4][0].tW.fY -= 0.1;
 		}
 		else
 		{
-			t_Object_List->fWorld_Matrix[4].tW.fX += 0.3;
-			t_Object_List->fWorld_Matrix[4].tW.fY -= 0.3;
+			tObject_List->fWorld_Matrix[4][0].tW.fX += 0.3;
+			tObject_List->fWorld_Matrix[4][0].tW.fY -= 0.3;
 		}
 
-		if (t_Object_List->fWorld_Matrix[4].tW.fX >= -1)
+		if (tObject_List->fWorld_Matrix[4][0].tW.fX >= -1)
 		{
-			t_Object_List->fWorld_Matrix[4].tW.fX = -10;
-			t_Object_List->fWorld_Matrix[4].tW.fY = 10;
+			tObject_List->fWorld_Matrix[4][0].tW.fX = -10;
+			tObject_List->fWorld_Matrix[4][0].tW.fY = 10;
 		}
 
 
@@ -619,7 +619,7 @@ void cRender_Manager::Draw(int nScene_Id, tScene_Objects* t_Object_List)
 		unsigned int verts_skinned_size = sizeof(tVertex_Skinned);
 		unsigned int off_set = 0;
 
-		for (int i = 0; i < tObject_List.nObject_Count; i++)
+		for (int i = 0; i < tObject_List->nObject_Count; i++)
 		{
 			if (((i == 3) || (i == 4)) && !dragonAlive)
 			{
@@ -627,7 +627,7 @@ void cRender_Manager::Draw(int nScene_Id, tScene_Objects* t_Object_List)
 			}
 			// CONSTANT BUFFER - WVPC
 			{
-				tWVP.fWorld_Matrix = tFloat4x4_to_XMFLOAT4x4(tObject_List.fWorld_Matrix[i][0]);
+				tWVP.fWorld_Matrix = tFloat4x4_to_XMFLOAT4x4(tObject_List->fWorld_Matrix[i][0]);
 
 				// MAP DATA
 				c_Graphics_Setup->Get_Context().Get()->Map(d3d_Constant_Buffer_WVP.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &d3d_MSR);
@@ -637,10 +637,10 @@ void cRender_Manager::Draw(int nScene_Id, tScene_Objects* t_Object_List)
 				c_Graphics_Setup->Get_Context().Get()->VSSetConstantBuffers(0, 1, tmp_wvpc_buffer);
 			}
 
-			if (tObject_List.bHas_Animation[i])
+			if (tObject_List->bHas_Animation[i])
 			{
 				for (int j = 0; j < 28; j++)
-					tAnim.fAnimation_Data[j] = tFloat4x4_to_XMFLOAT4x4(tObject_List.tAnim_Data[i].tTweened[j]);
+					tAnim.fAnimation_Data[j] = tFloat4x4_to_XMFLOAT4x4(tObject_List->tAnim_Data[i].tTweened[j]);
 
 				c_Graphics_Setup->Get_Context().Get()->Map(d3d_Constant_Buffer_Animation.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &d3d_MSR);
 				memcpy(d3d_MSR.pData, &tAnim, sizeof(tConstantBuffer_VertexShader_Animation));
@@ -650,12 +650,12 @@ void cRender_Manager::Draw(int nScene_Id, tScene_Objects* t_Object_List)
 			}
 
 
-			ID3D11Buffer *ts_v_buffer[] = { tObject_List.d3d_Vertex_Buffers[i].Get() };
-			if (tObject_List.bMesh_Has_Skinned[i])
+			ID3D11Buffer *ts_v_buffer[] = { tObject_List->d3d_Vertex_Buffers[i].Get() };
+			if (tObject_List->bMesh_Has_Skinned[i])
 				c_Graphics_Setup->Get_Context().Get()->IASetVertexBuffers(0, 1, ts_v_buffer, &verts_skinned_size, &off_set);
 			else
 				c_Graphics_Setup->Get_Context().Get()->IASetVertexBuffers(0, 1, ts_v_buffer, &verts_size, &off_set);
-			c_Graphics_Setup->Get_Context().Get()->IASetIndexBuffer(tObject_List.d3d_Index_Buffers[i].Get(), DXGI_FORMAT_R32_UINT, 0);
+			c_Graphics_Setup->Get_Context().Get()->IASetIndexBuffer(tObject_List->d3d_Index_Buffers[i].Get(), DXGI_FORMAT_R32_UINT, 0);
 			c_Graphics_Setup->Get_Context().Get()->IASetInputLayout(c_Graphics_Setup->Get_Input_Layout().Get());
 			if (i != 2)
 				c_Graphics_Setup->Get_Context().Get()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
@@ -670,52 +670,52 @@ void cRender_Manager::Draw(int nScene_Id, tScene_Objects* t_Object_List)
 			//}
 			//else
 			//{
-			c_Graphics_Setup->Get_Context().Get()->VSSetShader(tObject_List.d3d_Vertex_Shaders[i].Get(), NULL, 0);
-			c_Graphics_Setup->Get_Context().Get()->PSSetShader(tObject_List.d3d_Pixel_Shaders[i].Get(), NULL, 0);
+			c_Graphics_Setup->Get_Context().Get()->VSSetShader(tObject_List->d3d_Vertex_Shaders[i].Get(), NULL, 0);
+			c_Graphics_Setup->Get_Context().Get()->PSSetShader(tObject_List->d3d_Pixel_Shaders[i].Get(), NULL, 0);
 
 
 			if (i == 0)
 			{
-				c_Graphics_Setup->Get_Context().Get()->PSSetShaderResources(0, 1, tObject_List.d3d_SRV[0].GetAddressOf());
-				c_Graphics_Setup->Get_Context().Get()->PSSetShaderResources(1, 1, tObject_List.d3d_SRV[1].GetAddressOf());
-				c_Graphics_Setup->Get_Context().Get()->PSSetShaderResources(2, 1, tObject_List.d3d_SRV[2].GetAddressOf());
+				c_Graphics_Setup->Get_Context().Get()->PSSetShaderResources(0, 1, tObject_List->d3d_SRV[0].GetAddressOf());
+				c_Graphics_Setup->Get_Context().Get()->PSSetShaderResources(1, 1, tObject_List->d3d_SRV[1].GetAddressOf());
+				c_Graphics_Setup->Get_Context().Get()->PSSetShaderResources(2, 1, tObject_List->d3d_SRV[2].GetAddressOf());
 				//c_Graphics_Setup->Get_Context().Get()->PSSetShaderResources(3, 1, &tObject_List.d3d_SRV[3].p);
 
-				c_Graphics_Setup->Get_Context().Get()->Map(tObject_List.tMaterials_Buffers[0][0].Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &d3d_MSR);
+				c_Graphics_Setup->Get_Context().Get()->Map(tObject_List->tMaterials_Buffers[0][0].Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &d3d_MSR);
 				memcpy(d3d_MSR.pData, &cps_mage, sizeof(tConstantBuffer_PixelShader));
-				c_Graphics_Setup->Get_Context().Get()->Unmap(tObject_List.tMaterials_Buffers[0][0].Get(), 0);
-				ID3D11Buffer *tmp_con_buffer[] = { tObject_List.tMaterials_Buffers[0][0].Get() };
+				c_Graphics_Setup->Get_Context().Get()->Unmap(tObject_List->tMaterials_Buffers[0][0].Get(), 0);
+				ID3D11Buffer *tmp_con_buffer[] = { tObject_List->tMaterials_Buffers[0][0].Get() };
 				c_Graphics_Setup->Get_Context().Get()->PSSetConstantBuffers(0, 1, tmp_con_buffer);
 
 			}
 			else if (i == 1)
 			{
-				c_Graphics_Setup->Get_Context().Get()->PSSetShaderResources(0, 1, tObject_List.d3d_SRV[4].GetAddressOf());
+				c_Graphics_Setup->Get_Context().Get()->PSSetShaderResources(0, 1, tObject_List->d3d_SRV[4].GetAddressOf());
 
-				c_Graphics_Setup->Get_Context().Get()->Map(tObject_List.tMaterials_Buffers[1][0].Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &d3d_MSR);
+				c_Graphics_Setup->Get_Context().Get()->Map(tObject_List->tMaterials_Buffers[1][0].Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &d3d_MSR);
 				memcpy(d3d_MSR.pData, &cps_arena, sizeof(tConstantBuffer_PixelShader));
-				c_Graphics_Setup->Get_Context().Get()->Unmap(tObject_List.tMaterials_Buffers[1][0].Get(), 0);
-				ID3D11Buffer *tmp_con_buffer[] = { tObject_List.tMaterials_Buffers[1][0].Get() };
+				c_Graphics_Setup->Get_Context().Get()->Unmap(tObject_List->tMaterials_Buffers[1][0].Get(), 0);
+				ID3D11Buffer *tmp_con_buffer[] = { tObject_List->tMaterials_Buffers[1][0].Get() };
 				c_Graphics_Setup->Get_Context().Get()->PSSetConstantBuffers(0, 1, tmp_con_buffer);
 			}
 			else if (i == 3)
 			{
-				c_Graphics_Setup->Get_Context().Get()->PSSetShaderResources(0, 1, tObject_List.d3d_SRV[7].GetAddressOf());
+				c_Graphics_Setup->Get_Context().Get()->PSSetShaderResources(0, 1, tObject_List->d3d_SRV[7].GetAddressOf());
 
-				c_Graphics_Setup->Get_Context().Get()->Map(tObject_List.tMaterials_Buffers[3][0].Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &d3d_MSR);
+				c_Graphics_Setup->Get_Context().Get()->Map(tObject_List->tMaterials_Buffers[3][0].Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &d3d_MSR);
 				memcpy(d3d_MSR.pData, &cps_dragonColor, sizeof(tConstantBuffer_Dragon));
-				c_Graphics_Setup->Get_Context().Get()->Unmap(tObject_List.tMaterials_Buffers[3][0].Get(), 0);
-				ID3D11Buffer *tmp_con_buffer[] = { tObject_List.tMaterials_Buffers[3][0].Get() };
+				c_Graphics_Setup->Get_Context().Get()->Unmap(tObject_List->tMaterials_Buffers[3][0].Get(), 0);
+				ID3D11Buffer *tmp_con_buffer[] = { tObject_List->tMaterials_Buffers[3][0].Get() };
 				c_Graphics_Setup->Get_Context().Get()->PSSetConstantBuffers(0, 1, tmp_con_buffer);
 			}
 			else if (i == 4)
 			{
-				c_Graphics_Setup->Get_Context().Get()->PSSetShaderResources(0, 1, tObject_List.d3d_SRV[8].GetAddressOf());
+				c_Graphics_Setup->Get_Context().Get()->PSSetShaderResources(0, 1, tObject_List->d3d_SRV[8].GetAddressOf());
 
-				c_Graphics_Setup->Get_Context().Get()->Map(tObject_List.tMaterials_Buffers[4][0].Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &d3d_MSR);
+				c_Graphics_Setup->Get_Context().Get()->Map(tObject_List->tMaterials_Buffers[4][0].Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &d3d_MSR);
 				memcpy(d3d_MSR.pData, &cps_fireballColor, sizeof(tConstantBuffer_Dragon));
-				c_Graphics_Setup->Get_Context().Get()->Unmap(tObject_List.tMaterials_Buffers[4][0].Get(), 0);
-				ID3D11Buffer *tmp_con_buffer[] = { tObject_List.tMaterials_Buffers[4][0].Get() };
+				c_Graphics_Setup->Get_Context().Get()->Unmap(tObject_List->tMaterials_Buffers[4][0].Get(), 0);
+				ID3D11Buffer *tmp_con_buffer[] = { tObject_List->tMaterials_Buffers[4][0].Get() };
 				c_Graphics_Setup->Get_Context().Get()->PSSetConstantBuffers(0, 1, tmp_con_buffer);
 			}
 
@@ -731,10 +731,10 @@ void cRender_Manager::Draw(int nScene_Id, tScene_Objects* t_Object_List)
 			//d3dContext->PSSetShaderResources(0, 1, tmp_intro_srv);
 			if (i != 2)
 			{
-				if (tObject_List.bMesh_Has_Skinned[i])
-					c_Graphics_Setup->Get_Context().Get()->DrawIndexed(tObject_List.tMesh_Skinned_Data[i].nIndex_Count, 0, 0);
+				if (tObject_List->bMesh_Has_Skinned[i])
+					c_Graphics_Setup->Get_Context().Get()->DrawIndexed(tObject_List->tMesh_Skinned_Data[i].nIndex_Count, 0, 0);
 				else
-					c_Graphics_Setup->Get_Context().Get()->DrawIndexed(tObject_List.tMesh_Data[i].nIndex_Count, 0, 0);
+					c_Graphics_Setup->Get_Context().Get()->DrawIndexed(tObject_List->tMesh_Data[i].nIndex_Count, 0, 0);
 			}
 		}
 	}
