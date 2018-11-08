@@ -17,6 +17,7 @@ void cVR::Initialize(cGraphics_Setup* _setup)
 
 void cVR::VR_Render()
 {
+	update_controller();
 	vr::Texture_t leftEyeTexture = { c_Graphics_Setup->Get_Texture_Left_Eye() , vr::TextureType_DirectX, vr::ColorSpace_Auto };
 	vr::EVRCompositorError error1 = vr::VRCompositor()->Submit(vr::Eye_Left, &leftEyeTexture);
 	vr::Texture_t rightEyeTexture = { c_Graphics_Setup->Get_Texture_Right_Eye(), vr::TextureType_DirectX, vr::ColorSpace_Auto };
@@ -27,25 +28,25 @@ void cVR::VR_Render()
 
 void cVR::update_controller()
 {
-	cGraphics_Setup gx_setup;
+	//cGraphics_Setup gx_setup;
 	std::vector<float> vert_DATA;
 
 	vr::TrackedDeviceIndex_t non_tracking_device;
 
-	if (!vr::IVRSystem::IsInputAvailable())
+	/*if (!vr::IVRSystem::IsInputAvailable())
 	{
 		return;
-	}
+	}*/
 
 	int tracked_controller_count;
 	unsigned int controller_vert_count;
 
-	tracked_controller_count = gx_setup.get_tracked_controller_count();
-	controller_vert_count = gx_setup.get_controller_vert_count();
+	tracked_controller_count = c_Graphics_Setup->get_tracked_controller_count();
+	controller_vert_count = c_Graphics_Setup->get_controller_vert_count();
 
 	for (non_tracking_device = vr::k_unTrackedDeviceIndex_Hmd + 1; non_tracking_device < vr::k_unMaxTrackedDeviceCount; non_tracking_device++)
 	{
-		if (!vr::IVRSystem::IsTrackedDeviceConnected(non_tracking_device))
+		/*if (!vr::IVRSystem::IsTrackedDeviceConnected(non_tracking_device))
 		{
 			continue;
 		}
@@ -53,7 +54,7 @@ void cVR::update_controller()
 		if (vr::IVRSystem::GetTrackedDeviceClass(non_tracking_device) != vr::TrackedDeviceClass_Controller)
 		{
 			continue;
-		}
+		}*/
 
 		tracked_controller_count += 1;
 
@@ -66,7 +67,7 @@ void cVR::update_controller()
 
 		cGraphics_Setup::tMatrix4_device_pose matrix_pose;
 
-		const Matrix4 &matrix = matrix_pose.m_rmat4DevicePose[non_tracking_device];
+		const Matrix4 &matrix = matrix_pose.m_rmat4DevicePose[non_tracking_device];   // controller matrix   // draw a object using that matrix
 
 		Vector4 center_point;
 		Vector4 temp_vec;

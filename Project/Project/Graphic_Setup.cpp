@@ -517,3 +517,92 @@ CComPtr<ID3D11Resource> cGraphics_Setup::get_controller_axis_vertex_buffer()
 {
 	return m_pControllerAxisVertexBuffer;
 }
+
+bool cGraphics_Setup::is_right_hand_controller(EVREventType vr_event)
+{
+	ETrackedDeviceClass trackedDeviceClass;
+	trackedDeviceClass = m_pHMD->GetTrackedDeviceClass(vr_event.TrackedDeviceIndex_t);
+
+	if (trackedDeviceClass != ETrackedDeviceClass::TrackedDeviceClass_Controller)
+	{
+		return;
+	}
+
+	ETrackedControllerRole controller_role;
+
+	controller_role = m_pHMD->GetControllerRoleForTrackedDeviceIndex(vr_event.TrackedDeviceIndex_t);
+
+	if (controller_role == TrackedControllerRole_Invalid)
+	{
+		return;
+	}
+	else if (controller_role == TrackedControllerRole_LeftHand)
+	{
+		return false;
+	}
+	else if (controller_role == TrackedControllerRole_RightHand)
+	{
+		return true;
+	}
+}
+
+void cGraphics_Setup::controller_input()
+{
+	switch (switch_on)
+	{
+	case k_EButton_Grip:
+		switch (switch_on)
+		{
+		case VREvent_ButtonPress:
+			break;
+
+		case VREvent_ButtonUnpress:
+			break;
+		}
+		break;
+
+	case k_EButton_SteamVR_Trigger:
+		switch (switch_on)
+		{
+		case VREvent_ButtonPress:
+			break;
+
+			case VREvent_ButtonUnpress
+				break;
+		}
+		break;
+
+	case k_EButton_SteamVR_Touchpad:
+		switch (switch_on)
+		{
+		case VREvent_ButtonPress:
+			break;
+
+		case VREvent_ButtonUnpress:
+			break;
+
+		case VREvent_ButtonTouch:
+			break;
+
+		case VREvent_ButtonUntouch:
+			break;
+		
+		}
+		break;
+
+	case k_EButton_ApplicationMenu:
+		switch (switch_on)
+		{
+		case VREvent_ButtonPress:
+			break;
+
+		case VREvent_ButtonUnpress:
+			break;
+		}
+		break;
+
+
+	default:
+		break;
+	}
+}

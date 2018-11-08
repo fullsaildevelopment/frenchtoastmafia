@@ -177,5 +177,7 @@ public:
 	//tTracked_device_pose get_tracked_device_pose();
 	//Matrix4 get_matrix4_device_pose();
 	CComPtr<ID3D11Resource> get_controller_axis_vertex_buffer();
+	bool is_right_hand_controller(EVREventType vr_event);
+	void controller_input();
 };
 

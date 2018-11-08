@@ -30,6 +30,7 @@ void cGame_Loop::Update()
 {
 	c_Render_Manager.Draw(nScene_Id, t_Object_List);
 	c_VR.VR_Render();
+	//c_VR.update_controller();
 	//sound.updateSoundSystem();
 }
 
