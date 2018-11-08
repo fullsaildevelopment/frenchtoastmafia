@@ -1,10 +1,10 @@
 /************************************************************************
-* Filename:  		PixelShader.hlsl
-* Date:      		10/02/2018
-* Mod. Date: 		10/11/2018
+* Filename:  		PixelShader_Screen.hlsl
+* Date:      		17/10/2018
+* Mod. Date: 		17/10/2018
 * Mod. Initials:	WM
 * Author:    		Wichet Manawanitjarern
-* Purpose:   		Basic PixelShader for Rendering
+* Purpose:   		Specific PixelShader for Rendering temporary screen for intro, menu, replay
 *************************************************************************/
 
 texture2D tTexture : register(t0);

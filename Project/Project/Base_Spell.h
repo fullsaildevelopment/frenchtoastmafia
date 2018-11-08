@@ -1,7 +1,7 @@
 /************************************************************************
 * Filename:  		Base_Spell.h
-* Date:      		10/05/2018
-* Mod. Date: 		10/09/2018
+* Date:      		05/10/2018
+* Mod. Date: 		09/10/2018
 * Mod. Initials:	WM
 * Author:    		Wichet Manawanitjarern
 * Purpose:   		Base Spell Module to be inherit by various specific spell

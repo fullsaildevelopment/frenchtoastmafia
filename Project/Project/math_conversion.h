@@ -1,7 +1,7 @@
 /************************************************************************
-* Filename:  		math_conversion.h
-* Date:      		10/11/2018
-* Mod. Date: 		10/11/2018
+* Filename:  		Math_Conversion.h
+* Date:      		11/10/2018
+* Mod. Date: 		08/11/2018
 * Mod. Initials:	WM
 * Author:    		Wichet Manawanitjarern
 * Purpose:   		Additional math to convert between datatype or structure types.
@@ -15,7 +15,7 @@
 #include <DirectXColors.h>
 #include <DirectXCollision.h>
 using namespace DirectX;
-#include "basic_structs.h"
+#include "Basic_Structs.h"
 #include "Matrices.h"
 
 inline XMFLOAT4X4 tFloat4x4_to_XMFLOAT4x4(tFloat4x4 fIn)
@@ -97,4 +97,36 @@ inline tFloat4x4 Matrix4_To_tFloat4x4(Matrix4 fIn)
 	fOut.tW.fW = fIn[15];
 
 	return fOut;
+}
+
+inline tAnimation_Data Create_Inverse_Bind_Pose(tKeyframe tKey)
+{
+	tAnimation_Data tOutput;
+	int nJoint_Size = (int)tKey.tJoints.size();
+
+	for (int i = 0; i < nJoint_Size; i++)
+	{
+		tFloat4x4 tJoint_Data = tKey.tJoints[i].tData;
+		XMFLOAT4X4 xmf_Joint_Data = tFloat4x4_to_XMFLOAT4x4(tJoint_Data);
+		XMMATRIX xmm_Joint_Data = XMLoadFloat4x4(&xmf_Joint_Data);
+		xmm_Joint_Data = XMMatrixInverse(nullptr, xmm_Joint_Data);
+		XMFLOAT4X4 xmf_Out;
+		XMStoreFloat4x4(&xmf_Out, xmm_Joint_Data);
+		tFloat4x4 tOut = XMFLOAT4x4_to_tFloat4x4(xmf_Out);
+		tOutput.tInverse[i] = tOut;
+	}
+
+	return tOutput;
+}
+
+inline tFloat4 Joint_Position_Lerp(tFloat3 prev, tFloat3 next, float ratio)
+{
+	tFloat4 tOut;
+	// (B - A) * R + A
+	tOut.fX = (next.fX - prev.fX) * ratio + prev.fX;
+	tOut.fY = (next.fY - prev.fY) * ratio + prev.fY;
+	tOut.fZ = (next.fZ - prev.fZ) * ratio + prev.fZ;
+	tOut.fW = 1;
+
+	return tOut;
 }

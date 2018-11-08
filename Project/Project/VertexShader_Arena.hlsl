@@ -15,6 +15,8 @@ struct INPUT_DATA
 	float4 fNormal : NORMAL;
 	float4 fColor : COLOR;
 	float2 fTexture : TEXTURE;
+	uint4 joints : JOINTS;
+	float4 weights : WEIGHTS;
 };
 
 struct OUTPUT_DATA

@@ -1,10 +1,10 @@
 /************************************************************************
-* Filename:  		PixelShader.hlsl
-* Date:      		10/11/2018
-* Mod. Date: 		10/11/2018
+* Filename:  		PixelShader_Mage.hlsl
+* Date:      		11/10/2018
+* Mod. Date: 		11/10/2018
 * Mod. Initials:	WM
 * Author:    		Wichet Manawanitjarern
-* Purpose:   		Basic PixelShader for Rendering
+* Purpose:   		Specific PixelShader for Rendering Mage model
 *************************************************************************/
 
 texture2D tTexture : register(t0);

@@ -1,11 +1,16 @@
+/************************************************************************
+* Filename:  		Scene_Manager.cpp
+* Date:      		24/10/2018
+* Mod. Date: 		08/11/2018
+* Mod. Initials:	WM
+* Author:    		Wichet Manawanitjarern
+* Purpose:   		Managing system to handle all objects within a scene and related task.
+*************************************************************************/
 #include "Scene_Manager.h"
-
-
 
 cScene_Manager::cScene_Manager()
 {
 }
-
 
 cScene_Manager::~cScene_Manager()
 {
@@ -109,47 +114,49 @@ tScene_Objects cScene_Manager::GetScene(int nScene_Id)
 			// Battle Mage - 0
 			{
 				XMFLOAT4X4 temp;
-				
+
 				XMMATRIX tempMatrix = XMMatrixIdentity();
 				tempMatrix = XMMatrixMultiply(XMMatrixTranslation(2, -3, 0), tempMatrix);
-				tempMatrix = XMMatrixMultiply(XMMatrixRotationY(3.14/2), tempMatrix);
+				tempMatrix = XMMatrixMultiply(XMMatrixRotationY(180), tempMatrix);
 				//tempMatrix = XMMatrixMultiply(XMMatrixScaling(0.9, 0.9, 0.9), tempMatrix);
-				
+
 
 				XMStoreFloat4x4(&temp, tempMatrix);
 
-				tScene.fWorld_Matrix[0] = XMFLOAT4x4_to_tFloat4x4(temp);
-				tMesh tMage = cBinary_Read.Read_Mesh("mesh.bin");
+				tScene.fWorld_Matrix[0][0] = XMFLOAT4x4_to_tFloat4x4(temp);
+				tScene.bMesh_Has_Skinned[0] = true;
+				tMesh_Skinned tMage = cBinary_Read.Read_Mesh_Skinned("mesh.bin");
 
 				for (int i = 0; i < tMage.nVertex_Count; i++)
 				{
-					tMage.tVerts[i].fPosition.fZ *= -1;
+					//tMage.tVerts[i].fPosition.fZ *= -1;
+					//tMage.tVerts[i].fNormal.fZ *= -1;
 				}
 
 				for (int i = 0; i < tMage.nVertex_Count; i++)
 				{
-					tScene.tMesh_Data[0].tVerts.push_back(tMage.tVerts[i]);
+					tScene.tMesh_Skinned_Data[0].tVerts.push_back(tMage.tVerts[i]);
 				}
 
-				tScene.tMesh_Data[0].nVertex_Count = tMage.nVertex_Count;
+				tScene.tMesh_Skinned_Data[0].nVertex_Count = tMage.nVertex_Count;
 
 
 				for (int i = 0; i < tMage.nIndex_Count; i++)
 				{
-					tScene.tMesh_Data[0].nIndicies.push_back(tMage.nIndicies[i]);
+					tScene.tMesh_Skinned_Data[0].nIndicies.push_back(tMage.nIndicies[i]);
 				}
-				tScene.tMesh_Data[0].nIndex_Count = tMage.nIndex_Count;
+				tScene.tMesh_Skinned_Data[0].nIndex_Count = tMage.nIndex_Count;
 
-				//XMStoreFloat4x4(&tScene.fWorld_Matrix[0], XMMatrixIdentity());
-
-				tScene.tMaterials_Data[0] = cBinary_Read.Read_Material("material.bin");
-				//tScene.tMaterials_Data[0].tMats[0].tNormal.fX = 1.0f;
+				tScene.tMaterials_Data[0][0] = cBinary_Read.Read_Material("material.bin");
+				tScene.bHas_Animation[0] = true;
+				tScene.tAnim_Clip[0] = cBinary_Read.Read_Skeleton("skeleton.bin");
+				tScene.tAnim_Data[0] = Create_Inverse_Bind_Pose(tScene.tAnim_Clip[0].tKeyFrames[0]);
 			}
 			// Battle Mage
 
 			// Arena - 1
 			{
-				
+
 				XMFLOAT4X4 temp;
 
 				XMMATRIX tempMatrix = XMMatrixIdentity();
@@ -163,27 +170,28 @@ tScene_Objects cScene_Manager::GetScene(int nScene_Id)
 
 				XMStoreFloat4x4(&temp, tempMatrix);
 
-				tScene.fWorld_Matrix[1] = XMFLOAT4x4_to_tFloat4x4(temp);
+				tScene.fWorld_Matrix[1][0] = XMFLOAT4x4_to_tFloat4x4(temp);
+				tScene.bMesh_Has_Skinned[1] = false;
 
 				tMesh tArena = cBinary_Read.Read_Mesh("arena_3_mesh.bin");
 				tScene.tMesh_Data[1].nIndex_Count = tArena.nIndex_Count;
-				tScene.tMaterials_Data[1] = cBinary_Read.Read_Material("arena_3_material.bin");
+				tScene.tMaterials_Data[1][0] = cBinary_Read.Read_Material("arena_3_material.bin");
 				tMaterials tMat_Arena = cBinary_Read.Read_Material("arenaMat.bin");
-				tScene.tMaterials_Data[1].tMats[0].tDiffuse = tMat_Arena.tMats[0].tDiffuse;
-				tScene.tMaterials_Data[1].tMats[0].szDiffuse_File_Path = tMat_Arena.tMats[0].szDiffuse_File_Path;
+				tScene.tMaterials_Data[1][0].tMats[0].tDiffuse = tMat_Arena.tMats[0].tDiffuse;
+				tScene.tMaterials_Data[1][0].tMats[0].szDiffuse_File_Path = tMat_Arena.tMats[0].szDiffuse_File_Path;
 
 				for (int i = 0; i < tArena.nVertex_Count; i++)
 				{
 					tArena.tVerts[i].fPosition.fZ *= -1;
 				}
-				
+
 				for (int i = 0; i < tArena.nVertex_Count; i++)
 				{
 					tScene.tMesh_Data[1].tVerts.push_back(tArena.tVerts[i]);
 				}
 
 				tScene.tMesh_Data[1].nVertex_Count = tArena.nVertex_Count;
-				
+
 				for (int i = 0; i < tArena.nIndex_Count; i++)
 				{
 					tScene.tMesh_Data[1].nIndicies.push_back(tArena.nIndicies[i]);
@@ -285,7 +293,7 @@ tScene_Objects cScene_Manager::GetScene(int nScene_Id)
 						test_grid[counter].fPosition.fW = 1;
 					}
 				}
-				
+
 				for (int i = 0; i < tScene.tMesh_Data[2].nVertex_Count; i++)
 				{
 					tScene.tMesh_Data[2].tVerts.push_back(test_grid[i]);
@@ -342,7 +350,7 @@ tScene_Objects cScene_Manager::GetScene(int nScene_Id)
 
 				XMFLOAT4X4 tmp;
 				XMStoreFloat4x4(&tmp, XMMatrixIdentity());
-				tScene.fWorld_Matrix[2] = XMFLOAT4x4_to_tFloat4x4(tmp);
+				tScene.fWorld_Matrix[2][0] = XMFLOAT4x4_to_tFloat4x4(tmp);
 			}
 			// GRID
 
@@ -351,7 +359,7 @@ tScene_Objects cScene_Manager::GetScene(int nScene_Id)
 				XMFLOAT4X4 temp;
 
 				XMMATRIX tempMatrix = XMMatrixIdentity();
-				
+
 				tempMatrix = XMMatrixMultiply(XMMatrixRotationX(3.14 / 3), tempMatrix);
 				//tempMatrix = XMMatrixMultiply(XMMatrixRotationZ(3.14 / 2), tempMatrix);
 				tempMatrix = XMMatrixMultiply(tempMatrix, XMMatrixRotationY(3.14 / 2));
@@ -437,7 +445,7 @@ tScene_Objects cScene_Manager::GetScene(int nScene_Id)
 		}
 		else
 			tMesh  tPriest = cBinary_Read.Read_Mesh("PriestDeathMesh.bin");
-		
+
 		return tScene;
 	}
 }

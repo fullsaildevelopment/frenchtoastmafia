@@ -1,10 +1,10 @@
 /************************************************************************
-* Filename:  		basic_structs.h
-* Date:      		10/02/2018
-* Mod. Date: 		10/09/2018
+* Filename:  		Basic_Structs.h
+* Date:      		02/10/2018
+* Mod. Date: 		08/11/2018
 * Mod. Initials:	WM
 * Author:    		Wichet Manawanitjarern
-* Purpose:   		Additional structs to hold different datatype and make accessing them easier.
+* Purpose:   		Additional basic structs to hold different datatype and make accessing them easier.
 *************************************************************************/
 #pragma once
 
@@ -104,4 +104,37 @@ struct tVertex
 	tFloat4 fNormal;
 	tFloat4 fColor;
 	tFloat2 fTexture_Coordinate;
+};
+
+struct tVertex_Skinned
+{
+	tFloat4 fPosition;
+	tFloat4 fNormal;
+	tFloat4 fColor;
+	tFloat2 fTexture_Coordinate;
+	int nJoints[4];
+	tFloat4 fWeights;
+};
+struct tJoint
+{
+	tFloat4x4 tData;
+	int nParent_Index;
+};
+
+struct tKeyframe
+{
+	double dTime;
+	std::vector<tJoint> tJoints;
+};
+
+struct tAnimation_Clip
+{
+	double dDuration;
+	std::vector<tKeyframe> tKeyFrames;
+};
+
+struct tAnimation_Data
+{
+	tFloat4x4 tInverse[32]{};
+	tFloat4x4 tTweened[32]{};
 };
