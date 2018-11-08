@@ -14,6 +14,7 @@
 #include "Scene_Manager.h"
 #include "VR.h"
 #include "XTime.h"
+#include "dopeSoundSystem.h"
 
 class cGame_Loop
 {
@@ -25,6 +26,7 @@ private:
 	cVR c_VR;
 	tScene_Objects tObject_List;
 	XTime c_XTime;
+	dopeSoundSystem sound;
 
 	int m_nScene_Id;
 public:

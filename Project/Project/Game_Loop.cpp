@@ -9,6 +9,7 @@
 
 #include "Game_Loop.h"
 
+
 cGame_Loop::cGame_Loop()
 {
 }
@@ -30,7 +31,7 @@ void cGame_Loop::Setup()
 {
 	tObject_List = c_Scene_Manager.GetScene(m_nScene_Id);
 	c_Render_Manager.Load_Data(m_nScene_Id, &tObject_List);
-	//sound.playSong("fionnulas-tale-celtic-flute-music.mp3", FMOD_LOOP_NORMAL);
+	sound.playSong("fionnulas-tale-celtic-flute-music.mp3", FMOD_LOOP_NORMAL);
 }
 
 
@@ -40,7 +41,7 @@ void cGame_Loop::Update()
 	c_Animation_Manager.Animate(c_XTime.Delta(), c_XTime.TotalTimeExact(), &tObject_List);
 	c_Render_Manager.Draw(m_nScene_Id, &tObject_List);
 	c_VR.VR_Render();
-	//sound.updateSoundSystem();
+	sound.updateSoundSystem();
 }
 
 void cGame_Loop::Clean_Up()
