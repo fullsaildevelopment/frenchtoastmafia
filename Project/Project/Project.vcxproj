@@ -20,13 +20,18 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Animation_Manager.cpp" />
+    <ClCompile Include="Binary_Reader.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="Collisions.cpp" />
     <ClCompile Include="DDSTextureLoader.cpp" />
     <ClCompile Include="dopeSoundSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation_Manager.h" />
+    <ClInclude Include="Basic_Structs.h" />
+    <ClInclude Include="Binary_Reader.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="Collisions.h" />
     <ClInclude Include="DDSTextureLoader.h" />
     <ClInclude Include="defines.h" />
     <ClInclude Include="dopeSoundSystem.h" />
@@ -206,22 +211,18 @@
   <ItemGroup>
     <ClInclude Include="Base_Character.h" />
     <ClInclude Include="Base_Spell.h" />
-    <ClInclude Include="basic_structs.h" />
-    <ClInclude Include="binary_reader.h" />
-    <ClInclude Include="collisions.h" />
     <ClInclude Include="Game_Loop.h" />
     <ClInclude Include="Graphic_Setup.h" />
     <ClInclude Include="header.h" />
-    <ClInclude Include="math_conversion.h" />
+    <ClInclude Include="Math_Conversion.h" />
     <ClInclude Include="Matrices.h" />
-    <ClInclude Include="Object System.h" />
-    <ClInclude Include="physic_structs.h" />
+    <ClInclude Include="Physics_Structs.h" />
     <ClInclude Include="Project.h" />
-    <ClInclude Include="renderer_structs.h" />
+    <ClInclude Include="Renderer_Structs.h" />
     <ClInclude Include="Render_Manager.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="Scene_Manager.h" />
-    <ClInclude Include="specific_structs.h" />
+    <ClInclude Include="Specific_Structs.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="Vectors.h" />
     <ClInclude Include="view.h" />
@@ -232,8 +233,6 @@
   <ItemGroup>
     <ClCompile Include="Base_Character.cpp" />
     <ClCompile Include="Base_Spell.cpp" />
-    <ClCompile Include="binary_reader.cpp" />
-    <ClCompile Include="collisions.cpp" />
     <ClCompile Include="Game_Loop.cpp" />
     <ClCompile Include="Graphic_Setup.cpp" />
     <ClCompile Include="Matrices.cpp" />
@@ -335,6 +334,18 @@
       <HeaderFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(Filename).csh</HeaderFileOutput>
       <VariableName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">%(Filename)</VariableName>
       <HeaderFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">%(Filename).csh</HeaderFileOutput>
+    </FxCompile>
+    <FxCompile Include="VertexShader_Animation.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">4.0</ShaderModel>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">4.0</ShaderModel>
+      <VariableName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">%(Filename)</VariableName>
+      <HeaderFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">%(Filename).csh</HeaderFileOutput>
+      <VariableName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">%(Filename)</VariableName>
+      <HeaderFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">%(Filename).csh</HeaderFileOutput>
     </FxCompile>
     <FxCompile Include="VertexShader_Arena.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>

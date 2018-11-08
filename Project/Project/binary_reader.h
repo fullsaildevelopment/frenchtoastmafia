@@ -1,8 +1,16 @@
+/************************************************************************
+* Filename:  		Binary_Reader.cpp
+* Date:      		12/10/2018
+* Mod. Date: 		08/11/2018
+* Mod. Initials:	WM
+* Author:    		Wichet Manawanitjarern
+* Purpose:   		Reader for Binary file with data such as Meshs, Materials, Keyframe for Animations
+*************************************************************************/
 #pragma once
 #include <vector>
 
-#include "renderer_structs.h"
-#include "specific_structs.h"
+#include "Renderer_Structs.h"
+#include "Specific_Structs.h"
 
 class cBinary_Reader
 {
@@ -12,8 +20,8 @@ public:
 
 	tMesh Read_Mesh(const char* szRead_Path);
 	tMaterials Read_Material(const char* szRead_Path);
-	//anim_clip read_skeleton(const char * read_path);
-	tMesh_Skinned Read_Mesh_Skinned(const char * read_path);
-	tBinary_Screen Read_Screen_Binary(const char* read_file_path);
+	tAnimation_Clip Read_Skeleton(const char * szRead_Path);
+	tMesh_Skinned Read_Mesh_Skinned(const char * szRead_Path);
+	tBinary_Screen Read_Screen_Binary(const char* szRead_Path);
 };
 

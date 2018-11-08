@@ -1,14 +1,23 @@
+/************************************************************************
+* Filename:  		Binary_Reader.h
+* Date:      		12/10/2018
+* Mod. Date: 		08/11/2018
+* Mod. Initials:	WM
+* Author:    		Wichet Manawanitjarern
+* Purpose:   		Reader for Binary file with data such as Meshs, Materials, Keyframe for Animations
+*************************************************************************/
+#pragma once
+
 #include <fstream>
 #include <iostream>
 #include <vector>
 using namespace std;
 
-#include "binary_reader.h"
+#include "Binary_Reader.h"
 
 cBinary_Reader::cBinary_Reader()
 {
 }
-
 
 cBinary_Reader::~cBinary_Reader()
 {
@@ -138,6 +147,45 @@ tMaterials cBinary_Reader::Read_Material(const char * szRead_Path)
 	return tOutput;
 }
 
+tAnimation_Clip cBinary_Reader::Read_Skeleton(const char * read_path)
+{
+	tAnimation_Clip tOutput;
+
+	std::fstream fs;
+	fs.open(read_path, std::ios::in | std::ios::binary);
+
+	double dDuration = 0.0;
+	fs.read((char *)&dDuration, sizeof(double));
+	tOutput.dDuration = dDuration;
+
+	int nFrames = 0;
+	fs.read((char *)&nFrames, sizeof(int));
+
+	for (int i = 0; i < nFrames; i++)
+	{
+		tKeyframe tKey;
+
+		double dJoint_Time = 0.0;
+		fs.read((char *)&dJoint_Time, sizeof(double));
+		tKey.dTime = dJoint_Time;
+
+		int nJoint_Size = 0;
+		fs.read((char *)&nJoint_Size, sizeof(int));
+
+		for (int j = 0; j < nJoint_Size; j++)
+		{
+			tJoint tJoint_Data;
+
+			fs.read((char *)&tJoint_Data, sizeof(tJoint));
+
+			tKey.tJoints.push_back(tJoint_Data);
+		}
+
+		tOutput.tKeyFrames.push_back(tKey);
+	}
+
+	return tOutput;
+}
 
 tMesh_Skinned cBinary_Reader::Read_Mesh_Skinned(const char * szRead_Path)
 {

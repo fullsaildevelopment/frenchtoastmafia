@@ -1,11 +1,16 @@
+/************************************************************************
+* Filename:  		Scene_Manager.cpp
+* Date:      		24/10/2018
+* Mod. Date: 		08/11/2018
+* Mod. Initials:	WM
+* Author:    		Wichet Manawanitjarern
+* Purpose:   		Managing system to handle all objects within a scene and related task.
+*************************************************************************/
 #include "Scene_Manager.h"
-
-
 
 cScene_Manager::cScene_Manager()
 {
 }
-
 
 cScene_Manager::~cScene_Manager()
 {
@@ -101,7 +106,7 @@ tScene_Objects cScene_Manager::GetScene(int nScene_Id)
 	// GAME
 	else
 	{
-		tScene.nObject_Count = 3;
+		tScene.nObject_Count = 2;
 
 		// GAME 1 with mage
 		if (nScene_Id == 2)
@@ -112,7 +117,7 @@ tScene_Objects cScene_Manager::GetScene(int nScene_Id)
 				
 				XMMATRIX tempMatrix = XMMatrixIdentity();
 				tempMatrix = XMMatrixMultiply(XMMatrixTranslation(2, -3, 0), tempMatrix);
-				tempMatrix = XMMatrixMultiply(XMMatrixRotationY(3.14/2), tempMatrix);
+				tempMatrix = XMMatrixMultiply(XMMatrixRotationY(180), tempMatrix);
 				//tempMatrix = XMMatrixMultiply(XMMatrixScaling(0.9, 0.9, 0.9), tempMatrix);
 				
 
@@ -124,7 +129,8 @@ tScene_Objects cScene_Manager::GetScene(int nScene_Id)
 
 				for (int i = 0; i < tMage.nVertex_Count; i++)
 				{
-					tMage.tVerts[i].fPosition.fZ *= -1;
+					//tMage.tVerts[i].fPosition.fZ *= -1;
+					//tMage.tVerts[i].fNormal.fZ *= -1;
 				}
 
 				for (int i = 0; i < tMage.nVertex_Count; i++)
@@ -141,10 +147,10 @@ tScene_Objects cScene_Manager::GetScene(int nScene_Id)
 				}
 				tScene.tMesh_Skinned_Data[0].nIndex_Count = tMage.nIndex_Count;
 				
-				//XMStoreFloat4x4(&tScene.fWorld_Matrix[0], XMMatrixIdentity());
-
 				tScene.tMaterials_Data[0][0] = cBinary_Read.Read_Material("material.bin");
-				//tScene.tMaterials_Data[0].tMats[0].tNormal.fX = 1.0f;
+				tScene.bHas_Animation[0] = true;
+				tScene.tAnim_Clip[0] = cBinary_Read.Read_Skeleton("skeleton.bin");
+				tScene.tAnim_Data[0] = Create_Inverse_Bind_Pose(tScene.tAnim_Clip[0].tKeyFrames[0]);
 			}
 			// Battle Mage
 

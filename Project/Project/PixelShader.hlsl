@@ -1,7 +1,7 @@
 /************************************************************************
 * Filename:  		PixelShader.hlsl
-* Date:      		10/02/2018
-* Mod. Date: 		10/11/2018
+* Date:      		02/10/2018
+* Mod. Date: 		11/10/2018
 * Mod. Initials:	WM
 * Author:    		Wichet Manawanitjarern
 * Purpose:   		Basic PixelShader for Rendering

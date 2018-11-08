@@ -1,15 +1,23 @@
+/************************************************************************
+* Filename:  		Scene_Manager.h
+* Date:      		24/10/2018
+* Mod. Date: 		08/11/2018
+* Mod. Initials:	WM
+* Author:    		Wichet Manawanitjarern
+* Purpose:   		Managing system to handle all objects within a scene and related task.
+*************************************************************************/
 #pragma once
 
-#include "binary_reader.h"
-#include "math_conversion.h"
-#include "renderer_structs.h"
+#include "Binary_Reader.h"
+#include "Math_Conversion.h"
+#include "Renderer_Structs.h"
 #include "DDSTextureLoader.h"
 #include "WICTextureLoader.h"
 
 class cScene_Manager
 {
 private:
-	CComPtr<ID3D11Device> d3dDevice;
+	ComPtr<ID3D11Device> d3dDevice;
 
 	// OBJECTS
 	cBinary_Reader cBinary_Read;

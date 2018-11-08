@@ -58,14 +58,17 @@
     <Filter Include="Renderer Manager\Code">
       <UniqueIdentifier>{004fe698-c3f7-44b9-a9e3-043b74d474ae}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Renderer Manager\Pixel">
-      <UniqueIdentifier>{a4d6a664-4c74-4c20-af7f-99d34a45b397}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Renderer Manager\Vertex">
-      <UniqueIdentifier>{ff52454c-38e7-4fa6-87b7-159e582e940e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Animation Manager">
       <UniqueIdentifier>{8cfa4d12-b27b-462e-8792-5cec21407b37}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Renderer Manager\Shaders">
+      <UniqueIdentifier>{57362ab7-c331-4683-8d98-d6f7f5073a81}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Renderer Manager\Shaders\Pixel">
+      <UniqueIdentifier>{a4d6a664-4c74-4c20-af7f-99d34a45b397}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Renderer Manager\Shaders\Vertex">
+      <UniqueIdentifier>{ff52454c-38e7-4fa6-87b7-159e582e940e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -90,22 +93,7 @@
     <ClInclude Include="XTime.h">
       <Filter>Helper</Filter>
     </ClInclude>
-    <ClInclude Include="basic_structs.h">
-      <Filter>Helper</Filter>
-    </ClInclude>
-    <ClInclude Include="math_conversion.h">
-      <Filter>Helper</Filter>
-    </ClInclude>
-    <ClInclude Include="physic_structs.h">
-      <Filter>Physics</Filter>
-    </ClInclude>
-    <ClInclude Include="collisions.h">
-      <Filter>Physics</Filter>
-    </ClInclude>
     <ClInclude Include="DDSTextureLoader.h">
-      <Filter>Assets\Helper</Filter>
-    </ClInclude>
-    <ClInclude Include="binary_reader.h">
       <Filter>Assets\Helper</Filter>
     </ClInclude>
     <ClInclude Include="dopeSoundSystem.h">
@@ -114,13 +102,7 @@
     <ClInclude Include="WICTextureLoader.h">
       <Filter>Assets\Helper</Filter>
     </ClInclude>
-    <ClInclude Include="renderer_structs.h">
-      <Filter>Renderer Manager\Code</Filter>
-    </ClInclude>
     <ClInclude Include="view.h">
-      <Filter>Renderer Manager\Code</Filter>
-    </ClInclude>
-    <ClInclude Include="Object System.h">
       <Filter>Renderer Manager\Code</Filter>
     </ClInclude>
     <ClInclude Include="Render_Manager.h">
@@ -141,20 +123,38 @@
     <ClInclude Include="VR.h">
       <Filter>VR</Filter>
     </ClInclude>
-    <ClInclude Include="specific_structs.h">
-      <Filter>Helper</Filter>
-    </ClInclude>
-    <ClInclude Include="Matrices.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Vectors.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Graphic_Setup.h">
       <Filter>Graphic Setup</Filter>
     </ClInclude>
     <ClInclude Include="Animation_Manager.h">
       <Filter>Animation Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="Matrices.h">
+      <Filter>Helper</Filter>
+    </ClInclude>
+    <ClInclude Include="Binary_Reader.h">
+      <Filter>Assets\Helper</Filter>
+    </ClInclude>
+    <ClInclude Include="Basic_Structs.h">
+      <Filter>Helper</Filter>
+    </ClInclude>
+    <ClInclude Include="Math_Conversion.h">
+      <Filter>Helper</Filter>
+    </ClInclude>
+    <ClInclude Include="Specific_Structs.h">
+      <Filter>Helper</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer_Structs.h">
+      <Filter>Renderer Manager\Code</Filter>
+    </ClInclude>
+    <ClInclude Include="Collisions.h">
+      <Filter>Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="Physics_Structs.h">
+      <Filter>Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="Vectors.h">
+      <Filter>Helper</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -170,13 +170,7 @@
     <ClCompile Include="XTime.cpp">
       <Filter>Helper</Filter>
     </ClCompile>
-    <ClCompile Include="collisions.cpp">
-      <Filter>Physics</Filter>
-    </ClCompile>
     <ClCompile Include="DDSTextureLoader.cpp">
-      <Filter>Assets\Helper</Filter>
-    </ClCompile>
-    <ClCompile Include="binary_reader.cpp">
       <Filter>Assets\Helper</Filter>
     </ClCompile>
     <ClCompile Include="dopeSoundSystem.cpp">
@@ -200,14 +194,20 @@
     <ClCompile Include="VR.cpp">
       <Filter>VR</Filter>
     </ClCompile>
-    <ClCompile Include="Matrices.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Graphic_Setup.cpp">
       <Filter>Graphic Setup</Filter>
     </ClCompile>
     <ClCompile Include="Animation_Manager.cpp">
       <Filter>Animation Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="Matrices.cpp">
+      <Filter>Helper</Filter>
+    </ClCompile>
+    <ClCompile Include="Binary_Reader.cpp">
+      <Filter>Assets\Helper</Filter>
+    </ClCompile>
+    <ClCompile Include="Collisions.cpp">
+      <Filter>Physics</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -225,28 +225,31 @@
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="PixelShader_Screen.hlsl">
-      <Filter>Renderer Manager\Pixel</Filter>
+      <Filter>Renderer Manager\Shaders\Pixel</Filter>
     </FxCompile>
     <FxCompile Include="PixelShader_Mage.hlsl">
-      <Filter>Renderer Manager\Pixel</Filter>
+      <Filter>Renderer Manager\Shaders\Pixel</Filter>
     </FxCompile>
     <FxCompile Include="PixelShader.hlsl">
-      <Filter>Renderer Manager\Pixel</Filter>
+      <Filter>Renderer Manager\Shaders\Pixel</Filter>
     </FxCompile>
     <FxCompile Include="VertexShader.hlsl">
-      <Filter>Renderer Manager\Vertex</Filter>
+      <Filter>Renderer Manager\Shaders\Vertex</Filter>
     </FxCompile>
     <FxCompile Include="VertexShader_Bullet.hlsl">
-      <Filter>Renderer Manager\Vertex</Filter>
+      <Filter>Renderer Manager\Shaders\Vertex</Filter>
     </FxCompile>
     <FxCompile Include="PixelShader_Priest.hlsl">
-      <Filter>Renderer Manager\Pixel</Filter>
+      <Filter>Renderer Manager\Shaders\Pixel</Filter>
     </FxCompile>
     <FxCompile Include="PixelShader_Arena.hlsl">
-      <Filter>Renderer Manager\Pixel</Filter>
+      <Filter>Renderer Manager\Shaders\Pixel</Filter>
     </FxCompile>
     <FxCompile Include="VertexShader_Arena.hlsl">
-      <Filter>Renderer Manager\Vertex</Filter>
+      <Filter>Renderer Manager\Shaders\Vertex</Filter>
+    </FxCompile>
+    <FxCompile Include="VertexShader_Animation.hlsl">
+      <Filter>Renderer Manager\Shaders\Vertex</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>
