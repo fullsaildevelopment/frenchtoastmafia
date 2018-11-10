@@ -182,9 +182,13 @@ void cRender_Manager::Load_Data(int nScene_Id, tScene_Objects* tObject_List)
 			{
 				HRESULT error = c_Graphics_Setup->Get_Device().Get()->CreatePixelShader(PixelShader_Dragon, sizeof(PixelShader_Dragon), NULL, &tObject_List->d3d_Pixel_Shaders[i]);
 			}
-			else //if (i == 4)
+			else if (i == 4)
 			{
 				HRESULT error = c_Graphics_Setup->Get_Device().Get()->CreatePixelShader(PixelShader_Fireball, sizeof(PixelShader_Fireball), NULL, &tObject_List->d3d_Pixel_Shaders[i]);
+			}
+			else if (i == 5)
+			{
+				HRESULT error = c_Graphics_Setup->Get_Device().Get()->CreatePixelShader(PixelShader_Priest, sizeof(PixelShader_Priest), NULL, &tObject_List->d3d_Pixel_Shaders[i]);
 			}
 
 
@@ -224,6 +228,8 @@ void cRender_Manager::Load_Data(int nScene_Id, tScene_Objects* tObject_List)
 	// 7 - dragon - diffuse
 
 	// 8 - fireball - diffuse
+
+	// 9 - priest - diffuse
 
 	HRESULT result;
 	// MAGE
@@ -403,6 +409,33 @@ void cRender_Manager::Load_Data(int nScene_Id, tScene_Objects* tObject_List)
 
 
 		c_Graphics_Setup->Get_Device()->CreateBuffer(&d3d_Constant_Buffer_Desc, &InitData, &tObject_List->tMaterials_Buffers[4][0]);
+	}
+
+	// Priest
+
+	d_tmp = std::wstring(tObject_List->tMaterials_Data[5][0].tMats[0].szDiffuse_File_Path.begin(), tObject_List->tMaterials_Data[5][0].tMats[0].szDiffuse_File_Path.end());
+	diffuse_path = d_tmp.c_str();
+	result = CreateWICTextureFromFile(c_Graphics_Setup->Get_Device().Get(), c_Graphics_Setup->Get_Context().Get(), diffuse_path, nullptr, &tObject_List->d3d_SRV[9], 0);
+	{
+
+		// Constant Buffer
+		ZeroMemory(&d3d_Constant_Buffer_Desc, sizeof(D3D11_BUFFER_DESC));
+		d3d_Constant_Buffer_Desc.ByteWidth = sizeof(tConstantBuffer_Dragon);
+		d3d_Constant_Buffer_Desc.Usage = D3D11_USAGE_DYNAMIC;
+		d3d_Constant_Buffer_Desc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+		d3d_Constant_Buffer_Desc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+		d3d_Constant_Buffer_Desc.MiscFlags = 0;
+		d3d_Constant_Buffer_Desc.StructureByteStride = 0;
+
+		cps_priestColor.addColor = { 0.0f, 0.0f, 0.0f, 1.0f };
+
+		D3D11_SUBRESOURCE_DATA InitData;
+		InitData.pSysMem = &cps_priestColor;
+		InitData.SysMemPitch = 0;
+		InitData.SysMemSlicePitch = 0;
+
+
+		c_Graphics_Setup->Get_Device()->CreateBuffer(&d3d_Constant_Buffer_Desc, &InitData, &tObject_List->tMaterials_Buffers[5][0]);
 	}
 }
 
@@ -622,7 +655,12 @@ void cRender_Manager::Draw(int nScene_Id, tScene_Objects* tObject_List)
 
 		for (int i = 0; i < tObject_List->nObject_Count; i++)
 		{
+			// TO TURN OFF OBJECTS
 			if (((i == 3) || (i == 4)) && !dragonAlive)
+			{
+				continue;
+			}
+			if (i == 5)
 			{
 				continue;
 			}
@@ -717,6 +755,16 @@ void cRender_Manager::Draw(int nScene_Id, tScene_Objects* tObject_List)
 				memcpy(d3d_MSR.pData, &cps_fireballColor, sizeof(tConstantBuffer_Dragon));
 				c_Graphics_Setup->Get_Context().Get()->Unmap(tObject_List->tMaterials_Buffers[4][0].Get(), 0);
 				ID3D11Buffer *tmp_con_buffer[] = { tObject_List->tMaterials_Buffers[4][0].Get() };
+				c_Graphics_Setup->Get_Context().Get()->PSSetConstantBuffers(0, 1, tmp_con_buffer);
+			}
+			else if (i == 5)
+			{
+				c_Graphics_Setup->Get_Context().Get()->PSSetShaderResources(0, 1, tObject_List->d3d_SRV[9].GetAddressOf());
+
+				c_Graphics_Setup->Get_Context().Get()->Map(tObject_List->tMaterials_Buffers[5][0].Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &d3d_MSR);
+				memcpy(d3d_MSR.pData, &cps_fireballColor, sizeof(tConstantBuffer_Dragon));
+				c_Graphics_Setup->Get_Context().Get()->Unmap(tObject_List->tMaterials_Buffers[5][0].Get(), 0);
+				ID3D11Buffer *tmp_con_buffer[] = { tObject_List->tMaterials_Buffers[5][0].Get() };
 				c_Graphics_Setup->Get_Context().Get()->PSSetConstantBuffers(0, 1, tmp_con_buffer);
 			}
 

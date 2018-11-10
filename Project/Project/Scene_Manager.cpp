@@ -106,7 +106,7 @@ tScene_Objects cScene_Manager::GetScene(int nScene_Id)
 	// GAME
 	else
 	{
-		tScene.nObject_Count = 5;
+		tScene.nObject_Count = 6;
 
 		// GAME 1 with mage
 		if (nScene_Id == 2)
@@ -442,9 +442,49 @@ tScene_Objects cScene_Manager::GetScene(int nScene_Id)
 			}
 			// Fireball
 
+			// Priest - 5
+			{
+				XMFLOAT4X4 temp;
+
+				XMMATRIX tempMatrix = XMMatrixIdentity();
+
+				//tempMatrix = XMMatrixMultiply(tempMatrix, XMMatrixTranslation(-10, 10, 0));
+
+				XMStoreFloat4x4(&temp, tempMatrix);
+
+				tScene.fWorld_Matrix[5][0] = XMFLOAT4x4_to_tFloat4x4(temp);
+				tMesh tPriest = cBinary_Read.Read_Mesh("priestDeathMesh.bin");
+
+				for (int i = 0; i < tPriest.nVertex_Count; i++)
+				{
+					tPriest.tVerts[i].fPosition.fZ *= -1;
+				}
+
+				for (int i = 0; i < tPriest.nVertex_Count; i++)
+				{
+					tScene.tMesh_Data[5].tVerts.push_back(tPriest.tVerts[i]);
+				}
+
+				tScene.tMesh_Data[5].nVertex_Count = tPriest.nVertex_Count;
+
+
+				for (int i = 0; i < tPriest.nIndex_Count; i++)
+				{
+					tScene.tMesh_Data[5].nIndicies.push_back(tPriest.nIndicies[i]);
+				}
+				tScene.tMesh_Data[5].nIndex_Count = tPriest.nIndex_Count;
+
+				//XMStoreFloat4x4(&tScene.fWorld_Matrix[0], XMMatrixIdentity());
+
+				tScene.tMaterials_Data[5][0] = cBinary_Read.Read_Material("priestDeathMat.bin");
+				tScene.tMaterials_Data[5][0].tMats[0].szDiffuse_File_Path = "Priest_Death.fbm\\PPG_Priest_D.png";
+				//tScene.tMaterials_Data[0].tMats[0].tNormal.fX = 1.0f;
+			}
+			// Priest
+
 		}
-		else
-			tMesh  tPriest = cBinary_Read.Read_Mesh("PriestDeathMesh.bin");
+		//else
+		//	tMesh  tPriest = cBinary_Read.Read_Mesh("PriestDeathMesh.bin");
 
 		return tScene;
 	}
