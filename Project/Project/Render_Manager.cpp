@@ -157,57 +157,18 @@ void cRender_Manager::Load_Data(int nScene_Id, tScene_Objects* tObject_List)
 		if (nScene_Id == 2)
 		{
 			//VERTEX SHADERS
-			if (i == 0)
-				c_Graphics_Setup->Get_Device().Get()->CreateVertexShader(VertexShader_Animation, sizeof(VertexShader_Animation), NULL, &tObject_List->d3d_Vertex_Shaders[i]);
-				//c_Graphics_Setup->Get_Device().Get()->CreateVertexShader(VertexShader, sizeof(VertexShader), NULL, &tObject_List->d3d_Vertex_Shaders[i]);
-			else if (i == 1)
-				c_Graphics_Setup->Get_Device().Get()->CreateVertexShader(VertexShader_Arena, sizeof(VertexShader_Arena), NULL, &tObject_List->d3d_Vertex_Shaders[i]);
-			else
-				c_Graphics_Setup->Get_Device().Get()->CreateVertexShader(VertexShader, sizeof(VertexShader), NULL, &tObject_List->d3d_Vertex_Shaders[i]);
-
+			c_Graphics_Setup->Get_Device().Get()->CreateVertexShader(VertexShader_Animation, sizeof(VertexShader_Animation), NULL, &tObject_List->d3d_Vertex_Shaders[i]);
+			
 			//PIXEL SHADERS
 			if (i == 0)
 			{
 				c_Graphics_Setup->Get_Device().Get()->CreatePixelShader(PixelShader_Mage, sizeof(PixelShader_Mage), NULL, &tObject_List->d3d_Pixel_Shaders[i]);
 			}
-			else if (i == 1)
-			{
-				c_Graphics_Setup->Get_Device().Get()->CreatePixelShader(PixelShader_Arena, sizeof(PixelShader_Arena), NULL, &tObject_List->d3d_Pixel_Shaders[i]);
-			}
-			else if (i == 2)
-			{
-				c_Graphics_Setup->Get_Device().Get()->CreatePixelShader(PixelShader, sizeof(PixelShader), NULL, &tObject_List->d3d_Pixel_Shaders[i]);
-			}
-			else if (i == 3)
+			else// if (i == 1)
 			{
 				HRESULT error = c_Graphics_Setup->Get_Device().Get()->CreatePixelShader(PixelShader_Dragon, sizeof(PixelShader_Dragon), NULL, &tObject_List->d3d_Pixel_Shaders[i]);
 			}
-			else //if (i == 4)
-			{
-				HRESULT error = c_Graphics_Setup->Get_Device().Get()->CreatePixelShader(PixelShader_Fireball, sizeof(PixelShader_Fireball), NULL, &tObject_List->d3d_Pixel_Shaders[i]);
-			}
-
-
-			//// SRV
-			//if (tObject_List->tMaterials_Data[i].tMats[0].szAmbient_File_Path)
-			//{
-			//	std::wstring ws_tmp_srv = std::wstring(tObject_List->tMaterials_Data[1][0].tMats[0].szAmbient_File_Path.begin(), tObject_List->tMaterials_Data[i].tMats[0].szAmbient_File_Path.end());
-			//	const wchar_t* tmp_srv = ws_tmp_srv.c_str();
-			//	CreateWICTextureFromFile(c_Graphics_Setup->Get_Device().Get(), c_Graphics_Setup->Get_Context().Get(), tmp_srv, nullptr, &tObject_List->d3d_SRV[i], 0);
-			//}
-
-
 		}
-		// MATERIALS
-
-		//if (nScene_Id < 2 || nScene_Id > 3)
-		//{
-		//	c_Graphics_Setup->Get_Device().Get()->CreateVertexShader(VertexShader, sizeof(VertexShader), NULL, &tObject_List->d3d_Vertex_Shaders[0]);
-		//	c_Graphics_Setup->Get_Device().Get()->CreatePixelShader(PixelShader_Screen, sizeof(PixelShader_Screen), NULL, &tObject_List->d3d_Pixel_Shaders[0]);
-		//	std::wstring ws_tmp_srv = std::wstring(tObject_List->szSRV_File_Path[0].begin(), tObject_List->szSRV_File_Path[0].end());
-		//	const wchar_t* tmp_srv = ws_tmp_srv.c_str();
-		//	CreateDDSTextureFromFile(c_Graphics_Setup->Get_Device().Get(), tmp_srv, nullptr, &tObject_List->d3d_SRV[0].p);
-		//}
 	}
 
 	// SRV List
@@ -225,7 +186,7 @@ void cRender_Manager::Load_Data(int nScene_Id, tScene_Objects* tObject_List)
 
 	// 8 - fireball - diffuse
 
-	/*
+	
 	HRESULT result;
 	// MAGE
 	std::wstring d_tmp = std::wstring(tObject_List->tMaterials_Data[0][0].tMats[0].szDiffuse_File_Path.begin(), tObject_List->tMaterials_Data[0][0].tMats[0].szDiffuse_File_Path.end());
@@ -290,73 +251,10 @@ void cRender_Manager::Load_Data(int nScene_Id, tScene_Objects* tObject_List)
 		c_Graphics_Setup->Get_Device().Get()->CreateBuffer(&d3d_Constant_Buffer_Desc, nullptr, tObject_List->tMaterials_Buffers[0][0].GetAddressOf());
 	}
 
-	// ARENA
+	// Dragon
 
 	d_tmp = std::wstring(tObject_List->tMaterials_Data[1][0].tMats[0].szDiffuse_File_Path.begin(), tObject_List->tMaterials_Data[1][0].tMats[0].szDiffuse_File_Path.end());
 	diffuse_path = d_tmp.c_str();
-	result = CreateWICTextureFromFile(c_Graphics_Setup->Get_Device().Get(), c_Graphics_Setup->Get_Context().Get(), diffuse_path, nullptr, &tObject_List->d3d_SRV[4], 0);
-	*/
-	//{
-	//	cps_arena.light_pos = { 0.0f, 0.0f, -2.0f, 1.0f };
-	//
-	//	cps_arena.ambient.x = tObject_List->tMaterials_Data[1][0].tMats[0].tAmbient.fX;
-	//	cps_arena.ambient.y = tObject_List->tMaterials_Data[1][0].tMats[0].tAmbient.fY;
-	//	cps_arena.ambient.z = tObject_List->tMaterials_Data[1][0].tMats[0].tAmbient.fZ;
-	//	cps_arena.ambient.w = tObject_List->tMaterials_Data[1][0].tMats[0].tAmbient.fW;
-	//
-	//	cps_arena.diffuse.x = tObject_List->tMaterials_Data[1][0].tMats[0].tDiffuse.fX;
-	//	cps_arena.diffuse.y = tObject_List->tMaterials_Data[1][0].tMats[0].tDiffuse.fY;
-	//	cps_arena.diffuse.z = tObject_List->tMaterials_Data[1][0].tMats[0].tDiffuse.fZ;
-	//	cps_arena.diffuse.w = tObject_List->tMaterials_Data[1][0].tMats[0].tDiffuse.fW;
-	//
-	//	cps_arena.emissive.x = tObject_List->tMaterials_Data[1][0].tMats[0].tEmissive.fX;
-	//	cps_arena.emissive.y = tObject_List->tMaterials_Data[1][0].tMats[0].tEmissive.fY;
-	//	cps_arena.emissive.z = tObject_List->tMaterials_Data[1][0].tMats[0].tEmissive.fZ;
-	//	cps_arena.emissive.w = tObject_List->tMaterials_Data[1][0].tMats[0].tEmissive.fW;
-	//
-	//	cps_arena.reflection.x = tObject_List->tMaterials_Data[1][0].tMats[0].tReflection.fX;
-	//	cps_arena.reflection.y = tObject_List->tMaterials_Data[1][0].tMats[0].tReflection.fY;
-	//	cps_arena.reflection.z = tObject_List->tMaterials_Data[1][0].tMats[0].tReflection.fZ;
-	//	cps_arena.reflection.w = tObject_List->tMaterials_Data[1][0].tMats[0].tReflection.fW;
-	//
-	//	cps_arena.shininess.x = tObject_List->tMaterials_Data[1][0].tMats[0].fShininess;
-	//
-	//	cps_arena.specular.x = tObject_List->tMaterials_Data[1][0].tMats[0].tSpecular.fX;
-	//	cps_arena.specular.y = tObject_List->tMaterials_Data[1][0].tMats[0].tSpecular.fY;
-	//	cps_arena.specular.z = tObject_List->tMaterials_Data[1][0].tMats[0].tSpecular.fZ;
-	//	cps_arena.specular.w = tObject_List->tMaterials_Data[1][0].tMats[0].tSpecular.fW;
-	//
-	//	cps_arena.transparency.x = tObject_List->tMaterials_Data[1][0].tMats[0].tTransparency.fX;
-	//	cps_arena.transparency.y = tObject_List->tMaterials_Data[1][0].tMats[0].tTransparency.fY;
-	//	cps_arena.transparency.z = tObject_List->tMaterials_Data[1][0].tMats[0].tTransparency.fZ;
-	//	cps_arena.transparency.w = tObject_List->tMaterials_Data[1][0].tMats[0].tTransparency.fW;
-	//
-	//	// CONSTANT BUFFER - Arena
-	//	ZeroMemory(&d3d_Constant_Buffer_Desc, sizeof(D3D11_BUFFER_DESC));
-	//	d3d_Constant_Buffer_Desc.ByteWidth = sizeof(tConstantBuffer_PixelShader);
-	//	d3d_Constant_Buffer_Desc.Usage = D3D11_USAGE_DYNAMIC;
-	//	d3d_Constant_Buffer_Desc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
-	//	d3d_Constant_Buffer_Desc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
-	//	d3d_Constant_Buffer_Desc.MiscFlags = 0;
-	//	d3d_Constant_Buffer_Desc.StructureByteStride = 0;
-	//
-	//	c_Graphics_Setup->Get_Device().Get()->CreateBuffer(&d3d_Constant_Buffer_Desc, nullptr, tObject_List->tMaterials_Buffers[1][0].GetAddressOf());
-	//}
-	//
-	//// PRIEST
-	//
-	//d_tmp = std::wstring(tObject_List->tMaterials_Data[2].tMats[0].szDiffuse_File_Path.begin(), tObject_List->tMaterials_Data[2].tMats[0].szDiffuse_File_Path.end());
-	//diffuse_path = d_tmp.c_str();
-	//result = CreateWICTextureFromFile(c_Graphics_Setup->Get_Device().Get(), c_Graphics_Setup->Get_Context().Get(), diffuse_path, nullptr, &tObject_List->d3d_SRV[5], 0);
-	//
-	//n_tmp = std::wstring(tObject_List->tMaterials_Data[2].tMats[0].szNormal_File_Path.begin(), tObject_List->tMaterials_Data[2].tMats[0].szNormal_File_Path.end());
-	//normal_path = n_tmp.c_str();
-	//result = CreateWICTextureFromFile(c_Graphics_Setup->Get_Device(), c_Graphics_Setup->Get_Context(), normal_path, nullptr, &tObject_List->d3d_SRV[6], 0);
-
-	// Dragon
-
-	std::wstring d_tmp = std::wstring(tObject_List->tMaterials_Data[0][0].tMats[0].szDiffuse_File_Path.begin(), tObject_List->tMaterials_Data[0][0].tMats[0].szDiffuse_File_Path.end());
-	const wchar_t* diffuse_path = d_tmp.c_str();
 	CreateWICTextureFromFile(c_Graphics_Setup->Get_Device().Get(), c_Graphics_Setup->Get_Context().Get(), diffuse_path, nullptr, &tObject_List->d3d_SRV[7], 0);
 	{
 
@@ -377,34 +275,7 @@ void cRender_Manager::Load_Data(int nScene_Id, tScene_Objects* tObject_List)
 		InitData.SysMemSlicePitch = 0;
 
 
-		c_Graphics_Setup->Get_Device()->CreateBuffer(&d3d_Constant_Buffer_Desc, &InitData, &tObject_List->tMaterials_Buffers[3][0]);
-	}
-
-	// Fireball
-
-	//d_tmp = std::wstring(tObject_List->tMaterials_Data[4][0].tMats[0].szDiffuse_File_Path.begin(), tObject_List->tMaterials_Data[4][0].tMats[0].szDiffuse_File_Path.end());
-	//diffuse_path = d_tmp.c_str();
-	//result = CreateWICTextureFromFile(c_Graphics_Setup->Get_Device().Get(), c_Graphics_Setup->Get_Context().Get(), diffuse_path, nullptr, &tObject_List->d3d_SRV[8], 0);
-	{
-
-		// Constant Buffer
-		ZeroMemory(&d3d_Constant_Buffer_Desc, sizeof(D3D11_BUFFER_DESC));
-		d3d_Constant_Buffer_Desc.ByteWidth = sizeof(tConstantBuffer_Dragon);
-		d3d_Constant_Buffer_Desc.Usage = D3D11_USAGE_DYNAMIC;
-		d3d_Constant_Buffer_Desc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
-		d3d_Constant_Buffer_Desc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
-		d3d_Constant_Buffer_Desc.MiscFlags = 0;
-		d3d_Constant_Buffer_Desc.StructureByteStride = 0;
-
-		cps_fireballColor.addColor = { 0.0f, 0.0f, 0.0f, 1.0f };
-
-		D3D11_SUBRESOURCE_DATA InitData;
-		InitData.pSysMem = &cps_fireballColor;
-		InitData.SysMemPitch = 0;
-		InitData.SysMemSlicePitch = 0;
-
-
-		c_Graphics_Setup->Get_Device()->CreateBuffer(&d3d_Constant_Buffer_Desc, &InitData, &tObject_List->tMaterials_Buffers[4][0]);
+		c_Graphics_Setup->Get_Device()->CreateBuffer(&d3d_Constant_Buffer_Desc, &InitData, &tObject_List->tMaterials_Buffers[1][0]);
 	}
 }
 
@@ -430,182 +301,12 @@ void cRender_Manager::Draw(int nScene_Id, tScene_Objects* tObject_List)
 			c_Graphics_Setup->Get_Context().Get()->OMSetRenderTargets(1, tmp_rtv, c_Graphics_Setup->Get_DSV().Get());
 		}
 
-		// RESIZE / RESET RTV AND VP
-		//c_Graphics_Setup->Get_Context().Get()->OMSetRenderTargets(0, 0, 0);
-		//c_Graphics_Setup->Get_RTV().Release();
-		//c_Graphics_Setup->Get_Swap_Chain()->ResizeBuffers(0, 0, 0, DXGI_FORMAT_UNKNOWN, DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH);
-		//ID3D11Texture2D *back_buffer;
-		//c_Graphics_Setup->Get_Swap_Chain()->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&back_buffer);
-		//c_Graphics_Setup->Get_Device().Get()->CreateRenderTargetView(back_buffer, NULL, &c_Graphics_Setup->Get_RTV());
-		//ID3D11RenderTargetView *tmp_rtv[] = { c_Graphics_Setup->Get_RTV() };
-		////c_Graphics_Setup->Get_Context().Get()->OMSetDepthStencilState(c_Graphics_Setup->Get_Depth_Stencil_State(), 1);
-		//c_Graphics_Setup->Get_Context().Get()->OMSetRenderTargets(1, tmp_rtv, c_Graphics_Setup->Get_DSV());
-		//c_Graphics_Setup->Get_Context().Get()->RSSetViewports(1, &c_Graphics_Setup->Get_View_Port());
-		// SKY BLUE
+
 		float clear_color[4] = { 1.000000000f, 0.000000000f, 0.83137255f, 1.000000000f };
 		// WHITE
 		//float clear_color[4] = { 1.0f, 1.0f, 1.0f, 1.0f };
 		c_Graphics_Setup->Get_Context().Get()->ClearRenderTargetView(c_Graphics_Setup->Get_RTV().Get(), clear_color);
 		c_Graphics_Setup->Get_Context().Get()->ClearDepthStencilView(c_Graphics_Setup->Get_DSV().Get(), D3D11_CLEAR_DEPTH, 1.0f, 0);
-
-		//XMFLOAT4X4 fCamera_Matrix = tFloat4x4_to_XMFLOAT4x4(cCam.GetPosition());
-		//XMMATRIX mCamera_Matrix = XMLoadFloat4x4(&fCamera_Matrix);
-
-		// Get Current Window Size
-		/*RECT current_window_size;
-		GetClientRect(hWnd, &current_window_size);
-		float fWindow_Height = (float)current_window_size.bottom - (float)current_window_size.top;
-		float fWindow_Width = (float)current_window_size.right - (float)current_window_size.left;*/
-
-		// CONTROLS
-
-	/*
-		{
-			tFloat4 change_data;
-
-			// A - move left
-			if (GetAsyncKeyState('A'))
-			{
-				change_data = { ((float)cTime.Delta() * 25), 0.0f, 0.0f, 0.0f };
-				cCam.Translation(change_data);
-			}
-
-			// D - move right
-			if (GetAsyncKeyState('D'))
-			{
-				change_data = { -((float)cTime.Delta() * 25), 0.0f, 0.0f, 0.0f };
-				cCam.Translation(change_data);
-			}
-
-			// Q - move up
-			if (GetAsyncKeyState('Q'))
-			{
-				change_data = { 0.0f, -((float)cTime.Delta() * 25), 0.0f, 1.0f };
-				cCam.Translation(change_data);
-			}
-
-			// E - move down
-			if (GetAsyncKeyState('E'))
-			{
-				change_data = { 0.0f, ((float)cTime.Delta() * 25), 0.0f, 1.0f };
-				cCam.Translation(change_data);
-			}
-
-			// S - move out
-			if (GetAsyncKeyState('S'))
-			{
-				change_data = { 0.0f, 0.0f, ((float)cTime.Delta() * 25), 0.0f };
-				cCam.Translation(change_data);
-			}
-
-			// W - move in
-			if (GetAsyncKeyState('W'))
-			{
-				change_data = { 0.0f, 0.0f, -((float)cTime.Delta() * 25), 0.0f };
-				cCam.Translation(change_data);
-			}
-
-			// I - look up
-			if (GetAsyncKeyState('I'))
-			{
-				change_data = { -(float)cTime.Delta(), 0.0f, 0.0f, 0.0f };
-				cCam.Rotation(change_data);
-			}
-
-			// K - look down
-			if (GetAsyncKeyState('K'))
-			{
-				change_data = { (float)cTime.Delta(), 0.0f, 0.0f, 1.0f };
-				cCam.Rotation(change_data);
-			}
-
-			// L - look right
-			if (GetAsyncKeyState('L'))
-			{
-				change_data = { 0.0f, (float)cTime.Delta(), 0.0f, 2.0f };
-				cCam.Rotation(change_data);
-			}
-
-			// J - look left
-			if (GetAsyncKeyState('J'))
-			{
-				change_data = { 0.0f, -(float)cTime.Delta(), 0.0f, 3.0f };
-				cCam.Rotation(change_data);
-			}
-
-			cCam.Normalize();
-		}
-		*/
-
-		//dragon controls
-		if (GetAsyncKeyState('E') && flashTimer == 0.0f)
-		{
-			isHit = true;
-		}
-		if (isHit)
-		{
-			isHit = false;
-			flashTimer = flashTime;
-			dragonHealth -= 1;
-			if (dragonHealth == 6)
-			{
-				cps_dragonColor.addColor = { 0.0f, 0.0f, 1.0f, 1.0f };
-			}
-			if (dragonHealth == 5)
-			{
-				cps_dragonColor.addColor = { 0.0f, 1.0f, 1.0f, 1.0f };
-			}
-			if (dragonHealth == 4)
-			{
-				cps_dragonColor.addColor = { 0.0f, 1.0f, 0.0f, 1.0f };
-			}
-			if (dragonHealth == 3)
-			{
-				cps_dragonColor.addColor = { 1.0f, 1.0f, 0.0f, 1.0f };
-			}
-			if (dragonHealth == 2)
-			{
-				cps_dragonColor.addColor = { 1.0f, 0.5f, 0.0f, 1.0f };
-			}
-			if (dragonHealth == 1)
-			{
-				cps_dragonColor.addColor = { 1.0f, 0.0f, 0.0f, 1.0f };
-			}
-
-			if (dragonHealth <= 0)
-			{
-				dragonAlive = false;
-			}
-
-		}
-
-		if (flashTimer < 0.0f)
-		{
-			flashTimer = 0.0f;
-			cps_dragonColor.addColor = { 0.0f, 0.0f, 0.0f, 1.0f };
-		}
-		if (flashTimer > 0.0f)
-		{
-			flashTimer -= cTime.Delta();
-		}
-
-		if (dragonHealth > 3)
-		{
-			tObject_List->fWorld_Matrix[4][0].tW.fX += 0.1;
-			tObject_List->fWorld_Matrix[4][0].tW.fY -= 0.1;
-		}
-		else
-		{
-			tObject_List->fWorld_Matrix[4][0].tW.fX += 0.3;
-			tObject_List->fWorld_Matrix[4][0].tW.fY -= 0.3;
-		}
-
-		if (tObject_List->fWorld_Matrix[4][0].tW.fX >= -1)
-		{
-			tObject_List->fWorld_Matrix[4][0].tW.fX = -10;
-			tObject_List->fWorld_Matrix[4][0].tW.fY = 10;
-		}
-
 
 		XMStoreFloat4x4(&tWVP.fView_Matrix, XMMatrixIdentity());
 		if (_eyeID == 0)
@@ -665,17 +366,11 @@ void cRender_Manager::Draw(int nScene_Id, tScene_Objects* tObject_List)
 			{
 				c_Graphics_Setup->Get_Context().Get()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
 			}
-			//if (i != 1)
-			//{
-			//	c_Graphics_Setup->Get_Context().Get()->VSSetShader(c_Graphics_Setup->Get_Vertex_Shader(), NULL, 0);
-			//	c_Graphics_Setup->Get_Context().Get()->PSSetShader(c_Graphics_Setup->Get_Pixel_Shader(), NULL, 0);
-			//}
-			//else
-			//{
+			
 			c_Graphics_Setup->Get_Context().Get()->VSSetShader(tObject_List->d3d_Vertex_Shaders[i].Get(), NULL, 0);
 			c_Graphics_Setup->Get_Context().Get()->PSSetShader(tObject_List->d3d_Pixel_Shaders[i].Get(), NULL, 0);
 
-			/*
+			
 			if (i == 0)
 			{
 				c_Graphics_Setup->Get_Context().Get()->PSSetShaderResources(0, 1, tObject_List->d3d_SRV[0].GetAddressOf());
@@ -690,54 +385,21 @@ void cRender_Manager::Draw(int nScene_Id, tScene_Objects* tObject_List)
 				c_Graphics_Setup->Get_Context().Get()->PSSetConstantBuffers(0, 1, tmp_con_buffer);
 
 			}
-			else if (i == 1)
+			else
 			{
-				c_Graphics_Setup->Get_Context().Get()->PSSetShaderResources(0, 1, tObject_List->d3d_SRV[4].GetAddressOf());
+				c_Graphics_Setup->Get_Context().Get()->PSSetShaderResources(0, 1, tObject_List->d3d_SRV[7].GetAddressOf());
 
 				c_Graphics_Setup->Get_Context().Get()->Map(tObject_List->tMaterials_Buffers[1][0].Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &d3d_MSR);
-				memcpy(d3d_MSR.pData, &cps_arena, sizeof(tConstantBuffer_PixelShader));
+				memcpy(d3d_MSR.pData, &cps_dragonColor, sizeof(tConstantBuffer_Dragon));
 				c_Graphics_Setup->Get_Context().Get()->Unmap(tObject_List->tMaterials_Buffers[1][0].Get(), 0);
 				ID3D11Buffer *tmp_con_buffer[] = { tObject_List->tMaterials_Buffers[1][0].Get() };
 				c_Graphics_Setup->Get_Context().Get()->PSSetConstantBuffers(0, 1, tmp_con_buffer);
 			}
-			else*/ if (i == 0)
-			{
-				c_Graphics_Setup->Get_Context().Get()->PSSetShaderResources(0, 1, tObject_List->d3d_SRV[7].GetAddressOf());
 
-				c_Graphics_Setup->Get_Context().Get()->Map(tObject_List->tMaterials_Buffers[3][0].Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &d3d_MSR);
-				memcpy(d3d_MSR.pData, &cps_dragonColor, sizeof(tConstantBuffer_Dragon));
-				c_Graphics_Setup->Get_Context().Get()->Unmap(tObject_List->tMaterials_Buffers[3][0].Get(), 0);
-				ID3D11Buffer *tmp_con_buffer[] = { tObject_List->tMaterials_Buffers[3][0].Get() };
-				c_Graphics_Setup->Get_Context().Get()->PSSetConstantBuffers(0, 1, tmp_con_buffer);
-			}
-			else if (i == 4)
-			{
-				c_Graphics_Setup->Get_Context().Get()->PSSetShaderResources(0, 1, tObject_List->d3d_SRV[8].GetAddressOf());
-
-				c_Graphics_Setup->Get_Context().Get()->Map(tObject_List->tMaterials_Buffers[4][0].Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &d3d_MSR);
-				memcpy(d3d_MSR.pData, &cps_fireballColor, sizeof(tConstantBuffer_Dragon));
-				c_Graphics_Setup->Get_Context().Get()->Unmap(tObject_List->tMaterials_Buffers[4][0].Get(), 0);
-				ID3D11Buffer *tmp_con_buffer[] = { tObject_List->tMaterials_Buffers[4][0].Get() };
-				c_Graphics_Setup->Get_Context().Get()->PSSetConstantBuffers(0, 1, tmp_con_buffer);
-			}
-			
-			//else if (i == 2)
-			//{
-			//	c_Graphics_Setup->Get_Context().Get()->PSSetShaderResources(0, 1, &tObject_List.d3d_SRV[5].p);
-			//	c_Graphics_Setup->Get_Context().Get()->PSSetShaderResources(0, 1, &tObject_List.d3d_SRV[6].p);
-			//}
-
-			//}
-			//d3dContext->PSSetShader(d3dPixel_Shader_Screen, NULL, 0);
-			//ID3D11ShaderResourceView *tmp_intro_srv[] = { tScene.d3d_SRV[0] };
-			//d3dContext->PSSetShaderResources(0, 1, tmp_intro_srv);
-			if (i != 2)
-			{
-				if (tObject_List->bMesh_Has_Skinned[i])
-					c_Graphics_Setup->Get_Context().Get()->DrawIndexed(tObject_List->tMesh_Skinned_Data[i].nIndex_Count, 0, 0);
-				else
-					c_Graphics_Setup->Get_Context().Get()->DrawIndexed(tObject_List->tMesh_Data[i].nIndex_Count, 0, 0);
-			}
+			if (tObject_List->bMesh_Has_Skinned[i])
+				c_Graphics_Setup->Get_Context().Get()->DrawIndexed(tObject_List->tMesh_Skinned_Data[i].nIndex_Count, 0, 0);
+			else
+				c_Graphics_Setup->Get_Context().Get()->DrawIndexed(tObject_List->tMesh_Data[i].nIndex_Count, 0, 0);
 		}
 	}
 
