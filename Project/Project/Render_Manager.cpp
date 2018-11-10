@@ -186,6 +186,10 @@ void cRender_Manager::Load_Data(int nScene_Id, tScene_Objects* tObject_List)
 			{
 				HRESULT error = c_Graphics_Setup->Get_Device().Get()->CreatePixelShader(PixelShader_Fireball, sizeof(PixelShader_Fireball), NULL, &tObject_List->d3d_Pixel_Shaders[i]);
 			}
+			else if (i == 5)
+			{
+				HRESULT error = c_Graphics_Setup->Get_Device().Get()->CreatePixelShader(PixelShader_Priest, sizeof(PixelShader_Priest), NULL, &tObject_List->d3d_Pixel_Shaders[i]);
+			}
 
 
 			//// SRV
@@ -224,6 +228,8 @@ void cRender_Manager::Load_Data(int nScene_Id, tScene_Objects* tObject_List)
 	// 7 - dragon - diffuse
 
 	// 8 - fireball - diffuse
+
+	// 9 - priest - diffuse
 
 	HRESULT result;
 	// MAGE
@@ -622,7 +628,12 @@ void cRender_Manager::Draw(int nScene_Id, tScene_Objects* tObject_List)
 
 		for (int i = 0; i < tObject_List->nObject_Count; i++)
 		{
+			// TO TURN OFF OBJECTS
 			if (((i == 3) || (i == 4)) && !dragonAlive)
+			{
+				continue;
+			}
+			if (i == 5)
 			{
 				continue;
 			}
