@@ -528,40 +528,42 @@ ComPtr<ID3D11Resource> cGraphics_Setup::get_controller_axis_vertex_buffer()
 	return m_pControllerAxisVertexBuffer;
 }
 
-bool cGraphics_Setup::is_right_hand_controller(EVREventType vr_event)
+int cGraphics_Setup::is_right_hand_controller()
 {
+	VREvent_t vr_event;
+
 	ETrackedDeviceClass trackedDeviceClass;
-	trackedDeviceClass = m_pHMD->GetTrackedDeviceClass(vr_event.TrackedDeviceIndex_t);
+	trackedDeviceClass = m_pHMD->GetTrackedDeviceClass(vr_event.trackedDeviceIndex);
 
 	if (trackedDeviceClass != ETrackedDeviceClass::TrackedDeviceClass_Controller)
 	{
-		return;
+		return -1;
 	}
 
 	ETrackedControllerRole controller_role;
 
-	controller_role = m_pHMD->GetControllerRoleForTrackedDeviceIndex(vr_event.TrackedDeviceIndex_t);
+	controller_role = m_pHMD->GetControllerRoleForTrackedDeviceIndex(vr_event.trackedDeviceIndex);
 
 	if (controller_role == TrackedControllerRole_Invalid)
 	{
-		return;
+		return -2;
 	}
 	else if (controller_role == TrackedControllerRole_LeftHand)
 	{
-		return false;
+		return 1;
 	}
 	else if (controller_role == TrackedControllerRole_RightHand)
 	{
-		return true;
+		return 2;
 	}
 }
 
 void cGraphics_Setup::controller_input()
 {
-	switch (switch_on)
+	switch (VREvent_TrackedDeviceActivated)
 	{
 	case k_EButton_Grip:
-		switch (switch_on)
+		switch (VREvent_ButtonPress)
 		{
 		case VREvent_ButtonPress:
 			break;
@@ -572,18 +574,18 @@ void cGraphics_Setup::controller_input()
 		break;
 
 	case k_EButton_SteamVR_Trigger:
-		switch (switch_on)
+		switch (VREvent_ButtonPress)
 		{
 		case VREvent_ButtonPress:
 			break;
 
-			case VREvent_ButtonUnpress
+		case VREvent_ButtonUnpress:
 				break;
 		}
 		break;
 
 	case k_EButton_SteamVR_Touchpad:
-		switch (switch_on)
+		switch (VREvent_ButtonPress)
 		{
 		case VREvent_ButtonPress:
 			break;
@@ -601,7 +603,7 @@ void cGraphics_Setup::controller_input()
 		break;
 
 	case k_EButton_ApplicationMenu:
-		switch (switch_on)
+		switch (VREvent_ButtonPress)
 		{
 		case VREvent_ButtonPress:
 			break;
@@ -619,7 +621,22 @@ void cGraphics_Setup::controller_input()
 
 void cGraphics_Setup::get_controller_pose()
 {
+	for (unsigned int ID = 0; ID < k_unMaxTrackedDeviceCount; ID++)
+	{
+		ETrackedDeviceClass tracked_device_class;
 
+		tracked_device_class = m_pHMD->GetTrackedDeviceClass(ID);
+
+		if (tracked_device_class != ETrackedDeviceClass::TrackedDeviceClass_Controller || !m_pHMD->IsTrackedDeviceConnected(ID))
+		{
+			continue;
+		}
+		
+		VRControllerState_t vr_controller_state;
+		TrackedDevicePose_t tracked_device_pose;
+
+		m_pHMD->GetControllerStateWithPose(TrackingUniverseStanding, ID, &vr_controller_state, sizeof(vr_controller_state), &tracked_device_pose);
+	}
 }
 
 void cGraphics_Setup::update_controller()
@@ -726,22 +743,84 @@ void cGraphics_Setup::update_controller()
 
 		controller_vert_count += 2;
 	}
+}
 
+tFloat4x4 cGraphics_Setup::get_controller_matrix()
+{
+	tFloat4x4 hi;
 
-	//if (gx_setup.get_controller_axis_vertex_buffer() == nullptr && vert_DATA.size() > 0)
+	int result = is_right_hand_controller();
+	if (result == 1)
+	{
+		return hi;
+	}
+	else if (result == 2)
+	{
+		return hi;
+	}
+	return hi;
+}
+
+//void cGraphics_Setup::vr_event_handler(const VREvent_t &vr_event)
+//{
+//	switch (vr_event.eventType)
+//	{
+//	case vr::VREvent_TrackedDeviceActivated:
+//	{
+//		SetupRenderModelForTrackedDevice(vr_event.trackedDeviceIndex);
+//		dprintf("Device %u attached. Setting up render model.\n", vr_event.trackedDeviceIndex);
+//	}
+//	break;
+//
+//	default:
+//		break;
+//	}
+//}
+
+bool cGraphics_Setup::handle_input()
+{
+	bool bool_return = false;
+
+	vr::VREvent_t vrEvent;
+
+	VRControllerState_t vr_controller_state[2];
+
+	m_pHMD->GetControllerState(0, &vr_controller_state[0], sizeof(vr_controller_state[0]));
+	m_pHMD->GetControllerState(1, &vr_controller_state[1], sizeof(vr_controller_state[1]));
+
+	//while (m_pHMD->PollNextEvent(&vrEvent, sizeof(vrEvent)) != 0)
 	//{
-	//	size_t nSize_array;
-
-	//	nSize_array = sizeof(float) * vert_DATA.size();
-	//	nSize_array *= vr::k_unMaxTrackedDeviceCount;
-
-	//	// create committed Resource d3d12 stuff
+	//	if (vrEvent.eventType == VREvent_Quit)
+	//	{
+	//		bool_return = true;
+	//	}
+	//	else if (vrEvent.eventType == VREvent_ButtonPress)
+	//	{
+	//		if (vrEvent.eventType == k_EButton_SteamVR_Trigger)
+	//		{
+	//			bool_return = true;
+	//		}
+	//		if (vrEvent.eventType == k_EButton_Grip)
+	//		{
+	//			m_bShowCubes = !m_bShowCubes; // WE DON"T HAVE CUBES
+	//		}
+	//	}
 	//}
-
-	//if (gx_setup.get_controller_axis_vertex_buffer && vert_DATA.size() > 0)
+	
+	/*vr::VREvent_t vr_event;
+	while (m_pHMD->PollNextEvent(&vr_event, sizeof(vr_event)))
+	{
+		ProcessVREvent()
+	}*/
+	
+	//for (vr::TrackedDeviceIndex_t uint_device = 0; uint_device < vr::k_unMaxTrackedDeviceCount; uint_device++)
 	//{
-	//	UINT8 *pMappedBuffer;
-	//	// CD3DX12_RANGE stuff
-
+	//	vr::VRControllerState_t vr_controller_state;
+	//	if (m_pHMD->GetControllerState(uint_device, &vr_controller_state, sizeof(vr_controller_state)))
+	//	{
+	//		m_rbShowTrackedDevice[uint_device] = vr_controller_state.ulButtonPressed == 0;
+	//	}
 	//}
+	
+	return bool_return;
 }

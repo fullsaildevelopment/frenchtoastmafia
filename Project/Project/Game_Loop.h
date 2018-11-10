@@ -33,6 +33,6 @@ public:
 
 	void Initialize(cGraphics_Setup* _setup);
 	void Setup();
-	void Update(cGraphics_Setup* _setup);
+	void Update();
 	void Clean_Up();
 };

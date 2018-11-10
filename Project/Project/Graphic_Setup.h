@@ -19,6 +19,7 @@
 #include "Renderer_Structs.h"
 #include "Specific_Structs.h"
 //#include "Matrices.h"
+//#include "openvr/thirdparty/sdl2-2.0.3/include/SDL_events.h"
 
 // Basic Shaders
 #include "VertexShader.csh"
@@ -96,6 +97,7 @@ private:
 	vr::IVRRenderModels *m_pRenderModels;
 	vr::TrackedDevicePose_t m_rTrackedDevicePose[vr::k_unMaxTrackedDeviceCount];
 	Matrix4 m_rmat4DevicePose[vr::k_unMaxTrackedDeviceCount];
+	bool m_rbShowTrackedDevice[vr::k_unMaxTrackedDeviceCount];
 
 	unsigned int m_uiControllerVertcount = 0;
 
@@ -108,6 +110,7 @@ private:
 	std::string m_strPoseClasses;                            // what classes we saw poses for this frame
 	char m_rDevClassChar[vr::k_unMaxTrackedDeviceCount];   // for each device, a character representing its class
 
+
 public:
 	cGraphics_Setup(HWND _hwnd);
 	~cGraphics_Setup();
@@ -115,7 +118,7 @@ public:
 	void Initialize();
 	void Clean_Up();
 
-	struct tTracked_device_pose
+	/*struct tTracked_device_pose
 	{
 		vr::TrackedDevicePose_t m_rTrackedDevicePose[64];
 	};
@@ -123,6 +126,14 @@ public:
 	struct tMatrix4_device_pose
 	{
 		Matrix4 m_rmat4DevicePose[64];
+	};*/
+
+	struct VREvent_t
+	{
+		EVREventType eventType;
+		TrackedDeviceIndex_t trackedDeviceIndex;
+		VREvent_Data_t data;
+		float eventAgeSeconds;
 	};
 
 	Matrix4 GetHMDMatrixPoseEye(vr::Hmd_Eye nEye);
@@ -154,8 +165,11 @@ public:
 	//tTracked_device_pose get_tracked_device_pose();
 	//Matrix4 get_matrix4_device_pose();
 	ComPtr<ID3D11Resource> get_controller_axis_vertex_buffer();
-	bool is_right_hand_controller(EVREventType vr_event);
+	int is_right_hand_controller();
 	void controller_input();
 	void get_controller_pose();
 	void update_controller();
+	tFloat4x4 get_controller_matrix();
+	bool handle_input();
+	//void vr_event_handler(const VREvent_t &vr_event);
 };

@@ -20,6 +20,7 @@ cGame_Loop::~cGame_Loop()
 void cGame_Loop::Initialize(cGraphics_Setup* _setup)
 {
 	//c_Graphics_Setup.Initialize();
+	c_Graphics_Setup = _setup;
 	c_Render_Manager.Initialize(_setup);
 	c_VR.Initialize(_setup);
 	c_XTime.Restart();
@@ -34,13 +35,23 @@ void cGame_Loop::Setup()
 }
 
 
-void cGame_Loop::Update(cGraphics_Setup* _setup)
+void cGame_Loop::Update()
 {
 	c_XTime.Signal();
-	c_Animation_Manager.Animate(c_XTime.Delta(), c_XTime.TotalTimeExact(), &tObject_List);
-	c_Render_Manager.Draw(m_nScene_Id, &tObject_List);
-	c_VR.VR_Render();
-	_setup->update_controller();
+
+	bool bEnd_Game;
+
+	bEnd_Game = false;
+
+	//while (!bEnd_Game)
+	//{
+	c_Graphics_Setup->handle_input();
+
+		c_Animation_Manager.Animate(c_XTime.Delta(), c_XTime.TotalTimeExact(), &tObject_List);
+		c_Render_Manager.Draw(m_nScene_Id, &tObject_List);
+		c_VR.VR_Render();
+	//}
+
 	//c_VR.update_controller();
 	//sound.updateSoundSystem();
 }
