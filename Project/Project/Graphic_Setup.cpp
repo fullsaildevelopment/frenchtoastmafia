@@ -242,13 +242,23 @@ void cGraphics_Setup::Initialize()
 	m_cCameraLeft = new cCamera;
 	
 	// Set the initial position of the camera.
-	m_cCameraLeft->SetPosition(tFloat4{ 0.0f, 0.0f, -20.0f, 1.0f });
+	m_cCameraLeft->SetPosition(tFloat4x4{
+											0.0f, 0.0f, 0.0f, 0.0f,
+											0.0f, 0.0f, 0.0f, 0.0f,
+											0.0f, 0.0f, 0.0f, 0.0f,
+											0.0f, 0.0f, 0.0f, 1.0f
+								});
 
 	// Create the camera object.
 	m_cCameraRight = new cCamera;
 
 	// Set the initial position of the camera.
-	m_cCameraRight->SetPosition(tFloat4{ 100.5f, 0.0f, -20.0f, 1.0f });
+	m_cCameraRight->SetPosition(tFloat4x4{
+											0.0f, 0.0f, 0.0f, 0.0f,
+											0.0f, 0.0f, 0.0f, 0.0f,
+											0.0f, 0.0f, 0.0f, 0.0f,
+											1.0f, 0.0f, 0.0f, 1.0f
+								});
 
 	//Removed model and shader class declaration
 
@@ -558,67 +568,6 @@ int cGraphics_Setup::is_right_hand_controller()
 	}
 }
 
-void cGraphics_Setup::controller_input()
-{
-	switch (VREvent_TrackedDeviceActivated)
-	{
-	case k_EButton_Grip:
-		switch (VREvent_ButtonPress)
-		{
-		case VREvent_ButtonPress:
-			break;
-
-		case VREvent_ButtonUnpress:
-			break;
-		}
-		break;
-
-	case k_EButton_SteamVR_Trigger:
-		switch (VREvent_ButtonPress)
-		{
-		case VREvent_ButtonPress:
-			break;
-
-		case VREvent_ButtonUnpress:
-				break;
-		}
-		break;
-
-	case k_EButton_SteamVR_Touchpad:
-		switch (VREvent_ButtonPress)
-		{
-		case VREvent_ButtonPress:
-			break;
-
-		case VREvent_ButtonUnpress:
-			break;
-
-		case VREvent_ButtonTouch:
-			break;
-
-		case VREvent_ButtonUntouch:
-			break;
-		
-		}
-		break;
-
-	case k_EButton_ApplicationMenu:
-		switch (VREvent_ButtonPress)
-		{
-		case VREvent_ButtonPress:
-			break;
-
-		case VREvent_ButtonUnpress:
-			break;
-		}
-		break;
-
-
-	default:
-		break;
-	}
-}
-
 void cGraphics_Setup::get_controller_pose()
 {
 	for (unsigned int ID = 0; ID < k_unMaxTrackedDeviceCount; ID++)
@@ -777,50 +726,173 @@ tFloat4x4 cGraphics_Setup::get_controller_matrix()
 //	}
 //}
 
-bool cGraphics_Setup::handle_input()
+void cGraphics_Setup::handle_input(double dDelta)
 {
-	bool bool_return = false;
-
-	vr::VREvent_t vrEvent;
-
-	VRControllerState_t vr_controller_state[2];
-
-	m_pHMD->GetControllerState(0, &vr_controller_state[0], sizeof(vr_controller_state[0]));
-	m_pHMD->GetControllerState(1, &vr_controller_state[1], sizeof(vr_controller_state[1]));
-
-	//while (m_pHMD->PollNextEvent(&vrEvent, sizeof(vrEvent)) != 0)
-	//{
-	//	if (vrEvent.eventType == VREvent_Quit)
-	//	{
-	//		bool_return = true;
-	//	}
-	//	else if (vrEvent.eventType == VREvent_ButtonPress)
-	//	{
-	//		if (vrEvent.eventType == k_EButton_SteamVR_Trigger)
-	//		{
-	//			bool_return = true;
-	//		}
-	//		if (vrEvent.eventType == k_EButton_Grip)
-	//		{
-	//			m_bShowCubes = !m_bShowCubes; // WE DON"T HAVE CUBES
-	//		}
-	//	}
-	//}
-	
-	/*vr::VREvent_t vr_event;
-	while (m_pHMD->PollNextEvent(&vr_event, sizeof(vr_event)))
+	vr::VREvent_t vrEventL;
+	vr::VREvent_t vrEventR;
+	while (m_pHMD->PollNextEvent(&vrEventL, sizeof(vrEventL)) != 0)
 	{
-		ProcessVREvent()
-	}*/
-	
-	//for (vr::TrackedDeviceIndex_t uint_device = 0; uint_device < vr::k_unMaxTrackedDeviceCount; uint_device++)
-	//{
-	//	vr::VRControllerState_t vr_controller_state;
-	//	if (m_pHMD->GetControllerState(uint_device, &vr_controller_state, sizeof(vr_controller_state)))
-	//	{
-	//		m_rbShowTrackedDevice[uint_device] = vr_controller_state.ulButtonPressed == 0;
-	//	}
-	//}
-	
-	return bool_return;
-}
+		printf("%d ; ", vrEventL.trackedDeviceIndex);
+		switch (vrEventL.data.controller.button)
+		{
+			case k_EButton_Grip:
+				switch (vrEventL.eventType)
+				{
+				case VREvent_ButtonPress:
+					printf("Grip Press\n");
+					break;
+
+				case VREvent_ButtonUnpress:
+					printf("Grip unPress\n");
+					break;
+				}
+				break;
+
+			case k_EButton_SteamVR_Trigger:
+				switch (vrEventL.eventType)
+				{
+				case VREvent_ButtonPress:
+					printf("Trigger Press\n");
+					break;
+
+				case VREvent_ButtonUnpress:
+					printf("Trigger unPress\n");
+					break;
+				}
+				break;
+
+			case k_EButton_SteamVR_Touchpad:
+				switch (vrEventL.eventType)
+				{
+				case VREvent_ButtonPress:
+					printf("Touchpad Press\n");
+					tFloat4 t_move;
+					t_move.fX = 0.0f;
+					t_move.fY = 0.0f;
+					t_move.fZ = (float)(1 * dDelta);
+					t_move.fW = 0.0f;
+					m_cCameraRight->Translation(t_move);
+					break;
+
+				case VREvent_ButtonUnpress:
+					printf("Touchpad unPress\n");
+					break;
+
+				case VREvent_ButtonTouch:
+					printf("Touchpad Touch\n");
+					break;
+
+				case VREvent_ButtonUntouch:
+					printf("Touchpad unTouch\n");
+					break;
+
+				}
+				break;
+
+			case k_EButton_ApplicationMenu:
+				switch (vrEventL.eventType)
+				{
+				case VREvent_ButtonPress:
+					printf("ApplicationMenu Press\n");
+					break;
+
+				case VREvent_ButtonUnpress:
+					printf("ApplicationMenu unPress\n");
+					break;
+				}
+				break;
+
+			default:
+				printf("Controller is not Working\n");
+				break;
+
+			}			
+		}
+
+		while (m_pHMD->PollNextEvent(&vrEventR, sizeof(vrEventR)) != 0)
+		{
+			printf("%d ; ", vrEventR.trackedDeviceIndex);
+			switch (vrEventR.data.controller.button)
+			{
+			case k_EButton_Grip:
+				switch (vrEventR.eventType)
+				{
+				case VREvent_ButtonPress:
+					printf("Grip Press\n");
+					break;
+
+				case VREvent_ButtonUnpress:
+					printf("Grip unPress\n");
+					break;
+				}
+				break;
+
+			case k_EButton_SteamVR_Trigger:
+				switch (vrEventR.eventType)
+				{
+				case VREvent_ButtonPress:
+					printf("Trigger Press\n");
+					break;
+
+				case VREvent_ButtonUnpress:
+					printf("Trigger unPress\n");
+					break;
+				}
+				break;
+
+			case k_EButton_SteamVR_Touchpad:
+				switch (vrEventR.eventType)
+				{
+				case VREvent_ButtonPress:
+					printf("Touchpad Press\n");
+					break;
+
+				case VREvent_ButtonUnpress:
+					printf("Touchpad unPress\n");
+					break;
+
+				case VREvent_ButtonTouch:
+					printf("Touchpad Touch\n");
+					break;
+
+				case VREvent_ButtonUntouch:
+					printf("Touchpad unTouch\n");
+					break;
+
+				}
+				break;
+
+			case k_EButton_ApplicationMenu:
+				switch (vrEventR.eventType)
+				{
+				case VREvent_ButtonPress:
+					printf("ApplicationMenu Press\n");
+					break;
+
+				case VREvent_ButtonUnpress:
+					printf("ApplicationMenu unPress\n");
+					break;
+				}
+				break;
+
+			default:
+				printf("Controller is not Working\n");
+				break;
+
+			}				
+		}
+		/*vr::VREvent_t vr_event;
+		while (m_pHMD->PollNextEvent(&vr_event, sizeof(vr_event)))
+		{
+			ProcessVREvent()
+		}*/
+
+		//for (vr::TrackedDeviceIndex_t uint_device = 0; uint_device < vr::k_unMaxTrackedDeviceCount; uint_device++)
+		//{
+		//	vr::VRControllerState_t vr_controller_state;
+		//	if (m_pHMD->GetControllerState(uint_device, &vr_controller_state, sizeof(vr_controller_state)))
+		//	{
+		//		m_rbShowTrackedDevice[uint_device] = vr_controller_state.ulButtonPressed == 0;
+		//	}
+		//}
+	}

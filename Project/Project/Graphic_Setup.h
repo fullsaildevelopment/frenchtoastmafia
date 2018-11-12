@@ -166,10 +166,10 @@ public:
 	//Matrix4 get_matrix4_device_pose();
 	ComPtr<ID3D11Resource> get_controller_axis_vertex_buffer();
 	int is_right_hand_controller();
-	void controller_input();
+	//void controller_input();
 	void get_controller_pose();
 	void update_controller();
 	tFloat4x4 get_controller_matrix();
-	bool handle_input();
+	void handle_input(double dDelta);
 	//void vr_event_handler(const VREvent_t &vr_event);
 };

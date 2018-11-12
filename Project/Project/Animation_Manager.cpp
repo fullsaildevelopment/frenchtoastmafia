@@ -59,8 +59,8 @@ void cAnimation_Manager::Animate(double dDelta, double dTotal, tScene_Objects* t
 					break;
 			}
 
-			printf("dDelta = %d\n", dDelta);
-			printf("Next Frame = %d\n", nNext_Frame);
+			//printf("dDelta = %d\n", dDelta);
+			//printf("Next Frame = %d\n", nNext_Frame);
 
 			fTotal_Time = fNext_Time - fPrevious_Time;
 			fRatio = (m_fCurrent_Time - fPrevious_Time) / fTotal_Time;
