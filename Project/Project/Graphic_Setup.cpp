@@ -243,9 +243,9 @@ void cGraphics_Setup::Initialize()
 	
 	// Set the initial position of the camera.
 	m_cCameraLeft->SetPosition(tFloat4x4{
-											0.0f, 0.0f, 0.0f, 0.0f,
-											0.0f, 0.0f, 0.0f, 0.0f,
-											0.0f, 0.0f, 0.0f, 0.0f,
+											1.0f, 0.0f, 0.0f, 0.0f,
+											0.0f, 1.0f, 0.0f, 0.0f,
+											0.0f, 0.0f, 1.0f, 0.0f,
 											0.0f, 0.0f, 0.0f, 1.0f
 								});
 
@@ -254,9 +254,9 @@ void cGraphics_Setup::Initialize()
 
 	// Set the initial position of the camera.
 	m_cCameraRight->SetPosition(tFloat4x4{
-											0.0f, 0.0f, 0.0f, 0.0f,
-											0.0f, 0.0f, 0.0f, 0.0f,
-											0.0f, 0.0f, 0.0f, 0.0f,
+											1.0f, 0.0f, 0.0f, 0.0f,
+											0.0f, 1.0f, 0.0f, 0.0f,
+											0.0f, 0.0f, 1.0f, 0.0f,
 											1.0f, 0.0f, 0.0f, 1.0f
 								});
 
@@ -343,33 +343,25 @@ tFloat4x4 cGraphics_Setup::GetCurrentViewProjectionMatrix(vr::Hmd_Eye nEye)
 	Matrix4 matMVP;
 	if (nEye == vr::Eye_Left)
 	{
-
-		//m_mat4ProjectionLeft[8] *= -1;
-		//m_mat4ProjectionLeft[9] *= -1;
-		//m_mat4ProjectionLeft[10] *= -1;
-		//out_r2l.head = Matrix4_To_tFloat4x4(m_mat4HMDPose);
-		//out_r2l.pose = Matrix4_To_tFloat4x4(m_mat4eyePosLeft);
-		//out_r2l.proj = Matrix4_To_tFloat4x4(m_mat4ProjectionLeft);
-		matMVP = m_mat4ProjectionLeft * m_mat4eyePosLeft * m_mat4HMDPose;   // OG
-		//matMVP = m_mat4HMDPose * m_mat4eyePosLeft * m_mat4ProjectionLeft;  // tried swapping around these multiplies
+		//Matrix4 m_mat4HMDPose_Left = m_mat4HMDPose;
+		//m_mat4HMDPose_Left[12] += m_cCameraLeft->GetPosition().tW.fX;
+		//m_mat4HMDPose_Left[13] += m_cCameraLeft->GetPosition().tW.fY;
+		//m_mat4HMDPose_Left[14] += m_cCameraLeft->GetPosition().tW.fZ;
+		
+		//matMVP = m_mat4ProjectionLeft * m_mat4eyePosLeft * m_mat4HMDPose_Left;
+		matMVP = m_mat4ProjectionLeft * m_mat4eyePosLeft * m_mat4HMDPose;
 	}
 	else if (nEye == vr::Eye_Right)
 	{
-		//m_mat4ProjectionLeft[8] *= -1;
-		//m_mat4ProjectionLeft[9] *= -1;
-		//m_mat4ProjectionLeft[10] *= -1;
-		//out_r2l.head = Matrix4_To_tFloat4x4(m_mat4HMDPose);
-		//out_r2l.pose = Matrix4_To_tFloat4x4(m_mat4eyePosRight);
-		//out_r2l.proj = Matrix4_To_tFloat4x4(m_mat4ProjectionRight);
-		matMVP = m_mat4ProjectionRight * m_mat4eyePosRight * m_mat4HMDPose;  // OG
-		//matMVP = m_mat4HMDPose * m_mat4eyePosRight * m_mat4ProjectionRight;  // tried swapping around these multiplies
+		//Matrix4 m_mat4HMDPose_Right = m_mat4HMDPose;
+		//m_mat4HMDPose_Right[12] += m_cCameraRight->GetPosition().tW.fX;
+		//m_mat4HMDPose_Right[13] += m_cCameraRight->GetPosition().tW.fY;
+		//m_mat4HMDPose_Right[14] += m_cCameraRight->GetPosition().tW.fZ;
+
+		//matMVP = m_mat4ProjectionRight * m_mat4eyePosRight * m_mat4HMDPose_Right;
+		matMVP = m_mat4ProjectionRight * m_mat4eyePosRight * m_mat4HMDPose;
 	}
 
-	//matMVP[8] *= -1;
-	//matMVP[9] *= -1;
-	//matMVP[10] *= -1;
-	//matMVP.invert();
-	//matMVP.transpose();
 	out_mat = Matrix4_To_tFloat4x4(matMVP);
 
 	return out_mat;
@@ -730,9 +722,14 @@ void cGraphics_Setup::handle_input(double dDelta)
 {
 	vr::VREvent_t vrEventL;
 	vr::VREvent_t vrEventR;
+	/*tFloat4 t_move;
+	t_move.fX = 0.0f;
+	t_move.fY = 0.0f;
+	t_move.fZ = (float)(1 * dDelta);
+	t_move.fW = 0.0f;*/
 	while (m_pHMD->PollNextEvent(&vrEventL, sizeof(vrEventL)) != 0)
 	{
-		printf("%d ; ", vrEventL.trackedDeviceIndex);
+		printf("%d Left C ; ", vrEventL.trackedDeviceIndex);
 		switch (vrEventL.data.controller.button)
 		{
 			case k_EButton_Grip:
@@ -769,7 +766,7 @@ void cGraphics_Setup::handle_input(double dDelta)
 					tFloat4 t_move;
 					t_move.fX = 0.0f;
 					t_move.fY = 0.0f;
-					t_move.fZ = (float)(1 * dDelta);
+					t_move.fZ = 2.5f;
 					t_move.fW = 0.0f;
 					m_cCameraRight->Translation(t_move);
 					break;
@@ -811,7 +808,7 @@ void cGraphics_Setup::handle_input(double dDelta)
 
 		while (m_pHMD->PollNextEvent(&vrEventR, sizeof(vrEventR)) != 0)
 		{
-			printf("%d ; ", vrEventR.trackedDeviceIndex);
+			printf("%d Right C ; ", vrEventR.trackedDeviceIndex);
 			switch (vrEventR.data.controller.button)
 			{
 			case k_EButton_Grip:

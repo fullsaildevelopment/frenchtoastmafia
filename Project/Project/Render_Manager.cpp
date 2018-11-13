@@ -604,25 +604,14 @@ void cRender_Manager::Draw(int nScene_Id, tScene_Objects* tObject_List)
 			tObject_List->fWorld_Matrix[4][0].tW.fY = 10;
 		}
 
-
 		XMStoreFloat4x4(&tWVP.fView_Matrix, XMMatrixIdentity());
 		if (_eyeID == 0)
 		{
-			tFloat4x4 t_tempf = c_Graphics_Setup->GetCurrentViewProjectionMatrix(vr::Eye_Left);
-			t_tempf.tW.fX += c_Graphics_Setup->get_Camera_Left().GetPosition().tW.fX;
-			t_tempf.tW.fY += c_Graphics_Setup->get_Camera_Left().GetPosition().tW.fY;
-			t_tempf.tW.fZ += c_Graphics_Setup->get_Camera_Left().GetPosition().tW.fZ;
-			tWVP.fProjection_Matrix = tFloat4x4_to_XMFLOAT4x4(t_tempf);
-			//tWVP.fProjection_Matrix = tFloat4x4_to_XMFLOAT4x4(c_Graphics_Setup->GetCurrentViewProjectionMatrix(vr::Eye_Left));
+			tWVP.fProjection_Matrix = tFloat4x4_to_XMFLOAT4x4(c_Graphics_Setup->GetCurrentViewProjectionMatrix(vr::Eye_Left));
 		}
 		else
 		{
-			tFloat4x4 t_tempf = c_Graphics_Setup->GetCurrentViewProjectionMatrix(vr::Eye_Right);
-			t_tempf.tW.fX += c_Graphics_Setup->get_Camera_Right().GetPosition().tW.fX;
-			t_tempf.tW.fY += c_Graphics_Setup->get_Camera_Right().GetPosition().tW.fY;
-			t_tempf.tW.fZ += c_Graphics_Setup->get_Camera_Right().GetPosition().tW.fZ;
-			tWVP.fProjection_Matrix = tFloat4x4_to_XMFLOAT4x4(t_tempf);
-			//tWVP.fProjection_Matrix = tFloat4x4_to_XMFLOAT4x4(c_Graphics_Setup->GetCurrentViewProjectionMatrix(vr::Eye_Right));
+			tWVP.fProjection_Matrix = tFloat4x4_to_XMFLOAT4x4(c_Graphics_Setup->GetCurrentViewProjectionMatrix(vr::Eye_Right));
 		}
 
 		unsigned int verts_size = sizeof(tVertex);
