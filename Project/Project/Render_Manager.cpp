@@ -366,7 +366,7 @@ void cRender_Manager::Load_Data(int nScene_Id, tScene_Objects* tObject_List)
 
 		// Constant Buffer
 		ZeroMemory(&d3d_Constant_Buffer_Desc, sizeof(D3D11_BUFFER_DESC));
-		d3d_Constant_Buffer_Desc.ByteWidth = sizeof(tConstantBuffer_Dragon);
+		d3d_Constant_Buffer_Desc.ByteWidth = sizeof(tConstantBuffer_ColorTint);
 		d3d_Constant_Buffer_Desc.Usage = D3D11_USAGE_DYNAMIC;
 		d3d_Constant_Buffer_Desc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
 		d3d_Constant_Buffer_Desc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
@@ -393,7 +393,7 @@ void cRender_Manager::Load_Data(int nScene_Id, tScene_Objects* tObject_List)
 
 		// Constant Buffer
 		ZeroMemory(&d3d_Constant_Buffer_Desc, sizeof(D3D11_BUFFER_DESC));
-		d3d_Constant_Buffer_Desc.ByteWidth = sizeof(tConstantBuffer_Dragon);
+		d3d_Constant_Buffer_Desc.ByteWidth = sizeof(tConstantBuffer_ColorTint);
 		d3d_Constant_Buffer_Desc.Usage = D3D11_USAGE_DYNAMIC;
 		d3d_Constant_Buffer_Desc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
 		d3d_Constant_Buffer_Desc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
@@ -420,17 +420,17 @@ void cRender_Manager::Load_Data(int nScene_Id, tScene_Objects* tObject_List)
 
 		// Constant Buffer
 		ZeroMemory(&d3d_Constant_Buffer_Desc, sizeof(D3D11_BUFFER_DESC));
-		d3d_Constant_Buffer_Desc.ByteWidth = sizeof(tConstantBuffer_Dragon);
+		d3d_Constant_Buffer_Desc.ByteWidth = sizeof(tConstantBuffer_ColorTint);
 		d3d_Constant_Buffer_Desc.Usage = D3D11_USAGE_DYNAMIC;
 		d3d_Constant_Buffer_Desc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
 		d3d_Constant_Buffer_Desc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
 		d3d_Constant_Buffer_Desc.MiscFlags = 0;
 		d3d_Constant_Buffer_Desc.StructureByteStride = 0;
 
-		cps_priestColor.addColor = { 0.0f, 0.0f, 0.0f, 1.0f };
+		cps_fireballColor.addColor = { 0.0f, 0.0f, 0.0f, 1.0f };
 
 		D3D11_SUBRESOURCE_DATA InitData;
-		InitData.pSysMem = &cps_priestColor;
+		InitData.pSysMem = &cps_fireballColor;
 		InitData.SysMemPitch = 0;
 		InitData.SysMemSlicePitch = 0;
 
@@ -660,10 +660,10 @@ void cRender_Manager::Draw(int nScene_Id, tScene_Objects* tObject_List)
 			{
 				continue;
 			}
-			if (i == 5)
-			{
-				continue;
-			}
+			//if (i == 5)
+			//{
+			//	continue;
+			//}
 			// CONSTANT BUFFER - WVPC
 			{
 				tWVP.fWorld_Matrix = tFloat4x4_to_XMFLOAT4x4(tObject_List->fWorld_Matrix[i][0]);
@@ -742,7 +742,7 @@ void cRender_Manager::Draw(int nScene_Id, tScene_Objects* tObject_List)
 				c_Graphics_Setup->Get_Context().Get()->PSSetShaderResources(0, 1, tObject_List->d3d_SRV[7].GetAddressOf());
 
 				c_Graphics_Setup->Get_Context().Get()->Map(tObject_List->tMaterials_Buffers[3][0].Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &d3d_MSR);
-				memcpy(d3d_MSR.pData, &cps_dragonColor, sizeof(tConstantBuffer_Dragon));
+				memcpy(d3d_MSR.pData, &cps_dragonColor, sizeof(tConstantBuffer_ColorTint));
 				c_Graphics_Setup->Get_Context().Get()->Unmap(tObject_List->tMaterials_Buffers[3][0].Get(), 0);
 				ID3D11Buffer *tmp_con_buffer[] = { tObject_List->tMaterials_Buffers[3][0].Get() };
 				c_Graphics_Setup->Get_Context().Get()->PSSetConstantBuffers(0, 1, tmp_con_buffer);
@@ -752,7 +752,7 @@ void cRender_Manager::Draw(int nScene_Id, tScene_Objects* tObject_List)
 				c_Graphics_Setup->Get_Context().Get()->PSSetShaderResources(0, 1, tObject_List->d3d_SRV[8].GetAddressOf());
 
 				c_Graphics_Setup->Get_Context().Get()->Map(tObject_List->tMaterials_Buffers[4][0].Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &d3d_MSR);
-				memcpy(d3d_MSR.pData, &cps_fireballColor, sizeof(tConstantBuffer_Dragon));
+				memcpy(d3d_MSR.pData, &cps_fireballColor, sizeof(tConstantBuffer_ColorTint));
 				c_Graphics_Setup->Get_Context().Get()->Unmap(tObject_List->tMaterials_Buffers[4][0].Get(), 0);
 				ID3D11Buffer *tmp_con_buffer[] = { tObject_List->tMaterials_Buffers[4][0].Get() };
 				c_Graphics_Setup->Get_Context().Get()->PSSetConstantBuffers(0, 1, tmp_con_buffer);
@@ -762,11 +762,12 @@ void cRender_Manager::Draw(int nScene_Id, tScene_Objects* tObject_List)
 				c_Graphics_Setup->Get_Context().Get()->PSSetShaderResources(0, 1, tObject_List->d3d_SRV[9].GetAddressOf());
 
 				c_Graphics_Setup->Get_Context().Get()->Map(tObject_List->tMaterials_Buffers[5][0].Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &d3d_MSR);
-				memcpy(d3d_MSR.pData, &cps_fireballColor, sizeof(tConstantBuffer_Dragon));
+				memcpy(d3d_MSR.pData, &cps_fireballColor, sizeof(tConstantBuffer_ColorTint));
 				c_Graphics_Setup->Get_Context().Get()->Unmap(tObject_List->tMaterials_Buffers[5][0].Get(), 0);
 				ID3D11Buffer *tmp_con_buffer[] = { tObject_List->tMaterials_Buffers[5][0].Get() };
 				c_Graphics_Setup->Get_Context().Get()->PSSetConstantBuffers(0, 1, tmp_con_buffer);
 			}
+
 
 			//else if (i == 2)
 			//{

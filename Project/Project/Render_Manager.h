@@ -39,9 +39,8 @@ private:
 	tConstantBuffer_PixelShader cps_mage;
 	tConstantBuffer_PixelShader cps_arena;
 	tConstantBuffer_PixelShader cps_dragon;
-	tConstantBuffer_Dragon cps_dragonColor;
-	tConstantBuffer_Dragon cps_fireballColor;
-	tConstantBuffer_Dragon cps_priestColor;
+	tConstantBuffer_ColorTint cps_dragonColor;
+	tConstantBuffer_ColorTint cps_fireballColor;
 
 	D3D11_BUFFER_DESC d3d_Constant_Buffer_Desc;
 	D3D11_MAPPED_SUBRESOURCE d3d_MSR;
