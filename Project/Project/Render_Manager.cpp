@@ -660,10 +660,10 @@ void cRender_Manager::Draw(int nScene_Id, tScene_Objects* tObject_List)
 			{
 				continue;
 			}
-			//if (i == 5)
-			//{
-			//	continue;
-			//}
+			if (i == 5)
+			{
+				continue;
+			}
 			// CONSTANT BUFFER - WVPC
 			{
 				tWVP.fWorld_Matrix = tFloat4x4_to_XMFLOAT4x4(tObject_List->fWorld_Matrix[i][0]);
