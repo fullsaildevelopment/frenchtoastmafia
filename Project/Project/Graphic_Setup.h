@@ -19,10 +19,13 @@
 #include "Renderer_Structs.h"
 #include "Specific_Structs.h"
 //#include "Matrices.h"
+//#include "openvr/thirdparty/sdl2-2.0.3/include/SDL_events.h"
 
 // Basic Shaders
 #include "VertexShader.csh"
 #include "PixelShader.csh"
+
+using namespace vr;
 
 class cGraphics_Setup
 {
@@ -72,6 +75,8 @@ private:
 	ComPtr<ID3D11ShaderResourceView> d3d_SRV_Right_Eye;
 	ComPtr<ID3D11RenderTargetView> d3d_RTV_Right_Eye;
 
+	ComPtr<ID3D11Resource> m_pControllerAxisVertexBuffer;
+
 	uint32_t m_nRenderWidth;
 	uint32_t m_nRenderHeight;
 
@@ -92,8 +97,11 @@ private:
 	vr::IVRRenderModels *m_pRenderModels;
 	vr::TrackedDevicePose_t m_rTrackedDevicePose[vr::k_unMaxTrackedDeviceCount];
 	Matrix4 m_rmat4DevicePose[vr::k_unMaxTrackedDeviceCount];
+	bool m_rbShowTrackedDevice[vr::k_unMaxTrackedDeviceCount];
 
-	int m_iTrackedControllerCount;
+	unsigned int m_uiControllerVertcount = 0;
+
+	int m_iTrackedControllerCount = 0;
 	int m_iTrackedControllerCount_Last;
 	int m_iValidPoseCount;
 	int m_iValidPoseCount_Last;
@@ -102,12 +110,31 @@ private:
 	std::string m_strPoseClasses;                            // what classes we saw poses for this frame
 	char m_rDevClassChar[vr::k_unMaxTrackedDeviceCount];   // for each device, a character representing its class
 
+
 public:
 	cGraphics_Setup(HWND _hwnd);
 	~cGraphics_Setup();
 
 	void Initialize();
 	void Clean_Up();
+
+	/*struct tTracked_device_pose
+	{
+		vr::TrackedDevicePose_t m_rTrackedDevicePose[64];
+	};
+
+	struct tMatrix4_device_pose
+	{
+		Matrix4 m_rmat4DevicePose[64];
+	};*/
+
+	struct VREvent_t
+	{
+		EVREventType eventType;
+		TrackedDeviceIndex_t trackedDeviceIndex;
+		VREvent_Data_t data;
+		float eventAgeSeconds;
+	};
 
 	Matrix4 GetHMDMatrixPoseEye(vr::Hmd_Eye nEye);
 	Matrix4 GetHMDMatrixProjectionEye(vr::Hmd_Eye nEye);
@@ -132,5 +159,17 @@ public:
 	ComPtr<ID3D11Texture2D> Get_Texture_Right_Eye();
 	cCamera get_Camera_Left();
 	cCamera get_Camera_Right();
+	//IVRSystem get_m_pHMD();
+	unsigned int get_controller_vert_count();
+	int get_tracked_controller_count();
+	//tTracked_device_pose get_tracked_device_pose();
+	//Matrix4 get_matrix4_device_pose();
+	ComPtr<ID3D11Resource> get_controller_axis_vertex_buffer();
+	int is_right_hand_controller();
+	//void controller_input();
+	void get_controller_pose();
+	void update_controller();
+	tFloat4x4 get_controller_matrix();
+	void handle_input(double dDelta);
+	//void vr_event_handler(const VREvent_t &vr_event);
 };
-

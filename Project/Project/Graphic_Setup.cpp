@@ -242,13 +242,23 @@ void cGraphics_Setup::Initialize()
 	m_cCameraLeft = new cCamera;
 	
 	// Set the initial position of the camera.
-	m_cCameraLeft->SetPosition(tFloat4{ 0.0f, 0.0f, -20.0f, 1.0f });
+	m_cCameraLeft->SetPosition(tFloat4x4{
+											1.0f, 0.0f, 0.0f, 0.0f,
+											0.0f, 1.0f, 0.0f, 0.0f,
+											0.0f, 0.0f, 1.0f, 0.0f,
+											0.0f, 0.0f, 0.0f, 1.0f
+								});
 
 	// Create the camera object.
 	m_cCameraRight = new cCamera;
 
 	// Set the initial position of the camera.
-	m_cCameraRight->SetPosition(tFloat4{ 100.5f, 0.0f, -20.0f, 1.0f });
+	m_cCameraRight->SetPosition(tFloat4x4{
+											1.0f, 0.0f, 0.0f, 0.0f,
+											0.0f, 1.0f, 0.0f, 0.0f,
+											0.0f, 0.0f, 1.0f, 0.0f,
+											1.0f, 0.0f, 0.0f, 1.0f
+								});
 
 	//Removed model and shader class declaration
 
@@ -333,33 +343,25 @@ tFloat4x4 cGraphics_Setup::GetCurrentViewProjectionMatrix(vr::Hmd_Eye nEye)
 	Matrix4 matMVP;
 	if (nEye == vr::Eye_Left)
 	{
-
-		//m_mat4ProjectionLeft[8] *= -1;
-		//m_mat4ProjectionLeft[9] *= -1;
-		//m_mat4ProjectionLeft[10] *= -1;
-		//out_r2l.head = Matrix4_To_tFloat4x4(m_mat4HMDPose);
-		//out_r2l.pose = Matrix4_To_tFloat4x4(m_mat4eyePosLeft);
-		//out_r2l.proj = Matrix4_To_tFloat4x4(m_mat4ProjectionLeft);
-		matMVP = m_mat4ProjectionLeft * m_mat4eyePosLeft * m_mat4HMDPose;   // OG
-		//matMVP = m_mat4HMDPose * m_mat4eyePosLeft * m_mat4ProjectionLeft;  // tried swapping around these multiplies
+		//Matrix4 m_mat4HMDPose_Left = m_mat4HMDPose;
+		//m_mat4HMDPose_Left[12] += m_cCameraLeft->GetPosition().tW.fX;
+		//m_mat4HMDPose_Left[13] += m_cCameraLeft->GetPosition().tW.fY;
+		//m_mat4HMDPose_Left[14] += m_cCameraLeft->GetPosition().tW.fZ;
+		
+		//matMVP = m_mat4ProjectionLeft * m_mat4eyePosLeft * m_mat4HMDPose_Left;
+		matMVP = m_mat4ProjectionLeft * m_mat4eyePosLeft * m_mat4HMDPose;
 	}
 	else if (nEye == vr::Eye_Right)
 	{
-		//m_mat4ProjectionLeft[8] *= -1;
-		//m_mat4ProjectionLeft[9] *= -1;
-		//m_mat4ProjectionLeft[10] *= -1;
-		//out_r2l.head = Matrix4_To_tFloat4x4(m_mat4HMDPose);
-		//out_r2l.pose = Matrix4_To_tFloat4x4(m_mat4eyePosRight);
-		//out_r2l.proj = Matrix4_To_tFloat4x4(m_mat4ProjectionRight);
-		matMVP = m_mat4ProjectionRight * m_mat4eyePosRight * m_mat4HMDPose;  // OG
-		//matMVP = m_mat4HMDPose * m_mat4eyePosRight * m_mat4ProjectionRight;  // tried swapping around these multiplies
+		//Matrix4 m_mat4HMDPose_Right = m_mat4HMDPose;
+		//m_mat4HMDPose_Right[12] += m_cCameraRight->GetPosition().tW.fX;
+		//m_mat4HMDPose_Right[13] += m_cCameraRight->GetPosition().tW.fY;
+		//m_mat4HMDPose_Right[14] += m_cCameraRight->GetPosition().tW.fZ;
+
+		//matMVP = m_mat4ProjectionRight * m_mat4eyePosRight * m_mat4HMDPose_Right;
+		matMVP = m_mat4ProjectionRight * m_mat4eyePosRight * m_mat4HMDPose;
 	}
 
-	//matMVP[8] *= -1;
-	//matMVP[9] *= -1;
-	//matMVP[10] *= -1;
-	//matMVP.invert();
-	//matMVP.transpose();
 	out_mat = Matrix4_To_tFloat4x4(matMVP);
 
 	return out_mat;
@@ -497,3 +499,397 @@ cCamera cGraphics_Setup::get_Camera_Right()
 {
 	return *m_cCameraRight;
 }
+
+//vr::IVRSystem cGraphics_Setup::get_m_pHMD()
+//{
+//	return *m_pHMD;
+//}
+
+unsigned int cGraphics_Setup::get_controller_vert_count()
+{
+	return m_uiControllerVertcount;
+}
+
+int cGraphics_Setup::get_tracked_controller_count()
+{
+	return m_iTrackedControllerCount;
+}
+
+//tTracked_device_pose cGraphics_Setup::get_tracked_device_pose()
+//{
+//	return m_rTrackedDevicePose;
+//}
+
+//Matrix4 cGraphics_Setup::get_matrix4_device_pose()
+//{
+//	return m_rmat4DevicePose;
+//}
+
+ComPtr<ID3D11Resource> cGraphics_Setup::get_controller_axis_vertex_buffer()
+{
+	return m_pControllerAxisVertexBuffer;
+}
+
+int cGraphics_Setup::is_right_hand_controller()
+{
+	VREvent_t vr_event;
+
+	ETrackedDeviceClass trackedDeviceClass;
+	trackedDeviceClass = m_pHMD->GetTrackedDeviceClass(vr_event.trackedDeviceIndex);
+
+	if (trackedDeviceClass != ETrackedDeviceClass::TrackedDeviceClass_Controller)
+	{
+		return -1;
+	}
+
+	ETrackedControllerRole controller_role;
+
+	controller_role = m_pHMD->GetControllerRoleForTrackedDeviceIndex(vr_event.trackedDeviceIndex);
+
+	if (controller_role == TrackedControllerRole_Invalid)
+	{
+		return -2;
+	}
+	else if (controller_role == TrackedControllerRole_LeftHand)
+	{
+		return 1;
+	}
+	else if (controller_role == TrackedControllerRole_RightHand)
+	{
+		return 2;
+	}
+}
+
+void cGraphics_Setup::get_controller_pose()
+{
+	for (unsigned int ID = 0; ID < k_unMaxTrackedDeviceCount; ID++)
+	{
+		ETrackedDeviceClass tracked_device_class;
+
+		tracked_device_class = m_pHMD->GetTrackedDeviceClass(ID);
+
+		if (tracked_device_class != ETrackedDeviceClass::TrackedDeviceClass_Controller || !m_pHMD->IsTrackedDeviceConnected(ID))
+		{
+			continue;
+		}
+		
+		VRControllerState_t vr_controller_state;
+		TrackedDevicePose_t tracked_device_pose;
+
+		m_pHMD->GetControllerStateWithPose(TrackingUniverseStanding, ID, &vr_controller_state, sizeof(vr_controller_state), &tracked_device_pose);
+	}
+}
+
+void cGraphics_Setup::update_controller()
+{
+	//cGraphics_Setup gx_setup;
+	std::vector<float> vert_DATA;
+
+	vr::TrackedDeviceIndex_t non_tracking_device;
+
+	if (!m_pHMD->IsInputAvailable())
+	{
+		return;
+	}
+
+	int tracked_controller_count;
+	unsigned int controller_vert_count;
+
+	tracked_controller_count = m_iTrackedControllerCount;
+	controller_vert_count = m_uiControllerVertcount;
+
+	for (non_tracking_device = vr::k_unTrackedDeviceIndex_Hmd + 1; non_tracking_device < vr::k_unMaxTrackedDeviceCount; non_tracking_device++)
+	{
+		if (!m_pHMD->IsTrackedDeviceConnected(non_tracking_device))
+		{
+			continue;
+		}
+
+		if (m_pHMD->GetTrackedDeviceClass(non_tracking_device) != vr::TrackedDeviceClass_Controller)
+		{
+			continue;
+		}
+
+		tracked_controller_count += 1;
+
+		//cGraphics_Setup::tTracked_device_pose track_pose;
+
+		if (!m_rTrackedDevicePose[non_tracking_device].bPoseIsValid)
+		{
+			continue;
+		}
+
+		//cGraphics_Setup::tMatrix4_device_pose matrix_pose;
+
+		const Matrix4 &matrix = m_rmat4DevicePose[non_tracking_device];   // controller matrix   // draw a object using that matrix
+
+		Vector4 center_point;
+		Vector4 temp_vec;
+		temp_vec = { 0, 0, 0, 1 };
+
+		center_point = (matrix * temp_vec);
+
+		for (int k = 0; k < 3; k++)
+		{
+			Vector3 color(1, 0, 0);
+			Vector4 vr_point(0, 0, 0, 1);
+
+			color[k] = 1.0f;
+			vr_point[k] += 0.05f;
+
+			vr_point = (vr_point * matrix);
+
+			vert_DATA.push_back(center_point.x);
+			vert_DATA.push_back(center_point.y);
+			vert_DATA.push_back(center_point.z);
+
+			vert_DATA.push_back(color.x);
+			vert_DATA.push_back(color.y);
+			vert_DATA.push_back(color.z);
+
+			vert_DATA.push_back(vr_point.x);
+			vert_DATA.push_back(vr_point.y);
+			vert_DATA.push_back(vr_point.z);
+
+			vert_DATA.push_back(color.x);
+			vert_DATA.push_back(color.y);
+			vert_DATA.push_back(color.z);
+
+			controller_vert_count += 2;
+		}
+
+		Vector4 starting_point;
+		starting_point = matrix * Vector4(0, 0, -0.02f, 1);
+
+		Vector4 end_point;
+		end_point = matrix * Vector4(0, 0, -39.0f, 1);
+
+		Vector3 color(0.6f, 0.0f, 1.0f);
+
+		vert_DATA.push_back(starting_point.x);
+		vert_DATA.push_back(starting_point.y);
+		vert_DATA.push_back(starting_point.z);
+
+		vert_DATA.push_back(color.x);
+		vert_DATA.push_back(color.y);
+		vert_DATA.push_back(color.z);
+
+		vert_DATA.push_back(end_point.x);
+		vert_DATA.push_back(end_point.y);
+		vert_DATA.push_back(end_point.z);
+
+		vert_DATA.push_back(color.x);
+		vert_DATA.push_back(color.y);
+		vert_DATA.push_back(color.z);
+
+		controller_vert_count += 2;
+	}
+}
+
+tFloat4x4 cGraphics_Setup::get_controller_matrix()
+{
+	tFloat4x4 hi;
+
+	int result = is_right_hand_controller();
+	if (result == 1)
+	{
+		return hi;
+	}
+	else if (result == 2)
+	{
+		return hi;
+	}
+	return hi;
+}
+
+//void cGraphics_Setup::vr_event_handler(const VREvent_t &vr_event)
+//{
+//	switch (vr_event.eventType)
+//	{
+//	case vr::VREvent_TrackedDeviceActivated:
+//	{
+//		SetupRenderModelForTrackedDevice(vr_event.trackedDeviceIndex);
+//		dprintf("Device %u attached. Setting up render model.\n", vr_event.trackedDeviceIndex);
+//	}
+//	break;
+//
+//	default:
+//		break;
+//	}
+//}
+
+void cGraphics_Setup::handle_input(double dDelta)
+{
+	vr::VREvent_t vrEventL;
+	vr::VREvent_t vrEventR;
+	/*tFloat4 t_move;
+	t_move.fX = 0.0f;
+	t_move.fY = 0.0f;
+	t_move.fZ = (float)(1 * dDelta);
+	t_move.fW = 0.0f;*/
+	while (m_pHMD->PollNextEvent(&vrEventL, sizeof(vrEventL)) != 0)
+	{
+		printf("%d Left C ; ", vrEventL.trackedDeviceIndex);
+		switch (vrEventL.data.controller.button)
+		{
+			case k_EButton_Grip:
+				switch (vrEventL.eventType)
+				{
+				case VREvent_ButtonPress:
+					printf("Grip Press\n");
+					break;
+
+				case VREvent_ButtonUnpress:
+					printf("Grip unPress\n");
+					break;
+				}
+				break;
+
+			case k_EButton_SteamVR_Trigger:
+				switch (vrEventL.eventType)
+				{
+				case VREvent_ButtonPress:
+					printf("Trigger Press\n");
+					break;
+
+				case VREvent_ButtonUnpress:
+					printf("Trigger unPress\n");
+					break;
+				}
+				break;
+
+			case k_EButton_SteamVR_Touchpad:
+				switch (vrEventL.eventType)
+				{
+				case VREvent_ButtonPress:
+					printf("Touchpad Press\n");
+					tFloat4 t_move;
+					t_move.fX = 0.0f;
+					t_move.fY = 0.0f;
+					t_move.fZ = 2.5f;
+					t_move.fW = 0.0f;
+					m_cCameraRight->Translation(t_move);
+					break;
+
+				case VREvent_ButtonUnpress:
+					printf("Touchpad unPress\n");
+					break;
+
+				case VREvent_ButtonTouch:
+					printf("Touchpad Touch\n");
+					break;
+
+				case VREvent_ButtonUntouch:
+					printf("Touchpad unTouch\n");
+					break;
+
+				}
+				break;
+
+			case k_EButton_ApplicationMenu:
+				switch (vrEventL.eventType)
+				{
+				case VREvent_ButtonPress:
+					printf("ApplicationMenu Press\n");
+					break;
+
+				case VREvent_ButtonUnpress:
+					printf("ApplicationMenu unPress\n");
+					break;
+				}
+				break;
+
+			default:
+				printf("Controller is not Working\n");
+				break;
+
+			}			
+		}
+
+		while (m_pHMD->PollNextEvent(&vrEventR, sizeof(vrEventR)) != 0)
+		{
+			printf("%d Right C ; ", vrEventR.trackedDeviceIndex);
+			switch (vrEventR.data.controller.button)
+			{
+			case k_EButton_Grip:
+				switch (vrEventR.eventType)
+				{
+				case VREvent_ButtonPress:
+					printf("Grip Press\n");
+					break;
+
+				case VREvent_ButtonUnpress:
+					printf("Grip unPress\n");
+					break;
+				}
+				break;
+
+			case k_EButton_SteamVR_Trigger:
+				switch (vrEventR.eventType)
+				{
+				case VREvent_ButtonPress:
+					printf("Trigger Press\n");
+					break;
+
+				case VREvent_ButtonUnpress:
+					printf("Trigger unPress\n");
+					break;
+				}
+				break;
+
+			case k_EButton_SteamVR_Touchpad:
+				switch (vrEventR.eventType)
+				{
+				case VREvent_ButtonPress:
+					printf("Touchpad Press\n");
+					break;
+
+				case VREvent_ButtonUnpress:
+					printf("Touchpad unPress\n");
+					break;
+
+				case VREvent_ButtonTouch:
+					printf("Touchpad Touch\n");
+					break;
+
+				case VREvent_ButtonUntouch:
+					printf("Touchpad unTouch\n");
+					break;
+
+				}
+				break;
+
+			case k_EButton_ApplicationMenu:
+				switch (vrEventR.eventType)
+				{
+				case VREvent_ButtonPress:
+					printf("ApplicationMenu Press\n");
+					break;
+
+				case VREvent_ButtonUnpress:
+					printf("ApplicationMenu unPress\n");
+					break;
+				}
+				break;
+
+			default:
+				printf("Controller is not Working\n");
+				break;
+
+			}				
+		}
+		/*vr::VREvent_t vr_event;
+		while (m_pHMD->PollNextEvent(&vr_event, sizeof(vr_event)))
+		{
+			ProcessVREvent()
+		}*/
+
+		//for (vr::TrackedDeviceIndex_t uint_device = 0; uint_device < vr::k_unMaxTrackedDeviceCount; uint_device++)
+		//{
+		//	vr::VRControllerState_t vr_controller_state;
+		//	if (m_pHMD->GetControllerState(uint_device, &vr_controller_state, sizeof(vr_controller_state)))
+		//	{
+		//		m_rbShowTrackedDevice[uint_device] = vr_controller_state.ulButtonPressed == 0;
+		//	}
+		//}
+	}

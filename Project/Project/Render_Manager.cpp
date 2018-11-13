@@ -522,14 +522,14 @@ void cRender_Manager::Draw(int nScene_Id, tScene_Objects* tObject_List)
 				cCam.Translation(change_data);
 			}
 
-			// S - move out
+			// S - move backwards
 			if (GetAsyncKeyState('S'))
 			{
 				change_data = { 0.0f, 0.0f, ((float)cTime.Delta() * 25), 0.0f };
 				cCam.Translation(change_data);
 			}
 
-			// W - move in
+			// W - move forward
 			if (GetAsyncKeyState('W'))
 			{
 				change_data = { 0.0f, 0.0f, -((float)cTime.Delta() * 25), 0.0f };
@@ -637,7 +637,6 @@ void cRender_Manager::Draw(int nScene_Id, tScene_Objects* tObject_List)
 			tObject_List->fWorld_Matrix[4][0].tW.fX = -10;
 			tObject_List->fWorld_Matrix[4][0].tW.fY = 10;
 		}
-
 
 		XMStoreFloat4x4(&tWVP.fView_Matrix, XMMatrixIdentity());
 		if (_eyeID == 0)
