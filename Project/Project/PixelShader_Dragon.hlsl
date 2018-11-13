@@ -18,7 +18,7 @@ struct INPUT_DATA
 
 float4 main(INPUT_DATA input) : SV_TARGET
 {
-	float4 ambient = { 0.5, 0.5, 0.5, 1 };
+	float4 ambient = { 0.5, 0, 0, 1 };
 
 float4 pointLightColor = { 0.1, 0.1, 3.0, 1 };
 
@@ -30,6 +30,7 @@ if (pointLightStrength < 0)
 	pointLightStrength = 0;
 }
 float pointLightRatio = pointLightStrength * clamp(dot(pointLightDir, input.fNormal), 0, 1);
+
 
 
 return ambient * (tTexture.Sample(sSampler_State[0], input.fTexture) + (pointLightColor * pointLightRatio) + fData);

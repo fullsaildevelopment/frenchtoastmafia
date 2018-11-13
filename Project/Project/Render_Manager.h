@@ -39,8 +39,7 @@ private:
 	tConstantBuffer_PixelShader cps_mage;
 	tConstantBuffer_PixelShader cps_arena;
 	tConstantBuffer_PixelShader cps_dragon;
-	tConstantBuffer_ColorTint cps_dragonColor;
-	tConstantBuffer_ColorTint cps_fireballColor;
+	tConstantBuffer_PixelShader cps_fireball;
 
 	D3D11_BUFFER_DESC d3d_Constant_Buffer_Desc;
 	D3D11_MAPPED_SUBRESOURCE d3d_MSR;
@@ -70,12 +69,6 @@ public:
 
 	void Initialize(cGraphics_Setup* c_Graphics_Setup);
 	void Load_Data(int nScene_Id, tScene_Objects* tObject_List);
-	void Unload();
+	void Unload(tScene_Objects* t_Object_List);
 	void Draw(int nScene_Id, tScene_Objects* t_Object_List);
-	void DrawToTexture();
-
-	void setDragonColor(float _color);
-
-	bool objSet = false;
-	XMMATRIX tempWorld = XMMatrixIdentity();
 };

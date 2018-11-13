@@ -170,6 +170,6 @@ public:
 	void get_controller_pose();
 	void update_controller();
 	tFloat4x4 get_controller_matrix();
-	void handle_input(double dDelta);
+	bool handle_input(double dDelta);
 	//void vr_event_handler(const VREvent_t &vr_event);
 };

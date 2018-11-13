@@ -74,10 +74,10 @@ struct tScene_Objects
 
 	// Position
 	tFloat3								fWorld_Position[32]{};
-	tFloat4x4							fWorld_Matrix[32][32]{};
+	tFloat4x4							fWorld_Matrix[32]{};
 
 	// Vertex and Index Data
-	bool								bMesh_Has_Skinned[32]{};
+	bool								bIs_Animated[32]{};
 
 	tMesh								tMesh_Data[32]{};
 	tMesh_Skinned						tMesh_Skinned_Data[32]{};
@@ -86,15 +86,14 @@ struct tScene_Objects
 	ComPtr<ID3D11Buffer>				d3d_Index_Buffers[32]{};
 
 	// Material
-	tMaterials							tMaterials_Data[32][32]{};
-	ComPtr<ID3D11Buffer>				tMaterials_Buffers[32][32]{};
+	tMaterials							tMaterials_Data[32]{};
+	ComPtr<ID3D11Buffer>				tMaterials_Buffers[32]{};
 
 	// SRV
-	std::string							szSRV_File_Path[32]{};
-	ComPtr<ID3D11ShaderResourceView>	d3d_SRV[32]{};
+	std::string							szSRV_File_Path;
+	ComPtr<ID3D11ShaderResourceView>	d3d_SRV[32][32]{};
 
 	// Animation
-	bool								bHas_Animation[32]{};
 	tAnimation_Clip						tAnim_Clip[32]{};
 	tAnimation_Data						tAnim_Data[32]{}; // try to combine with clip when create binary writer
 
@@ -132,6 +131,7 @@ struct tConstantBuffer_PixelShader
 	XMFLOAT4 shininess = { 0.0f, 0.0f, 0.0f, 0.0f };
 	XMFLOAT4 specular = { 0.0f, 0.0f, 0.0f, 0.0f };
 	XMFLOAT4 transparency = { 0.0f, 0.0f, 0.0f, 0.0f };
+	XMFLOAT4 tint = { 0.0f, 0.0f, 0.0f, 0.0f };
 };
 
 struct tConstantBuffer_ColorTint

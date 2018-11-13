@@ -40,26 +40,13 @@ OUTPUT_DATA main(INPUT_DATA tInput)
 
 	float4 fCurrent_Position = float4(tInput.fPosition.xyz, 1.0f);
 
-	//float4x4 temp_Cur_Pos;    // NEW
-
 	fCurrent_Position = mul(fCurrent_Position, fWorld_Matrix);
 
 	tOutput.fWorld_Position = fCurrent_Position;
 
-	//float4x4 tmp = mul(fHead_Matrix, fPose_Matrix);
+	fCurrent_Position = mul(fCurrent_Position, fView_Matrix);
+	fCurrent_Position = mul(fCurrent_Position, fProjection_Matrix);
 
-	//fCurrent_Position = mul(fCurrent_Position, tmp);        
-	fCurrent_Position = mul(fCurrent_Position, fView_Matrix);        // OG
-	fCurrent_Position = mul(fCurrent_Position, fProjection_Matrix);  // OG
-
-	//float4x4 WVP = mul(fWorld_Matrix, fView_Matrix);
-	//WVP = mul(WVP, fProjection_Matrix);
-
-	//temp_Cur_Pos = mul(fProjection_Matrix, fView_Matrix);         // NEW
-	//fCurrent_Position = mul(fCurrent_Position, temp_Cur_Pos);     // NEW
-
-	//fCurrent_Position = temp_Cur_Pos;     // NEW but not used
-	//tOutput.fPosition = mul(WVP, fCurrent_Position);
 	tOutput.fPosition = fCurrent_Position;
 	tOutput.fNormal = mul(tInput.fNormal, fWorld_Matrix);
 	tOutput.fColor = tInput.fColor;

@@ -22,7 +22,7 @@ void cAnimation_Manager::Animate(double dDelta, double dTotal, tScene_Objects* t
 {
 	for (int i = 0; i < tObject_List->nObject_Count; i++)
 	{
-		if (tObject_List->bHas_Animation[i])
+		if (tObject_List->bIs_Animated[i])
 		{
 			m_fCurrent_Time += (float)dDelta;
 

@@ -29,6 +29,7 @@ private:
 	dopeSoundSystem sound;
 
 	int m_nScene_Id;
+	bool bChange_Scene;
 public:
 	cGame_Loop();
 	~cGame_Loop();

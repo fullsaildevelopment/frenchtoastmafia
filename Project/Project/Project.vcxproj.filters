@@ -245,9 +245,6 @@
     <FxCompile Include="PixelShader_Arena.hlsl">
       <Filter>Renderer Manager\Shaders\Pixel</Filter>
     </FxCompile>
-    <FxCompile Include="VertexShader_Arena.hlsl">
-      <Filter>Renderer Manager\Shaders\Vertex</Filter>
-    </FxCompile>
     <FxCompile Include="VertexShader_Animation.hlsl">
       <Filter>Renderer Manager\Shaders\Vertex</Filter>
     </FxCompile>
