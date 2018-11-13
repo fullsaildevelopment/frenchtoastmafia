@@ -134,7 +134,7 @@ struct tConstantBuffer_PixelShader
 	XMFLOAT4 transparency = { 0.0f, 0.0f, 0.0f, 0.0f };
 };
 
-struct tConstantBuffer_Dragon
+struct tConstantBuffer_ColorTint
 {
 	XMFLOAT4 addColor = { 0.0f, 0.0f, 0.0f, 1.0f };
 };

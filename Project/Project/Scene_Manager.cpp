@@ -106,7 +106,7 @@ tScene_Objects cScene_Manager::GetScene(int nScene_Id)
 	// GAME
 	else
 	{
-		tScene.nObject_Count = 5;
+		tScene.nObject_Count = 6;
 
 		// GAME 1 with mage
 		if (nScene_Id == 2)
@@ -483,8 +483,8 @@ tScene_Objects cScene_Manager::GetScene(int nScene_Id)
 			// Priest
 
 		}
-		else
-			tMesh  tPriest = cBinary_Read.Read_Mesh("PriestDeathMesh.bin");
+		//else
+		//	tMesh  tPriest = cBinary_Read.Read_Mesh("PriestDeathMesh.bin");
 
 		return tScene;
 	}
