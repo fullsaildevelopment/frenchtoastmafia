@@ -23,6 +23,7 @@
 #include "PixelShader_Dragon.csh"
 #include "PixelShader_Fireball.csh"
 #include "PixelShader_Screen.csh"
+#include "dopeSoundSystem.h"
 
 class cRender_Manager
 {
@@ -30,14 +31,16 @@ private:
 
 	cGraphics_Setup *c_Graphics_Setup;
 
+	dopeSoundSystem sound;
+
 	// WVPC
 	ComPtr<ID3D11Buffer> d3d_Constant_Buffer_WVP;
 	ComPtr<ID3D11Buffer> d3d_Constant_Buffer_Mage;
 	tConstantBuffer_PixelShader cps_mage;
 	tConstantBuffer_PixelShader cps_arena;
 	tConstantBuffer_PixelShader cps_dragon;
-	tConstantBuffer_Dragon cps_dragonColor;
-	tConstantBuffer_Dragon cps_fireballColor;
+	tConstantBuffer_ColorTint cps_dragonColor;
+	tConstantBuffer_ColorTint cps_fireballColor;
 
 	D3D11_BUFFER_DESC d3d_Constant_Buffer_Desc;
 	D3D11_MAPPED_SUBRESOURCE d3d_MSR;
