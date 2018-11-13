@@ -53,7 +53,7 @@ void cGame_Loop::Update()
 	c_VR.VR_Render();
 	//}
 
-	c_VR.update_controller();
+	//c_VR.update_controller();
 	sound.updateSoundSystem();
 }
 
