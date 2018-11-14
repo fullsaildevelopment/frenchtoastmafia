@@ -744,7 +744,7 @@ void cGraphics_Setup::handle_input(double dDelta)
 			{
 			case VREvent_ButtonPress:
 				printf("Grip Press\n");
-				moveMeOnXScotty -= 1;
+				moveMeOnZScotty -= moveSpeed;
 				break;
 
 			case VREvent_ButtonUnpress:
@@ -758,7 +758,7 @@ void cGraphics_Setup::handle_input(double dDelta)
 			{
 			case VREvent_ButtonPress:
 				printf("Trigger Press\n");
-				moveMeOnXScotty += 1;
+				moveMeOnZScotty += moveSpeed;
 				break;
 
 			case VREvent_ButtonUnpress:
@@ -772,13 +772,13 @@ void cGraphics_Setup::handle_input(double dDelta)
 			{
 			case VREvent_ButtonPress:
 				printf("Touchpad Press\n");
-				tFloat4 t_move;
-				t_move.fX = 0.0f;
-				t_move.fY = 0.0f;
-				t_move.fZ = 2.5f;
-				t_move.fW = 0.0f;
+				//tFloat4 t_move;
+				//t_move.fX = 0.0f;
+				//t_move.fY = 0.0f;
+				//t_move.fZ = 2.5f;
+				//t_move.fW = 0.0f;
 				//m_cCameraRight->Translation(t_move);
-				moveMeOnZScotty += 1;
+				moveMeOnXScotty += moveSpeed;
 				break;
 
 			case VREvent_ButtonUnpress:
@@ -801,7 +801,7 @@ void cGraphics_Setup::handle_input(double dDelta)
 			{
 			case VREvent_ButtonPress:
 				printf("ApplicationMenu Press\n");
-				moveMeOnZScotty -= 1;
+				moveMeOnXScotty -= moveSpeed;
 				break;
 
 			case VREvent_ButtonUnpress:

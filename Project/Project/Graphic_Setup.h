@@ -112,6 +112,8 @@ private:
 
 	//input
 
+	float moveSpeed = 2.0f;
+
 	float moveMeOnXScotty = 0;
 	float moveMeOnYScotty = 0;
 	float moveMeOnZScotty = 0;
