@@ -634,7 +634,10 @@ void cRender_Manager::Draw(int nScene_Id, tScene_Objects* tObject_List)
 
 		if (tObject_List->fWorld_Matrix[4][0].tW.fX >= -1)
 		{
-			sound.playSoundEffect("Fireball+1.mp3", FMOD_DEFAULT);
+			if (dragonAlive == true)
+			{
+				sound.playSoundEffect("Fireball+1.mp3", FMOD_DEFAULT);
+			}
 			tObject_List->fWorld_Matrix[4][0].tW.fX = -10;
 			tObject_List->fWorld_Matrix[4][0].tW.fY = 10;
 		}
