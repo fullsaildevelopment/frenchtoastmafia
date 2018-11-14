@@ -8,6 +8,7 @@
 *************************************************************************/
 #pragma once
 
+#include "Collisions.h"
 #include "DDSTextureLoader.h"
 #include "Graphic_Setup.h"
 #include "Renderer_Structs.h"
@@ -26,7 +27,7 @@ class cRender_Manager
 private:
 
 	cGraphics_Setup *c_Graphics_Setup;
-
+	tCollisions t_Collisions;
 	dopeSoundSystem sound;
 
 	// WVPC
@@ -40,7 +41,7 @@ private:
 	// Animation
 	ComPtr<ID3D11Buffer> d3d_Constant_Buffer_Animation;
 	tConstantBuffer_VertexShader_Animation tAnim;
-	
+
 	// CPS
 	tConstantBuffer_PixelShader tCB_PS;
 	
@@ -59,6 +60,10 @@ private:
 	int dragonHealth = 7;
 	tFloat4 dragonTint;
 
+	// Collision
+	bool bCollided;
+	tAABB tAABB_Bullet, tAABB_Dragon;
+
 public:
 	cRender_Manager();
 	~cRender_Manager();
@@ -66,5 +71,5 @@ public:
 	void Initialize(cGraphics_Setup* c_Graphics_Setup);
 	void Load_Data(int nScene_Id, tScene_Objects* tObject_List);
 	void Unload(tScene_Objects* t_Object_List);
-	void Draw(int nScene_Id, tScene_Objects* t_Object_List);
+	void Draw(int nScene_Id, tScene_Objects* t_Object_List, bool *bChange_Scene, bool *bMove_Bullet);
 };

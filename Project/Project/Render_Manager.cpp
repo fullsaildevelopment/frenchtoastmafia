@@ -172,10 +172,7 @@ void cRender_Manager::Load_Data(int nScene_Id, tScene_Objects* tObject_List)
 				c_Graphics_Setup->Get_Device().Get()->CreateVertexShader(VertexShader_Animation, sizeof(VertexShader_Animation), NULL, &tObject_List->d3d_Vertex_Shaders[i]);
 			else
 			{
-				if (i == 4)
-					c_Graphics_Setup->Get_Device().Get()->CreateVertexShader(VertexShader_Bullet, sizeof(VertexShader_Bullet), NULL, &tObject_List->d3d_Vertex_Shaders[i]);
-				else
-					c_Graphics_Setup->Get_Device().Get()->CreateVertexShader(VertexShader, sizeof(VertexShader), NULL, &tObject_List->d3d_Vertex_Shaders[i]);
+				c_Graphics_Setup->Get_Device().Get()->CreateVertexShader(VertexShader, sizeof(VertexShader), NULL, &tObject_List->d3d_Vertex_Shaders[i]);
 				
 			}
 
@@ -254,7 +251,7 @@ void cRender_Manager::Load_Data(int nScene_Id, tScene_Objects* tObject_List)
 				}
 			}
 			
-			// CONSTANT BUFFER
+			// CONSTANT BUFFER - PIXEL SHADER
 
 			ZeroMemory(&d3d_Constant_Buffer_Desc, sizeof(D3D11_BUFFER_DESC));
 			d3d_Constant_Buffer_Desc.ByteWidth = sizeof(tConstantBuffer_PixelShader);
@@ -274,7 +271,7 @@ void cRender_Manager::Unload(tScene_Objects* tObject_List)
 	ZeroMemory(&tObject_List, sizeof(tScene_Objects));
 }
 
-void cRender_Manager::Draw(int nScene_Id, tScene_Objects* tObject_List)
+void cRender_Manager::Draw(int nScene_Id, tScene_Objects* tObject_List, bool *bChange_Scene, bool *bMove_Bullet)
 {
 	for (int _eyeID = 0; _eyeID < 2; _eyeID++)
 	{
@@ -438,6 +435,7 @@ void cRender_Manager::Draw(int nScene_Id, tScene_Objects* tObject_List)
 				if (dragonHealth <= 0)
 				{
 					dragonAlive = false;
+					*bChange_Scene = true;
 				}
 
 			}
@@ -468,6 +466,43 @@ void cRender_Manager::Draw(int nScene_Id, tScene_Objects* tObject_List)
 				sound.playSoundEffect("Fireball+1.mp3", FMOD_DEFAULT);
 				tObject_List->fWorld_Matrix[3].tW.fX = -10;
 				tObject_List->fWorld_Matrix[3].tW.fY = 10;
+			}
+
+			// Bullet
+			if (*bMove_Bullet == true)
+			{
+				tObject_List->fWorld_Matrix[4].tW.fX -= 0.1;
+				tObject_List->fWorld_Matrix[4].tW.fY += 0.1;
+			}
+
+			// Collision
+			{
+				tAABB_Bullet.center.fX = tObject_List->fWorld_Matrix[4].tW.fX;
+				tAABB_Bullet.center.fY = tObject_List->fWorld_Matrix[4].tW.fY;
+				tAABB_Bullet.center.fZ = tObject_List->fWorld_Matrix[4].tW.fZ;
+
+				tAABB_Bullet.extents.fX = 0.2f;
+				tAABB_Bullet.extents.fY = 0.13f;
+				tAABB_Bullet.extents.fZ = 0.2f;
+
+				tAABB_Dragon.center.fX = tObject_List->fWorld_Matrix[2].tW.fX;
+				tAABB_Dragon.center.fY = tObject_List->fWorld_Matrix[2].tW.fY;
+				tAABB_Dragon.center.fZ = tObject_List->fWorld_Matrix[2].tW.fZ;
+
+				tAABB_Dragon.extents.fX = 175.0f;
+				tAABB_Dragon.extents.fY = 90.0f;
+				tAABB_Dragon.extents.fZ = 170.0f;
+
+				bCollided = t_Collisions.Detect_AABB_To_AABB(tAABB_Bullet, tAABB_Dragon);
+
+				if (bCollided)
+				{
+					tObject_List->fWorld_Matrix[4].tW.fX = -0.1;
+					tObject_List->fWorld_Matrix[4].tW.fY = 0.1;
+					tObject_List->fWorld_Matrix[4].tW.fX = -0.1;
+					*bMove_Bullet = false;
+					isHit = true;
+				}
 			}
 		}
 
@@ -545,7 +580,7 @@ void cRender_Manager::Draw(int nScene_Id, tScene_Objects* tObject_List)
 				{
 					c_Graphics_Setup->Get_Context().Get()->PSSetShaderResources(0, 1, tObject_List->d3d_SRV[i][0].GetAddressOf());
 				}
-				
+
 				tCB_PS.ambient.x = tObject_List->tMaterials_Data[i].tMats[0].tAmbient.fX;
 				tCB_PS.ambient.y = tObject_List->tMaterials_Data[i].tMats[0].tAmbient.fY;
 				tCB_PS.ambient.z = tObject_List->tMaterials_Data[i].tMats[0].tAmbient.fZ;

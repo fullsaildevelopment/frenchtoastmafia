@@ -718,12 +718,11 @@ tFloat4x4 cGraphics_Setup::get_controller_matrix()
 //	}
 //}
 
-bool cGraphics_Setup::handle_input(double dDelta)
+void cGraphics_Setup::handle_input(double dDelta, int nScene_Id, bool *bChange_Scene, bool *bMove_Bullet)
 {
 	vr::VREvent_t vrEventL;
 	vr::VREvent_t vrEventR;
 
-	bool bChange_Scene = false;
 	while (m_pHMD->PollNextEvent(&vrEventL, sizeof(vrEventL)) != 0)
 	{
 		printf("%d Left C ; ", vrEventL.trackedDeviceIndex);
@@ -747,7 +746,10 @@ bool cGraphics_Setup::handle_input(double dDelta)
 				{
 				case VREvent_ButtonPress:
 					printf("Trigger Press\n");
-					bChange_Scene = true;
+					if (nScene_Id == 2)
+						*bMove_Bullet = true;
+					else
+						*bChange_Scene = true;
 					break;
 
 				case VREvent_ButtonUnpress:
@@ -890,6 +892,4 @@ bool cGraphics_Setup::handle_input(double dDelta)
 		//		m_rbShowTrackedDevice[uint_device] = vr_controller_state.ulButtonPressed == 0;
 		//	}
 		//}
-
-		return bChange_Scene;
 	}

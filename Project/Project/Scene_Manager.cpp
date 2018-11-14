@@ -295,7 +295,7 @@ tScene_Objects cScene_Manager::GetScene(int nScene_Id)
 
 			XMMATRIX tempMatrix = XMMatrixIdentity();
 
-			tempMatrix = XMMatrixMultiply(tempMatrix, XMMatrixTranslation(-0.1, 0.1, 0));
+			tempMatrix = XMMatrixMultiply(tempMatrix, XMMatrixTranslation(-0.1, 0.1, -0.1));
 
 			XMStoreFloat4x4(&temp, tempMatrix);
 
@@ -325,10 +325,7 @@ tScene_Objects cScene_Manager::GetScene(int nScene_Id)
 			tScene.tMaterials_Data[4].tMats[0].szDiffuse_File_Path = "Fireball.fbm\\Fireball_D.png";
 		}
 		// Bullet
-
 	}
-	//else
-	//	tMesh  tPriest = cBinary_Read.Read_Mesh("PriestDeathMesh.bin");
 
 	return tScene;
 }

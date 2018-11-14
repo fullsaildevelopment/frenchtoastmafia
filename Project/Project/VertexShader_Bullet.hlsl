@@ -45,7 +45,7 @@ OUTPUT_DATA main(INPUT_DATA tInput)
 
 	float4 fCurrent_Position = float4(tInput.fPosition.xyz, 1.0f);
 
-	fCurrent_Position.z += fData.z;
+	fCurrent_Position.x -= fData.x;
 
 	fCurrent_Position = mul(fCurrent_Position, fWorld_Matrix);
 

@@ -114,6 +114,11 @@ struct tConstantBuffer_VertexShader_WVP
 	XMFLOAT4X4 fProjection_Matrix;
 };
 
+struct tConstantBuffer_VertexShader_Bullet
+{
+	XMFLOAT4 direction = { 0.0f, 0.0f, 0.0f, 0.0f };
+};
+
 struct tConstantBuffer_VertexShader_Animation
 {
 	XMFLOAT4X4 fAnimation_Data[99];
@@ -132,9 +137,4 @@ struct tConstantBuffer_PixelShader
 	XMFLOAT4 specular = { 0.0f, 0.0f, 0.0f, 0.0f };
 	XMFLOAT4 transparency = { 0.0f, 0.0f, 0.0f, 0.0f };
 	XMFLOAT4 tint = { 0.0f, 0.0f, 0.0f, 1.0f };
-};
-
-struct tConstantBuffer_ColorTint
-{
-	XMFLOAT4 addColor = { 0.0f, 0.0f, 0.0f, 1.0f };
 };
