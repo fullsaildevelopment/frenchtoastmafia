@@ -735,9 +735,10 @@ void cGraphics_Setup::handle_input(double dDelta)
 	t_move.fZ = (float)(1 * dDelta);
 	t_move.fW = 0.0f;*/
 
-	//int controller = is_right_hand_controller(vrEvent);  // -1 = not controller  -2 = role not valid   1 = left   2 = right
+	// -1 = not controller  -2 = role not valid   1 = left controller   2 = right controller
 
 		int ID;
+		int controller;
 	while (m_pHMD->PollNextEvent(&vrEvent, sizeof(vrEvent)) != 0)
 	{
 		ID = vrEvent.trackedDeviceIndex;
@@ -749,12 +750,12 @@ void cGraphics_Setup::handle_input(double dDelta)
 			switch (vrEvent.eventType)
 			{
 			case VREvent_ButtonPress:
-				if (int controller = is_right_hand_controller(vrEvent) == 1)
+				if (controller = is_right_hand_controller(vrEvent) == 1)
 				{
 					printf("Grip Press\n");
 					moveMeOnZScotty -= moveSpeed;
 				}
-				else if (int controller = is_right_hand_controller(vrEvent) == 2)
+				else if (controller = is_right_hand_controller(vrEvent) == 2)
 				{
 					printf("Grip Press\n");
 					break;
@@ -770,12 +771,12 @@ void cGraphics_Setup::handle_input(double dDelta)
 			switch (vrEvent.eventType)
 			{
 			case VREvent_ButtonPress:
-				if (int controller = is_right_hand_controller(vrEvent) == 1)
+				if (controller = is_right_hand_controller(vrEvent) == 1)
 				{
 					printf("Trigger Press\n");
 					moveMeOnZScotty += moveSpeed;
 				}
-				else if (int controller = is_right_hand_controller(vrEvent) == 2)
+				else if (controller = is_right_hand_controller(vrEvent) == 2)
 				{
 					printf("Trigger Press\n");
 					break;
@@ -791,7 +792,7 @@ void cGraphics_Setup::handle_input(double dDelta)
 			switch (vrEvent.eventType)
 			{
 			case VREvent_ButtonPress:
-				if (int controller = is_right_hand_controller(vrEvent) == 1)
+				if (controller = is_right_hand_controller(vrEvent) == 1)
 				{
 					printf("Touchpad Press\n");
 					//tFloat4 t_move;
@@ -802,7 +803,7 @@ void cGraphics_Setup::handle_input(double dDelta)
 					//m_cCameraRight->Translation(t_move);
 					moveMeOnXScotty += moveSpeed;
 				}
-				else if (int controller = is_right_hand_controller(vrEvent) == 2)
+				else if (controller = is_right_hand_controller(vrEvent) == 2)
 				{
 					printf("Touchpad Press\n");
 					break;
@@ -827,12 +828,12 @@ void cGraphics_Setup::handle_input(double dDelta)
 			switch (vrEvent.eventType)
 			{
 			case VREvent_ButtonPress:
-				if (int controller = is_right_hand_controller(vrEvent) == 1)
+				if (controller = is_right_hand_controller(vrEvent) == 1)
 				{
 					printf("ApplicationMenu Press\n");
 					moveMeOnXScotty -= moveSpeed;
 				}
-				else if (int controller = is_right_hand_controller(vrEvent) == 2)
+				else if (controller = is_right_hand_controller(vrEvent) == 2)
 				{
 					printf("ApplicationMenu Press\n");
 					break;
@@ -845,7 +846,16 @@ void cGraphics_Setup::handle_input(double dDelta)
 			break;
 
 		default:
-			printf("Controller is not Working\n");
+			if (controller = is_right_hand_controller(vrEvent) == -1)
+			{
+				printf("Tracked Device is not a controller\n");
+			}
+			else if (controller = is_right_hand_controller(vrEvent) == -2)
+			{
+				printf("Controller role is not valid\n");
+			}
+			else
+				printf("Controller is not Working\n");
 			break;
 
 		}
