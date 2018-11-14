@@ -35,19 +35,21 @@ private:
 
 	// WVPC
 	ComPtr<ID3D11Buffer> d3d_Constant_Buffer_WVP;
-	ComPtr<ID3D11Buffer> d3d_Constant_Buffer_Mage;
-	tConstantBuffer_PixelShader cps_mage;
-	tConstantBuffer_PixelShader cps_arena;
-	tConstantBuffer_PixelShader cps_dragon;
-	tConstantBuffer_PixelShader cps_fireball;
+	tConstantBuffer_VertexShader_WVP tWVP;
 
+	// Resources
 	D3D11_BUFFER_DESC d3d_Constant_Buffer_Desc;
 	D3D11_MAPPED_SUBRESOURCE d3d_MSR;
 
-	tConstantBuffer_VertexShader_WVP tWVP;
+	// Animation
+	ComPtr<ID3D11Buffer> d3d_Constant_Buffer_Animation;
 	tConstantBuffer_VertexShader_Animation tAnim;
-	XMFLOAT4X4 fCamera_Matrix;
-	XMFLOAT4X4 fCamera_Origin;
+	
+	// CPS
+	tConstantBuffer_PixelShader tCB_PS;
+	
+	//XMFLOAT4X4 fCamera_Matrix;
+	//XMFLOAT4X4 fCamera_Origin;
 
 	// TIME
 	XTime cTime;
@@ -59,9 +61,6 @@ private:
 
 	bool dragonAlive = true;
 	int dragonHealth = 7;
-	// Animation
-	int nAnimation_Frame;
-	ComPtr<ID3D11Buffer> d3d_Constant_Buffer_Animation;
 
 public:
 	cRender_Manager();

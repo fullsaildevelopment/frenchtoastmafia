@@ -19,7 +19,6 @@ cRender_Manager::~cRender_Manager()
 
 void cRender_Manager::Initialize(cGraphics_Setup* _setup)
 {
-	nAnimation_Frame = 0;
 	c_Graphics_Setup = _setup;
 
 	// CONSTANT BUFFER - WORLD VIEW PROJECTION CAMERA
@@ -265,6 +264,21 @@ void cRender_Manager::Load_Data(int nScene_Id, tScene_Objects* tObject_List)
 					k++;
 				}
 			}
+
+
+			
+
+			// CONSTANT BUFFER
+
+			ZeroMemory(&d3d_Constant_Buffer_Desc, sizeof(D3D11_BUFFER_DESC));
+			d3d_Constant_Buffer_Desc.ByteWidth = sizeof(tConstantBuffer_PixelShader);
+			d3d_Constant_Buffer_Desc.Usage = D3D11_USAGE_DYNAMIC;
+			d3d_Constant_Buffer_Desc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+			d3d_Constant_Buffer_Desc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+			d3d_Constant_Buffer_Desc.MiscFlags = 0;
+			d3d_Constant_Buffer_Desc.StructureByteStride = 0;
+
+			c_Graphics_Setup->Get_Device().Get()->CreateBuffer(&d3d_Constant_Buffer_Desc, nullptr, tObject_List->tMaterials_Buffers[i].GetAddressOf());
 		}
 	}
 }
