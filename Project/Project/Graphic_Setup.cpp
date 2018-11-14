@@ -392,7 +392,14 @@ void cGraphics_Setup::UpdateHMDMatrixPose()
 		if (m_rTrackedDevicePose[nDevice].bPoseIsValid)
 		{
 			m_iValidPoseCount++;
-			m_rmat4DevicePose[nDevice] = ConvertSteamVRMatrixToMatrix4(m_rTrackedDevicePose[nDevice].mDeviceToAbsoluteTracking);
+			if (m_pHMD->GetTrackedDeviceClass(nDevice) != vr::TrackedDeviceClass_HMD)
+			{
+				m_rmat4DevicePose[nDevice] = ConvertSteamVRMatrixToMatrix4(m_rTrackedDevicePose[nDevice].mDeviceToAbsoluteTracking);
+			}
+			else
+			{
+				m_rmat4DevicePose[nDevice] = ConvertSteamVRMatrixToMatrix4(m_rTrackedDevicePose[nDevice].mDeviceToAbsoluteTracking).translate(moveMeOnXScotty, moveMeOnYScotty, moveMeOnZScotty);
+			}
 
 			if (m_rDevClassChar[nDevice] == 0)
 			{
@@ -768,7 +775,8 @@ void cGraphics_Setup::handle_input(double dDelta)
 					t_move.fY = 0.0f;
 					t_move.fZ = 2.5f;
 					t_move.fW = 0.0f;
-					m_cCameraRight->Translation(t_move);
+					//m_cCameraRight->Translation(t_move);
+					moveMeOnXScotty += 0.1;
 					break;
 
 				case VREvent_ButtonUnpress:
