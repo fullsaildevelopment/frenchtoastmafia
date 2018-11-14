@@ -171,26 +171,17 @@ void cRender_Manager::Load_Data(int nScene_Id, tScene_Objects* tObject_List)
 			if (tObject_List->bIs_Animated[i])
 				c_Graphics_Setup->Get_Device().Get()->CreateVertexShader(VertexShader_Animation, sizeof(VertexShader_Animation), NULL, &tObject_List->d3d_Vertex_Shaders[i]);
 			else
-				c_Graphics_Setup->Get_Device().Get()->CreateVertexShader(VertexShader, sizeof(VertexShader), NULL, &tObject_List->d3d_Vertex_Shaders[i]);
+			{
+				if (i == 4)
+					c_Graphics_Setup->Get_Device().Get()->CreateVertexShader(VertexShader_Bullet, sizeof(VertexShader_Bullet), NULL, &tObject_List->d3d_Vertex_Shaders[i]);
+				else
+					c_Graphics_Setup->Get_Device().Get()->CreateVertexShader(VertexShader, sizeof(VertexShader), NULL, &tObject_List->d3d_Vertex_Shaders[i]);
+				
+			}
 
 			//PIXEL SHADERS
 			c_Graphics_Setup->Get_Device().Get()->CreatePixelShader(PixelShader_Mage, sizeof(PixelShader_Mage), NULL, &tObject_List->d3d_Pixel_Shaders[i]);
-			//if (i == 0)
-			//{
-			//	c_Graphics_Setup->Get_Device().Get()->CreatePixelShader(PixelShader_Mage, sizeof(PixelShader_Mage), NULL, &tObject_List->d3d_Pixel_Shaders[i]);
-			//}
-			//else if (i == 1)
-			//{
-			//	c_Graphics_Setup->Get_Device().Get()->CreatePixelShader(PixelShader_Arena, sizeof(PixelShader_Arena), NULL, &tObject_List->d3d_Pixel_Shaders[i]);
-			//}
-			//else if (i == 2)
-			//{
-			//	c_Graphics_Setup->Get_Device().Get()->CreatePixelShader(PixelShader_Dragon, sizeof(PixelShader_Dragon), NULL, &tObject_List->d3d_Pixel_Shaders[i]);
-			//}
-			//else if (i == 3)
-			//{
-			//	c_Graphics_Setup->Get_Device().Get()->CreatePixelShader(PixelShader_Fireball, sizeof(PixelShader_Fireball), NULL, &tObject_List->d3d_Pixel_Shaders[i]);
-			//}
+			//c_Graphics_Setup->Get_Device().Get()->CreatePixelShader(PixelShader, sizeof(PixelShader), NULL, &tObject_List->d3d_Pixel_Shaders[i]);
 
 			// SRV
 			int k = 0;
@@ -262,7 +253,7 @@ void cRender_Manager::Load_Data(int nScene_Id, tScene_Objects* tObject_List)
 					k++;
 				}
 			}
-
+			
 			// CONSTANT BUFFER
 
 			ZeroMemory(&d3d_Constant_Buffer_Desc, sizeof(D3D11_BUFFER_DESC));
@@ -497,14 +488,11 @@ void cRender_Manager::Draw(int nScene_Id, tScene_Objects* tObject_List)
 		for (int i = 0; i < tObject_List->nObject_Count; i++)
 		{
 			// TO TURN OFF OBJECTS
-			if (((i == 3) || (i == 4)) && !dragonAlive)
+			if (((i == 2) || (i == 3)) && !dragonAlive)
 			{
 				continue;
 			}
-			if (i == 5)
-			{
-				continue;
-			}
+
 			// CONSTANT BUFFER - WVPC
 			{
 				tWVP.fWorld_Matrix = tFloat4x4_to_XMFLOAT4x4(tObject_List->fWorld_Matrix[i]);
@@ -537,19 +525,7 @@ void cRender_Manager::Draw(int nScene_Id, tScene_Objects* tObject_List)
 				c_Graphics_Setup->Get_Context().Get()->IASetVertexBuffers(0, 1, ts_v_buffer, &verts_size, &off_set);
 			c_Graphics_Setup->Get_Context().Get()->IASetIndexBuffer(tObject_List->d3d_Index_Buffers[i].Get(), DXGI_FORMAT_R32_UINT, 0);
 			c_Graphics_Setup->Get_Context().Get()->IASetInputLayout(c_Graphics_Setup->Get_Input_Layout().Get());
-			if (i != 2)
-				c_Graphics_Setup->Get_Context().Get()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-			else
-			{
-				c_Graphics_Setup->Get_Context().Get()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
-			}
-			//if (i != 1)
-			//{
-			//	c_Graphics_Setup->Get_Context().Get()->VSSetShader(c_Graphics_Setup->Get_Vertex_Shader(), NULL, 0);
-			//	c_Graphics_Setup->Get_Context().Get()->PSSetShader(c_Graphics_Setup->Get_Pixel_Shader(), NULL, 0);
-			//}
-			//else
-			//{
+			c_Graphics_Setup->Get_Context().Get()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 			c_Graphics_Setup->Get_Context().Get()->VSSetShader(tObject_List->d3d_Vertex_Shaders[i].Get(), NULL, 0);
 			c_Graphics_Setup->Get_Context().Get()->PSSetShader(tObject_List->d3d_Pixel_Shaders[i].Get(), NULL, 0);
 
@@ -601,10 +577,17 @@ void cRender_Manager::Draw(int nScene_Id, tScene_Objects* tObject_List)
 				tCB_PS.transparency.y = tObject_List->tMaterials_Data[i].tMats[0].tTransparency.fY;
 				tCB_PS.transparency.z = tObject_List->tMaterials_Data[i].tMats[0].tTransparency.fZ;
 				tCB_PS.transparency.w = tObject_List->tMaterials_Data[i].tMats[0].tTransparency.fW;
-				
+
+				tCB_PS.tint.x = 0.0f;
+				tCB_PS.tint.y = 0.0f;
+				tCB_PS.tint.z = 0.0f;
+				tCB_PS.tint.w = 1.0f;
+
 				if (i == 2)
 					tCB_PS.tint = tFloat4_to_XMFLOAT4(dragonTint);
-
+				
+				if (i == 4)
+					tCB_PS.tint.z = 1.0f;
 
 				c_Graphics_Setup->Get_Context().Get()->Map(tObject_List->tMaterials_Buffers[i].Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &d3d_MSR);
 				memcpy(d3d_MSR.pData, &tCB_PS, sizeof(tConstantBuffer_PixelShader));

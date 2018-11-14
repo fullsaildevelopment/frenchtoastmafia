@@ -121,7 +121,7 @@ tScene_Objects cScene_Manager::GetScene(int nScene_Id)
 	// GAME
 	else
 	{
-		tScene.nObject_Count = 4;
+		tScene.nObject_Count = 5;
 
 		// Battle Mage - 0
 		{
@@ -289,45 +289,42 @@ tScene_Objects cScene_Manager::GetScene(int nScene_Id)
 		}
 		// Fireball
 
-		// Priest - 5
-		//{
-		//	XMFLOAT4X4 temp;
-		//
-		//	XMMATRIX tempMatrix = XMMatrixIdentity();
-		//
-		//	//tempMatrix = XMMatrixMultiply(tempMatrix, XMMatrixTranslation(-10, 10, 0));
-		//
-		//	XMStoreFloat4x4(&temp, tempMatrix);
-		//
-		//	tScene.fWorld_Matrix[5] = XMFLOAT4x4_to_tFloat4x4(temp);
-		//	tMesh tPriest = cBinary_Read.Read_Mesh("priestDeathMesh.bin");
-		//
-		//	for (int i = 0; i < tPriest.nVertex_Count; i++)
-		//	{
-		//		tPriest.tVerts[i].fPosition.fZ *= -1;
-		//	}
-		//
-		//	for (int i = 0; i < tPriest.nVertex_Count; i++)
-		//	{
-		//		tScene.tMesh_Data[5].tVerts.push_back(tPriest.tVerts[i]);
-		//	}
-		//
-		//	tScene.tMesh_Data[5].nVertex_Count = tPriest.nVertex_Count;
-		//
-		//
-		//	for (int i = 0; i < tPriest.nIndex_Count; i++)
-		//	{
-		//		tScene.tMesh_Data[5].nIndicies.push_back(tPriest.nIndicies[i]);
-		//	}
-		//	tScene.tMesh_Data[5].nIndex_Count = tPriest.nIndex_Count;
-		//
-		//	//XMStoreFloat4x4(&tScene.fWorld_Matrix[0], XMMatrixIdentity());
-		//
-		//	tScene.tMaterials_Data[5] = cBinary_Read.Read_Material("priestDeathMat.bin");
-		//	tScene.tMaterials_Data[5].tMats[0].szDiffuse_File_Path = "Priest_Death.fbm\\PPG_Priest_D.png";
-		//	//tScene.tMaterials_Data[0].tMats[0].tNormal.fX = 1.0f;
-		//}
-		// Priest
+		// Bullet - 4
+		{
+			XMFLOAT4X4 temp;
+
+			XMMATRIX tempMatrix = XMMatrixIdentity();
+
+			tempMatrix = XMMatrixMultiply(tempMatrix, XMMatrixTranslation(-0.1, 0.1, 0));
+
+			XMStoreFloat4x4(&temp, tempMatrix);
+
+			tScene.fWorld_Matrix[4] = XMFLOAT4x4_to_tFloat4x4(temp);
+			tMesh tFireball = cBinary_Read.Read_Mesh("fireballMesh.bin");
+
+			for (int i = 0; i < tFireball.nVertex_Count; i++)
+			{
+				tFireball.tVerts[i].fPosition.fZ *= -1;
+			}
+
+			for (int i = 0; i < tFireball.nVertex_Count; i++)
+			{
+				tScene.tMesh_Data[4].tVerts.push_back(tFireball.tVerts[i]);
+			}
+
+			tScene.tMesh_Data[4].nVertex_Count = tFireball.nVertex_Count;
+
+
+			for (int i = 0; i < tFireball.nIndex_Count; i++)
+			{
+				tScene.tMesh_Data[4].nIndicies.push_back(tFireball.nIndicies[i]);
+			}
+			tScene.tMesh_Data[4].nIndex_Count = tFireball.nIndex_Count;
+
+			tScene.tMaterials_Data[4] = cBinary_Read.Read_Material("fireballMaterial.bin");
+			tScene.tMaterials_Data[4].tMats[0].szDiffuse_File_Path = "Fireball.fbm\\Fireball_D.png";
+		}
+		// Bullet
 
 	}
 	//else

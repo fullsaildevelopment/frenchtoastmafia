@@ -15,13 +15,9 @@
 #include "XTime.h"
 
 #include "VertexShader_Animation.csh"
-#include "VertexShader_Arena.csh"
+#include "VertexShader_Bullet.csh"
 
-#include "PixelShader_Arena.csh"
 #include "PixelShader_Mage.csh"
-#include "PixelShader_Priest.csh"
-#include "PixelShader_Dragon.csh"
-#include "PixelShader_Fireball.csh"
 #include "PixelShader_Screen.csh"
 #include "dopeSoundSystem.h"
 

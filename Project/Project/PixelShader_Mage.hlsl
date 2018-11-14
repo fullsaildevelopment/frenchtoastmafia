@@ -26,6 +26,7 @@ cbuffer CBUFF : register(b0)
 	float4 shininess;
 	float4 specular;
 	float4 transparency;
+	float4 tint;
 };
 
 struct INPUT_DATA
@@ -85,6 +86,15 @@ float4 main(INPUT_DATA input) : SV_TARGET
 	//attenuation *= attenuation;
 	//final_color *= attenuation;
 	final_color.a = combined_color.a;
+
+	if (tint.x == 1)
+		final_color.x += 1;
+
+	if (tint.y == 1)
+		final_color.y += 1;
+
+	if (tint.z == 1)
+		final_color.z += 1;
 
 	return final_color;
 
