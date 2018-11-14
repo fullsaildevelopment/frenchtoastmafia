@@ -85,7 +85,6 @@ float4 main(INPUT_DATA input) : SV_TARGET
 	//attenuation *= attenuation;
 	//final_color *= attenuation;
 	final_color.a = combined_color.a;
-	final_color.x = 1;
 
 	return final_color;
 

@@ -596,7 +596,7 @@ void cRender_Manager::Draw(int nScene_Id, tScene_Objects* tObject_List)
 				tCB_PS.transparency.z = tObject_List->tMaterials_Data[i].tMats[0].tTransparency.fZ;
 				tCB_PS.transparency.w = tObject_List->tMaterials_Data[i].tMats[0].tTransparency.fW;
 				
-				if (i == 3)
+				if (i == 2)
 					tCB_PS.tint = tFloat4_to_XMFLOAT4(dragonTint);
 
 

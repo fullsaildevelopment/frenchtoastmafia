@@ -47,7 +47,7 @@ tScene_Objects cScene_Manager::GetScene(int nScene_Id)
 
 		XMMATRIX tempMatrix = XMMatrixIdentity();
 
-		//tempMatrix = XMMatrixMultiply(XMMatrixTranslation(0, 0, 15), tempMatrix);
+		tempMatrix = XMMatrixMultiply(tempMatrix, XMMatrixTranslation(0, 0, -2.5));
 
 		XMStoreFloat4x4(&temp, tempMatrix);
 
@@ -185,7 +185,6 @@ tScene_Objects cScene_Manager::GetScene(int nScene_Id)
 
 			tMesh tArena = cBinary_Read.Read_Mesh("arena_3_mesh.bin");
 			tScene.tMesh_Data[1].nIndex_Count = tArena.nIndex_Count;
-			tScene.tMaterials_Data[1] = cBinary_Read.Read_Material("arena_3_material.bin");
 
 			for (int i = 0; i < tArena.nVertex_Count; i++)
 			{
@@ -203,6 +202,8 @@ tScene_Objects cScene_Manager::GetScene(int nScene_Id)
 			{
 				tScene.tMesh_Data[1].nIndicies.push_back(tArena.nIndicies[i]);
 			}
+
+			tScene.tMaterials_Data[1] = cBinary_Read.Read_Material("arenaMat.bin");
 		}
 		// Arena
 

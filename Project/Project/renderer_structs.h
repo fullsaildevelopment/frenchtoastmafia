@@ -131,7 +131,7 @@ struct tConstantBuffer_PixelShader
 	XMFLOAT4 shininess = { 0.0f, 0.0f, 0.0f, 0.0f };
 	XMFLOAT4 specular = { 0.0f, 0.0f, 0.0f, 0.0f };
 	XMFLOAT4 transparency = { 0.0f, 0.0f, 0.0f, 0.0f };
-	XMFLOAT4 tint = { 0.0f, 0.0f, 0.0f, 0.0f };
+	XMFLOAT4 tint = { 0.0f, 0.0f, 0.0f, 1.0f };
 };
 
 struct tConstantBuffer_ColorTint
