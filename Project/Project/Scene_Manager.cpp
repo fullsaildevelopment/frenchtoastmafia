@@ -20,7 +20,7 @@ tScene_Objects cScene_Manager::GetScene(int nScene_Id)
 {
 	tScene_Objects tScene;
 	// SCREEN
-	if (nScene_Id < 2 || nScene_Id > 3)
+	if (nScene_Id < 2 || nScene_Id == 3)
 	{
 		//tBinary_Screen tBS;
 		//if (nScene_Id == 0)
