@@ -19,6 +19,11 @@ cRender_Manager::~cRender_Manager()
 
 void cRender_Manager::Initialize(cGraphics_Setup* _setup)
 {
+	dragonTint.fX = 0.0f;
+	dragonTint.fZ = 0.0f;
+	dragonTint.fY = 0.0f;
+	dragonTint.fW = 1.0f;
+
 	c_Graphics_Setup = _setup;
 
 	// CONSTANT BUFFER - WORLD VIEW PROJECTION CAMERA
@@ -169,22 +174,23 @@ void cRender_Manager::Load_Data(int nScene_Id, tScene_Objects* tObject_List)
 				c_Graphics_Setup->Get_Device().Get()->CreateVertexShader(VertexShader, sizeof(VertexShader), NULL, &tObject_List->d3d_Vertex_Shaders[i]);
 
 			//PIXEL SHADERS
-			if (i == 0)
-			{
-				c_Graphics_Setup->Get_Device().Get()->CreatePixelShader(PixelShader_Mage, sizeof(PixelShader_Mage), NULL, &tObject_List->d3d_Pixel_Shaders[i]);
-			}
-			else if (i == 1)
-			{
-				c_Graphics_Setup->Get_Device().Get()->CreatePixelShader(PixelShader_Arena, sizeof(PixelShader_Arena), NULL, &tObject_List->d3d_Pixel_Shaders[i]);
-			}
-			else if (i == 2)
-			{
-				c_Graphics_Setup->Get_Device().Get()->CreatePixelShader(PixelShader_Dragon, sizeof(PixelShader_Dragon), NULL, &tObject_List->d3d_Pixel_Shaders[i]);
-			}
-			else if (i == 3)
-			{
-				c_Graphics_Setup->Get_Device().Get()->CreatePixelShader(PixelShader_Fireball, sizeof(PixelShader_Fireball), NULL, &tObject_List->d3d_Pixel_Shaders[i]);
-			}
+			c_Graphics_Setup->Get_Device().Get()->CreatePixelShader(PixelShader_Mage, sizeof(PixelShader_Mage), NULL, &tObject_List->d3d_Pixel_Shaders[i]);
+			//if (i == 0)
+			//{
+			//	c_Graphics_Setup->Get_Device().Get()->CreatePixelShader(PixelShader_Mage, sizeof(PixelShader_Mage), NULL, &tObject_List->d3d_Pixel_Shaders[i]);
+			//}
+			//else if (i == 1)
+			//{
+			//	c_Graphics_Setup->Get_Device().Get()->CreatePixelShader(PixelShader_Arena, sizeof(PixelShader_Arena), NULL, &tObject_List->d3d_Pixel_Shaders[i]);
+			//}
+			//else if (i == 2)
+			//{
+			//	c_Graphics_Setup->Get_Device().Get()->CreatePixelShader(PixelShader_Dragon, sizeof(PixelShader_Dragon), NULL, &tObject_List->d3d_Pixel_Shaders[i]);
+			//}
+			//else if (i == 3)
+			//{
+			//	c_Graphics_Setup->Get_Device().Get()->CreatePixelShader(PixelShader_Fireball, sizeof(PixelShader_Fireball), NULL, &tObject_List->d3d_Pixel_Shaders[i]);
+			//}
 
 			// SRV
 			int k = 0;
