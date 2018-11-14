@@ -110,6 +110,12 @@ private:
 	std::string m_strPoseClasses;                            // what classes we saw poses for this frame
 	char m_rDevClassChar[vr::k_unMaxTrackedDeviceCount];   // for each device, a character representing its class
 
+	//input
+
+	float moveMeOnXScotty = 0;
+	float moveMeOnYScotty = 0;
+	float moveMeOnZScotty = 0;
+
 
 public:
 	cGraphics_Setup(HWND _hwnd);
