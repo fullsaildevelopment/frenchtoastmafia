@@ -179,19 +179,11 @@ void cRender_Manager::Load_Data(int nScene_Id, tScene_Objects* tObject_List)
 			}
 			else if (i == 2)
 			{
-				c_Graphics_Setup->Get_Device().Get()->CreatePixelShader(PixelShader, sizeof(PixelShader), NULL, &tObject_List->d3d_Pixel_Shaders[i]);
+				c_Graphics_Setup->Get_Device().Get()->CreatePixelShader(PixelShader_Dragon, sizeof(PixelShader_Dragon), NULL, &tObject_List->d3d_Pixel_Shaders[i]);
 			}
 			else if (i == 3)
 			{
-				c_Graphics_Setup->Get_Device().Get()->CreatePixelShader(PixelShader_Dragon, sizeof(PixelShader_Dragon), NULL, &tObject_List->d3d_Pixel_Shaders[i]);
-			}
-			else if (i == 4)
-			{
 				c_Graphics_Setup->Get_Device().Get()->CreatePixelShader(PixelShader_Fireball, sizeof(PixelShader_Fireball), NULL, &tObject_List->d3d_Pixel_Shaders[i]);
-			}
-			else if (i == 5)
-			{
-				c_Graphics_Setup->Get_Device().Get()->CreatePixelShader(PixelShader_Priest, sizeof(PixelShader_Priest), NULL, &tObject_List->d3d_Pixel_Shaders[i]);
 			}
 
 			// SRV
@@ -264,9 +256,6 @@ void cRender_Manager::Load_Data(int nScene_Id, tScene_Objects* tObject_List)
 					k++;
 				}
 			}
-
-
-			
 
 			// CONSTANT BUFFER
 
@@ -426,27 +415,27 @@ void cRender_Manager::Draw(int nScene_Id, tScene_Objects* tObject_List)
 				dragonHealth -= 1;
 				if (dragonHealth == 6)
 				{
-					cps_dragon.tint = { 0.0f, 0.0f, 1.0f, 1.0f };
+					dragonTint = { 0.0f, 0.0f, 1.0f, 1.0f };
 				}
 				if (dragonHealth == 5)
 				{
-					cps_dragon.tint = { 0.0f, 1.0f, 1.0f, 1.0f };
+					dragonTint = { 0.0f, 1.0f, 1.0f, 1.0f };
 				}
 				if (dragonHealth == 4)
 				{
-					cps_dragon.tint = { 0.0f, 1.0f, 0.0f, 1.0f };
+					dragonTint = { 0.0f, 1.0f, 0.0f, 1.0f };
 				}
 				if (dragonHealth == 3)
 				{
-					cps_dragon.tint = { 1.0f, 1.0f, 0.0f, 1.0f };
+					dragonTint = { 1.0f, 1.0f, 0.0f, 1.0f };
 				}
 				if (dragonHealth == 2)
 				{
-					cps_dragon.tint = { 1.0f, 0.5f, 0.0f, 1.0f };
+					dragonTint = { 1.0f, 0.5f, 0.0f, 1.0f };
 				}
 				if (dragonHealth == 1)
 				{
-					cps_dragon.tint = { 1.0f, 0.0f, 0.0f, 1.0f };
+					dragonTint = { 1.0f, 0.0f, 0.0f, 1.0f };
 				}
 
 				if (dragonHealth <= 0)
@@ -459,7 +448,7 @@ void cRender_Manager::Draw(int nScene_Id, tScene_Objects* tObject_List)
 			if (flashTimer < 0.0f)
 			{
 				flashTimer = 0.0f;
-				cps_dragon.tint = { 0.0f, 0.0f, 0.0f, 1.0f };
+				dragonTint = { 0.0f, 0.0f, 0.0f, 1.0f };
 			}
 			if (flashTimer > 0.0f)
 			{
@@ -468,20 +457,20 @@ void cRender_Manager::Draw(int nScene_Id, tScene_Objects* tObject_List)
 
 			if (dragonHealth > 3)
 			{
-				tObject_List->fWorld_Matrix[4].tW.fX += 0.1;
-				tObject_List->fWorld_Matrix[4].tW.fY -= 0.1;
+				tObject_List->fWorld_Matrix[3].tW.fX += 0.1;
+				tObject_List->fWorld_Matrix[3].tW.fY -= 0.1;
 			}
 			else
 			{
-				tObject_List->fWorld_Matrix[4].tW.fX += 0.3;
-				tObject_List->fWorld_Matrix[4].tW.fY -= 0.3;
+				tObject_List->fWorld_Matrix[3].tW.fX += 0.3;
+				tObject_List->fWorld_Matrix[3].tW.fY -= 0.3;
 			}
 
-			if (tObject_List->fWorld_Matrix[4].tW.fX >= -1)
+			if (tObject_List->fWorld_Matrix[3].tW.fX >= -1)
 			{
 				sound.playSoundEffect("Fireball+1.mp3", FMOD_DEFAULT);
-				tObject_List->fWorld_Matrix[4].tW.fX = -10;
-				tObject_List->fWorld_Matrix[4].tW.fY = 10;
+				tObject_List->fWorld_Matrix[3].tW.fX = -10;
+				tObject_List->fWorld_Matrix[3].tW.fY = 10;
 			}
 		}
 
@@ -574,38 +563,48 @@ void cRender_Manager::Draw(int nScene_Id, tScene_Objects* tObject_List)
 				{
 					c_Graphics_Setup->Get_Context().Get()->PSSetShaderResources(0, 1, tObject_List->d3d_SRV[i][0].GetAddressOf());
 				}
+				
+				tCB_PS.ambient.x = tObject_List->tMaterials_Data[i].tMats[0].tAmbient.fX;
+				tCB_PS.ambient.y = tObject_List->tMaterials_Data[i].tMats[0].tAmbient.fY;
+				tCB_PS.ambient.z = tObject_List->tMaterials_Data[i].tMats[0].tAmbient.fZ;
+				tCB_PS.ambient.w = tObject_List->tMaterials_Data[i].tMats[0].tAmbient.fW;
 
-				if (i == 0)
-				{
-					c_Graphics_Setup->Get_Context().Get()->Map(tObject_List->tMaterials_Buffers[i].Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &d3d_MSR);
-					memcpy(d3d_MSR.pData, &cps_mage, sizeof(tConstantBuffer_PixelShader));
-					c_Graphics_Setup->Get_Context().Get()->Unmap(tObject_List->tMaterials_Buffers[i].Get(), 0);
-					ID3D11Buffer *tmp_con_buffer[] = { tObject_List->tMaterials_Buffers[i].Get() };
-					c_Graphics_Setup->Get_Context().Get()->PSSetConstantBuffers(0, 1, tmp_con_buffer);
-				}
+				tCB_PS.diffuse.x = tObject_List->tMaterials_Data[i].tMats[0].tDiffuse.fX;
+				tCB_PS.diffuse.y = tObject_List->tMaterials_Data[i].tMats[0].tDiffuse.fY;
+				tCB_PS.diffuse.z = tObject_List->tMaterials_Data[i].tMats[0].tDiffuse.fZ;
+				tCB_PS.diffuse.w = tObject_List->tMaterials_Data[i].tMats[0].tDiffuse.fW;
 
-				switch (i)
-				{
-				case 0:
-					break;
-				case 1:
-					memcpy(d3d_MSR.pData, &cps_arena, sizeof(tConstantBuffer_PixelShader));
-					break;
-				case 3:
-					memcpy(d3d_MSR.pData, &cps_dragon, sizeof(tConstantBuffer_PixelShader));
-					break;
-				case 4:
-					memcpy(d3d_MSR.pData, &cps_fireball, sizeof(tConstantBuffer_PixelShader));
-					break;
-					//case 5:
-					//	memcpy(d3d_MSR.pData, &cps_priest, sizeof(tConstantBuffer_PixelShader));
-					//	break;
-				default:
-					break;
-				}
+				tCB_PS.emissive.x = tObject_List->tMaterials_Data[i].tMats[0].tEmissive.fX;
+				tCB_PS.emissive.y = tObject_List->tMaterials_Data[i].tMats[0].tEmissive.fY;
+				tCB_PS.emissive.z = tObject_List->tMaterials_Data[i].tMats[0].tEmissive.fZ;
+				tCB_PS.emissive.w = tObject_List->tMaterials_Data[i].tMats[0].tEmissive.fW;
+
+				tCB_PS.reflection.x = tObject_List->tMaterials_Data[i].tMats[0].tReflection.fX;
+				tCB_PS.reflection.y = tObject_List->tMaterials_Data[i].tMats[0].tReflection.fY;
+				tCB_PS.reflection.z = tObject_List->tMaterials_Data[i].tMats[0].tReflection.fZ;
+				tCB_PS.reflection.w = tObject_List->tMaterials_Data[i].tMats[0].tReflection.fW;
+
+				tCB_PS.shininess.x = tObject_List->tMaterials_Data[i].tMats[0].fShininess;
+
+				tCB_PS.specular.x = tObject_List->tMaterials_Data[i].tMats[0].tSpecular.fX;
+				tCB_PS.specular.y = tObject_List->tMaterials_Data[i].tMats[0].tSpecular.fY;
+				tCB_PS.specular.z = tObject_List->tMaterials_Data[i].tMats[0].tSpecular.fZ;
+				tCB_PS.specular.w = tObject_List->tMaterials_Data[i].tMats[0].tSpecular.fW;
+
+				tCB_PS.transparency.x = tObject_List->tMaterials_Data[i].tMats[0].tTransparency.fX;
+				tCB_PS.transparency.y = tObject_List->tMaterials_Data[i].tMats[0].tTransparency.fY;
+				tCB_PS.transparency.z = tObject_List->tMaterials_Data[i].tMats[0].tTransparency.fZ;
+				tCB_PS.transparency.w = tObject_List->tMaterials_Data[i].tMats[0].tTransparency.fW;
+				
+				if (i == 3)
+					tCB_PS.tint = tFloat4_to_XMFLOAT4(dragonTint);
+
+
+				c_Graphics_Setup->Get_Context().Get()->Map(tObject_List->tMaterials_Buffers[i].Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &d3d_MSR);
+				memcpy(d3d_MSR.pData, &tCB_PS, sizeof(tConstantBuffer_PixelShader));
 				c_Graphics_Setup->Get_Context().Get()->Unmap(tObject_List->tMaterials_Buffers[i].Get(), 0);
 				ID3D11Buffer *tmp_con_buffer[] = { tObject_List->tMaterials_Buffers[i].Get() };
-				c_Graphics_Setup->Get_Context().Get()->PSSetConstantBuffers(0, 1, tmp_con_buffer);
+				c_Graphics_Setup->Get_Context().Get()->PSSetConstantBuffers(0, 1, tmp_con_buffer);				
 			}
 
 			if (tObject_List->bIs_Animated[i])

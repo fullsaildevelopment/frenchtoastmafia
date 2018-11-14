@@ -112,7 +112,7 @@ tScene_Objects cScene_Manager::GetScene(int nScene_Id)
 			tScene.szSRV_File_Path = "1.dds";
 		else if (nScene_Id == 1)
 			tScene.szSRV_File_Path = "2.dds";
-		else if (nScene_Id > 3)
+		else if (nScene_Id > 2)
 			tScene.szSRV_File_Path = "3.dds";
 
 
@@ -121,7 +121,7 @@ tScene_Objects cScene_Manager::GetScene(int nScene_Id)
 	// GAME
 	else
 	{
-		tScene.nObject_Count = 6;
+		tScene.nObject_Count = 4;
 
 		// Battle Mage - 0
 		{
@@ -206,7 +206,7 @@ tScene_Objects cScene_Manager::GetScene(int nScene_Id)
 		}
 		// Arena
 
-		// Dragon - 3
+		// Dragon - 2
 		{
 			XMFLOAT4X4 temp;
 
@@ -224,7 +224,7 @@ tScene_Objects cScene_Manager::GetScene(int nScene_Id)
 
 			XMStoreFloat4x4(&temp, tempMatrix);
 
-			tScene.fWorld_Matrix[3] = XMFLOAT4x4_to_tFloat4x4(temp);
+			tScene.fWorld_Matrix[2] = XMFLOAT4x4_to_tFloat4x4(temp);
 			tMesh tDragon = cBinary_Read.Read_Mesh("dragonMesh.bin");
 
 			for (int i = 0; i < tDragon.nVertex_Count; i++)
@@ -234,27 +234,24 @@ tScene_Objects cScene_Manager::GetScene(int nScene_Id)
 
 			for (int i = 0; i < tDragon.nVertex_Count; i++)
 			{
-				tScene.tMesh_Data[3].tVerts.push_back(tDragon.tVerts[i]);
+				tScene.tMesh_Data[2].tVerts.push_back(tDragon.tVerts[i]);
 			}
 
-			tScene.tMesh_Data[3].nVertex_Count = tDragon.nVertex_Count;
+			tScene.tMesh_Data[2].nVertex_Count = tDragon.nVertex_Count;
 
 
 			for (int i = 0; i < tDragon.nIndex_Count; i++)
 			{
-				tScene.tMesh_Data[3].nIndicies.push_back(tDragon.nIndicies[i]);
+				tScene.tMesh_Data[2].nIndicies.push_back(tDragon.nIndicies[i]);
 			}
-			tScene.tMesh_Data[3].nIndex_Count = tDragon.nIndex_Count;
+			tScene.tMesh_Data[2].nIndex_Count = tDragon.nIndex_Count;
 
-			//XMStoreFloat4x4(&tScene.fWorld_Matrix[0], XMMatrixIdentity());
-
-			tScene.tMaterials_Data[3] = cBinary_Read.Read_Material("dragonMaterial.bin");
-			tScene.tMaterials_Data[3].tMats[0].szDiffuse_File_Path = "Dragon.fbm\\DarkDragon_D.png";
-			//tScene.tMaterials_Data[0].tMats[0].tNormal.fX = 1.0f;
+			tScene.tMaterials_Data[2] = cBinary_Read.Read_Material("dragonMaterial.bin");
+			tScene.tMaterials_Data[2].tMats[0].szDiffuse_File_Path = "Dragon.fbm\\DarkDragon_D.png";
 		}
 		// Dragon
 
-		// Fireball - 4
+		// Fireball - 3
 		{
 			XMFLOAT4X4 temp;
 
@@ -264,7 +261,7 @@ tScene_Objects cScene_Manager::GetScene(int nScene_Id)
 
 			XMStoreFloat4x4(&temp, tempMatrix);
 
-			tScene.fWorld_Matrix[4] = XMFLOAT4x4_to_tFloat4x4(temp);
+			tScene.fWorld_Matrix[3] = XMFLOAT4x4_to_tFloat4x4(temp);
 			tMesh tFireball = cBinary_Read.Read_Mesh("fireballMesh.bin");
 
 			for (int i = 0; i < tFireball.nVertex_Count; i++)
@@ -274,64 +271,61 @@ tScene_Objects cScene_Manager::GetScene(int nScene_Id)
 
 			for (int i = 0; i < tFireball.nVertex_Count; i++)
 			{
-				tScene.tMesh_Data[4].tVerts.push_back(tFireball.tVerts[i]);
+				tScene.tMesh_Data[3].tVerts.push_back(tFireball.tVerts[i]);
 			}
 
-			tScene.tMesh_Data[4].nVertex_Count = tFireball.nVertex_Count;
+			tScene.tMesh_Data[3].nVertex_Count = tFireball.nVertex_Count;
 
 
 			for (int i = 0; i < tFireball.nIndex_Count; i++)
 			{
-				tScene.tMesh_Data[4].nIndicies.push_back(tFireball.nIndicies[i]);
+				tScene.tMesh_Data[3].nIndicies.push_back(tFireball.nIndicies[i]);
 			}
-			tScene.tMesh_Data[4].nIndex_Count = tFireball.nIndex_Count;
+			tScene.tMesh_Data[3].nIndex_Count = tFireball.nIndex_Count;
 
-			//XMStoreFloat4x4(&tScene.fWorld_Matrix[0], XMMatrixIdentity());
-
-			tScene.tMaterials_Data[4] = cBinary_Read.Read_Material("fireballMaterial.bin");
-			//tScene.tMaterials_Data[4].tMats[0].szDiffuse_File_Path = "Fireball.fbm\\Fireball_D.png";
-			//tScene.tMaterials_Data[0].tMats[0].tNormal.fX = 1.0f;
+			tScene.tMaterials_Data[3] = cBinary_Read.Read_Material("fireballMaterial.bin");
+			tScene.tMaterials_Data[3].tMats[0].szDiffuse_File_Path = "Fireball.fbm\\Fireball_D.png";
 		}
 		// Fireball
 
 		// Priest - 5
-		{
-			XMFLOAT4X4 temp;
-
-			XMMATRIX tempMatrix = XMMatrixIdentity();
-
-			//tempMatrix = XMMatrixMultiply(tempMatrix, XMMatrixTranslation(-10, 10, 0));
-
-			XMStoreFloat4x4(&temp, tempMatrix);
-
-			tScene.fWorld_Matrix[5] = XMFLOAT4x4_to_tFloat4x4(temp);
-			tMesh tPriest = cBinary_Read.Read_Mesh("priestDeathMesh.bin");
-
-			for (int i = 0; i < tPriest.nVertex_Count; i++)
-			{
-				tPriest.tVerts[i].fPosition.fZ *= -1;
-			}
-
-			for (int i = 0; i < tPriest.nVertex_Count; i++)
-			{
-				tScene.tMesh_Data[5].tVerts.push_back(tPriest.tVerts[i]);
-			}
-
-			tScene.tMesh_Data[5].nVertex_Count = tPriest.nVertex_Count;
-
-
-			for (int i = 0; i < tPriest.nIndex_Count; i++)
-			{
-				tScene.tMesh_Data[5].nIndicies.push_back(tPriest.nIndicies[i]);
-			}
-			tScene.tMesh_Data[5].nIndex_Count = tPriest.nIndex_Count;
-
-			//XMStoreFloat4x4(&tScene.fWorld_Matrix[0], XMMatrixIdentity());
-
-			tScene.tMaterials_Data[5] = cBinary_Read.Read_Material("priestDeathMat.bin");
-			tScene.tMaterials_Data[5].tMats[0].szDiffuse_File_Path = "Priest_Death.fbm\\PPG_Priest_D.png";
-			//tScene.tMaterials_Data[0].tMats[0].tNormal.fX = 1.0f;
-		}
+		//{
+		//	XMFLOAT4X4 temp;
+		//
+		//	XMMATRIX tempMatrix = XMMatrixIdentity();
+		//
+		//	//tempMatrix = XMMatrixMultiply(tempMatrix, XMMatrixTranslation(-10, 10, 0));
+		//
+		//	XMStoreFloat4x4(&temp, tempMatrix);
+		//
+		//	tScene.fWorld_Matrix[5] = XMFLOAT4x4_to_tFloat4x4(temp);
+		//	tMesh tPriest = cBinary_Read.Read_Mesh("priestDeathMesh.bin");
+		//
+		//	for (int i = 0; i < tPriest.nVertex_Count; i++)
+		//	{
+		//		tPriest.tVerts[i].fPosition.fZ *= -1;
+		//	}
+		//
+		//	for (int i = 0; i < tPriest.nVertex_Count; i++)
+		//	{
+		//		tScene.tMesh_Data[5].tVerts.push_back(tPriest.tVerts[i]);
+		//	}
+		//
+		//	tScene.tMesh_Data[5].nVertex_Count = tPriest.nVertex_Count;
+		//
+		//
+		//	for (int i = 0; i < tPriest.nIndex_Count; i++)
+		//	{
+		//		tScene.tMesh_Data[5].nIndicies.push_back(tPriest.nIndicies[i]);
+		//	}
+		//	tScene.tMesh_Data[5].nIndex_Count = tPriest.nIndex_Count;
+		//
+		//	//XMStoreFloat4x4(&tScene.fWorld_Matrix[0], XMMatrixIdentity());
+		//
+		//	tScene.tMaterials_Data[5] = cBinary_Read.Read_Material("priestDeathMat.bin");
+		//	tScene.tMaterials_Data[5].tMats[0].szDiffuse_File_Path = "Priest_Death.fbm\\PPG_Priest_D.png";
+		//	//tScene.tMaterials_Data[0].tMats[0].tNormal.fX = 1.0f;
+		//}
 		// Priest
 
 	}

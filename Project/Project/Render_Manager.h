@@ -61,6 +61,7 @@ private:
 
 	bool dragonAlive = true;
 	int dragonHealth = 7;
+	tFloat4 dragonTint;
 
 public:
 	cRender_Manager();

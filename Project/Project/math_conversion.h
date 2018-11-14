@@ -18,6 +18,30 @@ using namespace DirectX;
 #include "Basic_Structs.h"
 #include "Matrices.h"
 
+inline XMFLOAT4 tFloat4_to_XMFLOAT4(tFloat4 fIn)
+{
+	XMFLOAT4 fOut;
+
+	fOut.x = fIn.fX;
+	fOut.y = fIn.fY;
+	fOut.z = fIn.fZ;
+	fOut.w = fIn.fW;
+
+	return fOut;
+}
+
+inline tFloat4 XMFLOAT4_to_tFloat4(XMFLOAT4 fIn)
+{
+	tFloat4 fOut;
+
+	fOut.fX = fIn.x;
+	fOut.fY = fIn.y;
+	fOut.fZ = fIn.z;
+	fOut.fW = fIn.w;
+
+	return fOut;
+}
+
 inline XMFLOAT4X4 tFloat4x4_to_XMFLOAT4x4(tFloat4x4 fIn)
 {
 	XMFLOAT4X4 fOut;

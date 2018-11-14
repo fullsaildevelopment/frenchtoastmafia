@@ -43,6 +43,8 @@ void cGame_Loop::Update()
 	{
 		c_Render_Manager.Unload(&tObject_List);
 		m_nScene_Id++;
+		if (m_nScene_Id > 3)
+			m_nScene_Id = 2;
 		tObject_List = c_Scene_Manager.GetScene(m_nScene_Id);
 		c_Render_Manager.Load_Data(m_nScene_Id, &tObject_List);
 	}
