@@ -577,6 +577,7 @@ void cRender_Manager::Draw(int nScene_Id, tScene_Objects* tObject_List)
 		{
 			isHit = false;
 			flashTimer = flashTime;
+			sound.playSoundEffect("DragonSound1.mp3", FMOD_DEFAULT);
 			dragonHealth -= 1;
 			if (dragonHealth == 6)
 			{
