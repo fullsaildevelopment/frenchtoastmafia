@@ -110,6 +110,14 @@ private:
 	std::string m_strPoseClasses;                            // what classes we saw poses for this frame
 	char m_rDevClassChar[vr::k_unMaxTrackedDeviceCount];   // for each device, a character representing its class
 
+	//input
+
+	float moveSpeed = 2.0f;
+
+	float moveMeOnXScotty = 0;
+	float moveMeOnYScotty = 0;
+	float moveMeOnZScotty = 0;
+
 
 public:
 	cGraphics_Setup(HWND _hwnd);
@@ -117,16 +125,6 @@ public:
 
 	void Initialize();
 	void Clean_Up();
-
-	/*struct tTracked_device_pose
-	{
-		vr::TrackedDevicePose_t m_rTrackedDevicePose[64];
-	};
-
-	struct tMatrix4_device_pose
-	{
-		Matrix4 m_rmat4DevicePose[64];
-	};*/
 
 	struct VREvent_t
 	{
@@ -159,17 +157,11 @@ public:
 	ComPtr<ID3D11Texture2D> Get_Texture_Right_Eye();
 	cCamera get_Camera_Left();
 	cCamera get_Camera_Right();
-	//IVRSystem get_m_pHMD();
 	unsigned int get_controller_vert_count();
 	int get_tracked_controller_count();
-	//tTracked_device_pose get_tracked_device_pose();
-	//Matrix4 get_matrix4_device_pose();
 	ComPtr<ID3D11Resource> get_controller_axis_vertex_buffer();
-	int is_right_hand_controller();
-	//void controller_input();
+	int is_right_hand_controller(vr::VREvent_t vr_event);
 	void get_controller_pose();
 	void update_controller();
-	tFloat4x4 get_controller_matrix();
 	void handle_input(double dDelta, int nScene_Id, bool *bChange_Scene, bool *bMove_Bullet);
-	//void vr_event_handler(const VREvent_t &vr_event);
 };

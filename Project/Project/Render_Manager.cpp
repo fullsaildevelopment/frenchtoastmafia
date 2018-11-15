@@ -173,7 +173,7 @@ void cRender_Manager::Load_Data(int nScene_Id, tScene_Objects* tObject_List)
 			else
 			{
 				c_Graphics_Setup->Get_Device().Get()->CreateVertexShader(VertexShader, sizeof(VertexShader), NULL, &tObject_List->d3d_Vertex_Shaders[i]);
-				
+
 			}
 
 			//PIXEL SHADERS
@@ -250,7 +250,7 @@ void cRender_Manager::Load_Data(int nScene_Id, tScene_Objects* tObject_List)
 					k++;
 				}
 			}
-			
+
 			// CONSTANT BUFFER - PIXEL SHADER
 
 			ZeroMemory(&d3d_Constant_Buffer_Desc, sizeof(D3D11_BUFFER_DESC));
@@ -398,14 +398,15 @@ void cRender_Manager::Draw(int nScene_Id, tScene_Objects* tObject_List, bool *bC
 		if (nScene_Id == 2)
 		{
 			//dragon controls
-			if (GetAsyncKeyState('E') && flashTimer == 0.0f)
-			{
-				isHit = true;
-			}
+			//if (GetAsyncKeyState('E') && flashTimer == 0.0f)
+			//{
+			//	isHit = true;
+			//}
 			if (isHit)
 			{
 				isHit = false;
 				flashTimer = flashTime;
+				sound.playSoundEffect("DragonSound1.mp3", FMOD_DEFAULT);
 				dragonHealth -= 1;
 				if (dragonHealth == 6)
 				{
@@ -463,7 +464,10 @@ void cRender_Manager::Draw(int nScene_Id, tScene_Objects* tObject_List, bool *bC
 
 			if (tObject_List->fWorld_Matrix[3].tW.fX >= -1)
 			{
-				sound.playSoundEffect("Fireball+1.mp3", FMOD_DEFAULT);
+				if (dragonAlive == true)
+				{
+					sound.playSoundEffect("Fireball+1.mp3", FMOD_DEFAULT);
+				}
 				tObject_List->fWorld_Matrix[3].tW.fX = -10;
 				tObject_List->fWorld_Matrix[3].tW.fY = 10;
 			}
@@ -620,7 +624,7 @@ void cRender_Manager::Draw(int nScene_Id, tScene_Objects* tObject_List, bool *bC
 
 				if (i == 2)
 					tCB_PS.tint = tFloat4_to_XMFLOAT4(dragonTint);
-				
+
 				if (i == 4)
 					tCB_PS.tint.z = 1.0f;
 
@@ -628,7 +632,7 @@ void cRender_Manager::Draw(int nScene_Id, tScene_Objects* tObject_List, bool *bC
 				memcpy(d3d_MSR.pData, &tCB_PS, sizeof(tConstantBuffer_PixelShader));
 				c_Graphics_Setup->Get_Context().Get()->Unmap(tObject_List->tMaterials_Buffers[i].Get(), 0);
 				ID3D11Buffer *tmp_con_buffer[] = { tObject_List->tMaterials_Buffers[i].Get() };
-				c_Graphics_Setup->Get_Context().Get()->PSSetConstantBuffers(0, 1, tmp_con_buffer);				
+				c_Graphics_Setup->Get_Context().Get()->PSSetConstantBuffers(0, 1, tmp_con_buffer);
 			}
 
 			if (tObject_List->bIs_Animated[i])

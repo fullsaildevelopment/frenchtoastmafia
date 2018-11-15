@@ -95,7 +95,7 @@ void cGraphics_Setup::Initialize()
 	d3d_Swap_Chain.Get()->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&d3d_Render_Right_Eye);
 	d3d_Device.Get()->CreateRenderTargetView(d3d_Render_Right_Eye.Get(), &d3d_RTV_Desc, d3d_RTV_Right_Eye.GetAddressOf());
 	back_buffer->Release();
-	
+
 	// Z BUFFER / DEPTH STENCIL
 	ZeroMemory(&d3d_Z_Buffer_Desc, sizeof(D3D11_TEXTURE2D_DESC));
 	d3d_Z_Buffer_Desc.Width = m_nRenderWidth;
@@ -162,7 +162,7 @@ void cGraphics_Setup::Initialize()
 	// Clear the second depth stencil state before setting the parameters.
 	//ZeroMemory(&d3d_2D_DS_Desc, sizeof(D3D11_DEPTH_STENCIL_DESC));
 
-	// Now create a second depth stencil state which turns off the Z buffer for 2D rendering.  The only difference is 
+	// Now create a second depth stencil state which turns off the Z buffer for 2D rendering.  The only difference is
 	// that DepthEnable is set to false, all other parameters are the same as the other depth stencil state.
 	//d3d_2D_DS_Desc.DepthEnable = false;
 	//d3d_2D_DS_Desc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
@@ -183,7 +183,7 @@ void cGraphics_Setup::Initialize()
 	//d3d_Device.Get()->CreateDepthStencilState(&d3d_2D_DS_Desc, &d3d_2D_DSS);
 
 	//d3d_View_Port CREATION
-	d3d_View_Port.Width =  m_nRenderWidth;
+	d3d_View_Port.Width = m_nRenderWidth;
 	d3d_View_Port.Height = m_nRenderHeight;
 	d3d_View_Port.TopLeftX = 0;
 	d3d_View_Port.TopLeftY = 0;
@@ -191,18 +191,18 @@ void cGraphics_Setup::Initialize()
 	d3d_View_Port.MaxDepth = 1.0f;
 
 	// RASTERIZER STATE
-	ZeroMemory(& d3d_Rasterizer_Desc, sizeof(D3D11_RASTERIZER_DESC));
-	 d3d_Rasterizer_Desc.FillMode = D3D11_FILL_SOLID;
-	 d3d_Rasterizer_Desc.CullMode = D3D11_CULL_NONE;
-	 d3d_Rasterizer_Desc.DepthBias = 0;
-	 d3d_Rasterizer_Desc.SlopeScaledDepthBias = 0.0f;
-	 d3d_Rasterizer_Desc.DepthBiasClamp = 0.0f;
-	 d3d_Rasterizer_Desc.DepthClipEnable = TRUE;
-	 d3d_Rasterizer_Desc.ScissorEnable = FALSE;
-	 d3d_Rasterizer_Desc.MultisampleEnable = FALSE;
-	 d3d_Rasterizer_Desc.AntialiasedLineEnable = FALSE;
+	ZeroMemory(&d3d_Rasterizer_Desc, sizeof(D3D11_RASTERIZER_DESC));
+	d3d_Rasterizer_Desc.FillMode = D3D11_FILL_SOLID;
+	d3d_Rasterizer_Desc.CullMode = D3D11_CULL_NONE;
+	d3d_Rasterizer_Desc.DepthBias = 0;
+	d3d_Rasterizer_Desc.SlopeScaledDepthBias = 0.0f;
+	d3d_Rasterizer_Desc.DepthBiasClamp = 0.0f;
+	d3d_Rasterizer_Desc.DepthClipEnable = TRUE;
+	d3d_Rasterizer_Desc.ScissorEnable = FALSE;
+	d3d_Rasterizer_Desc.MultisampleEnable = FALSE;
+	d3d_Rasterizer_Desc.AntialiasedLineEnable = FALSE;
 
-	d3d_Device.Get()->CreateRasterizerState(& d3d_Rasterizer_Desc, &d3d_Rasterizer_State);
+	d3d_Device.Get()->CreateRasterizerState(&d3d_Rasterizer_Desc, &d3d_Rasterizer_State);
 
 	// SAMPLER STATE
 	ZeroMemory(&d3d_Sampler_State_Desc, sizeof(D3D11_SAMPLER_DESC));
@@ -240,14 +240,14 @@ void cGraphics_Setup::Initialize()
 	d3d_Context.Get()->RSSetViewports(1, &d3d_View_Port);
 
 	m_cCameraLeft = new cCamera;
-	
+
 	// Set the initial position of the camera.
 	m_cCameraLeft->SetPosition(tFloat4x4{
 											1.0f, 0.0f, 0.0f, 0.0f,
 											0.0f, 1.0f, 0.0f, 0.0f,
 											0.0f, 0.0f, 1.0f, 0.0f,
 											0.0f, 0.0f, 0.0f, 1.0f
-								});
+		});
 
 	// Create the camera object.
 	m_cCameraRight = new cCamera;
@@ -258,7 +258,7 @@ void cGraphics_Setup::Initialize()
 											0.0f, 1.0f, 0.0f, 0.0f,
 											0.0f, 0.0f, 1.0f, 0.0f,
 											1.0f, 0.0f, 0.0f, 1.0f
-								});
+		});
 
 	//Removed model and shader class declaration
 
@@ -283,10 +283,10 @@ void cGraphics_Setup::Initialize()
 	if (!vr::VRCompositor())
 	{
 		printf("Compositor initialization failed. See log file for details\n");
-//		return false;
+		//		return false;
 	}
 
-//	return true;
+	//	return true;
 
 	UpdateHMDMatrixPose();
 }
@@ -343,22 +343,10 @@ tFloat4x4 cGraphics_Setup::GetCurrentViewProjectionMatrix(vr::Hmd_Eye nEye)
 	Matrix4 matMVP;
 	if (nEye == vr::Eye_Left)
 	{
-		//Matrix4 m_mat4HMDPose_Left = m_mat4HMDPose;
-		//m_mat4HMDPose_Left[12] += m_cCameraLeft->GetPosition().tW.fX;
-		//m_mat4HMDPose_Left[13] += m_cCameraLeft->GetPosition().tW.fY;
-		//m_mat4HMDPose_Left[14] += m_cCameraLeft->GetPosition().tW.fZ;
-		
-		//matMVP = m_mat4ProjectionLeft * m_mat4eyePosLeft * m_mat4HMDPose_Left;
 		matMVP = m_mat4ProjectionLeft * m_mat4eyePosLeft * m_mat4HMDPose;
 	}
 	else if (nEye == vr::Eye_Right)
 	{
-		//Matrix4 m_mat4HMDPose_Right = m_mat4HMDPose;
-		//m_mat4HMDPose_Right[12] += m_cCameraRight->GetPosition().tW.fX;
-		//m_mat4HMDPose_Right[13] += m_cCameraRight->GetPosition().tW.fY;
-		//m_mat4HMDPose_Right[14] += m_cCameraRight->GetPosition().tW.fZ;
-
-		//matMVP = m_mat4ProjectionRight * m_mat4eyePosRight * m_mat4HMDPose_Right;
 		matMVP = m_mat4ProjectionRight * m_mat4eyePosRight * m_mat4HMDPose;
 	}
 
@@ -392,7 +380,14 @@ void cGraphics_Setup::UpdateHMDMatrixPose()
 		if (m_rTrackedDevicePose[nDevice].bPoseIsValid)
 		{
 			m_iValidPoseCount++;
-			m_rmat4DevicePose[nDevice] = ConvertSteamVRMatrixToMatrix4(m_rTrackedDevicePose[nDevice].mDeviceToAbsoluteTracking);
+			if (m_pHMD->GetTrackedDeviceClass(nDevice) != vr::TrackedDeviceClass_HMD)
+			{
+				m_rmat4DevicePose[nDevice] = ConvertSteamVRMatrixToMatrix4(m_rTrackedDevicePose[nDevice].mDeviceToAbsoluteTracking);
+			}
+			else
+			{
+				m_rmat4DevicePose[nDevice] = ConvertSteamVRMatrixToMatrix4(m_rTrackedDevicePose[nDevice].mDeviceToAbsoluteTracking).translate(moveMeOnXScotty, moveMeOnYScotty, moveMeOnZScotty);
+			}
 
 			if (m_rDevClassChar[nDevice] == 0)
 			{
@@ -515,24 +510,14 @@ int cGraphics_Setup::get_tracked_controller_count()
 	return m_iTrackedControllerCount;
 }
 
-//tTracked_device_pose cGraphics_Setup::get_tracked_device_pose()
-//{
-//	return m_rTrackedDevicePose;
-//}
-
-//Matrix4 cGraphics_Setup::get_matrix4_device_pose()
-//{
-//	return m_rmat4DevicePose;
-//}
-
 ComPtr<ID3D11Resource> cGraphics_Setup::get_controller_axis_vertex_buffer()
 {
 	return m_pControllerAxisVertexBuffer;
 }
 
-int cGraphics_Setup::is_right_hand_controller()
+int cGraphics_Setup::is_right_hand_controller(vr::VREvent_t vr_event)
 {
-	VREvent_t vr_event;
+	//VREvent_t vr_event;
 
 	ETrackedDeviceClass trackedDeviceClass;
 	trackedDeviceClass = m_pHMD->GetTrackedDeviceClass(vr_event.trackedDeviceIndex);
@@ -572,7 +557,7 @@ void cGraphics_Setup::get_controller_pose()
 		{
 			continue;
 		}
-		
+
 		VRControllerState_t vr_controller_state;
 		TrackedDevicePose_t tracked_device_pose;
 
@@ -582,7 +567,6 @@ void cGraphics_Setup::get_controller_pose()
 
 void cGraphics_Setup::update_controller()
 {
-	//cGraphics_Setup gx_setup;
 	std::vector<float> vert_DATA;
 
 	vr::TrackedDeviceIndex_t non_tracking_device;
@@ -612,14 +596,10 @@ void cGraphics_Setup::update_controller()
 
 		tracked_controller_count += 1;
 
-		//cGraphics_Setup::tTracked_device_pose track_pose;
-
 		if (!m_rTrackedDevicePose[non_tracking_device].bPoseIsValid)
 		{
 			continue;
 		}
-
-		//cGraphics_Setup::tMatrix4_device_pose matrix_pose;
 
 		const Matrix4 &matrix = m_rmat4DevicePose[non_tracking_device];   // controller matrix   // draw a object using that matrix
 
@@ -686,210 +666,225 @@ void cGraphics_Setup::update_controller()
 	}
 }
 
-tFloat4x4 cGraphics_Setup::get_controller_matrix()
-{
-	tFloat4x4 hi;
-
-	int result = is_right_hand_controller();
-	if (result == 1)
-	{
-		return hi;
-	}
-	else if (result == 2)
-	{
-		return hi;
-	}
-	return hi;
-}
-
-//void cGraphics_Setup::vr_event_handler(const VREvent_t &vr_event)
-//{
-//	switch (vr_event.eventType)
-//	{
-//	case vr::VREvent_TrackedDeviceActivated:
-//	{
-//		SetupRenderModelForTrackedDevice(vr_event.trackedDeviceIndex);
-//		dprintf("Device %u attached. Setting up render model.\n", vr_event.trackedDeviceIndex);
-//	}
-//	break;
-//
-//	default:
-//		break;
-//	}
-//}
-
 void cGraphics_Setup::handle_input(double dDelta, int nScene_Id, bool *bChange_Scene, bool *bMove_Bullet)
 {
-	vr::VREvent_t vrEventL;
-	vr::VREvent_t vrEventR;
+	vr::VREvent_t vrEvent;
 
-	while (m_pHMD->PollNextEvent(&vrEventL, sizeof(vrEventL)) != 0)
+	// -1 = not controller  -2 = role not valid   1 = left controller   2 = right controller
+
+		int ID;
+		int controller;
+	while (m_pHMD->PollNextEvent(&vrEvent, sizeof(vrEvent)) != 0)
 	{
-		printf("%d Left C ; ", vrEventL.trackedDeviceIndex);
-		switch (vrEventL.data.controller.button)
+		ID = vrEvent.trackedDeviceIndex;
+
+		printf("%d ; ", vrEvent.trackedDeviceIndex);
+		switch (vrEvent.data.controller.button)
 		{
-			case k_EButton_Grip:
-				switch (vrEventL.eventType)
+		case k_EButton_Grip:
+			switch (vrEvent.eventType)
+			{
+			case VREvent_ButtonPress:
+				if (controller = is_right_hand_controller(vrEvent) == 1)
 				{
-				case VREvent_ButtonPress:
+					printf("Grip Press\n");
+					moveMeOnZScotty -= moveSpeed;
+				}
+				else if (controller = is_right_hand_controller(vrEvent) == 2)
+				{
 					printf("Grip Press\n");
 					break;
-
-				case VREvent_ButtonUnpress:
-					printf("Grip unPress\n");
-					break;
 				}
-				break;
 
-			case k_EButton_SteamVR_Trigger:
-				switch (vrEventL.eventType)
+			case VREvent_ButtonUnpress:
+				printf("Grip unPress\n");
+				break;
+			}
+			break;
+
+		case k_EButton_SteamVR_Trigger:
+			switch (vrEvent.eventType)
+			{
+			case VREvent_ButtonPress:
+				if (controller = is_right_hand_controller(vrEvent) == 1)
 				{
-				case VREvent_ButtonPress:
+					printf("Trigger Press\n");
+					moveMeOnZScotty += moveSpeed;
+				}
+				else if (controller = is_right_hand_controller(vrEvent) == 2)
+				{
 					printf("Trigger Press\n");
 					if (nScene_Id == 2)
 						*bMove_Bullet = true;
 					else
 						*bChange_Scene = true;
-					break;
-
-				case VREvent_ButtonUnpress:
-					printf("Trigger unPress\n");
-					break;
 				}
+			break;
+
+			case VREvent_ButtonUnpress:
+				printf("Trigger unPress\n");
 				break;
+			}
+			break;
 
-			case k_EButton_SteamVR_Touchpad:
-				switch (vrEventL.eventType)
-				{
-				case VREvent_ButtonPress:
-					printf("Touchpad Press\n");
-					tFloat4 t_move;
-					t_move.fX = 0.0f;
-					t_move.fY = 0.0f;
-					t_move.fZ = 2.5f;
-					t_move.fW = 0.0f;
-					m_cCameraRight->Translation(t_move);
-					break;
-
-				case VREvent_ButtonUnpress:
-					printf("Touchpad unPress\n");
-					break;
-
-				case VREvent_ButtonTouch:
-					printf("Touchpad Touch\n");
-					break;
-
-				case VREvent_ButtonUntouch:
-					printf("Touchpad unTouch\n");
-					break;
-
-				}
-				break;
-
-			case k_EButton_ApplicationMenu:
-				switch (vrEventL.eventType)
-				{
-				case VREvent_ButtonPress:
-					printf("ApplicationMenu Press\n");
-					break;
-
-				case VREvent_ButtonUnpress:
-					printf("ApplicationMenu unPress\n");
-					break;
-				}
-				break;
-
-			default:
-				printf("Controller is not Working\n");
-				break;
-
-			}			
-		}
-
-		while (m_pHMD->PollNextEvent(&vrEventR, sizeof(vrEventR)) != 0)
-		{
-			printf("%d Right C ; ", vrEventR.trackedDeviceIndex);
-			switch (vrEventR.data.controller.button)
+		case k_EButton_SteamVR_Touchpad:
+			switch (vrEvent.eventType)
 			{
-			case k_EButton_Grip:
-				switch (vrEventR.eventType)
+			case VREvent_ButtonPress:
+				if (controller = is_right_hand_controller(vrEvent) == 1)
 				{
-				case VREvent_ButtonPress:
-					printf("Grip Press\n");
-					break;
-
-				case VREvent_ButtonUnpress:
-					printf("Grip unPress\n");
-					break;
+					printf("Touchpad Press\n");
+					//tFloat4 t_move;
+					//t_move.fX = 0.0f;
+					//t_move.fY = 0.0f;
+					//t_move.fZ = 2.5f;
+					//t_move.fW = 0.0f;
+					//m_cCameraRight->Translation(t_move);
+					moveMeOnXScotty += moveSpeed;
 				}
-				break;
-
-			case k_EButton_SteamVR_Trigger:
-				switch (vrEventR.eventType)
+				else if (controller = is_right_hand_controller(vrEvent) == 2)
 				{
-				case VREvent_ButtonPress:
-					printf("Trigger Press\n");
-					break;
-
-				case VREvent_ButtonUnpress:
-					printf("Trigger unPress\n");
-					break;
-				}
-				break;
-
-			case k_EButton_SteamVR_Touchpad:
-				switch (vrEventR.eventType)
-				{
-				case VREvent_ButtonPress:
 					printf("Touchpad Press\n");
 					break;
-
-				case VREvent_ButtonUnpress:
-					printf("Touchpad unPress\n");
-					break;
-
-				case VREvent_ButtonTouch:
-					printf("Touchpad Touch\n");
-					break;
-
-				case VREvent_ButtonUntouch:
-					printf("Touchpad unTouch\n");
-					break;
-
 				}
+
+			case VREvent_ButtonUnpress:
+				printf("Touchpad unPress\n");
 				break;
 
-			case k_EButton_ApplicationMenu:
-				switch (vrEventR.eventType)
+			case VREvent_ButtonTouch:
+				printf("Touchpad Touch\n");
+				break;
+
+			case VREvent_ButtonUntouch:
+				printf("Touchpad unTouch\n");
+				break;
+
+			}
+			break;
+
+		case k_EButton_ApplicationMenu:
+			switch (vrEvent.eventType)
+			{
+			case VREvent_ButtonPress:
+				if (controller = is_right_hand_controller(vrEvent) == 1)
 				{
-				case VREvent_ButtonPress:
+					printf("ApplicationMenu Press\n");
+					moveMeOnXScotty -= moveSpeed;
+				}
+				else if (controller = is_right_hand_controller(vrEvent) == 2)
+				{
 					printf("ApplicationMenu Press\n");
 					break;
-
-				case VREvent_ButtonUnpress:
-					printf("ApplicationMenu unPress\n");
-					break;
 				}
-				break;
 
-			default:
+			case VREvent_ButtonUnpress:
+				printf("ApplicationMenu unPress\n");
+				break;
+			}
+			break;
+
+		default:
+			if (controller = is_right_hand_controller(vrEvent) == -1)
+			{
+				printf("Tracked Device is not a controller\n");
+			}
+			else if (controller = is_right_hand_controller(vrEvent) == -2)
+			{
+				printf("Controller role is not valid\n");
+			}
+			else
 				printf("Controller is not Working\n");
+			break;
+
+		}
+	}
+
+	/*while (m_pHMD->PollNextEvent(&vrEventR, sizeof(vrEventR)) != 0)
+	{
+		printf("%d Right C ; ", vrEventR.trackedDeviceIndex);
+		switch (vrEventR.data.controller.button)
+		{
+		case k_EButton_Grip:
+			switch (vrEventR.eventType)
+			{
+			case VREvent_ButtonPress:
+				printf("Grip Press\n");
 				break;
 
-			}				
-		}
-		/*vr::VREvent_t vr_event;
-		while (m_pHMD->PollNextEvent(&vr_event, sizeof(vr_event)))
-		{
-			ProcessVREvent()
-		}*/
+			case VREvent_ButtonUnpress:
+				printf("Grip unPress\n");
+				break;
+			}
+			break;
 
-		//for (vr::TrackedDeviceIndex_t uint_device = 0; uint_device < vr::k_unMaxTrackedDeviceCount; uint_device++)
-		//{
-		//	vr::VRControllerState_t vr_controller_state;
-		//	if (m_pHMD->GetControllerState(uint_device, &vr_controller_state, sizeof(vr_controller_state)))
-		//	{
-		//		m_rbShowTrackedDevice[uint_device] = vr_controller_state.ulButtonPressed == 0;
-		//	}
-		//}
-	}
+		case k_EButton_SteamVR_Trigger:
+			switch (vrEventR.eventType)
+			{
+			case VREvent_ButtonPress:
+				printf("Trigger Press\n");
+				break;
+
+			case VREvent_ButtonUnpress:
+				printf("Trigger unPress\n");
+				break;
+			}
+			break;
+
+		case k_EButton_SteamVR_Touchpad:
+			switch (vrEventR.eventType)
+			{
+			case VREvent_ButtonPress:
+				printf("Touchpad Press\n");
+				break;
+
+			case VREvent_ButtonUnpress:
+				printf("Touchpad unPress\n");
+				break;
+
+			case VREvent_ButtonTouch:
+				printf("Touchpad Touch\n");
+				break;
+
+			case VREvent_ButtonUntouch:
+				printf("Touchpad unTouch\n");
+				break;
+
+			}
+			break;
+
+		case k_EButton_ApplicationMenu:
+			switch (vrEventR.eventType)
+			{
+			case VREvent_ButtonPress:
+				printf("ApplicationMenu Press\n");
+				break;
+
+			case VREvent_ButtonUnpress:
+				printf("ApplicationMenu unPress\n");
+				break;
+			}
+			break;
+
+		default:
+			printf("Controller is not Working\n");
+			break;
+
+		}
+	}*/
+
+	/*vr::VREvent_t vr_event;
+	while (m_pHMD->PollNextEvent(&vr_event, sizeof(vr_event)))
+	{
+		ProcessVREvent()
+	}*/
+
+	//for (vr::TrackedDeviceIndex_t uint_device = 0; uint_device < vr::k_unMaxTrackedDeviceCount; uint_device++)
+	//{
+	//	vr::VRControllerState_t vr_controller_state;
+	//	if (m_pHMD->GetControllerState(uint_device, &vr_controller_state, sizeof(vr_controller_state)))
+	//	{
+	//		m_rbShowTrackedDevice[uint_device] = vr_controller_state.ulButtonPressed == 0;
+	//	}
+	//}
+}
