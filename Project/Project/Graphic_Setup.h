@@ -118,6 +118,8 @@ private:
 	float moveMeOnYScotty = 0;
 	float moveMeOnZScotty = 0;
 
+	bool swapped = false;
+
 
 public:
 	cGraphics_Setup(HWND _hwnd);
@@ -178,6 +180,7 @@ public:
 	void get_controller_pose();
 	void update_controller(double dDelta);
 	//tFloat4x4 get_controller_matrix();
-	void handle_input(double dDelta, vr::TrackedDeviceIndex_t non_tracking_device, tFloat2 trackpad_touch_location);
+	void handle_input(double dDelta, VRControllerState001_t tmp);
+	void swap_controller_roles(vr::TrackedDeviceIndex_t non_tracking_device);
 	//void vr_event_handler(const VREvent_t &vr_event);
 };
