@@ -81,12 +81,12 @@ tScene_Objects cScene_Manager::GetScene(int nScene_Id)
 
 		test_screen[3].fTexture_Coordinate.fX = 1.0f;
 		test_screen[3].fTexture_Coordinate.fY = 1.0f;
-		
+
 		for (int i = 0; i < 4; i++)
 		{
 			test_screen[i].fPosition.fZ *= -1;
 		}
-	
+
 		for (int i = 0; i < 4; i++)
 		{
 			tScene.tMesh_Data[0].tVerts.push_back(test_screen[i]);
@@ -326,12 +326,49 @@ tScene_Objects cScene_Manager::GetScene(int nScene_Id)
 		}
 		// Bullet
 
-		// Red Dragon - 7
+		// Snorlax - 5
 		{
 			XMFLOAT4X4 temp;
 
 			XMMATRIX tempMatrix = XMMatrixIdentity();
 
+			tempMatrix = XMMatrixMultiply(XMMatrixTranslation(-5, -3, 0), tempMatrix);
+			tempMatrix = XMMatrixMultiply(XMMatrixScaling(0.01, 0.01, 0.01), tempMatrix);
+
+			XMStoreFloat4x4(&temp, tempMatrix);
+
+			tScene.fWorld_Matrix[5] = XMFLOAT4x4_to_tFloat4x4(temp);
+			tMesh tFireball = cBinary_Read.Read_Mesh("snorlax_mesh.bin");
+
+			for (int i = 0; i < tFireball.nVertex_Count; i++)
+			{
+				tFireball.tVerts[i].fPosition.fZ *= -1;
+			}
+
+			for (int i = 0; i < tFireball.nVertex_Count; i++)
+			{
+				tScene.tMesh_Data[5].tVerts.push_back(tFireball.tVerts[i]);
+			}
+
+			tScene.tMesh_Data[5].nVertex_Count = tFireball.nVertex_Count;
+
+
+			for (int i = 0; i < tFireball.nIndex_Count; i++)
+			{
+				tScene.tMesh_Data[5].nIndicies.push_back(tFireball.nIndicies[i]);
+			}
+			tScene.tMesh_Data[5].nIndex_Count = tFireball.nIndex_Count;
+
+			tScene.tMaterials_Data[5] = cBinary_Read.Read_Material("fireballMaterial.bin");
+			tScene.tMaterials_Data[5].tMats[0].szDiffuse_File_Path = "Fireball.fbm\\Fireball_D.png";
+		}
+		// Snorlax
+
+		// Red Dragon - 7
+		{
+			XMFLOAT4X4 temp;
+
+			XMMATRIX tempMatrix = XMMatrixIdentity();
 			tempMatrix = XMMatrixMultiply(tempMatrix, XMMatrixTranslation(0.0f, 589.0f, 589.0f));
 
 			XMStoreFloat4x4(&temp, tempMatrix);
