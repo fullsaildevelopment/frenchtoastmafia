@@ -121,7 +121,7 @@ tScene_Objects cScene_Manager::GetScene(int nScene_Id)
 	// GAME
 	else
 	{
-		tScene.nObject_Count = 5;
+		tScene.nObject_Count = 7;
 
 		// Battle Mage - 0
 		{
@@ -325,6 +325,43 @@ tScene_Objects cScene_Manager::GetScene(int nScene_Id)
 			tScene.tMaterials_Data[4].tMats[0].szDiffuse_File_Path = "Fireball.fbm\\Fireball_D.png";
 		}
 		// Bullet
+
+		// Red Dragon - 7
+		{
+			XMFLOAT4X4 temp;
+
+			XMMATRIX tempMatrix = XMMatrixIdentity();
+
+			tempMatrix = XMMatrixMultiply(tempMatrix, XMMatrixTranslation(0.0f, 589.0f, 589.0f));
+
+			XMStoreFloat4x4(&temp, tempMatrix);
+
+			tScene.fWorld_Matrix[6] = XMFLOAT4x4_to_tFloat4x4(temp);
+			tMesh tRedDragon = cBinary_Read.Read_Mesh("redDragonMesh.bin");
+
+			for (int i = 0; i < tRedDragon.nVertex_Count; i++)
+			{
+				tRedDragon.tVerts[i].fPosition.fZ *= -1;
+			}
+
+			for (int i = 0; i < tRedDragon.nVertex_Count; i++)
+			{
+				tScene.tMesh_Data[6].tVerts.push_back(tRedDragon.tVerts[i]);
+			}
+
+			tScene.tMesh_Data[6].nVertex_Count = tRedDragon.nVertex_Count;
+
+
+			for (int i = 0; i < tRedDragon.nIndex_Count; i++)
+			{
+				tScene.tMesh_Data[6].nIndicies.push_back(tRedDragon.nIndicies[i]);
+			}
+			tScene.tMesh_Data[6].nIndex_Count = tRedDragon.nIndex_Count;
+
+			tScene.tMaterials_Data[6] = cBinary_Read.Read_Material("redDragonMaterial.bin");
+			tScene.tMaterials_Data[6].tMats[0].szDiffuse_File_Path = "RedDragon.fbm\\armored.png";
+		}
+		// Red Dragon
 	}
 
 	return tScene;
