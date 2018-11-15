@@ -173,11 +173,11 @@ public:
 	//tTracked_device_pose get_tracked_device_pose();
 	//Matrix4 get_matrix4_device_pose();
 	ComPtr<ID3D11Resource> get_controller_axis_vertex_buffer();
-	int is_right_hand_controller(vr::VREvent_t vr_event);
+	int is_right_hand_controller(vr::TrackedDeviceIndex_t non_tracking_device);
 	//void controller_input();
 	void get_controller_pose();
-	void update_controller();
+	void update_controller(double dDelta);
 	//tFloat4x4 get_controller_matrix();
-	void handle_input(double dDelta);
+	void handle_input(double dDelta, vr::TrackedDeviceIndex_t non_tracking_device, tFloat2 trackpad_touch_location);
 	//void vr_event_handler(const VREvent_t &vr_event);
 };

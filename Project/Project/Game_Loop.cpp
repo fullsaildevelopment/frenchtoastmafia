@@ -46,7 +46,7 @@ void cGame_Loop::Update()
 
 	//while (!bEnd_Game)
 	//{
-	c_Graphics_Setup->handle_input(c_XTime.Delta());
+	c_Graphics_Setup->update_controller(c_XTime.Delta());
 
 	c_Animation_Manager.Animate(c_XTime.Delta(), c_XTime.TotalTimeExact(), &tObject_List);
 	c_Render_Manager.Draw(m_nScene_Id, &tObject_List);
