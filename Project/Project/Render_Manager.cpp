@@ -60,6 +60,15 @@ void cRender_Manager::Load_Data(int nScene_Id, tScene_Objects* tObject_List)
 		D3D11_BUFFER_DESC d3dBuffer_Desc;
 		D3D11_SUBRESOURCE_DATA d3dSRD;
 
+		if (nScene_Id == 2)
+		{
+			if (i == 2)
+			{
+				dragonAlive = true;
+				dragonHealth = 7;
+			}
+		}
+
 		if (!tObject_List->bIs_Animated[i])
 		{
 			// VERTEX
