@@ -20,6 +20,7 @@
 #include "Specific_Structs.h"
 //#include "Matrices.h"
 //#include "openvr/thirdparty/sdl2-2.0.3/include/SDL_events.h"
+#include "dopeSoundSystem.h"
 
 // Basic Shaders
 #include "VertexShader.csh"
@@ -117,6 +118,8 @@ private:
 	float moveMeOnXScotty = 0;
 	float moveMeOnYScotty = 0;
 	float moveMeOnZScotty = 0;
+
+	dopeSoundSystem sound;
 
 
 public:
