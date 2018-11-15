@@ -38,8 +38,7 @@ void cGame_Loop::Setup()
 void cGame_Loop::Update()
 {
 	c_XTime.Signal();
-
-	c_Graphics_Setup->handle_input(c_XTime.Delta(), m_nScene_Id, &bChange_Scene, &bMove_Bullet);
+	c_Graphics_Setup->update_controller(c_XTime.Delta(), m_nScene_Id, &bChange_Scene, &bMove_Bullet);
 	if (bChange_Scene) 
 	{
 		c_Render_Manager.Unload(&tObject_List);

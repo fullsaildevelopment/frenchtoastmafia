@@ -565,7 +565,7 @@ void cGraphics_Setup::get_controller_pose()
 	}
 }
 
-void cGraphics_Setup::update_controller()
+void cGraphics_Setup::update_controller(double dDelta, int nScene_Id, bool *bChange_Scene, bool *bMove_Bullet)
 {
 	std::vector<float> vert_DATA;
 
@@ -601,6 +601,9 @@ void cGraphics_Setup::update_controller()
 			continue;
 		}
 
+		VRControllerState001_t vr_controller_state;
+		m_pHMD->GetControllerState(non_tracking_device, &vr_controller_state, sizeof(VRControllerState001_t));
+		handle_input(dDelta, nScene_Id, bChange_Scene, bMove_Bullet, vr_controller_state);
 		const Matrix4 &matrix = m_rmat4DevicePose[non_tracking_device];   // controller matrix   // draw a object using that matrix
 
 		Vector4 center_point;
@@ -666,7 +669,7 @@ void cGraphics_Setup::update_controller()
 	}
 }
 
-void cGraphics_Setup::handle_input(double dDelta, int nScene_Id, bool *bChange_Scene, bool *bMove_Bullet)
+void cGraphics_Setup::handle_input(double dDelta, int nScene_Id, bool *bChange_Scene, bool *bMove_Bullet, VRControllerState001_t vr_controller_state)
 {
 	vr::VREvent_t vrEvent;
 
@@ -685,12 +688,12 @@ void cGraphics_Setup::handle_input(double dDelta, int nScene_Id, bool *bChange_S
 			switch (vrEvent.eventType)
 			{
 			case VREvent_ButtonPress:
-				if (controller = is_right_hand_controller(vrEvent) == 1)
+				if (is_right_hand_controller(vrEvent) == 1)
 				{
 					printf("Grip Press\n");
-					moveMeOnZScotty -= moveSpeed;
+					//moveMeOnZScotty -= moveSpeed;
 				}
-				else if (controller = is_right_hand_controller(vrEvent) == 2)
+				else if (is_right_hand_controller(vrEvent) == 2)
 				{
 					printf("Grip Press\n");
 					break;
@@ -706,12 +709,12 @@ void cGraphics_Setup::handle_input(double dDelta, int nScene_Id, bool *bChange_S
 			switch (vrEvent.eventType)
 			{
 			case VREvent_ButtonPress:
-				if (controller = is_right_hand_controller(vrEvent) == 1)
+				if (is_right_hand_controller(vrEvent) == 1)
 				{
 					printf("Trigger Press\n");
-					moveMeOnZScotty += moveSpeed;
+					//moveMeOnZScotty += moveSpeed;
 				}
-				else if (controller = is_right_hand_controller(vrEvent) == 2)
+				else if (is_right_hand_controller(vrEvent) == 2)
 				{
 					printf("Trigger Press\n");
 					if (nScene_Id == 2)
@@ -734,18 +737,39 @@ void cGraphics_Setup::handle_input(double dDelta, int nScene_Id, bool *bChange_S
 			switch (vrEvent.eventType)
 			{
 			case VREvent_ButtonPress:
-				if (controller = is_right_hand_controller(vrEvent) == 1)
+				if (is_right_hand_controller(vrEvent) == 1)
 				{
-					printf("Touchpad Press\n");
-					//tFloat4 t_move;
-					//t_move.fX = 0.0f;
-					//t_move.fY = 0.0f;
-					//t_move.fZ = 2.5f;
-					//t_move.fW = 0.0f;
-					//m_cCameraRight->Translation(t_move);
-					moveMeOnXScotty += moveSpeed;
+					printf("x data: %d\n", vr_controller_state.rAxis[0].x);
+					printf("y data: %d\n", vr_controller_state.rAxis[0].y);
+
+					if (vr_controller_state.rAxis[0].y < 0.0f)
+					{
+						printf("Touchpad Press Down\n");
+
+						moveMeOnXScotty += moveSpeed;
+					}
+
+					else if (vr_controller_state.rAxis[0].y > 0.0f)
+					{
+						printf("Touchpad Press Up\n");
+
+						moveMeOnXScotty -= moveSpeed;
+					}
+
+
+					if (vr_controller_state.rAxis[0].x < 0.0f)
+					{
+						printf("Touchpad Press Left\n");
+						moveMeOnZScotty += moveSpeed;
+					}
+
+					else if (vr_controller_state.rAxis[0].x > 0.0f)
+					{
+						printf("Touchpad Press Right\n");
+						moveMeOnZScotty -= moveSpeed;
+					}
 				}
-				else if (controller = is_right_hand_controller(vrEvent) == 2)
+				else if (is_right_hand_controller(vrEvent) == 2)
 				{
 					printf("Touchpad Press\n");
 					break;
@@ -770,12 +794,12 @@ void cGraphics_Setup::handle_input(double dDelta, int nScene_Id, bool *bChange_S
 			switch (vrEvent.eventType)
 			{
 			case VREvent_ButtonPress:
-				if (controller = is_right_hand_controller(vrEvent) == 1)
+				if (is_right_hand_controller(vrEvent) == 1)
 				{
 					printf("ApplicationMenu Press\n");
-					moveMeOnXScotty -= moveSpeed;
+					//moveMeOnXScotty -= moveSpeed;
 				}
-				else if (controller = is_right_hand_controller(vrEvent) == 2)
+				else if (is_right_hand_controller(vrEvent) == 2)
 				{
 					printf("ApplicationMenu Press\n");
 					break;
@@ -788,11 +812,11 @@ void cGraphics_Setup::handle_input(double dDelta, int nScene_Id, bool *bChange_S
 			break;
 
 		default:
-			if (controller = is_right_hand_controller(vrEvent) == -1)
+			if (is_right_hand_controller(vrEvent) == -1)
 			{
 				printf("Tracked Device is not a controller\n");
 			}
-			else if (controller = is_right_hand_controller(vrEvent) == -2)
+			else if (is_right_hand_controller(vrEvent) == -2)
 			{
 				printf("Controller role is not valid\n");
 			}
@@ -802,92 +826,20 @@ void cGraphics_Setup::handle_input(double dDelta, int nScene_Id, bool *bChange_S
 
 		}
 	}
+}
 
-	/*while (m_pHMD->PollNextEvent(&vrEventR, sizeof(vrEventR)) != 0)
+void cGraphics_Setup::swap_controller_roles(vr::TrackedDeviceIndex_t non_tracking_device)
+{
+	ETrackedControllerRole controller_role;
+
+	controller_role = m_pHMD->GetControllerRoleForTrackedDeviceIndex(non_tracking_device);
+
+	if (controller_role == TrackedControllerRole_LeftHand)
 	{
-		printf("%d Right C ; ", vrEventR.trackedDeviceIndex);
-		switch (vrEventR.data.controller.button)
-		{
-		case k_EButton_Grip:
-			switch (vrEventR.eventType)
-			{
-			case VREvent_ButtonPress:
-				printf("Grip Press\n");
-				break;
-
-			case VREvent_ButtonUnpress:
-				printf("Grip unPress\n");
-				break;
-			}
-			break;
-
-		case k_EButton_SteamVR_Trigger:
-			switch (vrEventR.eventType)
-			{
-			case VREvent_ButtonPress:
-				printf("Trigger Press\n");
-				break;
-
-			case VREvent_ButtonUnpress:
-				printf("Trigger unPress\n");
-				break;
-			}
-			break;
-
-		case k_EButton_SteamVR_Touchpad:
-			switch (vrEventR.eventType)
-			{
-			case VREvent_ButtonPress:
-				printf("Touchpad Press\n");
-				break;
-
-			case VREvent_ButtonUnpress:
-				printf("Touchpad unPress\n");
-				break;
-
-			case VREvent_ButtonTouch:
-				printf("Touchpad Touch\n");
-				break;
-
-			case VREvent_ButtonUntouch:
-				printf("Touchpad unTouch\n");
-				break;
-
-			}
-			break;
-
-		case k_EButton_ApplicationMenu:
-			switch (vrEventR.eventType)
-			{
-			case VREvent_ButtonPress:
-				printf("ApplicationMenu Press\n");
-				break;
-
-			case VREvent_ButtonUnpress:
-				printf("ApplicationMenu unPress\n");
-				break;
-			}
-			break;
-
-		default:
-			printf("Controller is not Working\n");
-			break;
-
-		}
-	}*/
-
-	/*vr::VREvent_t vr_event;
-	while (m_pHMD->PollNextEvent(&vr_event, sizeof(vr_event)))
+		controller_role = TrackedControllerRole_RightHand;
+	}
+	else if (controller_role == TrackedControllerRole_RightHand)
 	{
-		ProcessVREvent()
-	}*/
-
-	//for (vr::TrackedDeviceIndex_t uint_device = 0; uint_device < vr::k_unMaxTrackedDeviceCount; uint_device++)
-	//{
-	//	vr::VRControllerState_t vr_controller_state;
-	//	if (m_pHMD->GetControllerState(uint_device, &vr_controller_state, sizeof(vr_controller_state)))
-	//	{
-	//		m_rbShowTrackedDevice[uint_device] = vr_controller_state.ulButtonPressed == 0;
-	//	}
-	//}
+		controller_role = TrackedControllerRole_LeftHand;
+	}
 }
