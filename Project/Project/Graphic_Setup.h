@@ -164,7 +164,7 @@ public:
 	unsigned int get_controller_vert_count();
 	int get_tracked_controller_count();
 	ComPtr<ID3D11Resource> get_controller_axis_vertex_buffer();
-	int is_right_hand_controller(vr::VREvent_t vr_event);
+	int is_right_hand_controller(TrackedDeviceIndex_t vr_event);
 	void get_controller_pose();
 	void update_controller(double dDelta, int nScene_Id, bool *bChange_Scene, bool *bMove_Bullet);
 	void handle_input(double dDelta, int nScene_Id, bool *bChange_Scene, bool *bMove_Bullet, VRControllerState001_t vr_controller_state);
