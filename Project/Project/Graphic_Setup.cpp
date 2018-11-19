@@ -300,13 +300,36 @@ Matrix4 cGraphics_Setup::GetHMDMatrixPoseEye(vr::Hmd_Eye nEye)
 	if (!m_pHMD)
 		return Matrix4();
 
-	vr::HmdMatrix34_t matEyeRight = m_pHMD->GetEyeToHeadTransform(nEye);
-	Matrix4 matrixObj(
-		matEyeRight.m[0][0], matEyeRight.m[1][0], matEyeRight.m[2][0], 0.0,
-		matEyeRight.m[0][1], matEyeRight.m[1][1], matEyeRight.m[2][1], 0.0,
-		matEyeRight.m[0][2], matEyeRight.m[1][2], matEyeRight.m[2][2], 0.0,
-		matEyeRight.m[0][3], matEyeRight.m[1][3], matEyeRight.m[2][3], 1.0f
-	);
+	Matrix4 matrixObj;
+
+	if (nEye == 0)
+	{
+		vr::HmdMatrix34_t matEyeLeft = m_pHMD->GetEyeToHeadTransform(nEye);
+		matrixObj = {
+			matEyeLeft.m[0][0], matEyeLeft.m[1][0], matEyeLeft.m[2][0], 0.0,
+			matEyeLeft.m[0][1], matEyeLeft.m[1][1], matEyeLeft.m[2][1], 0.0,
+			matEyeLeft.m[0][2], matEyeLeft.m[1][2], matEyeLeft.m[2][2], 0.0,
+			matEyeLeft.m[0][3], matEyeLeft.m[1][3], matEyeLeft.m[2][3], 1.0f
+		};
+	}
+	else
+	{
+		vr::HmdMatrix34_t matEyeRight = m_pHMD->GetEyeToHeadTransform(nEye);
+		matrixObj = {
+			matEyeRight.m[0][0], matEyeRight.m[1][0], matEyeRight.m[2][0], 0.0,
+			matEyeRight.m[0][1], matEyeRight.m[1][1], matEyeRight.m[2][1], 0.0,
+			matEyeRight.m[0][2], matEyeRight.m[1][2], matEyeRight.m[2][2], 0.0,
+			matEyeRight.m[0][3], matEyeRight.m[1][3], matEyeRight.m[2][3], 1.0f
+		};
+	}
+
+	//vr::HmdMatrix34_t matEyeRight = m_pHMD->GetEyeToHeadTransform(nEye);
+	//Matrix4 matrixObj(
+	//	matEyeRight.m[0][0], matEyeRight.m[1][0], matEyeRight.m[2][0], 0.0,
+	//	matEyeRight.m[0][1], matEyeRight.m[1][1], matEyeRight.m[2][1], 0.0,
+	//	matEyeRight.m[0][2], matEyeRight.m[1][2], matEyeRight.m[2][2], 0.0,
+	//	matEyeRight.m[0][3], matEyeRight.m[1][3], matEyeRight.m[2][3], 1.0f
+	//);
 
 	return matrixObj.invert();
 }
@@ -343,6 +366,8 @@ tFloat4x4 cGraphics_Setup::GetCurrentViewProjectionMatrix(vr::Hmd_Eye nEye)
 	Matrix4 matMVP;
 	if (nEye == vr::Eye_Left)
 	{
+		//m_mat4eyePosLeft[12] = 1000;
+
 		matMVP = m_mat4ProjectionLeft * m_mat4eyePosLeft * m_mat4HMDPose;
 	}
 	else if (nEye == vr::Eye_Right)
