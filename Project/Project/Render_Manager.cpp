@@ -280,7 +280,7 @@ void cRender_Manager::Unload(tScene_Objects* tObject_List)
 	ZeroMemory(&tObject_List, sizeof(tScene_Objects));
 }
 
-void cRender_Manager::Draw(int nScene_Id, tScene_Objects* tObject_List, bool *bChange_Scene, bool *bMove_Bullet)
+void cRender_Manager::Draw(int nScene_Id, tScene_Objects* tObject_List, bool *bChange_Scene, bool *bMove_Bullet, tFloat3 lhand)
 {
 	for (int _eyeID = 0; _eyeID < 2; _eyeID++)
 	{
@@ -404,6 +404,7 @@ void cRender_Manager::Draw(int nScene_Id, tScene_Objects* tObject_List, bool *bC
 			cCam.Normalize();
 		}
 		*/
+		
 		if (nScene_Id == 2)
 		{
 			//dragon controls
@@ -529,10 +530,11 @@ void cRender_Manager::Draw(int nScene_Id, tScene_Objects* tObject_List, bool *bC
 			tWVP.fProjection_Matrix = tFloat4x4_to_XMFLOAT4x4(c_Graphics_Setup->GetCurrentViewProjectionMatrix(vr::Eye_Right));
 		}
 
+
 		unsigned int verts_size = sizeof(tVertex);
 		unsigned int verts_skinned_size = sizeof(tVertex_Skinned);
 		unsigned int off_set = 0;
-
+		
 		for (int i = 0; i < tObject_List->nObject_Count; i++)
 		{
 			// TO TURN OFF OBJECTS
@@ -543,7 +545,16 @@ void cRender_Manager::Draw(int nScene_Id, tScene_Objects* tObject_List, bool *bC
 
 			// CONSTANT BUFFER - WVPC
 			{
-				tWVP.fWorld_Matrix = tFloat4x4_to_XMFLOAT4x4(tObject_List->fWorld_Matrix[i]);
+				if (i == 7)
+				{
+					tFloat4x4 temp = tObject_List->fWorld_Matrix[i];
+					temp.tW.fX += lhand.fX;
+					temp.tW.fY += lhand.fY;
+					temp.tW.fZ += lhand.fZ;
+					tWVP.fWorld_Matrix = tFloat4x4_to_XMFLOAT4x4(temp);
+				}
+				else
+					tWVP.fWorld_Matrix = tFloat4x4_to_XMFLOAT4x4(tObject_List->fWorld_Matrix[i]);
 
 				// MAP DATA
 				c_Graphics_Setup->Get_Context().Get()->Map(d3d_Constant_Buffer_WVP.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &d3d_MSR);
