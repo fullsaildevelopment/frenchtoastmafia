@@ -118,10 +118,12 @@ private:
 	float moveMeOnXScotty = 0;
 	float moveMeOnYScotty = 0;
 	float moveMeOnZScotty = 0;
+	float rotationY = 0;
 
 	dopeSoundSystem sound;
 
 	bool swapped = false;
+	bool hold_trigger = false;
 
 public:
 	cGraphics_Setup(HWND _hwnd);
@@ -166,7 +168,7 @@ public:
 	ComPtr<ID3D11Resource> get_controller_axis_vertex_buffer();
 	int is_right_hand_controller(TrackedDeviceIndex_t vr_event);
 	void get_controller_pose();
-	void update_controller(double dDelta, int nScene_Id, bool *bChange_Scene, bool *bMove_Bullet);
+	void update_controller(double dDelta, int nScene_Id, bool *bChange_Scene, bool *bMove_Bullet, tFloat3 *lhand);
 	void handle_input(double dDelta, int nScene_Id, bool *bChange_Scene, bool *bMove_Bullet, VRControllerState001_t vr_controller_state);
 	void swap_controller_roles(vr::TrackedDeviceIndex_t non_tracking_device);
 };

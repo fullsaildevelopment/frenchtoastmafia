@@ -31,6 +31,9 @@ private:
 	int m_nScene_Id;
 	bool bChange_Scene = false;
 	bool bMove_Bullet = false;
+
+	tFloat3 lhand;
+
 public:
 	cGame_Loop();
 	~cGame_Loop();

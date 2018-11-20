@@ -64,6 +64,24 @@ private:
 	bool bCollided;
 	tAABB tAABB_Bullet, tAABB_Dragon;
 
+	// HANDS
+	// left
+	ComPtr<ID3D11Buffer> d3d_Left_Hand_Vertex_Buffer;
+	ComPtr<ID3D11Buffer> d3d_Left_Hand_Index_Buffer;
+	//ComPtr<ID3D11Buffer> d3d_Left_Hand_Material_Buffer;
+	ComPtr<ID3D11VertexShader> d3d_Left_Hand_Vertex_Shader;
+	ComPtr<ID3D11PixelShader> d3d_Left_Hand_Pixel_Shader;
+
+	// right
+	ComPtr<ID3D11Buffer> d3d_Right_Hand_Vertex_Buffer;
+	ComPtr<ID3D11Buffer> d3d_Right_Hand_Index_Buffer;
+	ComPtr<ID3D11Buffer> d3d_Right_Hand_Material_Buffer;
+	//ComPtr<ID3D11VertexShader> d3d_Right_Hand_Vertex_Shader;
+	ComPtr<ID3D11PixelShader> d3d_Right_Hand_Pixel_Shader;
+
+	D3D11_BUFFER_DESC d3dBuffer_Desc;
+	D3D11_SUBRESOURCE_DATA d3dSRD;
+
 public:
 	cRender_Manager();
 	~cRender_Manager();
@@ -71,5 +89,5 @@ public:
 	void Initialize(cGraphics_Setup* c_Graphics_Setup);
 	void Load_Data(int nScene_Id, tScene_Objects* tObject_List);
 	void Unload(tScene_Objects* t_Object_List);
-	void Draw(int nScene_Id, tScene_Objects* t_Object_List, bool *bChange_Scene, bool *bMove_Bullet);
+	void Draw(int nScene_Id, tScene_Objects* t_Object_List, bool *bChange_Scene, bool *bMove_Bullet, tFloat3 lhand);
 };
