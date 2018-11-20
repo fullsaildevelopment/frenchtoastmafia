@@ -70,6 +70,9 @@
     <Filter Include="Renderer Manager\Shaders\Vertex">
       <UniqueIdentifier>{ff52454c-38e7-4fa6-87b7-159e582e940e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Renderer Manager\Shaders\Unused">
+      <UniqueIdentifier>{3e4c90d7-056f-4102-986b-ecb56d349fc2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="header.h">
@@ -236,19 +239,23 @@
     <FxCompile Include="VertexShader.hlsl">
       <Filter>Renderer Manager\Shaders\Vertex</Filter>
     </FxCompile>
-    <FxCompile Include="VertexShader_Bullet.hlsl">
-      <Filter>Renderer Manager\Shaders\Vertex</Filter>
-    </FxCompile>
-    <FxCompile Include="PixelShader_Priest.hlsl">
-      <Filter>Renderer Manager\Shaders\Pixel</Filter>
-    </FxCompile>
-    <FxCompile Include="PixelShader_Arena.hlsl">
-      <Filter>Renderer Manager\Shaders\Pixel</Filter>
-    </FxCompile>
     <FxCompile Include="VertexShader_Animation.hlsl">
       <Filter>Renderer Manager\Shaders\Vertex</Filter>
     </FxCompile>
-    <FxCompile Include="PixelShader_Dragon.hlsl" />
-    <FxCompile Include="PixelShader_Fireball.hlsl" />
+    <FxCompile Include="PixelShader_Dragon.hlsl">
+      <Filter>Renderer Manager\Shaders\Unused</Filter>
+    </FxCompile>
+    <FxCompile Include="PixelShader_Fireball.hlsl">
+      <Filter>Renderer Manager\Shaders\Unused</Filter>
+    </FxCompile>
+    <FxCompile Include="PixelShader_Arena.hlsl">
+      <Filter>Renderer Manager\Shaders\Unused</Filter>
+    </FxCompile>
+    <FxCompile Include="PixelShader_Priest.hlsl">
+      <Filter>Renderer Manager\Shaders\Unused</Filter>
+    </FxCompile>
+    <FxCompile Include="VertexShader_Bullet.hlsl">
+      <Filter>Renderer Manager\Shaders\Unused</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>
