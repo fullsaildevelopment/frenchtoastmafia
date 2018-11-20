@@ -22,7 +22,7 @@ private:
 public:
 	dopeSoundSystem();
 	~dopeSoundSystem();
-	void playSong(const char* soundName, FMOD_MODE channel_mode);
+	void playSong(const char* soundName, FMOD_MODE channel_mode, float volume_level);
 	void play3DSound(const char* soundName, FMOD_MODE channel_mode);
 	void pauseNUnPause();
 	void stopSong();

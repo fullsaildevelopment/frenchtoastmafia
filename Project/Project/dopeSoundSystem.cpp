@@ -50,7 +50,7 @@ dopeSoundSystem::~dopeSoundSystem()
 	System->release();
 }
 
-void dopeSoundSystem::playSong(const char* soundName, FMOD_MODE channel_mode)
+void dopeSoundSystem::playSong(const char* soundName, FMOD_MODE channel_mode, float volume_level)
 {
 	if (isPlaying == false)
 	{
@@ -66,6 +66,8 @@ void dopeSoundSystem::playSong(const char* soundName, FMOD_MODE channel_mode)
 		soundChannel->setMode(channel_mode);  // if i want sounds to cue them call default and play another song
 		// FMOD_LOOP_NORMAL
 		soundChannel->setLoopCount(-1);
+
+		soundChannel->setVolume(volume_level);
 		isPlaying = true;
 	}
 	else
