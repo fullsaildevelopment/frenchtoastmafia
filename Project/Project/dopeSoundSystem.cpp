@@ -145,7 +145,7 @@ void dopeSoundSystem::muteAudio()
 		return;
 	}
 }
-void dopeSoundSystem::playSoundEffect(const char* soundName, FMOD_MODE channel_mode)
+void dopeSoundSystem::playSoundEffect(const char* soundName, FMOD_MODE channel_mode, float volume_level)
 {
 	System->createSound(soundName, FMOD_DEFAULT, NULL, &soundEffect);
 	//System->createSound("celtic-harp-and-flute-music-call-of-the-ancients.mp3", FMOD_LOOP_NORMAL, NULL, &song2);
@@ -157,6 +157,8 @@ void dopeSoundSystem::playSoundEffect(const char* soundName, FMOD_MODE channel_m
 	System->playSound(soundEffect, NULL, false, &soundEffectChannel);
 	//resulty = FMOD::System::createStream()
 	soundEffectChannel->setMode(channel_mode);  // if i want sounds to cue them call default and play another song
+
+	soundEffectChannel->setVolume(volume_level);
 	// FMOD_LOOP_NORMAL
 	//soundEffectChannel->setLoopCount(-1);
 }

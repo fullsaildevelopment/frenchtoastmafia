@@ -733,7 +733,7 @@ void cGraphics_Setup::handle_input(double dDelta, int nScene_Id, bool *bChange_S
 					printf("Trigger Press\n");
 					if (nScene_Id == 2)
 					{
-						sound.playSoundEffect("Small Fireball-SoundBible.com-1381880822.mp3", FMOD_DEFAULT);
+						sound.playSoundEffect("Small Fireball-SoundBible.com-1381880822.mp3", FMOD_DEFAULT, 0.7f);
 						*bMove_Bullet = true;
 					}
 					else

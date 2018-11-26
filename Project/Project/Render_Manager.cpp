@@ -416,7 +416,7 @@ void cRender_Manager::Draw(int nScene_Id, tScene_Objects* tObject_List, bool *bC
 			{
 				isHit = false;
 				flashTimer = flashTime;
-				sound.playSoundEffect("DragonSound1.mp3", FMOD_DEFAULT);
+				sound.playSoundEffect("DragonSound1.mp3", FMOD_DEFAULT, 1.0f);
 				dragonHealth -= 1;
 				if (dragonHealth == 6)
 				{
@@ -476,7 +476,7 @@ void cRender_Manager::Draw(int nScene_Id, tScene_Objects* tObject_List, bool *bC
 			{
 				if (dragonAlive == true)
 				{
-					sound.playSoundEffect("Fireball+1.mp3", FMOD_DEFAULT);
+					sound.playSoundEffect("Fireball+1.mp3", FMOD_DEFAULT, 0.4f);
 				}
 				tObject_List->fWorld_Matrix[3].tW.fX = -10;
 				tObject_List->fWorld_Matrix[3].tW.fY = 10;
