@@ -55,7 +55,7 @@ void cGraphics_Setup::Initialize()
 
 
 	ZeroMemory(&d3d_Swap_Chain_Desc, sizeof(DXGI_SWAP_CHAIN_DESC));
-	d3d_Swap_Chain_Desc.BufferCount = 1;
+	d3d_Swap_Chain_Desc.BufferCount = 2;
 	d3d_Swap_Chain_Desc.BufferDesc.Width = m_nRenderWidth;
 	d3d_Swap_Chain_Desc.BufferDesc.Height = m_nRenderHeight;
 	d3d_Swap_Chain_Desc.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM; // unsigned normal
@@ -73,11 +73,11 @@ void cGraphics_Setup::Initialize()
 	d3d_Swap_Chain_Desc.BufferDesc.Scaling = DXGI_MODE_SCALING_UNSPECIFIED;
 
 	D3D_FEATURE_LEVEL d3d_Feature_Level = D3D_FEATURE_LEVEL_10_0;
-	D3D11CreateDeviceAndSwapChain(NULL, D3D_DRIVER_TYPE_HARDWARE, NULL, D3D11_CREATE_DEVICE_DEBUG, nullptr, 0, D3D11_SDK_VERSION, &d3d_Swap_Chain_Desc, d3d_Swap_Chain.GetAddressOf(), d3d_Device.GetAddressOf(), &d3d_Feature_Level, d3d_Context.GetAddressOf());
+	HRESULT error = D3D11CreateDeviceAndSwapChain(NULL, D3D_DRIVER_TYPE_HARDWARE, NULL, D3D11_CREATE_DEVICE_DEBUG, nullptr, 0, D3D11_SDK_VERSION, &d3d_Swap_Chain_Desc, d3d_Swap_Chain.GetAddressOf(), d3d_Device.GetAddressOf(), &d3d_Feature_Level, d3d_Context.GetAddressOf());
 
 	// SWAPPING BACK BUFFER
 	ID3D11Texture2D *back_buffer;
-	d3d_Swap_Chain.Get()->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&back_buffer);
+	error = d3d_Swap_Chain.Get()->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&back_buffer);
 
 	ZeroMemory(&d3d_Z_Buffer_Desc, sizeof(D3D11_TEXTURE2D_DESC));
 	back_buffer->GetDesc(&d3d_Z_Buffer_Desc);
@@ -87,13 +87,13 @@ void cGraphics_Setup::Initialize()
 	d3d_RTV_Desc.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2D;
 	d3d_RTV_Desc.Texture2D.MipSlice = 0;
 
-	d3d_Device.Get()->CreateRenderTargetView(back_buffer, &d3d_RTV_Desc, d3d_RTV.GetAddressOf());
+	error = d3d_Device.Get()->CreateRenderTargetView(back_buffer, &d3d_RTV_Desc, d3d_RTV.GetAddressOf());
 
-	d3d_Swap_Chain.Get()->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&d3d_Render_Left_Eye);
-	d3d_Device.Get()->CreateRenderTargetView(d3d_Render_Left_Eye.Get(), &d3d_RTV_Desc, d3d_RTV_Left_Eye.GetAddressOf());
+	error = d3d_Swap_Chain.Get()->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&d3d_Render_Left_Eye);
+	error = d3d_Device.Get()->CreateRenderTargetView(d3d_Render_Left_Eye.Get(), &d3d_RTV_Desc, d3d_RTV_Left_Eye.GetAddressOf());
 
-	d3d_Swap_Chain.Get()->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&d3d_Render_Right_Eye);
-	d3d_Device.Get()->CreateRenderTargetView(d3d_Render_Right_Eye.Get(), &d3d_RTV_Desc, d3d_RTV_Right_Eye.GetAddressOf());
+	error = d3d_Swap_Chain.Get()->GetBuffer(1, __uuidof(ID3D11Texture2D), (LPVOID*)&d3d_Render_Right_Eye);
+	error = d3d_Device.Get()->CreateRenderTargetView(d3d_Render_Right_Eye.Get(), &d3d_RTV_Desc, d3d_RTV_Right_Eye.GetAddressOf());
 	back_buffer->Release();
 
 	// Z BUFFER / DEPTH STENCIL
