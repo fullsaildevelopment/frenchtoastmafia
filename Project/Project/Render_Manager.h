@@ -95,5 +95,5 @@ public:
 	void Load_Data(int nScene_Id, tScene_Objects* tObject_List);
 	void Unload(tScene_Objects* t_Object_List);
 	void Draw(int nScene_Id, tScene_Objects* t_Object_List, bool *bChange_Scene, bool *bMove_Bullet, tFloat3 lhand);
-	void get_particle_array();
+	//tVertex get_particle_array();
 };

@@ -669,7 +669,9 @@ void cRender_Manager::Draw(int nScene_Id, tScene_Objects* tObject_List, bool *bC
 	c_Graphics_Setup->Get_Swap_Chain().Get()->Present(1, 0);
 }
 
-void cRender_Manager::get_particle_array()  // void  // tVertex 
-{
-	return line_vert;
-}
+//tVertex cRender_Manager::get_particle_array()  // void  // tVertex 
+//{
+//	return *line_vert;
+//}
+
+

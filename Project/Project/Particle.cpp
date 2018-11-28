@@ -13,11 +13,13 @@ Particle::~Particle()
 
 void Particle::create_particles(tFloat4 color, XTime timer, tFloat3 acceleration)
 {
+	tVertex part_array[888];
+
 	int num_particles = 888;
 
-	Effects <particle, num_particles> particle_pool;
+	Effects <particle, 888> particle_pool;
 
-	particle* temp_particle_effects[num_particles];
+	particle* temp_particle_effects[888];
 
 	particle temp_particle;
 
@@ -67,8 +69,11 @@ void Particle::create_particles(tFloat4 color, XTime timer, tFloat3 acceleration
 			continue;
 		}
 		// DRAW PARTICLES HERE
-		renderer.get_particle_array()[i] = temp_particle_effects[i];
+		//renderer.get_particle_array()[i] = temp_particle_effects[i];
+		part_array[i] = temp_particle_effects[i]
 	}
+
+
 
 	for (int i = 0; i < num_particles; i++)
 	{
@@ -89,12 +94,12 @@ void Particle::create_particles(tFloat4 color, XTime timer, tFloat3 acceleration
 			}
 		}
 
-		(float)pos.fX = temp_particle_effects[i]->position.x;
-		(float)pos.fY = temp_particle_effects[i]->position.y;
-		(float)pos.fZ = temp_particle_effects[i]->position.z;
-		(float)prevPos.fX = temp_particle_effects[i]->prev_Position.x;
-		(float)prevPos.fY = temp_particle_effects[i]->prev_Position.y;
-		(float)prevPos.fZ = temp_particle_effects[i]->prev_Position.z;
+		(float)pos.fX = temp_particle_effects[i]->position.fX;
+		(float)pos.fY = temp_particle_effects[i]->position.fY;
+		(float)pos.fZ = temp_particle_effects[i]->position.fZ;
+		(float)prevPos.fX = temp_particle_effects[i]->prev_Position.fX;
+		(float)prevPos.fY = temp_particle_effects[i]->prev_Position.fY;
+		(float)prevPos.fZ = temp_particle_effects[i]->prev_Position.fZ;
 
 		delta.fX = (pos.fX - prevPos.fX);
 		delta.fY = (pos.fY - prevPos.fY);
@@ -108,13 +113,13 @@ void Particle::create_particles(tFloat4 color, XTime timer, tFloat3 acceleration
 		pos.fY += (delta.fY) + accel.fY * (t * t);
 		pos.fZ += (delta.fZ) + accel.fZ * (t * t);
 
-		temp_particle_effects[i]->position.x = pos.fX;
-		temp_particle_effects[i]->position.y = pos.fY;
-		temp_particle_effects[i]->position.z = pos.fZ;
+		temp_particle_effects[i]->position.fX = pos.fX;
+		temp_particle_effects[i]->position.fY = pos.fY;
+		temp_particle_effects[i]->position.fZ = pos.fZ;
 
-		temp_particle_effects[i]->prev_Position.x = prevPos.fX;
-		temp_particle_effects[i]->prev_Position.y = prevPos.fY;
-		temp_particle_effects[i]->prev_Position.z = prevPos.fZ;
+		temp_particle_effects[i]->prev_Position.fX = prevPos.fX;
+		temp_particle_effects[i]->prev_Position.fY = prevPos.fY;
+		temp_particle_effects[i]->prev_Position.fZ = prevPos.fZ;
 
 		if (pos.fY < 0)
 		{
