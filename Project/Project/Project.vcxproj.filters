@@ -73,6 +73,9 @@
     <Filter Include="Renderer Manager\Shaders\Unused">
       <UniqueIdentifier>{3e4c90d7-056f-4102-986b-ecb56d349fc2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Effects">
+      <UniqueIdentifier>{ec490245-65ad-40ba-8792-fa80d87fbdb4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="header.h">
@@ -159,6 +162,12 @@
     <ClInclude Include="Vectors.h">
       <Filter>Helper</Filter>
     </ClInclude>
+    <ClInclude Include="Effects.h">
+      <Filter>Effects</Filter>
+    </ClInclude>
+    <ClInclude Include="Particle.h">
+      <Filter>Effects</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Project.cpp">
@@ -211,6 +220,9 @@
     </ClCompile>
     <ClCompile Include="Collisions.cpp">
       <Filter>Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="Particle.cpp">
+      <Filter>Effects</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

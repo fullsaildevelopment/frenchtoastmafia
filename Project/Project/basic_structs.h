@@ -138,3 +138,4 @@ struct tAnimation_Data
 	tFloat4x4 tInverse[32]{};
 	tFloat4x4 tTweened[32]{};
 };
+

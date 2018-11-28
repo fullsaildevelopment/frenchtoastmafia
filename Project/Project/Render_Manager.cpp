@@ -19,6 +19,9 @@ cRender_Manager::~cRender_Manager()
 
 void cRender_Manager::Initialize(cGraphics_Setup* _setup)
 {
+	//tVertex line_vert_array[line_vert_count];
+	line_vert = new tVertex[line_vert_count];    // The array that is meant to hold the particles to draw 
+
 	dragonTint.fX = 0.0f;
 	dragonTint.fZ = 0.0f;
 	dragonTint.fY = 0.0f;
@@ -259,6 +262,7 @@ void cRender_Manager::Load_Data(int nScene_Id, tScene_Objects* tObject_List)
 					k++;
 				}
 			}
+
 
 			// CONSTANT BUFFER - PIXEL SHADER
 
@@ -663,4 +667,9 @@ void cRender_Manager::Draw(int nScene_Id, tScene_Objects* tObject_List, bool *bC
 	}
 
 	c_Graphics_Setup->Get_Swap_Chain().Get()->Present(1, 0);
+}
+
+void cRender_Manager::get_particle_array()  // void  // tVertex 
+{
+	return line_vert;
 }

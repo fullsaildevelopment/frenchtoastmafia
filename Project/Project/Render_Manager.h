@@ -26,6 +26,11 @@ class cRender_Manager
 {
 private:
 
+	//int MAX_LINE_VERTS = 2048; // Maximum number of debug lines at one time (i.e: Capacity)
+
+	int line_vert_count = 0;
+	tVertex *line_vert;
+
 	cGraphics_Setup *c_Graphics_Setup;
 	tCollisions t_Collisions;
 	dopeSoundSystem sound;
@@ -90,4 +95,5 @@ public:
 	void Load_Data(int nScene_Id, tScene_Objects* tObject_List);
 	void Unload(tScene_Objects* t_Object_List);
 	void Draw(int nScene_Id, tScene_Objects* t_Object_List, bool *bChange_Scene, bool *bMove_Bullet, tFloat3 lhand);
+	void get_particle_array();
 };
