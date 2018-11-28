@@ -282,6 +282,8 @@ void cRender_Manager::Unload(tScene_Objects* tObject_List)
 
 void cRender_Manager::Draw(int nScene_Id, tScene_Objects* tObject_List, bool *bChange_Scene, bool *bMove_Bullet, tFloat3 lhand)
 {
+	float clear_color[4] = { 1.000000000f, 0.000000000f, 0.83137255f, 1.000000000f };
+
 	for (int _eyeID = 0; _eyeID < 2; _eyeID++)
 	{
 		// SIGNALS
@@ -291,11 +293,15 @@ void cRender_Manager::Draw(int nScene_Id, tScene_Objects* tObject_List, bool *bC
 		{
 			ID3D11RenderTargetView *tmp_rtv[] = { c_Graphics_Setup->Get_RTV_Left().Get() };
 			c_Graphics_Setup->Get_Context().Get()->OMSetRenderTargets(1, tmp_rtv, c_Graphics_Setup->Get_DSV().Get());
+
+			c_Graphics_Setup->Get_Context().Get()->ClearRenderTargetView(c_Graphics_Setup->Get_RTV_Left().Get(), clear_color);
 		}
 		else
 		{
 			ID3D11RenderTargetView *tmp_rtv[] = { c_Graphics_Setup->Get_RTV_Right().Get() };
 			c_Graphics_Setup->Get_Context().Get()->OMSetRenderTargets(1, tmp_rtv, c_Graphics_Setup->Get_DSV().Get());
+
+			c_Graphics_Setup->Get_Context().Get()->ClearRenderTargetView(c_Graphics_Setup->Get_RTV_Right().Get(), clear_color);
 		}
 
 		// RESIZE / RESET RTV AND VP
