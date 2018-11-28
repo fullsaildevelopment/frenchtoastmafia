@@ -280,7 +280,7 @@ void cRender_Manager::Unload(tScene_Objects* tObject_List)
 	ZeroMemory(&tObject_List, sizeof(tScene_Objects));
 }
 
-void cRender_Manager::Draw(int nScene_Id, tScene_Objects* tObject_List, bool *bChange_Scene, bool *bMove_Bullet, tFloat3 lhand)
+void cRender_Manager::Draw(int nScene_Id, tScene_Objects* tObject_List, bool *bChange_Scene, bool *bMove_Bullet, tFloat3 lhand, cVR c_VR)
 {
 	for (int _eyeID = 0; _eyeID < 2; _eyeID++)
 	{
@@ -523,11 +523,11 @@ void cRender_Manager::Draw(int nScene_Id, tScene_Objects* tObject_List, bool *bC
 		XMStoreFloat4x4(&tWVP.fView_Matrix, XMMatrixIdentity());
 		if (_eyeID == 0)
 		{
-			tWVP.fProjection_Matrix = tFloat4x4_to_XMFLOAT4x4(c_Graphics_Setup->GetCurrentViewProjectionMatrix(vr::Eye_Left));
+			tWVP.fProjection_Matrix = tFloat4x4_to_XMFLOAT4x4(c_VR.GetCurrentViewProjectionMatrix(vr::Eye_Left));
 		}
 		else
 		{
-			tWVP.fProjection_Matrix = tFloat4x4_to_XMFLOAT4x4(c_Graphics_Setup->GetCurrentViewProjectionMatrix(vr::Eye_Right));
+			tWVP.fProjection_Matrix = tFloat4x4_to_XMFLOAT4x4(c_VR.GetCurrentViewProjectionMatrix(vr::Eye_Right));
 		}
 
 

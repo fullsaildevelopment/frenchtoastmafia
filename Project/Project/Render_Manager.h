@@ -12,6 +12,7 @@
 #include "DDSTextureLoader.h"
 #include "Graphic_Setup.h"
 #include "Renderer_Structs.h"
+#include "VR.h"
 #include "WICTextureLoader.h"
 #include "XTime.h"
 
@@ -89,5 +90,5 @@ public:
 	void Initialize(cGraphics_Setup* c_Graphics_Setup);
 	void Load_Data(int nScene_Id, tScene_Objects* tObject_List);
 	void Unload(tScene_Objects* t_Object_List);
-	void Draw(int nScene_Id, tScene_Objects* t_Object_List, bool *bChange_Scene, bool *bMove_Bullet, tFloat3 lhand);
+	void Draw(int nScene_Id, tScene_Objects* t_Object_List, bool *bChange_Scene, bool *bMove_Bullet, tFloat3 lhand, cVR c_VR);
 };

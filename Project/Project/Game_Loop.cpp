@@ -23,6 +23,8 @@ void cGame_Loop::Initialize(cGraphics_Setup* _setup)
 	c_Graphics_Setup = _setup;
 	c_Render_Manager.Initialize(_setup);
 	c_VR.Initialize(_setup);
+	c_VR.SetupCameras();
+	c_VR.UpdateHMDMatrixPose();
 	c_XTime.Restart();
 	m_nScene_Id = 0;
 }
@@ -38,7 +40,7 @@ void cGame_Loop::Setup()
 void cGame_Loop::Update()
 {
 	c_XTime.Signal();
-	c_Graphics_Setup->update_controller(c_XTime.Delta(), m_nScene_Id, &bChange_Scene, &bMove_Bullet, &lhand);
+	c_VR.update_controller(c_XTime.Delta(), m_nScene_Id, &bChange_Scene, &bMove_Bullet, &lhand);
 	if (bChange_Scene) 
 	{
 		c_Render_Manager.Unload(&tObject_List);
@@ -52,7 +54,7 @@ void cGame_Loop::Update()
 	}
 
 	c_Animation_Manager.Animate(c_XTime.Delta(), c_XTime.TotalTimeExact(), &tObject_List);
-	c_Render_Manager.Draw(m_nScene_Id, &tObject_List, &bChange_Scene, &bMove_Bullet, lhand);
+	c_Render_Manager.Draw(m_nScene_Id, &tObject_List, &bChange_Scene, &bMove_Bullet, lhand, c_VR);
 	c_VR.VR_Render();
 	sound.updateSoundSystem();
 }
