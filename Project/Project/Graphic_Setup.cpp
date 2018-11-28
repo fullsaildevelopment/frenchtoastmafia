@@ -108,19 +108,9 @@ void cGraphics_Setup::Initialize()
 	error = d3d_Device.Get()->CreateTexture2D(&eyeDesc, NULL, d3d_Render_Left_Eye.GetAddressOf());
 	error = d3d_Device.Get()->CreateTexture2D(&eyeDesc, NULL, d3d_Render_Right_Eye.GetAddressOf());
 
-	ZeroMemory(&d3d_RTV_Left_Desc, sizeof(D3D11_RENDER_TARGET_VIEW_DESC));
-	d3d_RTV_Left_Desc.Format = d3d_Z_Buffer_Desc.Format;
-	d3d_RTV_Left_Desc.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2D;
-	d3d_RTV_Left_Desc.Texture2D.MipSlice = 0;
+	error = d3d_Device.Get()->CreateRenderTargetView(d3d_Render_Left_Eye.Get(), &d3d_RTV_Desc, d3d_RTV_Left_Eye.GetAddressOf());
 
-	ZeroMemory(&d3d_RTV_Right_Desc, sizeof(D3D11_RENDER_TARGET_VIEW_DESC));
-	d3d_RTV_Right_Desc.Format = d3d_Z_Buffer_Desc.Format;
-	d3d_RTV_Right_Desc.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2D;
-	d3d_RTV_Right_Desc.Texture2D.MipSlice = 0;
-
-	error = d3d_Device.Get()->CreateRenderTargetView(d3d_Render_Left_Eye.Get(), &d3d_RTV_Left_Desc, d3d_RTV_Left_Eye.GetAddressOf());
-
-	error = d3d_Device.Get()->CreateRenderTargetView(d3d_Render_Right_Eye.Get(), &d3d_RTV_Right_Desc, d3d_RTV_Right_Eye.GetAddressOf());
+	error = d3d_Device.Get()->CreateRenderTargetView(d3d_Render_Right_Eye.Get(), &d3d_RTV_Desc, d3d_RTV_Right_Eye.GetAddressOf());
 
 	back_buffer->Release();
 

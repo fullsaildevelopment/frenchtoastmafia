@@ -71,12 +71,10 @@ private:
 	ComPtr<ID3D11Texture2D> d3d_Render_Left_Eye;
 	ComPtr<ID3D11ShaderResourceView> d3d_SRV_Left_Eye;
 	ComPtr<ID3D11RenderTargetView> d3d_RTV_Left_Eye;
-	D3D11_RENDER_TARGET_VIEW_DESC d3d_RTV_Left_Desc;
 
 	ComPtr<ID3D11Texture2D> d3d_Render_Right_Eye;
 	ComPtr<ID3D11ShaderResourceView> d3d_SRV_Right_Eye;
 	ComPtr<ID3D11RenderTargetView> d3d_RTV_Right_Eye;
-	D3D11_RENDER_TARGET_VIEW_DESC d3d_RTV_Right_Desc;
 
 	ComPtr<ID3D11Resource> m_pControllerAxisVertexBuffer;
 
