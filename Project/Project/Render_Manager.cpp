@@ -282,6 +282,9 @@ void cRender_Manager::Unload(tScene_Objects* tObject_List)
 
 void cRender_Manager::Draw(int nScene_Id, tScene_Objects* tObject_List, bool *bChange_Scene, bool *bMove_Bullet)
 {
+
+	float clear_color[4] = { 1.000000000f, 0.000000000f, 0.83137255f, 1.000000000f };
+
 	for (int _eyeID = 0; _eyeID < 2; _eyeID++)
 	{
 		// SIGNALS
@@ -291,11 +294,14 @@ void cRender_Manager::Draw(int nScene_Id, tScene_Objects* tObject_List, bool *bC
 		{
 			ID3D11RenderTargetView *tmp_rtv[] = { c_Graphics_Setup->Get_RTV_Left().Get() };
 			c_Graphics_Setup->Get_Context().Get()->OMSetRenderTargets(1, tmp_rtv, c_Graphics_Setup->Get_DSV().Get());
+
+			c_Graphics_Setup->Get_Context().Get()->ClearRenderTargetView(c_Graphics_Setup->Get_RTV_Left().Get(), clear_color);
 		}
 		else
 		{
 			ID3D11RenderTargetView *tmp_rtv[] = { c_Graphics_Setup->Get_RTV_Right().Get() };
 			c_Graphics_Setup->Get_Context().Get()->OMSetRenderTargets(1, tmp_rtv, c_Graphics_Setup->Get_DSV().Get());
+			c_Graphics_Setup->Get_Context().Get()->ClearRenderTargetView(c_Graphics_Setup->Get_RTV_Right().Get(), clear_color);
 		}
 
 		// RESIZE / RESET RTV AND VP
@@ -310,10 +316,20 @@ void cRender_Manager::Draw(int nScene_Id, tScene_Objects* tObject_List, bool *bC
 		//c_Graphics_Setup->Get_Context().Get()->OMSetRenderTargets(1, tmp_rtv, c_Graphics_Setup->Get_DSV());
 		//c_Graphics_Setup->Get_Context().Get()->RSSetViewports(1, &c_Graphics_Setup->Get_View_Port());
 		// SKY BLUE
-		float clear_color[4] = { 1.000000000f, 0.000000000f, 0.83137255f, 1.000000000f };
 		// WHITE
 		//float clear_color[4] = { 1.0f, 1.0f, 1.0f, 1.0f };
-		c_Graphics_Setup->Get_Context().Get()->ClearRenderTargetView(c_Graphics_Setup->Get_RTV().Get(), clear_color);
+		//c_Graphics_Setup->Get_Context().Get()->ClearRenderTargetView(c_Graphics_Setup->Get_RTV().Get(), clear_color);
+
+		if (_eyeID == 0)
+		{
+		
+		}
+		else
+		{
+			//c_Graphics_Setup->Get_Context().Get()->ClearRenderTargetView(c_Graphics_Setup->Get_RTV_Right().Get(), clear_color);
+		}
+
+
 		c_Graphics_Setup->Get_Context().Get()->ClearDepthStencilView(c_Graphics_Setup->Get_DSV().Get(), D3D11_CLEAR_DEPTH, 1.0f, 0);
 
 		//XMFLOAT4X4 fCamera_Matrix = tFloat4x4_to_XMFLOAT4x4(cCam.GetPosition());
@@ -652,4 +668,6 @@ void cRender_Manager::Draw(int nScene_Id, tScene_Objects* tObject_List, bool *bC
 	}
 
 	c_Graphics_Setup->Get_Swap_Chain().Get()->Present(1, 0);
+
+
 }

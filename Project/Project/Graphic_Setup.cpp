@@ -89,11 +89,39 @@ void cGraphics_Setup::Initialize()
 
 	error = d3d_Device.Get()->CreateRenderTargetView(back_buffer, &d3d_RTV_Desc, d3d_RTV.GetAddressOf());
 
-	error = d3d_Swap_Chain.Get()->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&d3d_Render_Left_Eye);
-	error = d3d_Device.Get()->CreateRenderTargetView(d3d_Render_Left_Eye.Get(), &d3d_RTV_Desc, d3d_RTV_Left_Eye.GetAddressOf());
+	//set up eyes
 
-	error = d3d_Swap_Chain.Get()->GetBuffer(1, __uuidof(ID3D11Texture2D), (LPVOID*)&d3d_Render_Right_Eye);
-	error = d3d_Device.Get()->CreateRenderTargetView(d3d_Render_Right_Eye.Get(), &d3d_RTV_Desc, d3d_RTV_Right_Eye.GetAddressOf());
+	D3D11_TEXTURE2D_DESC eyeDesc;
+
+	eyeDesc.Width = m_nRenderWidth;
+	eyeDesc.Height = m_nRenderHeight;
+	eyeDesc.MipLevels = 1;
+	eyeDesc.ArraySize = 1;
+	eyeDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+	eyeDesc.SampleDesc.Count = 1;
+	eyeDesc.SampleDesc.Quality = 0;
+	eyeDesc.Usage = D3D11_USAGE_DEFAULT;
+	eyeDesc.BindFlags = D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE;
+	eyeDesc.CPUAccessFlags = 0;
+	eyeDesc.MiscFlags = 0;
+
+	error = d3d_Device.Get()->CreateTexture2D(&eyeDesc, NULL, d3d_Render_Left_Eye.GetAddressOf());
+	error = d3d_Device.Get()->CreateTexture2D(&eyeDesc, NULL, d3d_Render_Right_Eye.GetAddressOf());
+
+	ZeroMemory(&d3d_RTV_Left_Desc, sizeof(D3D11_RENDER_TARGET_VIEW_DESC));
+	d3d_RTV_Left_Desc.Format = d3d_Z_Buffer_Desc.Format;
+	d3d_RTV_Left_Desc.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2D;
+	d3d_RTV_Left_Desc.Texture2D.MipSlice = 0;
+
+	ZeroMemory(&d3d_RTV_Right_Desc, sizeof(D3D11_RENDER_TARGET_VIEW_DESC));
+	d3d_RTV_Right_Desc.Format = d3d_Z_Buffer_Desc.Format;
+	d3d_RTV_Right_Desc.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2D;
+	d3d_RTV_Right_Desc.Texture2D.MipSlice = 0;
+
+	error = d3d_Device.Get()->CreateRenderTargetView(d3d_Render_Left_Eye.Get(), &d3d_RTV_Left_Desc, d3d_RTV_Left_Eye.GetAddressOf());
+
+	error = d3d_Device.Get()->CreateRenderTargetView(d3d_Render_Right_Eye.Get(), &d3d_RTV_Right_Desc, d3d_RTV_Right_Eye.GetAddressOf());
+
 	back_buffer->Release();
 
 	// Z BUFFER / DEPTH STENCIL
@@ -366,8 +394,6 @@ tFloat4x4 cGraphics_Setup::GetCurrentViewProjectionMatrix(vr::Hmd_Eye nEye)
 	Matrix4 matMVP;
 	if (nEye == vr::Eye_Left)
 	{
-		//m_mat4eyePosLeft[12] = 1000;
-
 		matMVP = m_mat4ProjectionLeft * m_mat4eyePosLeft * m_mat4HMDPose;
 	}
 	else if (nEye == vr::Eye_Right)
