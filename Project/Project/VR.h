@@ -26,12 +26,12 @@ private:
 	Matrix4 m_mat4ProjectionLeft;
 	Matrix4 m_mat4ProjectionRight;
 
-	vr::TrackedDevicePose_t m_rTrackedDevicePose[vr::k_unMaxTrackedDeviceCount];
-	Matrix4 m_rmat4DevicePose[vr::k_unMaxTrackedDeviceCount];
-	bool m_rbShowTrackedDevice[vr::k_unMaxTrackedDeviceCount];
+	TrackedDevicePose_t m_rTrackedDevicePose[k_unMaxTrackedDeviceCount];
+	Matrix4 m_rmat4DevicePose[k_unMaxTrackedDeviceCount];
+	bool m_rbShowTrackedDevice[k_unMaxTrackedDeviceCount];
 
 	std::string m_strPoseClasses;                            // what classes we saw poses for this frame
-	char m_rDevClassChar[vr::k_unMaxTrackedDeviceCount];   // for each device, a character representing its class
+	char m_rDevClassChar[k_unMaxTrackedDeviceCount];   // for each device, a character representing its class
 
 	unsigned int m_uiControllerVertcount = 0;
 
@@ -65,13 +65,7 @@ public:
 
 	void Initialize(cGraphics_Setup* c_Graphics_Setup);
 
-	struct VREvent_t
-	{
-		EVREventType eventType;
-		TrackedDeviceIndex_t trackedDeviceIndex;
-		VREvent_Data_t data;
-		float eventAgeSeconds;
-	};
+	
 
 	Matrix4 GetHMDMatrixPoseEye(vr::Hmd_Eye nEye);
 	Matrix4 GetHMDMatrixProjectionEye(vr::Hmd_Eye nEye);

@@ -123,9 +123,6 @@
     <ClInclude Include="Game_Loop.h">
       <Filter>Game Loop</Filter>
     </ClInclude>
-    <ClInclude Include="VR.h">
-      <Filter>VR</Filter>
-    </ClInclude>
     <ClInclude Include="Graphic_Setup.h">
       <Filter>Graphic Setup</Filter>
     </ClInclude>
@@ -158,6 +155,15 @@
     </ClInclude>
     <ClInclude Include="Vectors.h">
       <Filter>Helper</Filter>
+    </ClInclude>
+    <ClInclude Include="Controllers.h">
+      <Filter>VR</Filter>
+    </ClInclude>
+    <ClInclude Include="Head_Mount.h">
+      <Filter>VR</Filter>
+    </ClInclude>
+    <ClInclude Include="VR_Setup.h">
+      <Filter>VR</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -194,9 +200,6 @@
     <ClCompile Include="Game_Loop.cpp">
       <Filter>Game Loop</Filter>
     </ClCompile>
-    <ClCompile Include="VR.cpp">
-      <Filter>VR</Filter>
-    </ClCompile>
     <ClCompile Include="Graphic_Setup.cpp">
       <Filter>Graphic Setup</Filter>
     </ClCompile>
@@ -211,6 +214,15 @@
     </ClCompile>
     <ClCompile Include="Collisions.cpp">
       <Filter>Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="Controllers.cpp">
+      <Filter>VR</Filter>
+    </ClCompile>
+    <ClCompile Include="Head_Mount.cpp">
+      <Filter>VR</Filter>
+    </ClCompile>
+    <ClCompile Include="VR_Setup.cpp">
+      <Filter>VR</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

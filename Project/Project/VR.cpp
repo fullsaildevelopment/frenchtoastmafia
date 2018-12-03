@@ -136,25 +136,25 @@ void cVR::UpdateHMDMatrixPose()
 
 	if (m_rTrackedDevicePose[vr::k_unTrackedDeviceIndex_Hmd].bPoseIsValid)
 	{
-		Matrix4 offset_matrix(
-			1, 0, 0, 0,
-			0, 1, 0, 0,
-			0, 0, 1, 0,
-			0, 0, 0, 1
-		);
+		//Matrix4 offset_matrix(
+		//	1, 0, 0, 0,
+		//	0, 1, 0, 0,
+		//	0, 0, 1, 0,
+		//	0, 0, 0, 1
+		//);
+		//
+		//if (move_forward)
+		//{
+		//	movement_matrix[14] = 25 * dDelta;
+		//	m_mat4HMDPose.translate(0, 0, 25 * dDelta);
+		//
+		//}
 
-		if (move_forward)
-		{
-			movement_matrix[14] = 25 * dDelta;
-			m_mat4HMDPose.translate(0, 0, 25 * dDelta);
+		m_mat4HMDPose = m_rmat4DevicePose[vr::k_unTrackedDeviceIndex_Hmd].invert();
 
-		}
-
-		//m_mat4HMDPose = m_rmat4DevicePose[vr::k_unTrackedDeviceIndex_Hmd].invert();
-
-		m_mat4HMDPose = m_rmat4DevicePose[vr::k_unTrackedDeviceIndex_Hmd];
-		m_mat4HMDPose = m_mat4HMDPose * offset_matrix;
-		m_mat4HMDPose = m_mat4HMDPose.invert();
+		//m_mat4HMDPose = m_rmat4DevicePose[vr::k_unTrackedDeviceIndex_Hmd];
+		//m_mat4HMDPose = m_mat4HMDPose * offset_matrix;
+		//m_mat4HMDPose = m_mat4HMDPose.invert();
 	}
 }
 

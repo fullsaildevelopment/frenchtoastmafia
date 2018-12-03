@@ -16,6 +16,29 @@ cCamera::~cCamera()
 {
 }
 
+void cCamera::Initialize()
+{
+	fView_Matrix.tX.fX = 1.0f;
+	fView_Matrix.tX.fY = 0.0f;
+	fView_Matrix.tX.fZ = 0.0f;
+	fView_Matrix.tX.fW = 0.0f;
+
+	fView_Matrix.tY.fX = 0.0f;
+	fView_Matrix.tY.fY = 1.0f;
+	fView_Matrix.tY.fZ = 0.0f;
+	fView_Matrix.tY.fW = 0.0f;
+
+	fView_Matrix.tZ.fX = 0.0f;
+	fView_Matrix.tZ.fY = 0.0f;
+	fView_Matrix.tZ.fZ = 1.0f;
+	fView_Matrix.tZ.fW = 0.0f;
+
+	fView_Matrix.tW.fX = 0.0f;
+	fView_Matrix.tW.fY = 0.0f;
+	fView_Matrix.tW.fZ = 0.0f;
+	fView_Matrix.tW.fW = 1.0f;
+}
+
 void cCamera::SetPosition(tFloat4 fPosition)
 {
 	fView_Matrix.tW.fX = fPosition.fX;
@@ -40,7 +63,7 @@ void cCamera::Translation(tFloat4 fMovement_Vect)
 	XMMATRIX mView_Matrix = XMLoadFloat4x4(&xm_fView_Matrix);
 	XMMATRIX mTranslation_Matrix = XMMatrixTranslation(fMovement_Vect.fX, fMovement_Vect.fY, fMovement_Vect.fZ);
 
-	if (fMovement_Vect.fW == 0)
+	if (fMovement_Vect.fW == 0.0f)
 		mView_Matrix = XMMatrixMultiply(mTranslation_Matrix, mView_Matrix);
 	else
 		mView_Matrix = XMMatrixMultiply(mView_Matrix, mTranslation_Matrix);

@@ -21,13 +21,13 @@ cGraphics_Setup::~cGraphics_Setup()
 
 void cGraphics_Setup::Initialize()
 {
-	UINT createDeviceFlags = 0;
-
-	vr::EVRInitError eError = vr::VRInitError_None;
-
-	m_pHMD = vr::VR_Init(&eError, vr::VRApplication_Scene);
-
-	m_pRenderModels = (vr::IVRRenderModels *)vr::VR_GetGenericInterface(vr::IVRRenderModels_Version, &eError);
+	//UINT createDeviceFlags = 0;
+	//
+	//vr::EVRInitError eError = vr::VRInitError_None;
+	//
+	//m_pHMD = vr::VR_Init(&eError, vr::VRApplication_Scene);
+	//
+	//m_pRenderModels = (vr::IVRRenderModels *)vr::VR_GetGenericInterface(vr::IVRRenderModels_Version, &eError);
 
 	D3D_DRIVER_TYPE driverTypes[] =
 	{
@@ -239,26 +239,26 @@ void cGraphics_Setup::Initialize()
 	// BIND d3d_View_Port
 	d3d_Context.Get()->RSSetViewports(1, &d3d_View_Port);
 
-	m_cCameraLeft = new cCamera;
-
-	// Set the initial position of the camera.
-	m_cCameraLeft->SetPosition(tFloat4x4{
-											1.0f, 0.0f, 0.0f, 0.0f,
-											0.0f, 1.0f, 0.0f, 0.0f,
-											0.0f, 0.0f, 1.0f, 0.0f,
-											0.0f, 0.0f, 0.0f, 1.0f
-		});
-
-	// Create the camera object.
-	m_cCameraRight = new cCamera;
-
-	// Set the initial position of the camera.
-	m_cCameraRight->SetPosition(tFloat4x4{
-											1.0f, 0.0f, 0.0f, 0.0f,
-											0.0f, 1.0f, 0.0f, 0.0f,
-											0.0f, 0.0f, 1.0f, 0.0f,
-											1.0f, 0.0f, 0.0f, 1.0f
-		});
+	//m_cCameraLeft = new cCamera;
+	//
+	//// Set the initial position of the camera.
+	//m_cCameraLeft->SetPosition(tFloat4x4{
+	//										1.0f, 0.0f, 0.0f, 0.0f,
+	//										0.0f, 1.0f, 0.0f, 0.0f,
+	//										0.0f, 0.0f, 1.0f, 0.0f,
+	//										0.0f, 0.0f, 0.0f, 1.0f
+	//	});
+	//
+	//// Create the camera object.
+	//m_cCameraRight = new cCamera;
+	//
+	//// Set the initial position of the camera.
+	//m_cCameraRight->SetPosition(tFloat4x4{
+	//										1.0f, 0.0f, 0.0f, 0.0f,
+	//										0.0f, 1.0f, 0.0f, 0.0f,
+	//										0.0f, 0.0f, 1.0f, 0.0f,
+	//										1.0f, 0.0f, 0.0f, 1.0f
+	//	});
 
 	//Removed model and shader class declaration
 
@@ -272,11 +272,11 @@ void cGraphics_Setup::Initialize()
 	//DirectX::XMMATRIX mo = DirectX::XMMatrixOrthographicLH((float)fWindow_Width, (float)fWindow_Height, 0, 10);
 	//m_orthoMatrix.set((const float*)&mo.r);
 
-	m_fScale = 0.3f;
-	m_fScaleSpacing = 4.0f;
-
-	m_fNearClip = fNearClip;
-	m_fFarClip = fFarClip; // 30-125 dont use fFarClip (1000)
+	//m_fScale = 0.3f;
+	//m_fScaleSpacing = 4.0f;
+	//
+	//m_fNearClip = fNearClip;
+	//m_fFarClip = fFarClip; // 30-125 dont use fFarClip (1000)
 
 	//SetupCameras();
 
@@ -293,11 +293,6 @@ void cGraphics_Setup::Initialize()
 
 void cGraphics_Setup::Clean_Up()
 {
-}
-
-vr::IVRSystem* cGraphics_Setup::Get_HMD()
-{
-	return m_pHMD;
 }
 
 ComPtr<ID3D11Device> cGraphics_Setup::Get_Device()
@@ -368,14 +363,4 @@ ComPtr<ID3D11Texture2D> cGraphics_Setup::Get_Texture_Left_Eye()
 ComPtr<ID3D11Texture2D> cGraphics_Setup::Get_Texture_Right_Eye()
 {
 	return d3d_Render_Right_Eye;
-}
-
-cCamera cGraphics_Setup::get_Camera_Left()
-{
-	return *m_cCameraLeft;
-}
-
-cCamera cGraphics_Setup::get_Camera_Right()
-{
-	return *m_cCameraRight;
 }

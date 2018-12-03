@@ -13,8 +13,6 @@
 #include "defines.h"
 #include "Math_Conversion.h"
 #include "Matrices.h"
-#include "openvr\headers\openvr.h"
-#pragma comment (lib, "openvr_api.lib")
 #include "Renderer_Structs.h"
 #include "Specific_Structs.h"
 
@@ -57,10 +55,6 @@ private:
 	ComPtr<ID3D11VertexShader> d3d_Vertex_Shader;
 	ComPtr<ID3D11PixelShader> d3d_Pixel_Shader;
 
-	// VR
-	cCamera *m_cCameraLeft = nullptr,
-			*m_cCameraRight = nullptr;
-
 	ComPtr<ID3D11Texture2D> d3d_Render_Left_Eye;
 	ComPtr<ID3D11ShaderResourceView> d3d_SRV_Left_Eye;
 	ComPtr<ID3D11RenderTargetView> d3d_RTV_Left_Eye;
@@ -69,16 +63,9 @@ private:
 	ComPtr<ID3D11ShaderResourceView> d3d_SRV_Right_Eye;
 	ComPtr<ID3D11RenderTargetView> d3d_RTV_Right_Eye;
 
-	float m_fNearClip;
-	float m_fFarClip;
-	float m_fScaleSpacing;
-	float m_fScale;
-
 	uint32_t m_nRenderWidth;
 	uint32_t m_nRenderHeight;
 
-	vr::IVRSystem *m_pHMD;
-	vr::IVRRenderModels *m_pRenderModels;
 public:
 	cGraphics_Setup(HWND _hwnd);
 	~cGraphics_Setup();
@@ -86,7 +73,6 @@ public:
 	void Initialize();
 	void Clean_Up();
 
-	vr::IVRSystem* Get_HMD();
 	ComPtr<ID3D11Device> Get_Device();
 	ComPtr<ID3D11DeviceContext> Get_Context();
 	ComPtr<ID3D11RenderTargetView> Get_RTV();
@@ -101,6 +87,4 @@ public:
 	ComPtr<ID3D11DepthStencilState> Get_Depth_Stencil_State();
 	ComPtr<ID3D11Texture2D> Get_Texture_Left_Eye();
 	ComPtr<ID3D11Texture2D> Get_Texture_Right_Eye();
-	cCamera get_Camera_Left();
-	cCamera get_Camera_Right();
 };
