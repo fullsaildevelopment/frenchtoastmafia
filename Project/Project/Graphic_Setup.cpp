@@ -89,11 +89,28 @@ void cGraphics_Setup::Initialize()
 
 	d3d_Device.Get()->CreateRenderTargetView(back_buffer, &d3d_RTV_Desc, d3d_RTV.GetAddressOf());
 
-	d3d_Swap_Chain.Get()->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&d3d_Render_Left_Eye);
-	d3d_Device.Get()->CreateRenderTargetView(d3d_Render_Left_Eye.Get(), &d3d_RTV_Desc, d3d_RTV_Left_Eye.GetAddressOf());
+	D3D11_TEXTURE2D_DESC eyeDesc;
 
-	d3d_Swap_Chain.Get()->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&d3d_Render_Right_Eye);
-	d3d_Device.Get()->CreateRenderTargetView(d3d_Render_Right_Eye.Get(), &d3d_RTV_Desc, d3d_RTV_Right_Eye.GetAddressOf());
+	eyeDesc.Width = m_nRenderWidth;
+	eyeDesc.Height = m_nRenderHeight;
+	eyeDesc.MipLevels = 1;
+	eyeDesc.ArraySize = 1;
+	eyeDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+	eyeDesc.SampleDesc.Count = 1;
+	eyeDesc.SampleDesc.Quality = 0;
+	eyeDesc.Usage = D3D11_USAGE_DEFAULT;
+	eyeDesc.BindFlags = D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE;
+	eyeDesc.CPUAccessFlags = 0;
+	eyeDesc.MiscFlags = 0;
+
+	HRESULT error;
+	error = d3d_Device.Get()->CreateTexture2D(&eyeDesc, NULL, d3d_Render_Left_Eye.GetAddressOf());
+	error = d3d_Device.Get()->CreateTexture2D(&eyeDesc, NULL, d3d_Render_Right_Eye.GetAddressOf());
+
+	error = d3d_Device.Get()->CreateRenderTargetView(d3d_Render_Left_Eye.Get(), &d3d_RTV_Desc, d3d_RTV_Left_Eye.GetAddressOf());
+
+	error = d3d_Device.Get()->CreateRenderTargetView(d3d_Render_Right_Eye.Get(), &d3d_RTV_Desc, d3d_RTV_Right_Eye.GetAddressOf());
+
 	back_buffer->Release();
 
 	// Z BUFFER / DEPTH STENCIL
