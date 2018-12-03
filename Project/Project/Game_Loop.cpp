@@ -52,6 +52,7 @@ void cGame_Loop::Update()
 	}
 
 	c_Animation_Manager.Animate(c_XTime.Delta(), c_XTime.TotalTimeExact(), &tObject_List);
+	c_Render_Manager.set_particle_array(p.get_particles());   // JUST ADDED THIS
 	c_Render_Manager.Draw(m_nScene_Id, &tObject_List, &bChange_Scene, &bMove_Bullet, lhand);
 	c_VR.VR_Render();
 	sound.updateSoundSystem();

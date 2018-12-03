@@ -11,10 +11,8 @@ Particle::~Particle()
 {
 }
 
-void Particle::create_particles(tFloat4 color, XTime timer, tFloat3 acceleration)
+inline void Particle::create_particles(tFloat4 color, XTime timer, tFloat3 acceleration)   // if it doesn't work try passing in the array as a parameter and fill it out in the &function
 {
-	tVertex part_array[888];
-
 	int num_particles = 888;
 
 	Effects <particle, 888> particle_pool;
@@ -70,10 +68,28 @@ void Particle::create_particles(tFloat4 color, XTime timer, tFloat3 acceleration
 		}
 		// DRAW PARTICLES HERE
 		//renderer.get_particle_array()[i] = temp_particle_effects[i];
-		part_array[i] = temp_particle_effects[i]
+		part_array[i] = temp_particle_effects[i];
+		//renderer.set_particle_array(part_array);
+	}
+	// take the data from the array of pointers and put it into a regular array of non pointers
+
+	for (int i = 0; i < num_particles; i++)
+	{
+		temp_p_array[i].color.fX = part_array[i]->color.fX;
+		temp_p_array[i].color.fY = part_array[i]->color.fY;
+		temp_p_array[i].color.fZ = part_array[i]->color.fZ;
+		temp_p_array[i].color.fW = part_array[i]->color.fW;
+
+		temp_p_array[i].position.fX = part_array[i]->position.fX;
+		temp_p_array[i].position.fY = part_array[i]->position.fY;
+		temp_p_array[i].position.fZ = part_array[i]->position.fZ;
+
+		temp_p_array[i].prev_Position.fX = part_array[i]->prev_Position.fX;
+		temp_p_array[i].prev_Position.fY = part_array[i]->prev_Position.fY;
+		temp_p_array[i].prev_Position.fZ = part_array[i]->prev_Position.fZ;
 	}
 
-
+	p_arr = temp_p_array;
 
 	for (int i = 0; i < num_particles; i++)
 	{
@@ -121,10 +137,17 @@ void Particle::create_particles(tFloat4 color, XTime timer, tFloat3 acceleration
 		temp_particle_effects[i]->prev_Position.fY = prevPos.fY;
 		temp_particle_effects[i]->prev_Position.fZ = prevPos.fZ;
 
+
+
 		if (pos.fY < 0)
 		{
 			particle_pool.release(temp_particle_effects[i]);
 			temp_particle_effects[i] = nullptr;
 		}
 	}
+}
+
+particle* Particle::get_particles()
+{
+	return p_arr;
 }

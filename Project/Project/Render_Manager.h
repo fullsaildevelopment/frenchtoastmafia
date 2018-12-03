@@ -21,15 +21,14 @@
 #include "PixelShader_Mage.csh"
 #include "PixelShader_Screen.csh"
 #include "dopeSoundSystem.h"
+#include "Particle.h"
+#include "basic_structs.h"
 
 class cRender_Manager
 {
 private:
 
 	//int MAX_LINE_VERTS = 2048; // Maximum number of debug lines at one time (i.e: Capacity)
-
-	int line_vert_count = 0;
-	tVertex *line_vert;
 
 	cGraphics_Setup *c_Graphics_Setup;
 	tCollisions t_Collisions;
@@ -87,6 +86,17 @@ private:
 	D3D11_BUFFER_DESC d3dBuffer_Desc;
 	D3D11_SUBRESOURCE_DATA d3dSRD;
 
+	static size_t pp_vert_count;
+
+	particle *line_vert;      // tVertex
+	int line_vert_count = 0;
+
+	//Particle p;
+
+	// Particle Stuff
+	ComPtr<ID3D11Buffer> particle_Vertex_Buffer;
+	// Particle Stuff
+
 public:
 	cRender_Manager();
 	~cRender_Manager();
@@ -95,5 +105,6 @@ public:
 	void Load_Data(int nScene_Id, tScene_Objects* tObject_List);
 	void Unload(tScene_Objects* t_Object_List);
 	void Draw(int nScene_Id, tScene_Objects* t_Object_List, bool *bChange_Scene, bool *bMove_Bullet, tFloat3 lhand);
-	//tVertex get_particle_array();
+	particle* get_particle_array();
+	void set_particle_array(particle* p_arr);
 };

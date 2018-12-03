@@ -20,7 +20,8 @@ cRender_Manager::~cRender_Manager()
 void cRender_Manager::Initialize(cGraphics_Setup* _setup)
 {
 	//tVertex line_vert_array[line_vert_count];
-	line_vert = new tVertex[line_vert_count];    // The array that is meant to hold the particles to draw 
+	line_vert = new particle[888];    // The array that is meant to hold the particles to draw 
+	// tVertex
 
 	dragonTint.fX = 0.0f;
 	dragonTint.fZ = 0.0f;
@@ -664,14 +665,56 @@ void cRender_Manager::Draw(int nScene_Id, tScene_Objects* tObject_List, bool *bC
 			else
 				c_Graphics_Setup->Get_Context().Get()->DrawIndexed(tObject_List->tMesh_Data[i].nIndex_Count, 0, 0);
 		}
+
+		static std::array<tVertex, sizeof(tVertex) * 1000> preAlloc_particle;  // send this to the processor
+
+		// PARTICLES 
+		if (nScene_Id == 2)
+		{
+			//tObject_List->fWorld_Matrix->tW.fX
+			//preAlloc_particle[];
+			for (int k = 0; k < 888; k++)  //loop through the array of particles and add them to the array of tVertex's
+			{
+				preAlloc_particle[k].fPosition.fX = line_vert[k].position.fX;
+				preAlloc_particle[k].fPosition.fY = line_vert[k].position.fY;
+				preAlloc_particle[k].fPosition.fZ = line_vert[k].position.fZ;
+
+				preAlloc_particle[k].fColor.fX = line_vert[k].color.fX;
+				preAlloc_particle[k].fColor.fY = line_vert[k].color.fY;
+				preAlloc_particle[k].fColor.fZ = line_vert[k].color.fZ;
+				preAlloc_particle[k].fColor.fW = line_vert[k].color.fW;
+
+				line_vert_count++;
+			}	
+		}
+
+		D3D11_BUFFER_DESC particle_Vertex_Buffer_DESC;
+		ZeroMemory(&particle_Vertex_Buffer_DESC, sizeof(D3D11_BUFFER_DESC));
+		particle_Vertex_Buffer_DESC.CPUAccessFlags = D3D11_BIND_CONSTANT_BUFFER;
+		particle_Vertex_Buffer_DESC.Usage = D3D11_USAGE_DYNAMIC;
+		particle_Vertex_Buffer_DESC.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+		particle_Vertex_Buffer_DESC.MiscFlags = 0.0f;
+		particle_Vertex_Buffer_DESC.ByteWidth = sizeof(tVertex) * 888;
+		particle_Vertex_Buffer_DESC.StructureByteStride = sizeof(tVertex);
+
+		//D3D11_SUBRESOURCE_DATA particle_Vertex_Buffer_DATA;
+		c_Graphics_Setup->Get_Device()->CreateBuffer(&particle_Vertex_Buffer_DESC, NULL, &particle_Vertex_Buffer);
+
+		// PARTICLES 
+
 	}
 
 	c_Graphics_Setup->Get_Swap_Chain().Get()->Present(1, 0);
 }
 
-//tVertex cRender_Manager::get_particle_array()  // void  // tVertex 
-//{
-//	return *line_vert;
-//}
+particle* cRender_Manager::get_particle_array()  // void  // tVertex 
+{
+	return line_vert;
+}
+
+void cRender_Manager::set_particle_array(particle* p_arr)
+{
+	line_vert = p_arr;
+}
 
 

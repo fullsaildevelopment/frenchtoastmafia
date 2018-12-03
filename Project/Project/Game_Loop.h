@@ -15,6 +15,7 @@
 #include "VR.h"
 #include "XTime.h"
 #include "dopeSoundSystem.h"
+#include "Particle.h"
 
 class cGame_Loop
 {
@@ -33,6 +34,8 @@ private:
 	bool bMove_Bullet = false;
 
 	tFloat3 lhand;
+
+	Particle p;
 
 public:
 	cGame_Loop();
