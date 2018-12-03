@@ -24,7 +24,7 @@ void cGame_Loop::Initialize(cGraphics_Setup* _setup)
 	c_Render_Manager.Initialize(_setup);
 	c_VR.Initialize(_setup);
 	c_XTime.Restart();
-	m_nScene_Id = 0;
+	m_nScene_Id = 2;
 }
 
 void cGame_Loop::Setup()

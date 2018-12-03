@@ -282,6 +282,9 @@ void cRender_Manager::Unload(tScene_Objects* tObject_List)
 
 void cRender_Manager::Draw(int nScene_Id, tScene_Objects* tObject_List, bool *bChange_Scene, bool *bMove_Bullet, tFloat3 lhand)
 {
+
+	//nScene_Id = 2;
+
 	float clear_color[4] = { 1.000000000f, 0.000000000f, 0.83137255f, 1.000000000f };
 
 	for (int _eyeID = 0; _eyeID < 3; _eyeID++)
@@ -430,7 +433,7 @@ void cRender_Manager::Draw(int nScene_Id, tScene_Objects* tObject_List, bool *bC
 				isHit = false;
 				flashTimer = flashTime;
 				sound.playSoundEffect("DragonSound1.mp3", FMOD_DEFAULT);
-				dragonHealth -= 1;
+				//dragonHealth -= 1;
 				if (dragonHealth == 6)
 				{
 					dragonTint = { 0.0f, 0.0f, 1.0f, 1.0f };
@@ -552,6 +555,11 @@ void cRender_Manager::Draw(int nScene_Id, tScene_Objects* tObject_List, bool *bC
 		{
 			// TO TURN OFF OBJECTS
 			if (((i == 2) || (i == 3)) && !dragonAlive)
+			{
+				continue;
+			}
+
+			if (i == 1 || i == 0)
 			{
 				continue;
 			}
