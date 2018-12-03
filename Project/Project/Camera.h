@@ -1,7 +1,7 @@
 /************************************************************************
 * Filename:  		Camera.h
 * Date:      		26/10/2018
-* Mod. Date: 		08/11/2018
+* Mod. Date: 		03/12/2018
 * Mod. Initials:	WM
 * Author:    		Wichet Manawanitjarern
 * Purpose:   		Camera Class for Player's View

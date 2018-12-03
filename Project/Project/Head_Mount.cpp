@@ -1,3 +1,11 @@
+/************************************************************************
+* Filename:  		Head_Mount.cpp
+* Date:      		28/11/2018
+* Mod. Date: 		03/12/2018
+* Mod. Initials:	WM
+* Author:    		Wichet Manawanitjarern
+* Purpose:   		Handle Head Mount related task for VR
+*************************************************************************/
 #include "Head_Mount.h"
 
 cHead_Mount::cHead_Mount()

@@ -1,11 +1,10 @@
 /************************************************************************
 * Filename:  		Graphic_Setup.cpp
 * Date:      		26/10/2018
-* Mod. Date: 		08/11/2018
+* Mod. Date: 		03/12/2018
 * Mod. Initials:	WM
 * Author:    		Wichet Manawanitjarern
-* Purpose:   		Combine Initialization of Render system and VR system to remove circular requirment.
-					(Concept idea suggested by Lari Norri)
+* Purpose:   		Initialization of Render system
 *************************************************************************/
 #include "Graphic_Setup.h"
 

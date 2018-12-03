@@ -1,7 +1,7 @@
 /************************************************************************
 * Filename:  		Game_Loop.h
 * Date:      		24/10/2018
-* Mod. Date: 		08/11/2018
+* Mod. Date: 		03/12/2018
 * Mod. Initials:	WM
 * Author:    		Wichet Manawanitjarern
 * Purpose:   		Main Loop of the Game, System Initialization, System Procedure

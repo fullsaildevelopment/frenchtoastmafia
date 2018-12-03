@@ -1,7 +1,7 @@
 /************************************************************************
 * Filename:  		Render_Manager.h
 * Date:      		02/10/2018
-* Mod. Date: 		08/11/2018
+* Mod. Date: 		03/12/2018
 * Mod. Initials:	WM
 * Author:    		Wichet Manawanitjarern
 * Purpose:   		Managing system to handle all rendering related task.

@@ -1,7 +1,7 @@
 /************************************************************************
 * Filename:  		Render_Manager.cpp
 * Date:      		02/10/2018
-* Mod. Date: 		08/11/2018
+* Mod. Date: 		03/12/2018
 * Mod. Initials:	WM
 * Author:    		Wichet Manawanitjarern
 * Purpose:   		Managing system to handle all rendering related task.
@@ -282,7 +282,7 @@ void cRender_Manager::Unload(tScene_Objects* tObject_List)
 
 void cRender_Manager::Draw(int nScene_Id, tScene_Objects* tObject_List, bool *bChange_Scene, bool *bMove_Bullet, tFloat3 lhand, cHead_Mount c_Head_Mount)
 {
-	float clear_color[4] = { 1.000000000f, 0.000000000f, 0.83137255f, 1.000000000f };
+	float clear_color[4] = { 0.000000000f, 1.000000000f, 0.48235f, 1.000000000f };
 
 	for (int _eyeID = 0; _eyeID < 3; _eyeID++)
 	{
@@ -293,138 +293,26 @@ void cRender_Manager::Draw(int nScene_Id, tScene_Objects* tObject_List, bool *bC
 		{
 			ID3D11RenderTargetView *tmp_rtv[] = { c_Graphics_Setup->Get_RTV_Left().Get() };
 			c_Graphics_Setup->Get_Context().Get()->OMSetRenderTargets(1, tmp_rtv, c_Graphics_Setup->Get_DSV().Get());
-
 			c_Graphics_Setup->Get_Context().Get()->ClearRenderTargetView(c_Graphics_Setup->Get_RTV_Left().Get(), clear_color);
 		}
 		else if (_eyeID == 1)
 		{
 			ID3D11RenderTargetView *tmp_rtv[] = { c_Graphics_Setup->Get_RTV_Right().Get() };
 			c_Graphics_Setup->Get_Context().Get()->OMSetRenderTargets(1, tmp_rtv, c_Graphics_Setup->Get_DSV().Get());
-
 			c_Graphics_Setup->Get_Context().Get()->ClearRenderTargetView(c_Graphics_Setup->Get_RTV_Right().Get(), clear_color);
 		}
 		else if (_eyeID == 2)
 		{
 			ID3D11RenderTargetView *tmp_rtv[] = { c_Graphics_Setup->Get_RTV().Get() };
 			c_Graphics_Setup->Get_Context().Get()->OMSetRenderTargets(1, tmp_rtv, c_Graphics_Setup->Get_DSV().Get());
-
 			c_Graphics_Setup->Get_Context().Get()->ClearRenderTargetView(c_Graphics_Setup->Get_RTV().Get(), clear_color);
 		}
 
-		// RESIZE / RESET RTV AND VP
-		//c_Graphics_Setup->Get_Context().Get()->OMSetRenderTargets(0, 0, 0);
-		//c_Graphics_Setup->Get_RTV().Release();
-		//c_Graphics_Setup->Get_Swap_Chain()->ResizeBuffers(0, 0, 0, DXGI_FORMAT_UNKNOWN, DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH);
-		//ID3D11Texture2D *back_buffer;
-		//c_Graphics_Setup->Get_Swap_Chain()->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&back_buffer);
-		//c_Graphics_Setup->Get_Device().Get()->CreateRenderTargetView(back_buffer, NULL, &c_Graphics_Setup->Get_RTV());
-		//ID3D11RenderTargetView *tmp_rtv[] = { c_Graphics_Setup->Get_RTV() };
-		////c_Graphics_Setup->Get_Context().Get()->OMSetDepthStencilState(c_Graphics_Setup->Get_Depth_Stencil_State(), 1);
-		//c_Graphics_Setup->Get_Context().Get()->OMSetRenderTargets(1, tmp_rtv, c_Graphics_Setup->Get_DSV());
-		//c_Graphics_Setup->Get_Context().Get()->RSSetViewports(1, &c_Graphics_Setup->Get_View_Port());
-		// SKY BLUE
-		float clear_color[4] = { 1.000000000f, 0.000000000f, 0.83137255f, 1.000000000f };
-		// WHITE
-		//float clear_color[4] = { 1.0f, 1.0f, 1.0f, 1.0f };
-		c_Graphics_Setup->Get_Context().Get()->ClearRenderTargetView(c_Graphics_Setup->Get_RTV().Get(), clear_color);
 		c_Graphics_Setup->Get_Context().Get()->ClearDepthStencilView(c_Graphics_Setup->Get_DSV().Get(), D3D11_CLEAR_DEPTH, 1.0f, 0);
-
-		//XMFLOAT4X4 fCamera_Matrix = tFloat4x4_to_XMFLOAT4x4(cCam.GetPosition());
-		//XMMATRIX mCamera_Matrix = XMLoadFloat4x4(&fCamera_Matrix);
-
-		// Get Current Window Size
-		/*RECT current_window_size;
-		GetClientRect(hWnd, &current_window_size);
-		float fWindow_Height = (float)current_window_size.bottom - (float)current_window_size.top;
-		float fWindow_Width = (float)current_window_size.right - (float)current_window_size.left;*/
-
-		// CONTROLS
-
-	/*
-		{
-			tFloat4 change_data;
-
-			// A - move left
-			if (GetAsyncKeyState('A'))
-			{
-				change_data = { ((float)cTime.Delta() * 25), 0.0f, 0.0f, 0.0f };
-				cCam.Translation(change_data);
-			}
-
-			// D - move right
-			if (GetAsyncKeyState('D'))
-			{
-				change_data = { -((float)cTime.Delta() * 25), 0.0f, 0.0f, 0.0f };
-				cCam.Translation(change_data);
-			}
-
-			// Q - move up
-			if (GetAsyncKeyState('Q'))
-			{
-				change_data = { 0.0f, -((float)cTime.Delta() * 25), 0.0f, 1.0f };
-				cCam.Translation(change_data);
-			}
-
-			// E - move down
-			if (GetAsyncKeyState('E'))
-			{
-				change_data = { 0.0f, ((float)cTime.Delta() * 25), 0.0f, 1.0f };
-				cCam.Translation(change_data);
-			}
-
-			// S - move backwards
-			if (GetAsyncKeyState('S'))
-			{
-				change_data = { 0.0f, 0.0f, ((float)cTime.Delta() * 25), 0.0f };
-				cCam.Translation(change_data);
-			}
-
-			// W - move forward
-			if (GetAsyncKeyState('W'))
-			{
-				change_data = { 0.0f, 0.0f, -((float)cTime.Delta() * 25), 0.0f };
-				cCam.Translation(change_data);
-			}
-
-			// I - look up
-			if (GetAsyncKeyState('I'))
-			{
-				change_data = { -(float)cTime.Delta(), 0.0f, 0.0f, 0.0f };
-				cCam.Rotation(change_data);
-			}
-
-			// K - look down
-			if (GetAsyncKeyState('K'))
-			{
-				change_data = { (float)cTime.Delta(), 0.0f, 0.0f, 1.0f };
-				cCam.Rotation(change_data);
-			}
-
-			// L - look right
-			if (GetAsyncKeyState('L'))
-			{
-				change_data = { 0.0f, (float)cTime.Delta(), 0.0f, 2.0f };
-				cCam.Rotation(change_data);
-			}
-
-			// J - look left
-			if (GetAsyncKeyState('J'))
-			{
-				change_data = { 0.0f, -(float)cTime.Delta(), 0.0f, 3.0f };
-				cCam.Rotation(change_data);
-			}
-
-			cCam.Normalize();
-		}
-		*/
 		
 		if (nScene_Id == 2)
 		{
 			//dragon controls
-			//if (GetAsyncKeyState('E') && flashTimer == 0.0f)
-			//{
-			//	isHit = true;
-			//}
 			if (isHit)
 			{
 				isHit = false;

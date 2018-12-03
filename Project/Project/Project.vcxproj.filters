@@ -105,9 +105,6 @@
     <ClInclude Include="WICTextureLoader.h">
       <Filter>Assets\Helper</Filter>
     </ClInclude>
-    <ClInclude Include="view.h">
-      <Filter>Renderer Manager\Code</Filter>
-    </ClInclude>
     <ClInclude Include="Render_Manager.h">
       <Filter>Renderer Manager\Code</Filter>
     </ClInclude>
@@ -116,9 +113,6 @@
     </ClInclude>
     <ClInclude Include="Scene_Manager.h">
       <Filter>Scene Manager</Filter>
-    </ClInclude>
-    <ClInclude Include="defines.h">
-      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Game_Loop.h">
       <Filter>Game Loop</Filter>

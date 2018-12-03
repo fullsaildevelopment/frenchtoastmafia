@@ -1,3 +1,11 @@
+/************************************************************************
+* Filename:  		VR_Setup.h
+* Date:      		28/11/2018
+* Mod. Date: 		03/12/2018
+* Mod. Initials:	WM
+* Author:    		Wichet Manawanitjarern
+* Purpose:   		Initialization of VR system
+*************************************************************************/
 #pragma once
 
 #include "Matrices.h"

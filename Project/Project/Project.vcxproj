@@ -35,7 +35,6 @@
     <ClInclude Include="Collisions.h" />
     <ClInclude Include="Controllers.h" />
     <ClInclude Include="DDSTextureLoader.h" />
-    <ClInclude Include="defines.h" />
     <ClInclude Include="dopeSoundSystem.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
@@ -228,7 +227,6 @@
     <ClInclude Include="Specific_Structs.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="Vectors.h" />
-    <ClInclude Include="view.h" />
     <ClInclude Include="VR_Setup.h" />
     <ClInclude Include="WICTextureLoader.h" />
     <ClInclude Include="XTime.h" />

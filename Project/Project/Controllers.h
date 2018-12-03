@@ -1,3 +1,11 @@
+/************************************************************************
+* Filename:  		Controller.h
+* Date:      		29/11/2018
+* Mod. Date: 		03/12/2018
+* Mod. Initials:	WM
+* Author:    		Wichet Manawanitjarern
+* Purpose:   		Handle Controller related task for VR
+*************************************************************************/
 #pragma once
 #include "VR_Setup.h"
 
