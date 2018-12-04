@@ -32,6 +32,10 @@ void cVR_Setup::Clean_Up()
 {
 }
 
+/***************
+* Accessors
+***************/
+
 IVRSystem* cVR_Setup::Get_HMD()
 {
 	return m_pHMD;
@@ -82,6 +86,20 @@ Matrix4 cVR_Setup::Get_mat4ProjectionRight()
 	return m_mat4ProjectionRight;
 }
 
+TrackedDevicePose_t* cVR_Setup::Get_rTrackedDevicePose()
+{
+	return m_rTrackedDevicePose;
+}
+
+Matrix4* cVR_Setup::Get_rmat4DevicePose()
+{
+	return m_rmat4DevicePose;
+}
+
+/***************
+* Mutators
+***************/
+
 void cVR_Setup::Set_mat4HMDPose(Matrix4 _mat4HMDPose)
 {
 	m_mat4HMDPose = _mat4HMDPose;
@@ -107,22 +125,12 @@ void cVR_Setup::Set_mat4ProjectionRight(Matrix4 _mat4ProjectionRight)
 	m_mat4ProjectionRight = _mat4ProjectionRight;
 }
 
-TrackedDevicePose_t* cVR_Setup::Get_rTrackedDevicePose()
-{
-	return m_rTrackedDevicePose;
-}
-
 void cVR_Setup::Set_rTrackedDevicePose(TrackedDevicePose_t _rTrackedDevicePose[k_unMaxTrackedDeviceCount])
 {
 	for (int i = 0; i < k_unMaxTrackedDeviceCount; i++)
 	{
 		m_rTrackedDevicePose[i] = _rTrackedDevicePose[i];
 	}
-}
-
-Matrix4* cVR_Setup::Get_rmat4DevicePose()
-{
-	return m_rmat4DevicePose;
 }
 
 void cVR_Setup::Set_rmat4DevicePose(Matrix4 _rmat4DevicePose[k_unMaxTrackedDeviceCount])
