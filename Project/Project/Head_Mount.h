@@ -38,5 +38,8 @@ public:
 	Matrix4 ConvertSteamVRMatrixToMatrix4(const vr::HmdMatrix34_t &matPose);
 	void UpdateHMDMatrixPose(tFloat4x4 offset);
 	void VR_Render(tFloat4x4 offset);
+
+	Matrix4 Get_HMDPose();
+	tFloat4x4 GetStuff(vr::Hmd_Eye nEye);
 };
 

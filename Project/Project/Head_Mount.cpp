@@ -140,10 +140,34 @@ void cHead_Mount::UpdateHMDMatrixPose(tFloat4x4 offset)
 
 void cHead_Mount::VR_Render(tFloat4x4 offset)
 {
+	c_Graphics_Setup->Get_Swap_Chain().Get()->Present(1, 0);
+
 	vr::Texture_t leftEyeTexture = { c_Graphics_Setup->Get_Texture_Left_Eye().Get(), vr::TextureType_DirectX, vr::ColorSpace_Auto };
 	vr::EVRCompositorError error1 = vr::VRCompositor()->Submit(vr::Eye_Left, &leftEyeTexture);
 	vr::Texture_t rightEyeTexture = { c_Graphics_Setup->Get_Texture_Right_Eye().Get(), vr::TextureType_DirectX, vr::ColorSpace_Auto };
 	vr::VRCompositor()->Submit(vr::Eye_Right, &rightEyeTexture);
 
 	UpdateHMDMatrixPose(offset);
+}
+
+Matrix4 cHead_Mount::Get_HMDPose()
+{
+	return c_VR_Setup->Get_mat4HMDPose();
+}
+
+tFloat4x4 cHead_Mount::GetStuff(vr::Hmd_Eye nEye)
+{
+	tFloat4x4 out_mat;
+	Matrix4 matMVP;
+	//if (nEye == vr::Eye_Left)
+	//{
+	//	matMVP = c_VR_Setup->Get_mat4eyePosLeft() * c_VR_Setup->Get_mat4HMDPose();
+	//}
+	//else if (nEye == vr::Eye_Right)
+	//{
+		matMVP = c_VR_Setup->Get_mat4ProjectionRight() * c_VR_Setup->Get_mat4eyePosRight() * c_VR_Setup->Get_mat4HMDPose().invert();
+	//}
+
+	out_mat = Matrix4_To_tFloat4x4(matMVP);
+	return out_mat;
 }

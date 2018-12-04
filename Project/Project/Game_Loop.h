@@ -30,7 +30,6 @@ private:
 	cRender_Manager c_Render_Manager;
 	cScene_Manager c_Scene_Manager;
 	cVR_Setup *c_VR_Setup;
-	tScene_Objects tObject_List;
 	XTime c_XTime;
 	dopeSoundSystem sound;
 
@@ -38,7 +37,7 @@ private:
 	bool bChange_Scene = false;
 	bool bMove_Bullet = false;
 
-	tFloat3 lhand;
+	tScene_Objects tPersonal_Object_List, tWorld_Object_List;
 	tFloat4 movement = { 0.0f, 0.0f, 0.0f, 0.0f };
 
 public:

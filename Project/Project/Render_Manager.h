@@ -9,6 +9,7 @@
 #pragma once
 
 #include "Collisions.h"
+#include "Controllers.h"
 #include "DDSTextureLoader.h"
 #include "Graphic_Setup.h"
 #include "Head_Mount.h"
@@ -90,5 +91,6 @@ public:
 	void Initialize(cGraphics_Setup* c_Graphics_Setup);
 	void Load_Data(int nScene_Id, tScene_Objects* tObject_List);
 	void Unload(tScene_Objects* t_Object_List);
-	void Draw(int nScene_Id, tScene_Objects* t_Object_List, bool *bChange_Scene, bool *bMove_Bullet, tFloat3 lhand, cHead_Mount c_Head_Mount);
+	void Draw_Personal(tScene_Objects* t_Object_List, cHead_Mount c_Head_Mount, cControllers c_Controllers);
+	void Draw_World(int nScene_Id, tScene_Objects* t_Object_List, bool *bChange_Scene, bool *bMove_Bullet, cHead_Mount c_Head_Mount);
 };

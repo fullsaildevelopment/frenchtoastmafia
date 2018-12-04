@@ -25,6 +25,26 @@ void cControllers::Clean_Up()
 {
 }
 
+tFloat3 cControllers::Get_Left_Hand()
+{
+	return tLeft_Hand;
+}
+
+tFloat3 cControllers::Get_Right_Hand()
+{
+	return tRight_Hand;
+}
+
+void cControllers::Set_Left_Hand(tFloat3 left)
+{
+	tLeft_Hand = left;
+}
+
+void cControllers::Set_Right_Hand(tFloat3 right)
+{
+	tRight_Hand = right;
+}
+
 int cControllers::Identify_Controller(TrackedDeviceIndex_t vr_event)
 {
 	ETrackedDeviceClass trackedDeviceClass = c_VR_Setup->Get_HMD()->GetTrackedDeviceClass(vr_event);
@@ -41,7 +61,7 @@ int cControllers::Identify_Controller(TrackedDeviceIndex_t vr_event)
 		return 2;
 }
 
-void cControllers::Update_Controller(int nScene_Id, bool *bChange_Scene, bool *bMove_Bullet, tFloat3 *lhand, tFloat4 *movement)
+void cControllers::Update_Controller(int nScene_Id, bool *bChange_Scene, bool *bMove_Bullet, tFloat4 *movement, tFloat4x4 offset)
 {
 	if (!c_VR_Setup->Get_HMD()->IsInputAvailable())
 		return;
@@ -207,6 +227,17 @@ void cControllers::Update_Controller(int nScene_Id, bool *bChange_Scene, bool *b
 		}
 
 		const Matrix4 & mat = c_VR_Setup->Get_rmat4DevicePose()[unTrackedDevice];
+
+		if (Identify_Controller(unTrackedDevice) == 1)
+		{
+			Matrix4 controller_pose = mat * tFloat4x4_To_Matrix4(offset);
+			Set_Left_Hand(tFloat3{ controller_pose[12], controller_pose[13], controller_pose[14] });
+		}
+		else if (Identify_Controller(unTrackedDevice) == 2)
+		{
+			Matrix4 controller_pose = mat * tFloat4x4_To_Matrix4(offset);
+			Set_Right_Hand(tFloat3{ controller_pose[12], controller_pose[13], controller_pose[14] });
+		}
 
 		Vector4 center = mat * Vector4(0, 0, 0, 1);
 

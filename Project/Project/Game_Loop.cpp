@@ -34,8 +34,10 @@ void cGame_Loop::Initialize(cGraphics_Setup* _gsetup, cVR_Setup* _vsetup)
 
 void cGame_Loop::Setup()
 {
-	tObject_List = c_Scene_Manager.GetScene(m_nScene_Id);
-	c_Render_Manager.Load_Data(m_nScene_Id, &tObject_List);
+	tPersonal_Object_List = c_Scene_Manager.Get_Personal_Scene();
+	tWorld_Object_List = c_Scene_Manager.Get_World_Scene(m_nScene_Id);
+	c_Render_Manager.Load_Data(2, &tPersonal_Object_List);
+	c_Render_Manager.Load_Data(m_nScene_Id, &tWorld_Object_List);
 	sound.playSong("fionnulas-tale-celtic-flute-music.mp3", FMOD_LOOP_NORMAL, 0.1f);
 }
 
@@ -44,7 +46,7 @@ void cGame_Loop::Update()
 {
 	c_XTime.Signal();
 	
-	c_Controllers.Update_Controller(m_nScene_Id, &bChange_Scene, &bMove_Bullet, &lhand, &movement);
+	c_Controllers.Update_Controller(m_nScene_Id, &bChange_Scene, &bMove_Bullet, &movement, c_Camera.GetPosition());
 
 	if (movement.fX == 1.0f)
 		c_Camera.Translation(tFloat4{ 0.0f, 0.0f, -5.0f * (float)c_XTime.Delta(), 0.0f });
@@ -60,18 +62,19 @@ void cGame_Loop::Update()
 
 	if (bChange_Scene) 
 	{
-		c_Render_Manager.Unload(&tObject_List);
+		c_Render_Manager.Unload(&tWorld_Object_List);
 		m_nScene_Id++;
 		if (m_nScene_Id > 3)
 			m_nScene_Id = 2;
-		tObject_List = c_Scene_Manager.GetScene(m_nScene_Id);
-		c_Render_Manager.Load_Data(m_nScene_Id, &tObject_List);
+		tWorld_Object_List = c_Scene_Manager.Get_World_Scene(m_nScene_Id);
+		c_Render_Manager.Load_Data(m_nScene_Id, &tWorld_Object_List);
 	
 		bChange_Scene = false;
 	}
 
-	c_Animation_Manager.Animate(c_XTime.Delta(), c_XTime.TotalTimeExact(), &tObject_List);
-	c_Render_Manager.Draw(m_nScene_Id, &tObject_List, &bChange_Scene, &bMove_Bullet, lhand, c_Head_Mount);
+	c_Animation_Manager.Animate(c_XTime.Delta(), c_XTime.TotalTimeExact(), &tWorld_Object_List);
+	c_Render_Manager.Draw_World(m_nScene_Id, &tWorld_Object_List, &bChange_Scene, &bMove_Bullet, c_Head_Mount);
+	c_Render_Manager.Draw_Personal(&tPersonal_Object_List, c_Head_Mount, c_Controllers);
 	c_Head_Mount.VR_Render(c_Camera.GetPosition());
 	sound.updateSoundSystem();
 }
