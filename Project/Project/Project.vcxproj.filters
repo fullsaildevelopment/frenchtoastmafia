@@ -73,6 +73,9 @@
     <Filter Include="Renderer Manager\Shaders\Unused">
       <UniqueIdentifier>{3e4c90d7-056f-4102-986b-ecb56d349fc2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="AI">
+      <UniqueIdentifier>{a1bb51e1-1d9c-4e2f-9701-21f4b5a82613}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="header.h">
@@ -159,6 +162,9 @@
     <ClInclude Include="Vectors.h">
       <Filter>Helper</Filter>
     </ClInclude>
+    <ClInclude Include="AI.h">
+      <Filter>AI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Project.cpp">
@@ -211,6 +217,9 @@
     </ClCompile>
     <ClCompile Include="Collisions.cpp">
       <Filter>Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="AI.cpp">
+      <Filter>AI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

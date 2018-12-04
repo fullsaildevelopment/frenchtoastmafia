@@ -553,16 +553,18 @@ void cRender_Manager::Draw(int nScene_Id, tScene_Objects* tObject_List, bool *bC
 		
 		for (int i = 0; i < tObject_List->nObject_Count; i++)
 		{
-			// TO TURN OFF OBJECTS
+		
+			//Kill Dragon on zero health
 			if (((i == 2) || (i == 3)) && !dragonAlive)
 			{
 				continue;
 			}
 
-			if (i == 1 || i == 0)
-			{
-				continue;
-			}
+			// TO TURN OFF OBJECTS
+			//if (i == 1 || i == 0)
+			//{
+			//	continue;
+			//}
 
 			// CONSTANT BUFFER - WVPC
 			{

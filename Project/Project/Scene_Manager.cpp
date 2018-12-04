@@ -207,7 +207,7 @@ tScene_Objects cScene_Manager::GetScene(int nScene_Id)
 			tScene.tMaterials_Data[1] = cBinary_Read.Read_Material("arenaMat.bin");
 		}
 		// Arena
-		/*
+		
 		// Dragon - 2
 		{
 			XMFLOAT4X4 temp;
@@ -252,8 +252,8 @@ tScene_Objects cScene_Manager::GetScene(int nScene_Id)
 			tScene.tMaterials_Data[2].tMats[0].szDiffuse_File_Path = "Dragon.fbm\\DarkDragon_D.png";
 		}
 		// Dragon
-		*/
 		
+		/*
 		// Dragon - 2
 		{
 			XMFLOAT4X4 temp;
@@ -297,7 +297,8 @@ tScene_Objects cScene_Manager::GetScene(int nScene_Id)
 			tScene.tAnim_Data[2] = Create_Inverse_Bind_Pose(tScene.tAnim_Clip[2].tKeyFrames[0]);
 		}
 		// Dragon
-		
+		*/
+
 		// Fireball - 3
 		{
 			XMFLOAT4X4 temp;
