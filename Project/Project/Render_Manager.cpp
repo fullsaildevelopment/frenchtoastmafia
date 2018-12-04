@@ -666,7 +666,7 @@ void cRender_Manager::Draw(int nScene_Id, tScene_Objects* tObject_List, bool *bC
 				c_Graphics_Setup->Get_Context().Get()->DrawIndexed(tObject_List->tMesh_Data[i].nIndex_Count, 0, 0);
 		}
 
-		static std::array<tVertex, sizeof(tVertex) * 1000> preAlloc_particle;  // send this to the processor
+		static std::array<tVertex, sizeof(tVertex) * 888> preAlloc_particle;  // send this to the processor
 
 		// PARTICLES 
 		if (nScene_Id == 2)
@@ -700,6 +700,12 @@ void cRender_Manager::Draw(int nScene_Id, tScene_Objects* tObject_List, bool *bC
 		//D3D11_SUBRESOURCE_DATA particle_Vertex_Buffer_DATA;
 		c_Graphics_Setup->Get_Device()->CreateBuffer(&particle_Vertex_Buffer_DESC, NULL, &particle_Vertex_Buffer);
 
+		D3D11_MAPPED_SUBRESOURCE mapped_Particle_Buffer;
+		c_Graphics_Setup->Get_Context().Get()->Map(particle_Vertex_Buffer.Get(), 0, D3D11_MAP::D3D11_MAP_WRITE_DISCARD, 0, &mapped_Particle_Buffer);
+		memcpy(mapped_Particle_Buffer.pData, preAlloc_particle.data(), sizeof(tVertex) * 888);
+		c_Graphics_Setup->Get_Context().Get()->Unmap(particle_Vertex_Buffer.Get(), 0);
+
+		c_Graphics_Setup->Get_Context().Get()->Draw(888, 0);
 		// PARTICLES 
 
 	}
