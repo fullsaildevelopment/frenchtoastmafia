@@ -37,6 +37,10 @@ private:
 
 	Particle p;
 
+	tFloat3 acceleration = { 0.0f, -9.81f, 0.0f };
+
+	tFloat4 color = { 0.2078f, 0.2078f, 0.2078f, 0.0f };
+
 public:
 	cGame_Loop();
 	~cGame_Loop();

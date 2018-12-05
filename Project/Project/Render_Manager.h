@@ -23,6 +23,7 @@
 #include "dopeSoundSystem.h"
 #include "Particle.h"
 #include "basic_structs.h"
+#include "Effects.h"
 
 class cRender_Manager
 {
@@ -95,6 +96,8 @@ private:
 
 	// Particle Stuff
 	ComPtr<ID3D11Buffer> particle_Vertex_Buffer;
+	ComPtr<ID3D11PixelShader> particle_Pixel_Shader;
+	ComPtr<ID3D11VertexShader> particle_Vertex_Shader;
 	// Particle Stuff
 
 public:

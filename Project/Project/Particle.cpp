@@ -11,13 +11,10 @@ Particle::~Particle()
 {
 }
 
-inline void Particle::create_particles(tFloat4 color, XTime timer, tFloat3 acceleration)   // if it doesn't work try passing in the array as a parameter and fill it out in the &function
+void Particle::create_particles(tFloat4 color, double timer, tFloat3 acceleration)   // if it doesn't work try passing in the array as a parameter and fill it out in the &function
 {
-	int num_particles = 888;
-
-	Effects <particle, 888> particle_pool;
-
-	particle* temp_particle_effects[888];
+	//int num_particles = 300;   // 626              // May need to be a member variable
+	//particle* temp_particle_effects[300];    // May need to be a mamber variable
 
 	particle temp_particle;
 
@@ -30,7 +27,7 @@ inline void Particle::create_particles(tFloat4 color, XTime timer, tFloat3 accel
 	particle_timer = 0;
 
 	double t;
-	t = timer.Delta();
+	t = timer;
 
 	tFloat3 accel;
 	accel = acceleration;
@@ -40,9 +37,9 @@ inline void Particle::create_particles(tFloat4 color, XTime timer, tFloat3 accel
 
 	tFloat3 delta;
 
-	particle_timer += timer.Delta();
+	particle_timer += timer;
 
-	if (particle_timer < 0.8f)
+	if (particle_timer < 1.5f)  // was 0.8f
 	{
 		for (int i = 0; i < num_particles; i++)
 		{
@@ -68,7 +65,22 @@ inline void Particle::create_particles(tFloat4 color, XTime timer, tFloat3 accel
 		}
 		// DRAW PARTICLES HERE
 		//renderer.get_particle_array()[i] = temp_particle_effects[i];
-		part_array[i] = temp_particle_effects[i];
+
+		//part_array[i] = temp_particle_effects[i];
+
+		part_array[i]->position.fX = temp_particle_effects[i]->position.fX;
+		part_array[i]->position.fY = temp_particle_effects[i]->position.fY;
+		part_array[i]->position.fZ = temp_particle_effects[i]->position.fZ;
+
+		part_array[i]->prev_Position.fX = temp_particle_effects[i]->prev_Position.fX;
+		part_array[i]->prev_Position.fY = temp_particle_effects[i]->prev_Position.fY;
+		part_array[i]->prev_Position.fZ = temp_particle_effects[i]->prev_Position.fZ;
+
+		part_array[i]->color.fX = color.fX;
+		part_array[i]->color.fY = color.fY;
+		part_array[i]->color.fZ = color.fZ;
+		part_array[i]->color.fW = color.fW;
+
 		//renderer.set_particle_array(part_array);
 	}
 	// take the data from the array of pointers and put it into a regular array of non pointers

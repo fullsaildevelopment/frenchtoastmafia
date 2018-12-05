@@ -20,7 +20,7 @@ cRender_Manager::~cRender_Manager()
 void cRender_Manager::Initialize(cGraphics_Setup* _setup)
 {
 	//tVertex line_vert_array[line_vert_count];
-	line_vert = new particle[888];    // The array that is meant to hold the particles to draw 
+	line_vert = new particle[300];    // The array that is meant to hold the particles to draw 
 	// tVertex
 
 	dragonTint.fX = 0.0f;
@@ -666,14 +666,14 @@ void cRender_Manager::Draw(int nScene_Id, tScene_Objects* tObject_List, bool *bC
 				c_Graphics_Setup->Get_Context().Get()->DrawIndexed(tObject_List->tMesh_Data[i].nIndex_Count, 0, 0);
 		}
 
-		static std::array<tVertex, sizeof(tVertex) * 888> preAlloc_particle;  // send this to the processor
+		static std::array<tVertex, sizeof(tVertex) * 300> preAlloc_particle;  // send this to the processor
 
 		// PARTICLES 
 		if (nScene_Id == 2)
 		{
 			//tObject_List->fWorld_Matrix->tW.fX
 			//preAlloc_particle[];
-			for (int k = 0; k < 888; k++)  //loop through the array of particles and add them to the array of tVertex's
+			for (int k = 0; k < 300; k++)  //loop through the array of particles and add them to the array of tVertex's
 			{
 				preAlloc_particle[k].fPosition.fX = line_vert[k].position.fX;
 				preAlloc_particle[k].fPosition.fY = line_vert[k].position.fY;
@@ -694,18 +694,48 @@ void cRender_Manager::Draw(int nScene_Id, tScene_Objects* tObject_List, bool *bC
 		particle_Vertex_Buffer_DESC.Usage = D3D11_USAGE_DYNAMIC;
 		particle_Vertex_Buffer_DESC.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 		particle_Vertex_Buffer_DESC.MiscFlags = 0.0f;
-		particle_Vertex_Buffer_DESC.ByteWidth = sizeof(tVertex) * 888;
+		particle_Vertex_Buffer_DESC.ByteWidth = sizeof(tVertex) * 300;
 		particle_Vertex_Buffer_DESC.StructureByteStride = sizeof(tVertex);
 
-		//D3D11_SUBRESOURCE_DATA particle_Vertex_Buffer_DATA;
-		c_Graphics_Setup->Get_Device()->CreateBuffer(&particle_Vertex_Buffer_DESC, NULL, &particle_Vertex_Buffer);
+		c_Graphics_Setup->Get_Device()->CreateBuffer(&particle_Vertex_Buffer_DESC, NULL, particle_Vertex_Buffer.GetAddressOf());
 
-		D3D11_MAPPED_SUBRESOURCE mapped_Particle_Buffer;
-		c_Graphics_Setup->Get_Context().Get()->Map(particle_Vertex_Buffer.Get(), 0, D3D11_MAP::D3D11_MAP_WRITE_DISCARD, 0, &mapped_Particle_Buffer);
-		memcpy(mapped_Particle_Buffer.pData, preAlloc_particle.data(), sizeof(tVertex) * 888);
-		c_Graphics_Setup->Get_Context().Get()->Unmap(particle_Vertex_Buffer.Get(), 0);
 
-		c_Graphics_Setup->Get_Context().Get()->Draw(888, 0);
+
+		//D3D11_MAPPED_SUBRESOURCE mapped_Particle_Buffer;
+		//c_Graphics_Setup->Get_Context().Get()->Map(particle_Vertex_Buffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &d3d_MSR);
+		//memcpy(mapped_Particle_Buffer.pData, preAlloc_particle.data(), sizeof(tVertex) * 888);
+		//c_Graphics_Setup->Get_Context().Get()->Unmap(particle_Vertex_Buffer.Get(), 0);
+
+		c_Graphics_Setup->Get_Device().Get()->CreateVertexShader(VertexShader, sizeof(VertexShader), NULL, particle_Vertex_Shader.GetAddressOf());
+		c_Graphics_Setup->Get_Device().Get()->CreatePixelShader(PixelShader, sizeof(PixelShader), NULL, particle_Pixel_Shader.GetAddressOf());
+
+		UINT Offsett[1] = { 0 };
+		UINT Stride[1] = { sizeof(tVertex) };
+
+		c_Graphics_Setup->Get_Context().Get()->ClearDepthStencilView(c_Graphics_Setup->Get_DSV().Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1, 0);
+		c_Graphics_Setup->Get_Context().Get()->OMSetRenderTargets(1, c_Graphics_Setup->Get_RTV().GetAddressOf(), 0);
+		//c_Graphics_Setup->Get_Context().Get()->ClearRenderTargetView(c_Graphics_Setup->Get_RTV().Get(),);
+		c_Graphics_Setup->Get_Context().Get()->RSSetViewports(1, &c_Graphics_Setup->Get_View_Port());
+
+		// Set particles position
+		tWVP.fWorld_Matrix = tFloat4x4_to_XMFLOAT4x4(tObject_List->fWorld_Matrix[4]);
+
+		c_Graphics_Setup->Get_Context().Get()->Map(d3d_Constant_Buffer_WVP.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &d3d_MSR);
+		memcpy(d3d_MSR.pData, &tCB_PS, sizeof(tConstantBuffer_VertexShader_WVP));
+		c_Graphics_Setup->Get_Context().Get()->Unmap(d3d_Constant_Buffer_WVP.Get(), 0);
+
+		//tObject_List->fWorld_Matrix[4]    // BULLETS WORLD POSITION
+
+		c_Graphics_Setup->Get_Context().Get()->VSSetConstantBuffers(0, 1, d3d_Constant_Buffer_WVP.GetAddressOf());
+
+		c_Graphics_Setup->Get_Context().Get()->IASetVertexBuffers(0, 1, particle_Vertex_Buffer.GetAddressOf(), Stride, Offsett);
+		c_Graphics_Setup->Get_Context().Get()->IASetInputLayout(c_Graphics_Setup->Get_Input_Layout().Get());
+		c_Graphics_Setup->Get_Context().Get()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
+
+		c_Graphics_Setup->Get_Context().Get()->VSSetShader(particle_Vertex_Shader.Get(), NULL, 0);
+		c_Graphics_Setup->Get_Context().Get()->PSSetShader(particle_Pixel_Shader.Get(), NULL, 0);
+
+		c_Graphics_Setup->Get_Context().Get()->Draw(300, 0);
 		// PARTICLES 
 
 	}

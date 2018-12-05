@@ -32,13 +32,18 @@ class Particle
 
 	//cRender_Manager renderer;
 	particle* p_arr;
-	particle* part_array[888];
-	particle temp_p_array[888];
+	particle* part_array[300];
+	particle temp_p_array[300];
+
+	Effects <particle, 300> particle_pool;
+
+	int num_particles = 300;
+	particle* temp_particle_effects[300];
 
 public:
 	Particle();
 	~Particle();
-	void create_particles(tFloat4 color, XTime timer, tFloat3 acceleration);
+	void create_particles(tFloat4 color, double timer, tFloat3 acceleration);
 	particle* Particle::get_particles();
 };
 

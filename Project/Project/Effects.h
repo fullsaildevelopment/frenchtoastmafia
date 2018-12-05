@@ -70,7 +70,10 @@ public:
 		}
 	}
 
-	~Effects();
+	~Effects()
+	{
+
+	}
 };
 
 //template<typename T, uint16_t N>
