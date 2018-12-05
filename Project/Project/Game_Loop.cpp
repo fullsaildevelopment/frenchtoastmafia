@@ -51,6 +51,10 @@ void cGame_Loop::Update()
 		bChange_Scene = false;
 	}
 
+	if (m_nScene_Id == 2)
+	{
+		c_AI.resolveDragonState(&tObject_List, c_XTime.Delta());
+	}
 	c_Animation_Manager.Animate(c_XTime.Delta(), c_XTime.TotalTimeExact(), &tObject_List);
 	c_Render_Manager.Draw(m_nScene_Id, &tObject_List, &bChange_Scene, &bMove_Bullet, lhand);
 	c_VR.VR_Render();
