@@ -130,7 +130,9 @@ void cHead_Mount::UpdateHMDMatrixPose(tFloat4x4 offset)
 	{
 		//c_VR_Setup->Set_mat4HMDPose(m_rmat4DevicePose[vr::k_unTrackedDeviceIndex_Hmd].invert());
 		Matrix4 hmd = m_rmat4DevicePose[vr::k_unTrackedDeviceIndex_Hmd];
+		float y_data = hmd[13];
 		hmd = hmd * tFloat4x4_To_Matrix4(offset);
+		hmd[13] = y_data;
 		hmd = hmd.invert();
 		c_VR_Setup->Set_mat4HMDPose(hmd);
 	}
@@ -150,24 +152,9 @@ void cHead_Mount::VR_Render(tFloat4x4 offset)
 	UpdateHMDMatrixPose(offset);
 }
 
-Matrix4 cHead_Mount::Get_HMDPose()
+tFloat4x4 cHead_Mount::Get_mat4HMDPose()
 {
-	return c_VR_Setup->Get_mat4HMDPose();
+	tFloat4x4 hmd = Matrix4_To_tFloat4x4(c_VR_Setup->Get_mat4HMDPose());
+	return hmd;
 }
 
-tFloat4x4 cHead_Mount::GetStuff(vr::Hmd_Eye nEye)
-{
-	tFloat4x4 out_mat;
-	Matrix4 matMVP;
-	//if (nEye == vr::Eye_Left)
-	//{
-	//	matMVP = c_VR_Setup->Get_mat4eyePosLeft() * c_VR_Setup->Get_mat4HMDPose();
-	//}
-	//else if (nEye == vr::Eye_Right)
-	//{
-		matMVP = c_VR_Setup->Get_mat4ProjectionRight() * c_VR_Setup->Get_mat4eyePosRight() * c_VR_Setup->Get_mat4HMDPose().invert();
-	//}
-
-	out_mat = Matrix4_To_tFloat4x4(matMVP);
-	return out_mat;
-}

@@ -47,18 +47,7 @@ void cGame_Loop::Update()
 	c_XTime.Signal();
 	
 	c_Controllers.Update_Controller(m_nScene_Id, &bChange_Scene, &bMove_Bullet, &movement, c_Camera.GetPosition());
-
-	if (movement.fX == 1.0f)
-		c_Camera.Translation(tFloat4{ 0.0f, 0.0f, -5.0f * (float)c_XTime.Delta(), 0.0f });
-
-	if (movement.fY == 1.0f)
-		c_Camera.Translation(tFloat4{ 5.0f * (float)c_XTime.Delta(), 0.0f, 0.0f, 1.0f });
-
-	if (movement.fZ == 1.0f)
-		c_Camera.Translation(tFloat4{ 0.0f, 0.0f, 5.0f * (float)c_XTime.Delta(), 0.0f });
-
-	if (movement.fW == 1.0f)
-		c_Camera.Translation(tFloat4{ -5.0f * (float)c_XTime.Delta(), 0.0f, 0.0f, 1.0f });
+	c_Camera.Update_Offset(c_XTime.Delta(), movement);
 
 	if (bChange_Scene) 
 	{

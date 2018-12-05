@@ -143,28 +143,47 @@ void cCamera::Normalize()
 	fView_Matrix = XMFLOAT4x4_to_tFloat4x4(xm_fView_Matrix);
 }
 
-tFloat4x4 cCamera::Normalize2(tFloat4x4 temp_MATRIX)
+void cCamera::Update_Offset(double dDelta, tFloat4 fMovement_Vect)
 {
-	tFloat4x4 result;
+	if (fMovement_Vect.fX == 1.0f)
+		Translation(tFloat4{ 0.0f, 0.0f, -5.0f * (float)dDelta, 0.0f });
 
-	XMFLOAT4X4 xm_fView_Matrix = tFloat4x4_to_XMFLOAT4x4(temp_MATRIX);
-	XMMATRIX mView_Matrix = XMLoadFloat4x4(&xm_fView_Matrix);
+	if (fMovement_Vect.fY == 1.0f)
+		Translation(tFloat4{ 5.0f * (float)dDelta, 0.0f, 0.0f, 1.0f });
 
-	// NORMALIZING ROTATIONS
-	XMVECTOR newZ = mView_Matrix.r[2];
-	newZ = XMVector3Normalize(newZ);
-	XMVECTOR worldY = XMMatrixIdentity().r[1];
-	XMVECTOR newX = XMVector3Cross(worldY, newZ);
-	newX = XMVector3Normalize(newX);
-	XMVECTOR newY = XMVector3Cross(newZ, newX);
-	newY = XMVector3Normalize(newY);
+	if (fMovement_Vect.fZ == 1.0f)
+		Translation(tFloat4{ 0.0f, 0.0f, 5.0f * (float)dDelta, 0.0f });
 
-	mView_Matrix.r[0] = newX;
-	mView_Matrix.r[1] = newY;
-	mView_Matrix.r[2] = newZ;
-
-	XMStoreFloat4x4(&xm_fView_Matrix, mView_Matrix);
-	result = XMFLOAT4x4_to_tFloat4x4(xm_fView_Matrix);
-
-	return result;
+	if (fMovement_Vect.fW == 1.0f)
+		Translation(tFloat4{ -5.0f * (float)dDelta, 0.0f, 0.0f, 1.0f });
 }
+//{
+//	XMFLOAT4X4 xm_fView_Matrix = tFloat4x4_to_XMFLOAT4x4(fView_Matrix);
+//	XMMATRIX mView_Matrix = XMLoadFloat4x4(&xm_fView_Matrix);
+//	XMMATRIX temp = XMMatrixIdentity();
+//
+//	float x_move = 0.0f;
+//	float z_move = 0.0f;
+//
+//	if (fMovement_Vect.fX == 1.0f)
+//		z_move = -5.0f;
+//
+//	if (fMovement_Vect.fY == 1.0f)
+//		x_move = 5.0f;
+//
+//	if (fMovement_Vect.fZ == 1.0f)
+//		z_move = 5.0f;
+//
+//	if (fMovement_Vect.fW == 1.0f)
+//		x_move = -5.0f;
+//
+//	XMMATRIX x_offset = XMMatrixTranslation(mat_HMDPose.tX.fX * x_move * (float)dDelta, 0.0f, mat_HMDPose.tX.fZ * z_move *  (float)dDelta);
+//	XMMATRIX z_offset = XMMatrixTranslation(mat_HMDPose.tZ.fX * x_move * (float)dDelta, 0.0f, mat_HMDPose.tZ.fZ * z_move *  (float)dDelta);
+//
+//	temp = XMMatrixMultiply(x_offset, temp);
+//	temp = XMMatrixMultiply(z_offset, temp);
+//	mView_Matrix = XMMatrixMultiply(temp, mView_Matrix);
+//
+//	XMStoreFloat4x4(&xm_fView_Matrix, mView_Matrix);
+//	fView_Matrix = XMFLOAT4x4_to_tFloat4x4(xm_fView_Matrix);
+//}

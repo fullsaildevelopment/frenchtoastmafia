@@ -16,6 +16,7 @@ class cCamera
 {
 private:
 	tFloat4x4 fView_Matrix;
+	float fY_Data;
 public:
 	cCamera();
 	~cCamera();
@@ -28,6 +29,7 @@ public:
 	void Translation(tFloat4 fMovement_Vect);
 	void Rotation(tFloat4 fRotation_Vect);
 	void Normalize();
-	tFloat4x4 Normalize2(tFloat4x4 temp_MATRIX);
+
+	void Update_Offset(double dDelta, tFloat4 fMovement_Vect);
 };
 

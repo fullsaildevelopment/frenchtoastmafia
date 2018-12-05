@@ -25,22 +25,22 @@ void cControllers::Clean_Up()
 {
 }
 
-tFloat3 cControllers::Get_Left_Hand()
+tFloat4x4 cControllers::Get_Left_Hand()
 {
 	return tLeft_Hand;
 }
 
-tFloat3 cControllers::Get_Right_Hand()
+tFloat4x4 cControllers::Get_Right_Hand()
 {
 	return tRight_Hand;
 }
 
-void cControllers::Set_Left_Hand(tFloat3 left)
+void cControllers::Set_Left_Hand(tFloat4x4 left)
 {
 	tLeft_Hand = left;
 }
 
-void cControllers::Set_Right_Hand(tFloat3 right)
+void cControllers::Set_Right_Hand(tFloat4x4 right)
 {
 	tRight_Hand = right;
 }
@@ -228,15 +228,16 @@ void cControllers::Update_Controller(int nScene_Id, bool *bChange_Scene, bool *b
 
 		const Matrix4 & mat = c_VR_Setup->Get_rmat4DevicePose()[unTrackedDevice];
 
-		if (Identify_Controller(unTrackedDevice) == 1)
+		if (Identify_Controller(unTrackedDevice) > 0)
 		{
-			Matrix4 controller_pose = mat * tFloat4x4_To_Matrix4(offset);
-			Set_Left_Hand(tFloat3{ controller_pose[12], controller_pose[13], controller_pose[14] });
-		}
-		else if (Identify_Controller(unTrackedDevice) == 2)
-		{
-			Matrix4 controller_pose = mat * tFloat4x4_To_Matrix4(offset);
-			Set_Right_Hand(tFloat3{ controller_pose[12], controller_pose[13], controller_pose[14] });
+			Matrix4 in = mat;
+			Matrix4 controller_offset = tFloat4x4_To_Matrix4(offset);
+			in = in * controller_offset;
+			tFloat4x4 out = Matrix4_To_tFloat4x4(in);
+			if (Identify_Controller(unTrackedDevice) == 1)
+				Set_Left_Hand(out);
+			else if (Identify_Controller(unTrackedDevice) == 2)
+				Set_Right_Hand(out);
 		}
 
 		Vector4 center = mat * Vector4(0, 0, 0, 1);

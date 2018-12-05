@@ -39,7 +39,6 @@ public:
 	void UpdateHMDMatrixPose(tFloat4x4 offset);
 	void VR_Render(tFloat4x4 offset);
 
-	Matrix4 Get_HMDPose();
-	tFloat4x4 GetStuff(vr::Hmd_Eye nEye);
+	tFloat4x4 Get_mat4HMDPose();
 };
 

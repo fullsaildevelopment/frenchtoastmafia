@@ -323,17 +323,19 @@ void cRender_Manager::Draw_Personal(tScene_Objects* tObject_List, cHead_Mount c_
 				if (i == 0)
 				{
 					tFloat4x4 temp = tObject_List->fWorld_Matrix[i];
-					temp.tW.fX += c_Controllers.Get_Left_Hand().fX;
-					temp.tW.fY += c_Controllers.Get_Left_Hand().fY;
-					temp.tW.fZ += c_Controllers.Get_Left_Hand().fZ;
+					//temp.tW.fX = c_Controllers.Get_Left_Hand().fX;
+					//temp.tW.fY = c_Controllers.Get_Left_Hand().fY;
+					//temp.tW.fZ = c_Controllers.Get_Left_Hand().fZ;
+					temp = c_Controllers.Get_Left_Hand();
 					tWVP.fWorld_Matrix = tFloat4x4_to_XMFLOAT4x4(temp);
 				}
 				else
 				{
 					tFloat4x4 temp = tObject_List->fWorld_Matrix[i];
-					temp.tW.fX += c_Controllers.Get_Right_Hand().fX;
-					temp.tW.fY += c_Controllers.Get_Right_Hand().fY;
-					temp.tW.fZ += c_Controllers.Get_Right_Hand().fZ;
+					//temp.tW.fX = c_Controllers.Get_Right_Hand().fX;
+					//temp.tW.fY = c_Controllers.Get_Right_Hand().fY;
+					//temp.tW.fZ = c_Controllers.Get_Right_Hand().fZ;
+					temp = c_Controllers.Get_Right_Hand();
 					tWVP.fWorld_Matrix = tFloat4x4_to_XMFLOAT4x4(temp);
 				}
 
