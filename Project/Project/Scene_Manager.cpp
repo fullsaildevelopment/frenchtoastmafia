@@ -31,61 +31,31 @@ tScene_Objects cScene_Manager::Get_Personal_Scene()
 
 		//tempMatrix = XMMatrixMultiply(tempMatrix, XMMatrixTranslation(-0.1, 0.1, -0.1));
 
+		//tempMatrix = XMMatrixMultiply(XMMatrixScaling(0.1, 0.1, 0.1), tempMatrix);
+
 		XMStoreFloat4x4(&temp, tempMatrix);
 
 		tScene.fWorld_Matrix[0] = XMFLOAT4x4_to_tFloat4x4(temp);
 
-		// VERTEX
-		tVertex *tLeft_Hand = new tVertex[8];
-		for (unsigned int i = 0; i < 8; i++)
+		// Mesh
+		tMesh tLeft_Hand = cBinary_Read.Read_Mesh("left_hand_mesh.bin");
+
+		for (int i = 0; i < tLeft_Hand.nVertex_Count; i++)
 		{
-			tLeft_Hand[i].fPosition.fX = 0.05f;
-			tLeft_Hand[i].fPosition.fY = 0.05f;
-			tLeft_Hand[i].fPosition.fZ = 0.05f;
-			tLeft_Hand[i].fPosition.fW = 1.0f;
-		
-			if (i % 2 == 0)
-				tLeft_Hand[i].fPosition.fX *= -1.0f;
-		
-			if (i == 2 || i == 3 || i == 6 || i == 7)
-				tLeft_Hand[i].fPosition.fY *= -1.0f;
-		
-			if (i < 4)
-				tLeft_Hand[i].fPosition.fZ *= -1.0f;
+			tScene.tMesh_Data[0].tVerts.push_back(tLeft_Hand.tVerts[i]);
 		}
-		
-		for (int i = 0; i < 8; i++)
+
+		tScene.tMesh_Data[0].nVertex_Count = tLeft_Hand.nVertex_Count;
+
+
+		for (int i = 0; i < tLeft_Hand.nIndex_Count; i++)
 		{
-			tScene.tMesh_Data[0].tVerts.push_back(tLeft_Hand[i]);
+			tScene.tMesh_Data[0].nIndicies.push_back(tLeft_Hand.nIndicies[i]);
 		}
-		tScene.tMesh_Data[0].nVertex_Count = 8;
-		
-		// INDEX
-		unsigned int tLeft_Hand_ind[36] =
-		{
-			0, 1, 2,
-			1, 3, 2,
-			4, 0, 6,
-			0, 2, 6,
-			5, 4, 7,
-			4, 6, 7,
-			1, 5, 3,
-			5, 7, 3,
-			4, 5, 0,
-			5, 1, 0,
-			2, 3, 6,
-			3, 7, 6
-		};
-		
-		for (int i = 0; i < 36; i++)
-		{
-			tScene.tMesh_Data[0].nIndicies.push_back(tLeft_Hand_ind[i]);
-		}
-		tScene.tMesh_Data[0].nIndex_Count = 36;
+		tScene.tMesh_Data[0].nIndex_Count = tLeft_Hand.nIndex_Count;
 
 		// Material
-		tScene.tMaterials_Data[0] = cBinary_Read.Read_Material("fireballMaterial.bin");
-		tScene.tMaterials_Data[0].tMats[0].szDiffuse_File_Path = "Fireball.fbm\\Fireball_D.png";
+		tScene.tMaterials_Data[0] = cBinary_Read.Read_Material("left_hand_material.bin");
 	}
 
 	// Right Hand - 1
@@ -101,57 +71,26 @@ tScene_Objects cScene_Manager::Get_Personal_Scene()
 
 		tScene.fWorld_Matrix[1] = XMFLOAT4x4_to_tFloat4x4(temp);
 
-		// VERTEX
-		tVertex *tLeft_Hand = new tVertex[8];
-		for (unsigned int i = 0; i < 8; i++)
+
+		// Mesh
+		tMesh tLeft_Hand = cBinary_Read.Read_Mesh("right_hand_mesh.bin");
+
+		for (int i = 0; i < tLeft_Hand.nVertex_Count; i++)
 		{
-			tLeft_Hand[i].fPosition.fX = 0.05f;
-			tLeft_Hand[i].fPosition.fY = 0.05f;
-			tLeft_Hand[i].fPosition.fZ = 0.05f;
-			tLeft_Hand[i].fPosition.fW = 1.0f;
-
-			if (i % 2 == 0)
-				tLeft_Hand[i].fPosition.fX *= -1.0f;
-
-			if (i == 2 || i == 3 || i == 6 || i == 7)
-				tLeft_Hand[i].fPosition.fY *= -1.0f;
-
-			if (i < 4)
-				tLeft_Hand[i].fPosition.fZ *= -1.0f;
+			tScene.tMesh_Data[1].tVerts.push_back(tLeft_Hand.tVerts[i]);
 		}
 
-		for (int i = 0; i < 8; i++)
-		{
-			tScene.tMesh_Data[1].tVerts.push_back(tLeft_Hand[i]);
-		}
-		tScene.tMesh_Data[1].nVertex_Count = 8;
+		tScene.tMesh_Data[1].nVertex_Count = tLeft_Hand.nVertex_Count;
 
-		// INDEX
-		unsigned int tLeft_Hand_ind[36] =
-		{
-			0, 1, 2,
-			1, 3, 2,
-			4, 0, 6,
-			0, 2, 6,
-			5, 4, 7,
-			4, 6, 7,
-			1, 5, 3,
-			5, 7, 3,
-			4, 5, 0,
-			5, 1, 0,
-			2, 3, 6,
-			3, 7, 6
-		};
 
-		for (int i = 0; i < 36; i++)
+		for (int i = 0; i < tLeft_Hand.nIndex_Count; i++)
 		{
-			tScene.tMesh_Data[1].nIndicies.push_back(tLeft_Hand_ind[i]);
+			tScene.tMesh_Data[1].nIndicies.push_back(tLeft_Hand.nIndicies[i]);
 		}
-		tScene.tMesh_Data[1].nIndex_Count = 36;
+		tScene.tMesh_Data[1].nIndex_Count = tLeft_Hand.nIndex_Count;
 
 		// Material
-		tScene.tMaterials_Data[1] = cBinary_Read.Read_Material("fireballMaterial.bin");
-		tScene.tMaterials_Data[1].tMats[0].szDiffuse_File_Path = "Fireball.fbm\\Fireball_D.png";
+		tScene.tMaterials_Data[1] = cBinary_Read.Read_Material("right_hand_material.bin");
 	}
 
 	return tScene;

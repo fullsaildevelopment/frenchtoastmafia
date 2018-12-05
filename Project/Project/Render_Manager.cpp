@@ -1,7 +1,7 @@
 /************************************************************************
 * Filename:  		Render_Manager.cpp
 * Date:      		02/10/2018
-* Mod. Date: 		03/12/2018
+* Mod. Date: 		04/12/2018
 * Mod. Initials:	WM
 * Author:    		Wichet Manawanitjarern
 * Purpose:   		Managing system to handle all rendering related task.
@@ -406,11 +406,6 @@ void cRender_Manager::Draw_Personal(tScene_Objects* tObject_List, cHead_Mount c_
 			tCB_PS.tint.y = 0.0f;
 			tCB_PS.tint.z = 0.0f;
 			tCB_PS.tint.w = 1.0f;
-
-			if (i == 0)
-				tCB_PS.tint.y = 1.0f;
-			else
-				tCB_PS.tint.z = 1.0f;
 
 			c_Graphics_Setup->Get_Context().Get()->Map(tObject_List->tMaterials_Buffers[i].Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &d3d_MSR);
 			memcpy(d3d_MSR.pData, &tCB_PS, sizeof(tConstantBuffer_PixelShader));
