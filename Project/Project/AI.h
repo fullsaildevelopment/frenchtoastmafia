@@ -1,6 +1,8 @@
 #pragma once
 #include "basic_structs.h"
 #include "Renderer_Structs.h"
+#include "Matrices.h"
+#include "math_conversion.h"
 
 class AI
 {
@@ -13,10 +15,7 @@ public:
 	int HP = 3;
 	float speed = 5.0f;
 
-	tFloat4x4 dragPos;
-	tFloat4x4 playerPos;
-
-	void resolveDragonState(tScene_Objects* tObject_List, double _dTime);
+	void resolveDragonState(tScene_Objects* tObject_List, Matrix4 _playerPos, double _dTime);
 
 	AI();
 	~AI();
@@ -24,8 +23,17 @@ public:
 private:
 
 	tFloat4x4 dragonPos;
+	tFloat4x4 dragonMouthPos;
+
 	tFloat4x4 playerPos;
 	float deltaTime = 0.0f;
+	float moveTimer = 2.0f;
+
+	float xMove = 1.0f;
+	float yMove = 0.0f;
+	float zMove = 0.0f;
+
+	float projectileTimer = 0.0f;
 
 	void fire();
 

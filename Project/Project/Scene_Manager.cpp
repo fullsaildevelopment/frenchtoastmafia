@@ -219,9 +219,11 @@ tScene_Objects cScene_Manager::GetScene(int nScene_Id)
 			tempMatrix = XMMatrixMultiply(tempMatrix, XMMatrixRotationY(3.14 / 2));
 			//tempMatrix = XMMatrixMultiply(XMMatrixScaling(0.9, 0.9, 0.9), tempMatrix);
 
-			tempMatrix = XMMatrixMultiply(tempMatrix, XMMatrixTranslation(200, 0, 0));
+			tempMatrix = XMMatrixMultiply(tempMatrix, XMMatrixTranslation(30, 0, 0));
 
 			tempMatrix = XMMatrixMultiply(tempMatrix, XMMatrixRotationY(3.14));
+
+			tempMatrix = XMMatrixMultiply(XMMatrixScaling(0.1, 0.1, 0.1), tempMatrix);
 
 
 			XMStoreFloat4x4(&temp, tempMatrix);
@@ -305,7 +307,7 @@ tScene_Objects cScene_Manager::GetScene(int nScene_Id)
 
 			XMMATRIX tempMatrix = XMMatrixIdentity();
 
-			tempMatrix = XMMatrixMultiply(tempMatrix, XMMatrixTranslation(-10, 10, 0));
+			tempMatrix = XMMatrixMultiply(tempMatrix, XMMatrixTranslation(-8, 8, 0));
 
 			XMStoreFloat4x4(&temp, tempMatrix);
 
