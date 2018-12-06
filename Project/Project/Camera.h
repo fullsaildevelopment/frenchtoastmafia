@@ -30,6 +30,7 @@ public:
 	void Rotation(tFloat4 fRotation_Vect);
 	void Normalize();
 
-	void Update_Offset(double dDelta, tFloat4 fMovement_Vect);
+	//void Update_Offset(double dDelta, tFloat4 fMovement_Vect);
+	void Update_Offset(double dDelta, tFloat4x4 tHMDPose, tFloat4 fMovement_Vect);
 };
 

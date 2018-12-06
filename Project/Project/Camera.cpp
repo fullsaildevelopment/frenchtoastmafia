@@ -143,47 +143,52 @@ void cCamera::Normalize()
 	fView_Matrix = XMFLOAT4x4_to_tFloat4x4(xm_fView_Matrix);
 }
 
-void cCamera::Update_Offset(double dDelta, tFloat4 fMovement_Vect)
-{
-	if (fMovement_Vect.fX == 1.0f)
-		Translation(tFloat4{ 0.0f, 0.0f, -5.0f * (float)dDelta, 0.0f });
-
-	if (fMovement_Vect.fY == 1.0f)
-		Translation(tFloat4{ 5.0f * (float)dDelta, 0.0f, 0.0f, 1.0f });
-
-	if (fMovement_Vect.fZ == 1.0f)
-		Translation(tFloat4{ 0.0f, 0.0f, 5.0f * (float)dDelta, 0.0f });
-
-	if (fMovement_Vect.fW == 1.0f)
-		Translation(tFloat4{ -5.0f * (float)dDelta, 0.0f, 0.0f, 1.0f });
-}
+//void cCamera::Update_Offset(double dDelta, tFloat4 fMovement_Vect)
 //{
-//	XMFLOAT4X4 xm_fView_Matrix = tFloat4x4_to_XMFLOAT4x4(fView_Matrix);
-//	XMMATRIX mView_Matrix = XMLoadFloat4x4(&xm_fView_Matrix);
-//	XMMATRIX temp = XMMatrixIdentity();
-//
-//	float x_move = 0.0f;
-//	float z_move = 0.0f;
-//
 //	if (fMovement_Vect.fX == 1.0f)
-//		z_move = -5.0f;
+//		Translation(tFloat4{ 0.0f, 0.0f, -5.0f * (float)dDelta, 0.0f });
 //
 //	if (fMovement_Vect.fY == 1.0f)
-//		x_move = 5.0f;
+//		Translation(tFloat4{ 5.0f * (float)dDelta, 0.0f, 0.0f, 1.0f });
 //
 //	if (fMovement_Vect.fZ == 1.0f)
-//		z_move = 5.0f;
+//		Translation(tFloat4{ 0.0f, 0.0f, 5.0f * (float)dDelta, 0.0f });
 //
 //	if (fMovement_Vect.fW == 1.0f)
-//		x_move = -5.0f;
-//
-//	XMMATRIX x_offset = XMMatrixTranslation(mat_HMDPose.tX.fX * x_move * (float)dDelta, 0.0f, mat_HMDPose.tX.fZ * z_move *  (float)dDelta);
-//	XMMATRIX z_offset = XMMatrixTranslation(mat_HMDPose.tZ.fX * x_move * (float)dDelta, 0.0f, mat_HMDPose.tZ.fZ * z_move *  (float)dDelta);
-//
-//	temp = XMMatrixMultiply(x_offset, temp);
-//	temp = XMMatrixMultiply(z_offset, temp);
-//	mView_Matrix = XMMatrixMultiply(temp, mView_Matrix);
-//
-//	XMStoreFloat4x4(&xm_fView_Matrix, mView_Matrix);
-//	fView_Matrix = XMFLOAT4x4_to_tFloat4x4(xm_fView_Matrix);
+//		Translation(tFloat4{ -5.0f * (float)dDelta, 0.0f, 0.0f, 1.0f });
 //}
+
+void cCamera::Update_Offset(double dDelta, tFloat4x4 tHMDPose, tFloat4 fMovement_Vect)
+{
+	XMFLOAT4X4 xm_fView_Matrix = tFloat4x4_to_XMFLOAT4x4(fView_Matrix);
+	XMMATRIX mView_Matrix = XMLoadFloat4x4(&xm_fView_Matrix);
+	XMMATRIX temp = XMMatrixIdentity();
+
+	float x_move = 0.0f;
+	float z_move = 0.0f;
+
+	if (fMovement_Vect.fX == 1.0f)
+		z_move = -5.0f;
+
+	if (fMovement_Vect.fY == 1.0f)
+		x_move = 5.0f;
+
+	if (fMovement_Vect.fZ == 1.0f)
+		z_move = 5.0f;
+
+	if (fMovement_Vect.fW == 1.0f)
+		x_move = -5.0f;
+
+	//XMMATRIX x_offset = XMMatrixTranslation(tHMDPose.tX.fX * x_move * (float)dDelta, 0.0f, tHMDPose.tX.fZ * z_move *  (float)dDelta);
+	//XMMATRIX z_offset = XMMatrixTranslation(tHMDPose.tZ.fX * x_move * (float)dDelta, 0.0f, tHMDPose.tZ.fZ * z_move *  (float)dDelta);
+	XMMATRIX t_offset = XMMatrixTranslation(x_move * (float)dDelta, 0.0f, z_move *  (float)dDelta);
+
+	//temp = XMMatrixMultiply(temp, x_offset);
+	//temp = XMMatrixMultiply(z_offset, temp);
+	temp = XMMatrixMultiply(temp, t_offset);
+
+	mView_Matrix = XMMatrixMultiply(mView_Matrix, temp);
+
+	XMStoreFloat4x4(&xm_fView_Matrix, mView_Matrix);
+	fView_Matrix = XMFLOAT4x4_to_tFloat4x4(xm_fView_Matrix);
+}

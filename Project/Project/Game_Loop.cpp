@@ -47,7 +47,8 @@ void cGame_Loop::Update()
 	c_XTime.Signal();
 	
 	c_Controllers.Update_Controller(m_nScene_Id, &bChange_Scene, &bMove_Bullet, &movement, c_Camera.GetPosition());
-	c_Camera.Update_Offset(c_XTime.Delta(), movement);
+	if (movement.fX > 0.0f || movement.fY > 0.0f || movement.fZ > 0.0f || movement.fW > 0.0f)
+		c_Camera.Update_Offset(c_XTime.Delta(), c_Head_Mount.Get_mat4HMDPose(), movement);
 
 	if (bChange_Scene) 
 	{

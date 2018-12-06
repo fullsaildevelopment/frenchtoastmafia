@@ -130,10 +130,12 @@ void cHead_Mount::UpdateHMDMatrixPose(tFloat4x4 offset)
 	{
 		//c_VR_Setup->Set_mat4HMDPose(m_rmat4DevicePose[vr::k_unTrackedDeviceIndex_Hmd].invert());
 		Matrix4 hmd = m_rmat4DevicePose[vr::k_unTrackedDeviceIndex_Hmd];
-		float y_data = hmd[13];
-		hmd = hmd * tFloat4x4_To_Matrix4(offset);
-		hmd[13] = y_data;
+		//float y_data = hmd[13];
+		hmd = tFloat4x4_To_Matrix4(offset) * hmd;
+		//hmd = hmd * tFloat4x4_To_Matrix4(offset);
+		//hmd[13] = y_data;
 		hmd = hmd.invert();
+		//hmd = tFloat4x4_To_Matrix4(offset) * hmd;
 		c_VR_Setup->Set_mat4HMDPose(hmd);
 	}
 	c_VR_Setup->Set_rTrackedDevicePose(m_rTrackedDevicePose);
