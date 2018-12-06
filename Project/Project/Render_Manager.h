@@ -55,11 +55,11 @@ private:
 
 	// Dragon Behavior
 	bool isHit = false;
-	float flashTime = 5.0f;
+	float flashTime = 1.0f;
 	float flashTimer = 0.0f;
 
-	bool dragonAlive;
-	int dragonHealth;
+	//bool dragonAlive;
+	//int dragonHealth;
 	tFloat4 dragonTint;
 
 	// Collision

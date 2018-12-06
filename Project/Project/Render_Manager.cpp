@@ -60,15 +60,6 @@ void cRender_Manager::Load_Data(int nScene_Id, tScene_Objects* tObject_List)
 		D3D11_BUFFER_DESC d3dBuffer_Desc;
 		D3D11_SUBRESOURCE_DATA d3dSRD;
 
-		if (nScene_Id == 2)
-		{
-			if (i == 2)
-			{
-				dragonAlive = true;
-				dragonHealth = 7;
-			}
-		}
-
 		if (!tObject_List->bIs_Animated[i])
 		{
 			// VERTEX
@@ -481,7 +472,7 @@ void cRender_Manager::Draw_World(int nScene_Id, tScene_Objects* tObject_List, bo
 
 		if (tObject_List->fWorld_Matrix[3].tW.fX >= -1)
 		{
-			if (dragonAlive == true)
+			if (tObject_List->dragHP != 0)
 			{
 				sound.playSoundEffect("Fireball+1.mp3", FMOD_DEFAULT);
 			}
@@ -573,7 +564,7 @@ void cRender_Manager::Draw_World(int nScene_Id, tScene_Objects* tObject_List, bo
 		{
 
 			//Kill Dragon on zero health
-			if (((i == 2) || (i == 3)) && !dragonAlive)
+			if (((i == 2) || (i == 3)) && tObject_List->dragHP == 0)
 			{
 				continue;
 			}
