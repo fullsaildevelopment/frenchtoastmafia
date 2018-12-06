@@ -254,13 +254,13 @@ tScene_Objects cScene_Manager::GetScene(int nScene_Id)
 		// Dragon
 		
 		/*
-		// Dragon - 2
+		// Anim Test - 2
 		{
 			XMFLOAT4X4 temp;
 
 			XMMATRIX tempMatrix = XMMatrixIdentity();
-			tempMatrix = XMMatrixMultiply(XMMatrixTranslation(350, -20, 0), tempMatrix);
-			tempMatrix = XMMatrixMultiply(XMMatrixRotationY(180), tempMatrix);
+			tempMatrix = XMMatrixMultiply(XMMatrixTranslation(-7, 7, 0), tempMatrix);
+			//tempMatrix = XMMatrixMultiply(XMMatrixRotationY(180), tempMatrix);
 			//tempMatrix = XMMatrixMultiply(XMMatrixScaling(0.9, 0.9, 0.9), tempMatrix);
 
 
@@ -268,7 +268,7 @@ tScene_Objects cScene_Manager::GetScene(int nScene_Id)
 
 			tScene.fWorld_Matrix[2] = XMFLOAT4x4_to_tFloat4x4(temp);
 			tScene.bIs_Animated[2] = true;
-			tMesh_Skinned tDragon = cBinary_Read.Read_Mesh_Skinned("DarkDragon3Skinned.bin");
+			tMesh_Skinned tDragon = cBinary_Read.Read_Mesh_Skinned("testCylSkinned.bin");
 
 			//for (int i = 0; i < tDragon.nVertex_Count; i++)
 			//{
@@ -290,13 +290,13 @@ tScene_Objects cScene_Manager::GetScene(int nScene_Id)
 			}
 			tScene.tMesh_Skinned_Data[2].nIndex_Count = tDragon.nIndex_Count;
 
-			tScene.tMaterials_Data[2] = cBinary_Read.Read_Material("DarkDragon3Material.bin");
+			tScene.tMaterials_Data[2] = cBinary_Read.Read_Material("testCylMaterial.bin");
 			tScene.tMaterials_Data[2].tMats[0].szDiffuse_File_Path = "Dragon.fbm\\DarkDragon_D.png";
 
-			tScene.tAnim_Clip[2] = cBinary_Read.Read_Skeleton("DarkDragon3Skeleton.bin");
+			tScene.tAnim_Clip[2] = cBinary_Read.Read_Skeleton("testCylSkeleton.bin");
 			tScene.tAnim_Data[2] = Create_Inverse_Bind_Pose(tScene.tAnim_Clip[2].tKeyFrames[0]);
 		}
-		// Dragon
+		// Anim Test
 		*/
 
 		// Fireball - 3
