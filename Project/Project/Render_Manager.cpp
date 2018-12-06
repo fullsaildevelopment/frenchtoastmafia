@@ -433,50 +433,34 @@ void cRender_Manager::Draw_World(int nScene_Id, tScene_Objects* tObject_List, bo
 {
 	if (nScene_Id == 2)
 	{
-		if (dragonHealth <= 0)
-		{
-			dragonAlive = false;
-			*bChange_Scene = true;
-		}
+
 		//dragon controls
-		//if (GetAsyncKeyState('E') && flashTimer == 0.0f)
-		//{
-		//	isHit = true;
-		//}
+		if (GetAsyncKeyState('E') && flashTimer == 0.0f)
+		{
+			isHit = true;
+		}
 		if (isHit)
 		{
 			isHit = false;
 			flashTimer = flashTime;
 			sound.playSoundEffect("DragonSound1.mp3", FMOD_DEFAULT);
-			dragonHealth -= 1;
-			if (dragonHealth == 6)
+			tObject_List->dragHP -= 1;
+
+			if (tObject_List->dragHP == 3)
 			{
 				dragonTint = { 0.0f, 0.0f, 1.0f, 1.0f };
 			}
-			if (dragonHealth == 5)
-			{
-				dragonTint = { 0.0f, 1.0f, 1.0f, 1.0f };
-			}
-			if (dragonHealth == 4)
-			{
-				dragonTint = { 0.0f, 1.0f, 0.0f, 1.0f };
-			}
-			if (dragonHealth == 3)
+			if (tObject_List->dragHP == 2)
 			{
 				dragonTint = { 1.0f, 1.0f, 0.0f, 1.0f };
 			}
-			if (dragonHealth == 2)
-			{
-				dragonTint = { 1.0f, 0.5f, 0.0f, 1.0f };
-			}
-			if (dragonHealth == 1)
+			if (tObject_List->dragHP == 1)
 			{
 				dragonTint = { 1.0f, 0.0f, 0.0f, 1.0f };
 			}
 
-			if (dragonHealth <= 0)
+			if (tObject_List->dragHP <= 0)
 			{
-				dragonAlive = false;
 				*bChange_Scene = true;
 			}
 
@@ -489,7 +473,7 @@ void cRender_Manager::Draw_World(int nScene_Id, tScene_Objects* tObject_List, bo
 		}
 		if (flashTimer > 0.0f)
 		{
-			flashTimer -= cTime.Delta();
+			flashTimer -= cTime.Delta() * 10;
 		}
 
 		if (tObject_List->fWorld_Matrix[3].tW.fX >= -1)
