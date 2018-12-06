@@ -70,15 +70,15 @@ void cOffset_Matrix::Update_Offset(double dDelta, tFloat4x4 tHMDPose, tFloat4 fM
 	if (fMovement_Vect.fW == 1.0f)
 		x_move = -5.0f;
 
-	//XMMATRIX x_offset = XMMatrixTranslation(tHMDPose.tX.fX * x_move * (float)dDelta, 0.0f, tHMDPose.tX.fZ * z_move *  (float)dDelta);
-	//XMMATRIX z_offset = XMMatrixTranslation(tHMDPose.tZ.fX * x_move * (float)dDelta, 0.0f, tHMDPose.tZ.fZ * z_move *  (float)dDelta);
-	XMMATRIX t_offset = XMMatrixTranslation(x_move * (float)dDelta, 0.0f, z_move *  (float)dDelta);
+	XMMATRIX x_offset = XMMatrixTranslation(tHMDPose.tX.fX * x_move * (float)dDelta, 0.0f, tHMDPose.tX.fZ * z_move *  (float)dDelta);
+	XMMATRIX z_offset = XMMatrixTranslation(tHMDPose.tZ.fX * x_move * (float)dDelta, 0.0f, tHMDPose.tZ.fZ * z_move *  (float)dDelta);
+	//XMMATRIX t_offset = XMMatrixTranslation(x_move * (float)dDelta, 0.0f, z_move *  (float)dDelta);
 
-	//temp = XMMatrixMultiply(temp, x_offset);
-	//temp = XMMatrixMultiply(z_offset, temp);
-	temp = XMMatrixMultiply(temp, t_offset);
+	temp = XMMatrixMultiply(temp, x_offset);
+	temp = XMMatrixMultiply(temp, z_offset);
+	//temp = XMMatrixMultiply(temp, t_offset);
 
-	xmm_Offset_Matrix = XMMatrixMultiply(xmm_Offset_Matrix, temp);
+	xmm_Offset_Matrix = XMMatrixMultiply(temp, xmm_Offset_Matrix);
 
 	XMStoreFloat4x4(&xmf_Offset_Matrix, xmm_Offset_Matrix);
 	tOffset_Matrix = XMFLOAT4x4_to_tFloat4x4(xmf_Offset_Matrix);

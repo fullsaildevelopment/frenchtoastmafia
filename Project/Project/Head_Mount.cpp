@@ -72,11 +72,11 @@ tFloat4x4 cHead_Mount::GetCurrentViewProjectionMatrix(vr::Hmd_Eye nEye, tFloat4x
 	Matrix4 matMVP;
 	if (nEye == vr::Eye_Left)
 	{
-		matMVP = c_VR_Setup->Get_mat4ProjectionLeft() * (c_VR_Setup->Get_mat4eyePosLeft() * c_VR_Setup->Get_mat4HMDPose());
+		matMVP = c_VR_Setup->Get_mat4ProjectionLeft() * (tFloat4x4_To_Matrix4(offset) * (c_VR_Setup->Get_mat4eyePosLeft() * c_VR_Setup->Get_mat4HMDPose())).invert();
 	}
 	else if (nEye == vr::Eye_Right)
 	{
-		matMVP = c_VR_Setup->Get_mat4ProjectionRight() * c_VR_Setup->Get_mat4eyePosRight() * c_VR_Setup->Get_mat4HMDPose();
+		matMVP = c_VR_Setup->Get_mat4ProjectionRight() * (tFloat4x4_To_Matrix4(offset) * (c_VR_Setup->Get_mat4eyePosRight() * c_VR_Setup->Get_mat4HMDPose())).invert();
 	}
 
 	out_mat = Matrix4_To_tFloat4x4(matMVP);
