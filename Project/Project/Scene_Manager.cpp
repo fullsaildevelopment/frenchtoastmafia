@@ -287,7 +287,7 @@ tScene_Objects cScene_Manager::Get_World_Scene(int nScene_Id)
 			tScene.tMaterials_Data[1] = cBinary_Read.Read_Material("arenaMat.bin");
 		}
 		// Arena
-		
+		/*
 		// Dragon - 2
 		{
 			XMFLOAT4X4 temp;
@@ -332,8 +332,8 @@ tScene_Objects cScene_Manager::Get_World_Scene(int nScene_Id)
 			tScene.tMaterials_Data[2].tMats[0].szDiffuse_File_Path = "Dragon.fbm\\DarkDragon_D.png";
 		}
 		// Dragon
+		*/
 		
-		/*
 		// Anim Test - 2
 		{
 			XMFLOAT4X4 temp;
@@ -377,7 +377,7 @@ tScene_Objects cScene_Manager::Get_World_Scene(int nScene_Id)
 			tScene.tAnim_Data[2] = Create_Inverse_Bind_Pose(tScene.tAnim_Clip[2].tKeyFrames[0]);
 		}
 		// Anim Test
-		*/
+		
 
 		// Fireball - 3
 		{
@@ -422,7 +422,7 @@ tScene_Objects cScene_Manager::Get_World_Scene(int nScene_Id)
 
 			XMMATRIX tempMatrix = XMMatrixIdentity();
 
-			tempMatrix = XMMatrixMultiply(tempMatrix, XMMatrixTranslation(-0.1, 0.1, -0.1));
+			tempMatrix = XMMatrixMultiply(tempMatrix, XMMatrixTranslation(-0.1, 50.1, -0.1));
 
 			XMStoreFloat4x4(&temp, tempMatrix);
 
