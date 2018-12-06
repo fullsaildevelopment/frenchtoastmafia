@@ -299,7 +299,7 @@ tScene_Objects cScene_Manager::Get_World_Scene(int nScene_Id)
 
 			tempMatrix = XMMatrixMultiply(tempMatrix, XMMatrixTranslation(-30, 0, 0));
 
-			tempMatrix = XMMatrixMultiply(XMMatrixRotationY(-3.14/15), tempMatrix);
+			tempMatrix = XMMatrixMultiply(XMMatrixRotationY(3.14), tempMatrix);
 
 			//tempMatrix = XMMatrixMultiply(XMMatrixScaling(0.1, 0.1, 0.1), tempMatrix);
 
