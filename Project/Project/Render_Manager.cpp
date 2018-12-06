@@ -567,10 +567,10 @@ void cRender_Manager::Draw_World(int nScene_Id, tScene_Objects* tObject_List, bo
 			}
 
 			// TO TURN OFF OBJECTS
-			//if (i == 4)
-			//{
-			//	continue;
-			//}
+			if (i == 4)
+			{
+				continue;
+			}
 
 			// CONSTANT BUFFER - WVPC
 			{
