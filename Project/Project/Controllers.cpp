@@ -19,6 +19,8 @@ cControllers::~cControllers()
 void cControllers::Initialize(cVR_Setup* _c_VR_Setup)
 {
 	c_VR_Setup = _c_VR_Setup;
+	tReset_Offset.fX = 0.0f;
+	tReset_Offset.fY = 0.0f;
 }
 
 void cControllers::Clean_Up()
@@ -59,9 +61,11 @@ int cControllers::Identify_Controller(TrackedDeviceIndex_t vr_event)
 		return 1;
 	else if (controller_role == TrackedControllerRole_RightHand)
 		return 2;
+
+	return 0;
 }
 
-void cControllers::Update_Controller(int nScene_Id, bool *bChange_Scene, bool *bMove_Bullet, tFloat4 *movement, tFloat4x4 offset)
+void cControllers::Update_Controller(int nScene_Id, bool *bChange_Scene, bool *bMove_Bullet, bool *bReset_Offset, tFloat4 *movement, tFloat4x4 offset)
 {
 	if (!c_VR_Setup->Get_HMD()->IsInputAvailable())
 		return;
@@ -104,13 +108,31 @@ void cControllers::Update_Controller(int nScene_Id, bool *bChange_Scene, bool *b
 				{
 				case VREvent_ButtonPress:
 					if (Identify_Controller(vrEvent.trackedDeviceIndex) == 1)
+					{
 						printf("Grip Press\n");
+						tReset_Offset.fX = 1.0f;
+					}
 					else if (Identify_Controller(vrEvent.trackedDeviceIndex) == 2)
+					{
 						printf("Grip Press\n");
+						tReset_Offset.fY = 1.0f;
+					}
+
+					if (tReset_Offset.fX > 0.0f && tReset_Offset.fY > 0.0f)
+						*bReset_Offset = true;
 					break;
 
 				case VREvent_ButtonUnpress:
-					printf("Grip unPress\n");
+					if (Identify_Controller(vrEvent.trackedDeviceIndex) == 1)
+					{
+						printf("Grip unPress\n");
+						tReset_Offset.fX = 0.0f;
+					}
+					else if (Identify_Controller(vrEvent.trackedDeviceIndex) == 2)
+					{
+						printf("Grip unPress\n");
+						tReset_Offset.fY = 0.0f;
+					}
 					break;
 				}
 				break;

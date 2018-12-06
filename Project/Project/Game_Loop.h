@@ -36,6 +36,7 @@ private:
 	int m_nScene_Id;
 	bool bChange_Scene = false;
 	bool bMove_Bullet = false;
+	bool bReset_Offset = false;
 
 	tScene_Objects tPersonal_Object_List, tWorld_Object_List;
 	tFloat4 movement = { 0.0f, 0.0f, 0.0f, 0.0f };

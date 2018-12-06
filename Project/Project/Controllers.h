@@ -22,6 +22,8 @@ private:
 	unsigned int m_uiControllerVertcount;
 	unsigned int m_iTrackedControllerCount;
 
+	tFloat2 tReset_Offset;
+
 public:
 	cControllers();
 	~cControllers();
@@ -36,6 +38,6 @@ public:
 	void Set_Right_Hand(tFloat4x4 right);
 
 	int Identify_Controller(TrackedDeviceIndex_t vr_event);
-	void Update_Controller(int nScene_Id, bool *bChange_Scene, bool *bMove_Bullet, tFloat4 *movement, tFloat4x4 offset);
+	void Update_Controller(int nScene_Id, bool *bChange_Scene, bool *bMove_Bullet, bool *bReset_Offset, tFloat4 *movement, tFloat4x4 offset);
 };
 

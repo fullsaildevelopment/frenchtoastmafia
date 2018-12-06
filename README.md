@@ -12,7 +12,8 @@ Movement - Left Controller Trackpad Click
 
 Change scene / shoot fireball - Right Controller Trigger
 
+Reset Position - Press Grip button for both Controller at the same time. (For Debugging Purpose)
+
 KNOWN ISSUES:
 Moving too far will increase gap from headset and hand.
-Moving too far might cause the replay screen to disappear (if player is behind it)
 

@@ -46,7 +46,13 @@ void cGame_Loop::Update()
 {
 	c_XTime.Signal();
 	
-	c_Controllers.Update_Controller(m_nScene_Id, &bChange_Scene, &bMove_Bullet, &movement, c_Offset_Matrix.GetPosition());
+	c_Controllers.Update_Controller(m_nScene_Id, &bChange_Scene, &bMove_Bullet, &bReset_Offset, &movement, c_Offset_Matrix.GetPosition());
+	if (bReset_Offset)
+	{
+		c_Offset_Matrix.ResetPosition();
+		bReset_Offset = false;
+	}
+
 	if (movement.fX > 0.0f || movement.fY > 0.0f || movement.fZ > 0.0f || movement.fW > 0.0f)
 		c_Offset_Matrix.Update_Offset(c_XTime.Delta(), c_Head_Mount.Get_mat4HMDPose(), movement);
 
@@ -58,7 +64,8 @@ void cGame_Loop::Update()
 			m_nScene_Id = 2;
 		tWorld_Object_List = c_Scene_Manager.Get_World_Scene(m_nScene_Id);
 		c_Render_Manager.Load_Data(m_nScene_Id, &tWorld_Object_List);
-	
+
+		c_Offset_Matrix.ResetPosition();
 		bChange_Scene = false;
 	}
 
