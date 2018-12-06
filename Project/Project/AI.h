@@ -33,8 +33,6 @@ private:
 	float yMove = 0.0f;
 	float zMove = 0.0f;
 
-	float dragSpeed = 1.0f;
-
 	void fire();
 
 	float calcDist(tFloat4x4 _dragonPos, tFloat4x4 _playerPos);
