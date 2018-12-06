@@ -8,7 +8,7 @@
 *************************************************************************/
 
 #include "Game_Loop.h"
-#include "math_conversion.h"
+
 
 cGame_Loop::cGame_Loop()
 {
@@ -71,7 +71,7 @@ void cGame_Loop::Update()
 
 	if (m_nScene_Id == 2)
 	{
-		c_AI.resolveDragonState(&tWorld_Object_List, tFloat4x4_To_Matrix4(c_Head_Mount.Get_mat4HMDPose()), c_XTime.Delta());
+		c_AI.resolveDragonState(&tObject_List, c_Graphics_Setup->GetHMDMatrixPose(), c_XTime.Delta());
 	}
 	c_Animation_Manager.Animate(c_XTime.Delta(), c_XTime.TotalTimeExact(), &tWorld_Object_List);
 	c_Render_Manager.Draw_World(m_nScene_Id, &tWorld_Object_List, &bChange_Scene, &bMove_Bullet, c_Head_Mount);

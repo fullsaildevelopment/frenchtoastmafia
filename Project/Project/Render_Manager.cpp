@@ -283,6 +283,119 @@ void cRender_Manager::Unload(tScene_Objects* tObject_List)
 void cRender_Manager::Draw_Personal(tScene_Objects* tObject_List, cHead_Mount c_Head_Mount, cControllers c_Controllers)
 {
 
+	if (nScene_Id == 2)
+	{
+		//if (tObject_List->dragAlive == false)
+		//{
+		//	dragonAlive = false;
+		//	*bChange_Scene = true;
+		//}
+		//dragon controls
+		if (GetAsyncKeyState('E') && flashTimer == 0.0f)
+		{
+			isHit = true;
+		}
+		if (isHit)
+		{
+			isHit = false;
+			flashTimer = flashTime;
+			sound.playSoundEffect("DragonSound1.mp3", FMOD_DEFAULT);
+			tObject_List->dragHP -= 1;
+			//if (tObject_List->dragHP == 6)
+			//{
+			//	dragonTint = { 0.0f, 0.0f, 1.0f, 1.0f };
+			//}
+			//if (tObject_List->dragHP == 5)
+			//{
+			//	dragonTint = { 0.0f, 1.0f, 1.0f, 1.0f };
+			//}
+			//if (tObject_List->dragHP == 4)
+			//{
+			//	dragonTint = { 0.0f, 1.0f, 0.0f, 1.0f };
+			//}
+			if (tObject_List->dragHP == 3)
+			{
+				dragonTint = { 0.0f, 0.0f, 1.0f, 1.0f };
+			}
+			if (tObject_List->dragHP == 2)
+			{
+				dragonTint = { 1.0f, 1.0f, 0.0f, 1.0f };
+			}
+			if (tObject_List->dragHP == 1)
+			{
+				dragonTint = { 1.0f, 0.0f, 0.0f, 1.0f };
+			}
+
+			if (tObject_List->dragHP <= 0)
+			{
+				*bChange_Scene = true;
+			}
+
+		}
+
+		if (flashTimer < 0.0f)
+		{
+			flashTimer = 0.0f;
+			dragonTint = { 0.0f, 0.0f, 0.0f, 1.0f };
+		}
+		if (flashTimer > 0.0f)
+		{
+			flashTimer -= cTime.Delta() * 10;
+		}
+
+		if (tObject_List->fWorld_Matrix[3].tW.fX >= -1)
+		{
+			if (dragonAlive == true)
+			{
+				sound.playSoundEffect("Fireball+1.mp3", FMOD_DEFAULT);
+			}
+			//tObject_List->fWorld_Matrix[3].tW.fX = tObject_List->fWorld_Matrix[2].tW.fX + 4;
+			//tObject_List->fWorld_Matrix[3].tW.fY = tObject_List->fWorld_Matrix[2].tW.fY;
+			//tObject_List->fWorld_Matrix[3].tW.fZ = tObject_List->fWorld_Matrix[2].tW.fZ;
+			//tObject_List->fWorld_Matrix[3].tW.fY += 4;
+			//tObject_List->fWorld_Matrix[3].tW.fX = -8;
+			//tObject_List->fWorld_Matrix[3].tW.fY = 8;
+		}
+
+		// Bullet
+		if (*bMove_Bullet == true)
+		{
+			tObject_List->fWorld_Matrix[4].tW.fX -= 0.1;
+			tObject_List->fWorld_Matrix[4].tW.fY += 0.1;
+		}
+		/*
+		// Collision
+		{
+		tAABB_Bullet.center.fX = tObject_List->fWorld_Matrix[4].tW.fX;
+		tAABB_Bullet.center.fY = tObject_List->fWorld_Matrix[4].tW.fY;
+		tAABB_Bullet.center.fZ = tObject_List->fWorld_Matrix[4].tW.fZ;
+
+		tAABB_Bullet.extents.fX = 0.2f;
+		tAABB_Bullet.extents.fY = 0.13f;
+		tAABB_Bullet.extents.fZ = 0.2f;
+
+		tAABB_Dragon.center.fX = tObject_List->fWorld_Matrix[2].tW.fX;
+		tAABB_Dragon.center.fY = tObject_List->fWorld_Matrix[2].tW.fY;
+		tAABB_Dragon.center.fZ = tObject_List->fWorld_Matrix[2].tW.fZ;
+
+		tAABB_Dragon.extents.fX = 17.0f;
+		tAABB_Dragon.extents.fY = 9.0f;
+		tAABB_Dragon.extents.fZ = 17.0f;
+
+		bCollided = t_Collisions.Detect_AABB_To_AABB(tAABB_Bullet, tAABB_Dragon);
+
+		if (bCollided)
+		{
+		tObject_List->fWorld_Matrix[4].tW.fX = -0.1;
+		tObject_List->fWorld_Matrix[4].tW.fY = 0.1;
+		tObject_List->fWorld_Matrix[4].tW.fX = -0.1;
+		*bMove_Bullet = false;
+		isHit = true;
+		}
+		}
+		*/
+	}
+
 	float clear_color[4] = { 1.000000000f, 0.000000000f, 0.83137255f, 1.000000000f };
 
 	for (int _eyeID = 0; _eyeID < 3; _eyeID++)
@@ -431,107 +544,6 @@ void cRender_Manager::Draw_Personal(tScene_Objects* tObject_List, cHead_Mount c_
 
 void cRender_Manager::Draw_World(int nScene_Id, tScene_Objects* tObject_List, bool *bChange_Scene, bool *bMove_Bullet, cHead_Mount c_Head_Mount)
 {
-	if (nScene_Id == 2)
-	{
-		//if (tObject_List->dragAlive == false)
-		//{
-		//	dragonAlive = false;
-		//	*bChange_Scene = true;
-		//}
-		//dragon controls
-		if (GetAsyncKeyState('E') && flashTimer == 0.0f)
-		{
-			isHit = true;
-		}
-		if (isHit)
-		{
-			isHit = false;
-			flashTimer = flashTime;
-			sound.playSoundEffect("DragonSound1.mp3", FMOD_DEFAULT);
-			tObject_List->dragHP -= 1;
-			if (tObject_List->dragHP == 3)
-			{
-				dragonTint = { 0.0f, 0.0f, 1.0f, 1.0f };
-			}
-			if (tObject_List->dragHP == 2)
-			{
-				dragonTint = { 1.0f, 1.0f, 0.0f, 1.0f };
-			}
-			if (tObject_List->dragHP == 1)
-			{
-				dragonTint = { 1.0f, 0.0f, 0.0f, 1.0f };
-			}
-
-			if (tObject_List->dragHP <= 0)
-			{
-				*bChange_Scene = true;
-			}
-
-		}
-
-		if (flashTimer < 0.0f)
-		{
-			flashTimer = 0.0f;
-			dragonTint = { 0.0f, 0.0f, 0.0f, 1.0f };
-		}
-		if (flashTimer > 0.0f)
-		{
-			flashTimer -= cTime.Delta();
-		}
-
-		if (tObject_List->fWorld_Matrix[3].tW.fX >= -1)
-		{
-			if (dragonAlive == true)
-			{
-				sound.playSoundEffect("Fireball+1.mp3", FMOD_DEFAULT);
-			}
-			//tObject_List->fWorld_Matrix[3].tW.fX = tObject_List->fWorld_Matrix[2].tW.fX + 4;
-			//tObject_List->fWorld_Matrix[3].tW.fY = tObject_List->fWorld_Matrix[2].tW.fY;
-			//tObject_List->fWorld_Matrix[3].tW.fZ = tObject_List->fWorld_Matrix[2].tW.fZ;
-			//tObject_List->fWorld_Matrix[3].tW.fY += 4;
-			//tObject_List->fWorld_Matrix[3].tW.fX = -8;
-			//tObject_List->fWorld_Matrix[3].tW.fY = 8;
-		}
-
-		// Bullet
-		if (*bMove_Bullet == true)
-		{
-			tObject_List->fWorld_Matrix[4].tW.fX -= 0.1;
-			tObject_List->fWorld_Matrix[4].tW.fY += 0.1;
-		}
-
-		// Collision
-		{
-			tAABB_Bullet.center.fX = tObject_List->fWorld_Matrix[4].tW.fX;
-			tAABB_Bullet.center.fY = tObject_List->fWorld_Matrix[4].tW.fY;
-			tAABB_Bullet.center.fZ = tObject_List->fWorld_Matrix[4].tW.fZ;
-
-			tAABB_Bullet.extents.fX = 0.2f;
-			tAABB_Bullet.extents.fY = 0.13f;
-			tAABB_Bullet.extents.fZ = 0.2f;
-
-			tAABB_Dragon.center.fX = tObject_List->fWorld_Matrix[2].tW.fX;
-			tAABB_Dragon.center.fY = tObject_List->fWorld_Matrix[2].tW.fY;
-			tAABB_Dragon.center.fZ = tObject_List->fWorld_Matrix[2].tW.fZ;
-
-			tAABB_Dragon.extents.fX = 17.0f;
-			tAABB_Dragon.extents.fY = 9.0f;
-			tAABB_Dragon.extents.fZ = 17.0f;
-
-			bCollided = t_Collisions.Detect_AABB_To_AABB(tAABB_Bullet, tAABB_Dragon);
-
-			if (bCollided)
-			{
-				tObject_List->fWorld_Matrix[4].tW.fX = -0.1;
-				tObject_List->fWorld_Matrix[4].tW.fY = 0.1;
-				tObject_List->fWorld_Matrix[4].tW.fX = -0.1;
-				*bMove_Bullet = false;
-				isHit = true;
-			}
-		}
-
-	}
-
 	// SIGNALS
 	cTime.Signal();
 	float clear_color[4] = { 0.000000000f, 1.000000000f, 0.48235f, 1.000000000f };

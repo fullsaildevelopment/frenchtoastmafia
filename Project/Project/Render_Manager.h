@@ -55,7 +55,7 @@ private:
 
 	// Dragon Behavior
 	bool isHit = false;
-	float flashTime = 5.0f;
+	float flashTime = 0.25f;
 	float flashTimer = 0.0f;
 
 	bool dragonAlive;
