@@ -424,8 +424,12 @@ void cRender_Manager::Draw_World(int nScene_Id, tScene_Objects* tObject_List, bo
 {
 	if (nScene_Id == 2)
 	{
-		flashTime = 1.0f;
-
+		//if (tObject_List->dragAlive == false)
+		//{
+		//	dragonAlive = false;
+		//	*bChange_Scene = true;
+		//}
+		//dragon controls
 		if (GetAsyncKeyState('E') && flashTimer == 0.0f)
 		{
 			isHit = true;
