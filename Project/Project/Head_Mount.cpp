@@ -39,7 +39,7 @@ Matrix4 cHead_Mount::GetHMDMatrixPoseEye(vr::Hmd_Eye nEye)
 		matEye.m[0][3], matEye.m[1][3], matEye.m[2][3], 1.0f
 	);
 
-	return matrixObj;// .invert();
+	return matrixObj.invert();
 }
 
 Matrix4 cHead_Mount::GetHMDMatrixProjectionEye(vr::Hmd_Eye nEye)
@@ -66,17 +66,17 @@ void cHead_Mount::SetupCameras()
 	c_VR_Setup->Set_mat4eyePosRight(GetHMDMatrixPoseEye(vr::Eye_Right));
 }
 
-tFloat4x4 cHead_Mount::GetCurrentViewProjectionMatrix(vr::Hmd_Eye nEye, tFloat4x4 offset)
+tFloat4x4 cHead_Mount::GetCurrentViewProjectionMatrix(vr::Hmd_Eye nEye)
 {
 	tFloat4x4 out_mat;
 	Matrix4 matMVP;
 	if (nEye == vr::Eye_Left)
 	{
-		matMVP = c_VR_Setup->Get_mat4ProjectionLeft() * (tFloat4x4_To_Matrix4(offset) * (c_VR_Setup->Get_mat4eyePosLeft() * c_VR_Setup->Get_mat4HMDPose())).invert();
+		matMVP = c_VR_Setup->Get_mat4ProjectionLeft() * c_VR_Setup->Get_mat4eyePosLeft() * c_VR_Setup->Get_mat4HMDPose();
 	}
 	else if (nEye == vr::Eye_Right)
 	{
-		matMVP = c_VR_Setup->Get_mat4ProjectionRight() * (tFloat4x4_To_Matrix4(offset) * (c_VR_Setup->Get_mat4eyePosRight() * c_VR_Setup->Get_mat4HMDPose())).invert();
+		matMVP = c_VR_Setup->Get_mat4ProjectionRight() * c_VR_Setup->Get_mat4eyePosRight() * c_VR_Setup->Get_mat4HMDPose();
 	}
 
 	out_mat = Matrix4_To_tFloat4x4(matMVP);
@@ -94,7 +94,7 @@ Matrix4 cHead_Mount::ConvertSteamVRMatrixToMatrix4(const vr::HmdMatrix34_t & mat
 	return matrixObj;
 }
 
-void cHead_Mount::UpdateHMDMatrixPose()
+void cHead_Mount::UpdateHMDMatrixPose(tFloat4x4 offset)
 {
 	if (!c_VR_Setup->Get_HMD())
 		return;
@@ -131,10 +131,10 @@ void cHead_Mount::UpdateHMDMatrixPose()
 		//c_VR_Setup->Set_mat4HMDPose(m_rmat4DevicePose[vr::k_unTrackedDeviceIndex_Hmd].invert());
 		Matrix4 hmd = m_rmat4DevicePose[vr::k_unTrackedDeviceIndex_Hmd];
 		//float y_data = hmd[13];
-		//hmd = tFloat4x4_To_Matrix4(offset) * hmd;
+		hmd = tFloat4x4_To_Matrix4(offset) * hmd;
 		//hmd = hmd * tFloat4x4_To_Matrix4(offset);
 		//hmd[13] = y_data;
-		//hmd = hmd.invert();
+		hmd = hmd.invert();
 		//hmd = tFloat4x4_To_Matrix4(offset) * hmd;
 		c_VR_Setup->Set_mat4HMDPose(hmd);
 	}
@@ -142,7 +142,7 @@ void cHead_Mount::UpdateHMDMatrixPose()
 	c_VR_Setup->Set_rmat4DevicePose(m_rmat4DevicePose);
 }
 
-void cHead_Mount::VR_Render()
+void cHead_Mount::VR_Render(tFloat4x4 offset)
 {
 	c_Graphics_Setup->Get_Swap_Chain().Get()->Present(1, 0);
 
@@ -151,7 +151,7 @@ void cHead_Mount::VR_Render()
 	vr::Texture_t rightEyeTexture = { c_Graphics_Setup->Get_Texture_Right_Eye().Get(), vr::TextureType_DirectX, vr::ColorSpace_Auto };
 	vr::VRCompositor()->Submit(vr::Eye_Right, &rightEyeTexture);
 
-	UpdateHMDMatrixPose();
+	UpdateHMDMatrixPose(offset);
 }
 
 tFloat4x4 cHead_Mount::Get_mat4HMDPose()
