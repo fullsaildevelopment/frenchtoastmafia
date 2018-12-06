@@ -328,11 +328,6 @@ Matrix4 cGraphics_Setup::GetHMDMatrixPoseEye(vr::Hmd_Eye nEye)
 	return matrixObj.invert();
 }
 
-Matrix4 cGraphics_Setup::GetHMDMatrixPose()
-{
-	return m_mat4HMDPose;
-}
-
 Matrix4 cGraphics_Setup::GetHMDMatrixProjectionEye(vr::Hmd_Eye nEye)
 {
 	if (!m_pHMD)

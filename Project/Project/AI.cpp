@@ -13,13 +13,12 @@ AI::~AI()
 
 void AI::resolveDragonState(tScene_Objects* tObject_List, Matrix4 _playerPos, double _dTime)
 {
-	//dragonPos = tObject_List->fWorld_Matrix[2];
+	dragonPos = tObject_List->fWorld_Matrix[2];
 	playerPos = Matrix4_To_tFloat4x4(_playerPos);
-	XMMATRIX playerPosMat = XMLoadFloat4x4(&tFloat4x4_to_XMFLOAT4x4(playerPos));
 
 	if (!aggro)
 	{
-		if (calcDist(tObject_List->fWorld_Matrix[2], playerPos) < 20)
+		if (calcDist(dragonPos, playerPos) < 20)
 		{
 			aggro = true;
 		}
@@ -27,67 +26,30 @@ void AI::resolveDragonState(tScene_Objects* tObject_List, Matrix4 _playerPos, do
 
 	if(aggro)
 	{
-		//moveTimer += _dTime;
-		//if (moveTimer >= 4.0f)
-		//{
-		//	moveTimer = 0.0f;
-		//	xMove *= -1;
-		//}
-
-		if (tObject_List->fWorld_Matrix[2].tW.fZ > 10.0f || tObject_List->fWorld_Matrix[2].tW.fZ < -10.0f)
+		moveTimer += _dTime;
+		if (moveTimer >= 2.0f)
 		{
+			moveTimer = 0.0f;
 			xMove *= -1;
 		}
 
-		XMMATRIX oldPosMat = XMLoadFloat4x4(&tFloat4x4_to_XMFLOAT4x4(tObject_List->fWorld_Matrix[2]));
+		XMMATRIX oldPosMat = XMLoadFloat4x4(&tFloat4x4_to_XMFLOAT4x4(dragonPos));
 		XMMATRIX moveMat = XMMatrixTranslation(xMove, 0.0f, 0.0f);
 
 		XMMATRIX newPosMat = XMMatrixMultiply(moveMat, oldPosMat);
-
-
 		XMFLOAT4X4 newPos4x4;
 		XMStoreFloat4x4(&newPos4x4, newPosMat);
-		//tObject_List->fWorld_Matrix[2] = XMFLOAT4x4_to_tFloat4x4(newPos4x4);
+		tObject_List->fWorld_Matrix[2] = XMFLOAT4x4_to_tFloat4x4(newPos4x4);
 
 		//projectile stuff
+		//projectileTimer += _dTime;
+		//if (projectileTimer >= 3.0)
+		//{
+		//	projectileTimer = 0.0f;
+		//
+		//
+		//}
 
-		if (tObject_List->fWorld_Matrix[3].tW.fX >= -1)
-		{
-			tObject_List->fWorld_Matrix[3].tW.fX = tObject_List->fWorld_Matrix[2].tW.fX + 7;
-			tObject_List->fWorld_Matrix[3].tW.fY = tObject_List->fWorld_Matrix[2].tW.fY;
-			tObject_List->fWorld_Matrix[3].tW.fZ = tObject_List->fWorld_Matrix[2].tW.fZ;
-			tObject_List->fWorld_Matrix[3].tW.fY += 7;
-
-			XMMATRIX oldProjPosMat = XMLoadFloat4x4(&tFloat4x4_to_XMFLOAT4x4(tObject_List->fWorld_Matrix[3]));
-			XMMATRIX newProjPosMat = lookAtMatrix(oldProjPosMat, playerPosMat);
-			XMFLOAT4X4 newProjPos4x4;
-			XMStoreFloat4x4(&newProjPos4x4, newProjPosMat);
-			tObject_List->fWorld_Matrix[3] = XMFLOAT4x4_to_tFloat4x4(newProjPos4x4);
-
-
-
-		}
-
-		if (dragHP > 2)
-		{
-			XMMATRIX oldPosMat = XMLoadFloat4x4(&tFloat4x4_to_XMFLOAT4x4(tObject_List->fWorld_Matrix[3]));
-			XMMATRIX moveMat = XMMatrixTranslation(0.0f, 0.0f, 1.0f);
-
-			XMMATRIX newPosMat = XMMatrixMultiply(moveMat, oldPosMat);
-			XMFLOAT4X4 newPos4x4;
-			XMStoreFloat4x4(&newPos4x4, newPosMat);
-			tObject_List->fWorld_Matrix[3] = XMFLOAT4x4_to_tFloat4x4(newPos4x4);
-		}
-		else
-		{
-			XMMATRIX oldPosMat = XMLoadFloat4x4(&tFloat4x4_to_XMFLOAT4x4(tObject_List->fWorld_Matrix[3]));
-			XMMATRIX moveMat = XMMatrixTranslation(0.0f, 0.0f, 2.0f);
-
-			XMMATRIX newPosMat = XMMatrixMultiply(moveMat, oldPosMat);
-			XMFLOAT4X4 newPos4x4;
-			XMStoreFloat4x4(&newPos4x4, newPosMat);
-			tObject_List->fWorld_Matrix[3] = XMFLOAT4x4_to_tFloat4x4(newPos4x4);
-		}
 
 	}
 
@@ -110,28 +72,5 @@ void AI::updatePosition()
 
 void AI::lookAtPoint()
 {
-
-}
-
-XMMATRIX AI::lookAtMatrix(XMMATRIX _viewer, XMMATRIX _target)
-{
-	XMVECTOR up = { 0,1,0 };
-
-	XMVECTOR newX;
-	XMVECTOR newY;
-	XMVECTOR newZ = XMVector3Normalize(_target.r[3] - _viewer.r[3]);
-	XMVECTOR newP = _viewer.r[3];
-
-	newX = XMVector3Cross(up, newZ);
-	newY = XMVector3Cross(newZ, newX);
-
-	XMMATRIX ret =
-	{
-		newX.m128_f32[0], newX.m128_f32[1], newX.m128_f32[2], 0,
-		newY.m128_f32[0], newY.m128_f32[1], newY.m128_f32[2], 0,
-		newZ.m128_f32[0], newZ.m128_f32[1], newZ.m128_f32[2], 0,
-		newP.m128_f32[0], newP.m128_f32[1], newP.m128_f32[2], 1,
-	};
-	return ret;
 
 }
