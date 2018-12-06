@@ -37,9 +37,6 @@
     <Filter Include="Helper">
       <UniqueIdentifier>{0be4e6ae-7958-439b-aeb0-4e693bb65b7a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Camera">
-      <UniqueIdentifier>{af698bc9-1e7c-4f04-ac9b-f32256499293}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Scene Manager">
       <UniqueIdentifier>{a2706948-9f47-4f8b-b50a-f737cb3a3550}</UniqueIdentifier>
     </Filter>
@@ -108,26 +105,14 @@
     <ClInclude Include="WICTextureLoader.h">
       <Filter>Assets\Helper</Filter>
     </ClInclude>
-    <ClInclude Include="view.h">
-      <Filter>Renderer Manager\Code</Filter>
-    </ClInclude>
     <ClInclude Include="Render_Manager.h">
       <Filter>Renderer Manager\Code</Filter>
-    </ClInclude>
-    <ClInclude Include="Camera.h">
-      <Filter>Camera</Filter>
     </ClInclude>
     <ClInclude Include="Scene_Manager.h">
       <Filter>Scene Manager</Filter>
     </ClInclude>
-    <ClInclude Include="defines.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Game_Loop.h">
       <Filter>Game Loop</Filter>
-    </ClInclude>
-    <ClInclude Include="VR.h">
-      <Filter>VR</Filter>
     </ClInclude>
     <ClInclude Include="Graphic_Setup.h">
       <Filter>Graphic Setup</Filter>
@@ -164,6 +149,17 @@
     </ClInclude>
     <ClInclude Include="AI.h">
       <Filter>AI</Filter>
+    <ClInclude Include="Controllers.h">
+      <Filter>VR</Filter>
+    </ClInclude>
+    <ClInclude Include="Head_Mount.h">
+      <Filter>VR</Filter>
+    </ClInclude>
+    <ClInclude Include="VR_Setup.h">
+      <Filter>VR</Filter>
+    </ClInclude>
+    <ClInclude Include="Offset_Matrix.h">
+      <Filter>VR</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -191,17 +187,11 @@
     <ClCompile Include="Render_Manager.cpp">
       <Filter>Renderer Manager\Code</Filter>
     </ClCompile>
-    <ClCompile Include="Camera.cpp">
-      <Filter>Camera</Filter>
-    </ClCompile>
     <ClCompile Include="Scene_Manager.cpp">
       <Filter>Scene Manager</Filter>
     </ClCompile>
     <ClCompile Include="Game_Loop.cpp">
       <Filter>Game Loop</Filter>
-    </ClCompile>
-    <ClCompile Include="VR.cpp">
-      <Filter>VR</Filter>
     </ClCompile>
     <ClCompile Include="Graphic_Setup.cpp">
       <Filter>Graphic Setup</Filter>
@@ -220,6 +210,17 @@
     </ClCompile>
     <ClCompile Include="AI.cpp">
       <Filter>AI</Filter>
+    <ClCompile Include="Controllers.cpp">
+      <Filter>VR</Filter>
+    </ClCompile>
+    <ClCompile Include="Head_Mount.cpp">
+      <Filter>VR</Filter>
+    </ClCompile>
+    <ClCompile Include="VR_Setup.cpp">
+      <Filter>VR</Filter>
+    </ClCompile>
+    <ClCompile Include="Offset_Matrix.cpp">
+      <Filter>VR</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

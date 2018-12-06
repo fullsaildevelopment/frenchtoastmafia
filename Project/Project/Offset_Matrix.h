@@ -1,10 +1,10 @@
 /************************************************************************
-* Filename:  		Camera.h
-* Date:      		26/10/2018
-* Mod. Date: 		03/12/2018
+* Filename:  		Offset_Matrix.h (Recreate from Camera)
+* Date:      		05/12/2018
+* Mod. Date: 		05/12/2018
 * Mod. Initials:	WM
 * Author:    		Wichet Manawanitjarern
-* Purpose:   		Camera Class for Player's View
+* Purpose:   		Offset Matrix applies to Headset and Controller to move player's view and hand
 *************************************************************************/
 #pragma once
 
@@ -12,25 +12,17 @@
 #include "Math_Conversion.h"
 #include "Renderer_Structs.h"
 
-class cCamera
+class cOffset_Matrix
 {
 private:
-	tFloat4x4 fView_Matrix;
-	float fY_Data;
+	tFloat4x4 tOffset_Matrix;
 public:
-	cCamera();
-	~cCamera();
+	cOffset_Matrix();
+	~cOffset_Matrix();
 
 	void Initialize();
-	void SetPosition(tFloat4 fPosition);
-	void SetPosition(tFloat4x4 fPosition);
+	void ResetPosition();
 	tFloat4x4 GetPosition();
-
-	void Translation(tFloat4 fMovement_Vect);
-	void Rotation(tFloat4 fRotation_Vect);
-	void Normalize();
-
-	//void Update_Offset(double dDelta, tFloat4 fMovement_Vect);
 	void Update_Offset(double dDelta, tFloat4x4 tHMDPose, tFloat4 fMovement_Vect);
 };
 
