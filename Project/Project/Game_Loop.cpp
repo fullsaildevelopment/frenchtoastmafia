@@ -29,7 +29,7 @@ void cGame_Loop::Initialize(cGraphics_Setup* _gsetup, cVR_Setup* _vsetup)
 	c_Head_Mount.SetupCameras();
 	c_Head_Mount.UpdateHMDMatrixPose(c_Offset_Matrix.GetPosition());
 	c_XTime.Restart();
-	m_nScene_Id = 2;
+	m_nScene_Id = 0;
 }
 
 void cGame_Loop::Setup()
