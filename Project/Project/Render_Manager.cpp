@@ -339,27 +339,16 @@ void cRender_Manager::Draw(int nScene_Id, tScene_Objects* tObject_List, bool *bC
 			flashTimer -= cTime.Delta();
 		}
 
-		if (dragonHealth > 3)
-		{
-			tObject_List->fWorld_Matrix[3].tW.fX += 0.5;
-			//tObject_List->fWorld_Matrix[3].tW.fY -= 0.1;
-		}
-		else
-		{
-			tObject_List->fWorld_Matrix[3].tW.fX += 0.3;
-			//tObject_List->fWorld_Matrix[3].tW.fY -= 0.3;
-		}
-
 		if (tObject_List->fWorld_Matrix[3].tW.fX >= -1)
 		{
 			if (dragonAlive == true)
 			{
 				sound.playSoundEffect("Fireball+1.mp3", FMOD_DEFAULT);
 			}
-			tObject_List->fWorld_Matrix[3].tW.fX = tObject_List->fWorld_Matrix[2].tW.fX;
-			tObject_List->fWorld_Matrix[3].tW.fY = tObject_List->fWorld_Matrix[2].tW.fY;
-			tObject_List->fWorld_Matrix[3].tW.fZ = tObject_List->fWorld_Matrix[2].tW.fZ;
-			tObject_List->fWorld_Matrix[3].tW.fY += 2;
+			//tObject_List->fWorld_Matrix[3].tW.fX = tObject_List->fWorld_Matrix[2].tW.fX + 4;
+			//tObject_List->fWorld_Matrix[3].tW.fY = tObject_List->fWorld_Matrix[2].tW.fY;
+			//tObject_List->fWorld_Matrix[3].tW.fZ = tObject_List->fWorld_Matrix[2].tW.fZ;
+			//tObject_List->fWorld_Matrix[3].tW.fY += 4;
 			//tObject_List->fWorld_Matrix[3].tW.fX = -8;
 			//tObject_List->fWorld_Matrix[3].tW.fY = 8;
 		}

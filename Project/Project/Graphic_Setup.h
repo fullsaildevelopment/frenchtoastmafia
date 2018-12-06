@@ -141,6 +141,7 @@ public:
 	};
 
 	Matrix4 GetHMDMatrixPoseEye(vr::Hmd_Eye nEye);
+	Matrix4 GetHMDMatrixPose();
 	Matrix4 GetHMDMatrixProjectionEye(vr::Hmd_Eye nEye);
 	void SetupCameras();
 	tFloat4x4 GetCurrentViewProjectionMatrix(vr::Hmd_Eye nEye);
