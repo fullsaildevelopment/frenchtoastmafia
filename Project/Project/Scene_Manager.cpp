@@ -217,17 +217,17 @@ tScene_Objects cScene_Manager::GetScene(int nScene_Id)
 			//tempMatrix = XMMatrixMultiply(XMMatrixRotationX(3.14 / 3), tempMatrix);
 			//tempMatrix = XMMatrixMultiply(tempMatrix, XMMatrixRotationY(3.14 / 2));
 
-			tempMatrix = XMMatrixMultiply(tempMatrix, XMMatrixTranslation(30, 0, 0));
+			tempMatrix = XMMatrixMultiply(tempMatrix, XMMatrixTranslation(-30, 0, 0));
 
-			//tempMatrix = XMMatrixMultiply(tempMatrix, XMMatrixRotationY(3.14));
+			tempMatrix = XMMatrixMultiply(XMMatrixRotationY(3.14), tempMatrix);
 
-			tempMatrix = XMMatrixMultiply(XMMatrixScaling(0.1, 0.1, 0.1), tempMatrix);
+			//tempMatrix = XMMatrixMultiply(XMMatrixScaling(0.1, 0.1, 0.1), tempMatrix);
 
 
 			XMStoreFloat4x4(&temp, tempMatrix);
 
 			tScene.fWorld_Matrix[2] = XMFLOAT4x4_to_tFloat4x4(temp);
-			tMesh tDragon = cBinary_Read.Read_Mesh("dragonMesh.bin");
+			tMesh tDragon = cBinary_Read.Read_Mesh("DarkDragon3Mesh.bin");
 
 			for (int i = 0; i < tDragon.nVertex_Count; i++)
 			{
@@ -248,7 +248,7 @@ tScene_Objects cScene_Manager::GetScene(int nScene_Id)
 			}
 			tScene.tMesh_Data[2].nIndex_Count = tDragon.nIndex_Count;
 
-			tScene.tMaterials_Data[2] = cBinary_Read.Read_Material("dragonMaterial.bin");
+			tScene.tMaterials_Data[2] = cBinary_Read.Read_Material("DarkDragon3Material.bin");
 			tScene.tMaterials_Data[2].tMats[0].szDiffuse_File_Path = "Dragon.fbm\\DarkDragon_D.png";
 		}
 		// Dragon
@@ -305,7 +305,7 @@ tScene_Objects cScene_Manager::GetScene(int nScene_Id)
 
 			XMMATRIX tempMatrix = XMMatrixIdentity();
 
-			tempMatrix = XMMatrixMultiply(XMMatrixTranslation(1, 8, 0), tempMatrix);
+			tempMatrix = XMMatrixMultiply(XMMatrixTranslation(1, -8, 0), tempMatrix);
 
 			XMStoreFloat4x4(&temp, tempMatrix);
 
