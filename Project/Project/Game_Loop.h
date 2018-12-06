@@ -19,6 +19,7 @@
 #include "XTime.h"
 #include "dopeSoundSystem.h"
 #include "AI.h"
+//#include "math_conversion.h"
 
 class cGame_Loop
 {
