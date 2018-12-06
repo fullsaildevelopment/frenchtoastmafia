@@ -285,11 +285,6 @@ void cRender_Manager::Draw(int nScene_Id, tScene_Objects* tObject_List, bool *bC
 
 	if (nScene_Id == 2)
 	{
-		if (dragonHealth <= 0)
-		{
-			dragonAlive = false;
-			*bChange_Scene = true;
-		}
 		//dragon controls
 		//if (GetAsyncKeyState('E') && flashTimer == 0.0f)
 		//{
@@ -559,7 +554,7 @@ void cRender_Manager::Draw(int nScene_Id, tScene_Objects* tObject_List, bool *bC
 			}
 
 			// TO TURN OFF OBJECTS
-			if (i == 4)
+			if (i == 4 || i == 1)
 			{
 				continue;
 			}

@@ -9,7 +9,7 @@ class AI
 public:
 
 	bool dragAlive = true;
-	bool aggro = true;
+	bool aggro = false;
 	bool lookingAtPlayer = false;
 
 	int dragHP = 3;
@@ -39,6 +39,5 @@ private:
 	void updatePosition();
 	void lookAtPoint();
 	XMMATRIX lookAtMatrix(XMMATRIX _viewer, XMMATRIX _target);
-	XMMATRIX dragonLookAtMatrix(XMMATRIX _viewer, XMMATRIX _target);
 };
 

@@ -19,13 +19,7 @@ void AI::resolveDragonState(tScene_Objects* tObject_List, Matrix4 _playerPos, do
 
 	if (!aggro)
 	{
-		//float dist = calcDist(tObject_List->fWorld_Matrix[2], playerPos);
-		//if (dist < 20)
-		//{
-		//	aggro = true;
-		//}
-
-		if (playerPos.tW.fX < -5)
+		if (calcDist(tObject_List->fWorld_Matrix[2], playerPos) < 20)
 		{
 			aggro = true;
 		}
@@ -46,15 +40,14 @@ void AI::resolveDragonState(tScene_Objects* tObject_List, Matrix4 _playerPos, do
 		}
 
 		XMMATRIX oldPosMat = XMLoadFloat4x4(&tFloat4x4_to_XMFLOAT4x4(tObject_List->fWorld_Matrix[2]));
-		XMMATRIX moveMat = XMMatrixTranslation(0.0f, 0.0f, xMove * _dTime);
+		XMMATRIX moveMat = XMMatrixTranslation(xMove, 0.0f, 0.0f);
 
-		XMMATRIX newPosMat = dragonLookAtMatrix(XMMatrixMultiply(moveMat, oldPosMat), playerPosMat);
-		//XMMATRIX newPosMat = XMMatrixMultiply(moveMat, oldPosMat);
+		XMMATRIX newPosMat = XMMatrixMultiply(moveMat, oldPosMat);
 
 
 		XMFLOAT4X4 newPos4x4;
 		XMStoreFloat4x4(&newPos4x4, newPosMat);
-		tObject_List->fWorld_Matrix[2] = XMFLOAT4x4_to_tFloat4x4(newPos4x4);
+		//tObject_List->fWorld_Matrix[2] = XMFLOAT4x4_to_tFloat4x4(newPos4x4);
 
 		//projectile stuff
 
@@ -63,7 +56,7 @@ void AI::resolveDragonState(tScene_Objects* tObject_List, Matrix4 _playerPos, do
 			tObject_List->fWorld_Matrix[3].tW.fX = tObject_List->fWorld_Matrix[2].tW.fX + 7;
 			tObject_List->fWorld_Matrix[3].tW.fY = tObject_List->fWorld_Matrix[2].tW.fY;
 			tObject_List->fWorld_Matrix[3].tW.fZ = tObject_List->fWorld_Matrix[2].tW.fZ;
-			tObject_List->fWorld_Matrix[3].tW.fY += 11;
+			tObject_List->fWorld_Matrix[3].tW.fY += 7;
 
 			XMMATRIX oldProjPosMat = XMLoadFloat4x4(&tFloat4x4_to_XMFLOAT4x4(tObject_List->fWorld_Matrix[3]));
 			XMMATRIX newProjPosMat = lookAtMatrix(oldProjPosMat, playerPosMat);
@@ -139,32 +132,6 @@ XMMATRIX AI::lookAtMatrix(XMMATRIX _viewer, XMMATRIX _target)
 		newZ.m128_f32[0], newZ.m128_f32[1], newZ.m128_f32[2], 0,
 		newP.m128_f32[0], newP.m128_f32[1], newP.m128_f32[2], 1,
 	};
-	return ret;
-
-}
-
-XMMATRIX AI::dragonLookAtMatrix(XMMATRIX _viewer, XMMATRIX _target)
-{
-	XMVECTOR up = { 0,1,0 };
-
-	XMVECTOR newX;
-	XMVECTOR newY;
-	XMVECTOR newZ = XMVector3Normalize(_target.r[3] - _viewer.r[3]);
-	XMVECTOR newP = _viewer.r[3];
-
-	newX = XMVector3Cross(up, newZ);
-	newY = XMVector3Cross(newZ, newX);
-
-	XMMATRIX ret =
-	{
-		newX.m128_f32[0], newX.m128_f32[1], newX.m128_f32[2], 0,
-		newY.m128_f32[0], newY.m128_f32[1], newY.m128_f32[2], 0,
-		newZ.m128_f32[0], newZ.m128_f32[1], newZ.m128_f32[2], 0,
-		newP.m128_f32[0], newP.m128_f32[1], newP.m128_f32[2], 1,
-	};
-
-	ret = XMMatrixMultiply(XMMatrixRotationY(-3.14/2), ret);
-
 	return ret;
 
 }
