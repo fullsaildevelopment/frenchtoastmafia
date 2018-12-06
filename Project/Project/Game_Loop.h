@@ -9,7 +9,7 @@
 #pragma once
 
 #include "Animation_Manager.h"
-#include "Camera.h"
+#include "Offset_Matrix.h"
 #include "Controllers.h"
 #include "Head_Mount.h"
 #include "Graphic_Setup.h"
@@ -23,10 +23,10 @@ class cGame_Loop
 {
 private:
 	cAnimation_Manager c_Animation_Manager;
-	cCamera c_Camera;
 	cControllers c_Controllers;
 	cGraphics_Setup *c_Graphics_Setup;
 	cHead_Mount c_Head_Mount;
+	cOffset_Matrix c_Offset_Matrix;
 	cRender_Manager c_Render_Manager;
 	cScene_Manager c_Scene_Manager;
 	cVR_Setup *c_VR_Setup;

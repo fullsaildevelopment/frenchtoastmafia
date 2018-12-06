@@ -1,7 +1,7 @@
 /************************************************************************
 * Filename:  		Controller.cpp
 * Date:      		29/11/2018
-* Mod. Date: 		04/12/2018
+* Mod. Date: 		05/12/2018
 * Mod. Initials:	WM
 * Author:    		Wichet Manawanitjarern
 * Purpose:   		Handle Controller related task for VR

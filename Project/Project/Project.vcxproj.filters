@@ -37,9 +37,6 @@
     <Filter Include="Helper">
       <UniqueIdentifier>{0be4e6ae-7958-439b-aeb0-4e693bb65b7a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Camera">
-      <UniqueIdentifier>{af698bc9-1e7c-4f04-ac9b-f32256499293}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Scene Manager">
       <UniqueIdentifier>{a2706948-9f47-4f8b-b50a-f737cb3a3550}</UniqueIdentifier>
     </Filter>
@@ -108,9 +105,6 @@
     <ClInclude Include="Render_Manager.h">
       <Filter>Renderer Manager\Code</Filter>
     </ClInclude>
-    <ClInclude Include="Camera.h">
-      <Filter>Camera</Filter>
-    </ClInclude>
     <ClInclude Include="Scene_Manager.h">
       <Filter>Scene Manager</Filter>
     </ClInclude>
@@ -159,6 +153,9 @@
     <ClInclude Include="VR_Setup.h">
       <Filter>VR</Filter>
     </ClInclude>
+    <ClInclude Include="Offset_Matrix.h">
+      <Filter>VR</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Project.cpp">
@@ -184,9 +181,6 @@
     </ClCompile>
     <ClCompile Include="Render_Manager.cpp">
       <Filter>Renderer Manager\Code</Filter>
-    </ClCompile>
-    <ClCompile Include="Camera.cpp">
-      <Filter>Camera</Filter>
     </ClCompile>
     <ClCompile Include="Scene_Manager.cpp">
       <Filter>Scene Manager</Filter>
@@ -216,6 +210,9 @@
       <Filter>VR</Filter>
     </ClCompile>
     <ClCompile Include="VR_Setup.cpp">
+      <Filter>VR</Filter>
+    </ClCompile>
+    <ClCompile Include="Offset_Matrix.cpp">
       <Filter>VR</Filter>
     </ClCompile>
   </ItemGroup>
