@@ -15,7 +15,7 @@ public:
 	int dragHP = 3;
 	float speed = 5.0f;
 
-	void resolveDragonState(tScene_Objects* tObject_List, Matrix4 _playerPos, double _dTime);
+	void resolveDragonState(tScene_Objects* tObject_List, tFloat4x4 _playerPos, double _dTime);
 
 	AI();
 	~AI();

@@ -29,7 +29,7 @@ void cGame_Loop::Initialize(cGraphics_Setup* _gsetup, cVR_Setup* _vsetup)
 	c_Head_Mount.SetupCameras();
 	c_Head_Mount.UpdateHMDMatrixPose(c_Offset_Matrix.GetPosition());
 	c_XTime.Restart();
-	m_nScene_Id = 0;
+	m_nScene_Id = 2;
 }
 
 void cGame_Loop::Setup()
@@ -71,7 +71,7 @@ void cGame_Loop::Update()
 
 	if (m_nScene_Id == 2)
 	{
-		c_AI.resolveDragonState(&tWorld_Object_List, c_VR_Setup->Get_mat4HMDPose(), c_XTime.Delta());
+		c_AI.resolveDragonState(&tWorld_Object_List, c_Head_Mount.Get_mat4HMDPose(), c_XTime.Delta());
 	}
 	c_Animation_Manager.Animate(c_XTime.Delta(), c_XTime.TotalTimeExact(), &tWorld_Object_List);
 	c_Render_Manager.Draw_World(m_nScene_Id, &tWorld_Object_List, &bChange_Scene, &bMove_Bullet, c_Head_Mount);

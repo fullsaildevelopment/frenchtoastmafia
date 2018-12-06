@@ -11,11 +11,11 @@ AI::~AI()
 {
 }
 
-void AI::resolveDragonState(tScene_Objects* tObject_List, Matrix4 _playerPos, double _dTime)
+void AI::resolveDragonState(tScene_Objects* tObject_List, tFloat4x4 _playerPos, double _dTime)
 {
 	//dragonPos = tObject_List->fWorld_Matrix[2];
-	playerPos = Matrix4_To_tFloat4x4(_playerPos);
-	XMMATRIX playerPosMat = XMLoadFloat4x4(&tFloat4x4_to_XMFLOAT4x4(playerPos));
+	//playerPos = Matrix4_To_tFloat4x4(_playerPos);
+	XMMATRIX playerPosMat = XMLoadFloat4x4(&tFloat4x4_to_XMFLOAT4x4(_playerPos));
 
 	if (!aggro)
 	{
@@ -66,7 +66,7 @@ void AI::resolveDragonState(tScene_Objects* tObject_List, Matrix4 _playerPos, do
 
 		//projectile stuff
 
-		if (tObject_List->fWorld_Matrix[3].tW.fX >= -1)
+		if (tObject_List->fWorld_Matrix[3].tW.fX >= -1 || tObject_List->fWorld_Matrix[3].tW.fY < -1)
 		{
 			tObject_List->fWorld_Matrix[3].tW.fX = tObject_List->fWorld_Matrix[2].tW.fX + 10;
 			tObject_List->fWorld_Matrix[3].tW.fY = tObject_List->fWorld_Matrix[2].tW.fY;
