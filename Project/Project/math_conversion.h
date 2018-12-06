@@ -1,7 +1,7 @@
 /************************************************************************
 * Filename:  		Math_Conversion.h
 * Date:      		11/10/2018
-* Mod. Date: 		04/12/2018
+* Mod. Date: 		08/11/2018
 * Mod. Initials:	WM
 * Author:    		Wichet Manawanitjarern
 * Purpose:   		Additional math to convert between datatype or structure types.
@@ -92,33 +92,6 @@ inline tFloat4x4 XMFLOAT4x4_to_tFloat4x4(XMFLOAT4X4 fIn)
 	fOut.tW.fY = fIn.m[3][1];
 	fOut.tW.fZ = fIn.m[3][2];
 	fOut.tW.fW = fIn.m[3][3];
-
-	return fOut;
-}
-
-inline Matrix4 tFloat4x4_To_Matrix4(tFloat4x4 fIn)
-{
-	Matrix4 fOut;
-
-	fOut[0] = fIn.tX.fX;
-	fOut[1] = fIn.tX.fY;
-	fOut[2] = fIn.tX.fZ;
-	fOut[3] = fIn.tX.fW;
-	 
-	fOut[4] = fIn.tY.fX;
-	fOut[5] = fIn.tY.fY;
-	fOut[6] = fIn.tY.fZ;
-	fOut[7] = fIn.tY.fW;
-	 
-	fOut[8] = fIn.tZ.fX;
-	fOut[9] = fIn.tZ.fY;
-	fOut[10] = fIn.tZ.fZ;
-	fOut[11] = fIn.tZ.fW;
-	 
-	fOut[12] = fIn.tW.fX;
-	fOut[13] = fIn.tW.fY;
-	fOut[14] = fIn.tW.fZ;
-	fOut[15] = fIn.tW.fW;
 
 	return fOut;
 }

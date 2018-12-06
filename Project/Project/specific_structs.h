@@ -9,19 +9,7 @@
 #pragma once
 
 #include "Basic_Structs.h"
-#include "openvr\headers\openvr.h"
-#pragma comment (lib, "openvr_api.lib")
 #include "Renderer_Structs.h"
-
-using namespace vr;
-
-struct VREvent_t
-{
-	EVREventType eventType;
-	TrackedDeviceIndex_t trackedDeviceIndex;
-	VREvent_Data_t data;
-	float eventAgeSeconds;
-};
 
 struct tBinary_Screen
 {
@@ -33,4 +21,11 @@ struct tBinary_Screen
 	std::string ps_name;
 	bool srv_check;
 	std::string srv_name;
+};
+
+struct RHS_to_LHS
+{
+	tFloat4x4 head;
+	tFloat4x4 pose;
+	tFloat4x4 proj;
 };

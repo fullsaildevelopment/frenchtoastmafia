@@ -22,8 +22,8 @@
     <ClCompile Include="AI.cpp" />
     <ClCompile Include="Animation_Manager.cpp" />
     <ClCompile Include="Binary_Reader.cpp" />
+    <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Collisions.cpp" />
-    <ClCompile Include="Controllers.cpp" />
     <ClCompile Include="DDSTextureLoader.cpp" />
     <ClCompile Include="dopeSoundSystem.cpp" />
   </ItemGroup>
@@ -32,9 +32,10 @@
     <ClInclude Include="Animation_Manager.h" />
     <ClInclude Include="Basic_Structs.h" />
     <ClInclude Include="Binary_Reader.h" />
+    <ClInclude Include="Camera.h" />
     <ClInclude Include="Collisions.h" />
-    <ClInclude Include="Controllers.h" />
     <ClInclude Include="DDSTextureLoader.h" />
+    <ClInclude Include="defines.h" />
     <ClInclude Include="dopeSoundSystem.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
@@ -215,10 +216,8 @@
     <ClInclude Include="Game_Loop.h" />
     <ClInclude Include="Graphic_Setup.h" />
     <ClInclude Include="header.h" />
-    <ClInclude Include="Head_Mount.h" />
     <ClInclude Include="Math_Conversion.h" />
     <ClInclude Include="Matrices.h" />
-    <ClInclude Include="Offset_Matrix.h" />
     <ClInclude Include="Physics_Structs.h" />
     <ClInclude Include="Project.h" />
     <ClInclude Include="Renderer_Structs.h" />
@@ -228,7 +227,8 @@
     <ClInclude Include="Specific_Structs.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="Vectors.h" />
-    <ClInclude Include="VR_Setup.h" />
+    <ClInclude Include="view.h" />
+    <ClInclude Include="VR.h" />
     <ClInclude Include="WICTextureLoader.h" />
     <ClInclude Include="XTime.h" />
   </ItemGroup>
@@ -237,13 +237,11 @@
     <ClCompile Include="Base_Spell.cpp" />
     <ClCompile Include="Game_Loop.cpp" />
     <ClCompile Include="Graphic_Setup.cpp" />
-    <ClCompile Include="Head_Mount.cpp" />
     <ClCompile Include="Matrices.cpp" />
-    <ClCompile Include="Offset_Matrix.cpp" />
     <ClCompile Include="Project.cpp" />
     <ClCompile Include="Render_Manager.cpp" />
     <ClCompile Include="Scene_Manager.cpp" />
-    <ClCompile Include="VR_Setup.cpp" />
+    <ClCompile Include="VR.cpp" />
     <ClCompile Include="WICTextureLoader.cpp" />
     <ClCompile Include="XTime.cpp" />
   </ItemGroup>

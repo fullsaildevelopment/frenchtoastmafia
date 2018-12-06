@@ -50,7 +50,7 @@ public:
 	*				     
 	* Returns:		     bool
 	*
-	* Mod. Date:		 09/10/2018
+	* Mod. Date:		 10/09/2018
 	* Mod. Initials:	 WM
 	*****************************************************************/
 	bool getIsAlive();
@@ -63,7 +63,7 @@ public:
 	*
 	* Returns:		     bool
 	*
-	* Mod. Date:		 09/10/2018
+	* Mod. Date:		 10/09/2018
 	* Mod. Initials:	 WM
 	*****************************************************************/
 	bool getIsMovable();
@@ -76,7 +76,7 @@ public:
 	*
 	* Returns:		     bool
 	*
-	* Mod. Date:		 09/10/2018
+	* Mod. Date:		 10/09/2018
 	* Mod. Initials:	 WM
 	*****************************************************************/
 	bool getIsGrounded();
@@ -89,7 +89,7 @@ public:
 	*
 	* Returns:		     bool
 	*
-	* Mod. Date:		 09/10/2018
+	* Mod. Date:		 10/09/2018
 	* Mod. Initials:	 WM
 	*****************************************************************/
 	bool getIsCasting();
@@ -102,7 +102,7 @@ public:
 	*
 	* Returns:		     bool
 	*
-	* Mod. Date:		 09/10/2018
+	* Mod. Date:		 10/09/2018
 	* Mod. Initials:	 WM
 	*****************************************************************/
 	bool getIsCharging();
@@ -115,7 +115,7 @@ public:
 	*
 	* Returns:		     tFloat4 (float4 structure, see basic_structs.h for detail)
 	*
-	* Mod. Date:		 09/10/2018
+	* Mod. Date:		 10/09/2018
 	* Mod. Initials:	 WM
 	*****************************************************************/
 	tFloat4 getPosition();
@@ -128,7 +128,7 @@ public:
 	*
 	* Returns:		     tFloat4 (float4 structure, see basic_structs.h for detail)
 	*
-	* Mod. Date:		 09/10/2018
+	* Mod. Date:		 10/09/2018
 	* Mod. Initials:	 WM
 	*****************************************************************/
 	tFloat4 getHeading();
@@ -146,7 +146,7 @@ public:
 	*				     
 	* Returns:		     void
 	*
-	* Mod. Date:		 09/10/2018
+	* Mod. Date:		 10/09/2018
 	* Mod. Initials:	 WM
 	*****************************************************************/
 	void setIsAlive(bool bAlive);
@@ -159,7 +159,7 @@ public:
 	*
 	* Returns:		     void
 	*
-	* Mod. Date:		 09/10/2018
+	* Mod. Date:		 10/09/2018
 	* Mod. Initials:	 WM
 	*****************************************************************/
 	void setIsMovable(bool bMovable);
@@ -172,7 +172,7 @@ public:
 	*
 	* Returns:		     void
 	*
-	* Mod. Date:		 09/10/2018
+	* Mod. Date:		 10/09/2018
 	* Mod. Initials:	 WM
 	*****************************************************************/
 	void setIsGrounded(bool bGrounded);
@@ -185,7 +185,7 @@ public:
 	*
 	* Returns:		     void
 	*
-	* Mod. Date:		 09/10/2018
+	* Mod. Date:		 10/09/2018
 	* Mod. Initials:	 WM
 	*****************************************************************/
 	void setIsCasting(bool bCasting);
@@ -198,7 +198,7 @@ public:
 	*
 	* Returns:		     void
 	*
-	* Mod. Date:		 09/10/2018
+	* Mod. Date:		 10/09/2018
 	* Mod. Initials:	 WM
 	*****************************************************************/
 	void setIsCharging(bool bCharging);
@@ -211,7 +211,7 @@ public:
 	*
 	* Returns:		     void
 	*
-	* Mod. Date:		 09/10/2018
+	* Mod. Date:		 10/09/2018
 	* Mod. Initials:	 WM
 	*****************************************************************/
 	void setPosition(tFloat4 tPosition);
@@ -224,7 +224,7 @@ public:
 	*
 	* Returns:		     void
 	*
-	* Mod. Date:		 09/10/2018
+	* Mod. Date:		 10/09/2018
 	* Mod. Initials:	 WM
 	*****************************************************************/
 	void setHeading(tFloat4 tHeading);

@@ -145,7 +145,6 @@ void dopeSoundSystem::muteAudio()
 		return;
 	}
 }
-
 void dopeSoundSystem::playSoundEffect(const char* soundName, FMOD_MODE channel_mode)
 {
 	System->createSound(soundName, FMOD_DEFAULT, NULL, &soundEffect);

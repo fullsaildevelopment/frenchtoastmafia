@@ -17,13 +17,15 @@
 class cScene_Manager
 {
 private:
+	ComPtr<ID3D11Device> d3dDevice;
+
+	// OBJECTS
 	cBinary_Reader cBinary_Read;
 
 public:
 	cScene_Manager();
 	~cScene_Manager();
 
-	tScene_Objects Get_Personal_Scene();
-	tScene_Objects Get_World_Scene(int nScene_Id);
+	tScene_Objects GetScene(int nScene_Id);
 };
 

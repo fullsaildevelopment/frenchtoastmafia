@@ -1,7 +1,7 @@
 /************************************************************************
 * Filename:  		VertexShader.hlsl
-* Date:      		02/10/2018
-* Mod. Date: 		09/10/2018
+* Date:      		10/02/2018
+* Mod. Date: 		10/09/2018
 * Mod. Initials:	WM
 * Author:    		Wichet Manawanitjarern
 * Purpose:   		Basic VertexShader for Rendering
