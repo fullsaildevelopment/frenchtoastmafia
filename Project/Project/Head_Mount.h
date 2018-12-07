@@ -34,7 +34,7 @@ public:
 	Matrix4 GetHMDMatrixPoseEye(vr::Hmd_Eye nEye);
 	Matrix4 GetHMDMatrixProjectionEye(vr::Hmd_Eye nEye);
 	void SetupCameras();
-	tFloat4x4 GetCurrentViewProjectionMatrix(vr::Hmd_Eye nEye);
+	tFloat4x4 GetCurrentViewProjectionMatrix(vr::Hmd_Eye nEye, Matrix4 offset);
 	Matrix4 ConvertSteamVRMatrixToMatrix4(const vr::HmdMatrix34_t &matPose);
 	void UpdateHMDMatrixPose(tFloat4x4 offset);
 	void VR_Render(tFloat4x4 offset);
