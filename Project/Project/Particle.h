@@ -31,14 +31,22 @@ class Particle
 	//};
 
 	//cRender_Manager renderer;
-	particle* p_arr;
-	particle* part_array[300];
-	particle temp_p_array[300];
 
-	Effects <particle, 300> particle_pool;
+	tFloat3 pos;
+	tFloat3 prevPos;
+
+	tFloat3 delta;
+
+	float particle_timer = 0;
 
 	int num_particles = 300;
-	particle* temp_particle_effects[300];
+	particle* temp_particle_effects[300];  
+
+	particle* p_arr = new particle[300];
+	//particle* part_array[300];
+	//particle temp_p_array[300];
+
+	Effects <particle, 300> particle_pool;
 
 public:
 	Particle();

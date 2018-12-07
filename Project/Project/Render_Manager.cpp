@@ -665,24 +665,28 @@ void cRender_Manager::Draw(int nScene_Id, tScene_Objects* tObject_List, bool *bC
 			else
 				c_Graphics_Setup->Get_Context().Get()->DrawIndexed(tObject_List->tMesh_Data[i].nIndex_Count, 0, 0);
 		}
-
-		static std::array<tVertex, sizeof(tVertex) * 300> preAlloc_particle;  // send this to the processor
+		                        // sixeof(particle) * 300
+		static std::array<particle, 300> preAlloc_particle;  // send this to the processor
 
 		// PARTICLES 
 		if (nScene_Id == 2)
 		{
 			//tObject_List->fWorld_Matrix->tW.fX
 			//preAlloc_particle[];
-			for (int k = 0; k < 300; k++)  //loop through the array of particles and add them to the array of tVertex's
+			for (int k = 0; k < 300; k++) // if there is no break point in the getter and setter this array break on a random index
 			{
-				preAlloc_particle[k].fPosition.fX = line_vert[k].position.fX;
-				preAlloc_particle[k].fPosition.fY = line_vert[k].position.fY;
-				preAlloc_particle[k].fPosition.fZ = line_vert[k].position.fZ;
+				preAlloc_particle[k].position.fX = line_vert[k].position.fX;    // line_vert = null
+				preAlloc_particle[k].position.fY = line_vert[k].position.fY;
+				preAlloc_particle[k].position.fZ = line_vert[k].position.fZ;
 
-				preAlloc_particle[k].fColor.fX = line_vert[k].color.fX;
-				preAlloc_particle[k].fColor.fY = line_vert[k].color.fY;
-				preAlloc_particle[k].fColor.fZ = line_vert[k].color.fZ;
-				preAlloc_particle[k].fColor.fW = line_vert[k].color.fW;
+				preAlloc_particle[k].prev_Position.fX = line_vert[k].prev_Position.fX;
+				preAlloc_particle[k].prev_Position.fY = line_vert[k].prev_Position.fY;
+				preAlloc_particle[k].prev_Position.fZ = line_vert[k].prev_Position.fZ;
+
+				preAlloc_particle[k].color.fX = line_vert[k].color.fX;
+				preAlloc_particle[k].color.fY = line_vert[k].color.fY;
+				preAlloc_particle[k].color.fZ = line_vert[k].color.fZ;
+				preAlloc_particle[k].color.fW = line_vert[k].color.fW;
 
 				line_vert_count++;
 			}	
@@ -694,8 +698,8 @@ void cRender_Manager::Draw(int nScene_Id, tScene_Objects* tObject_List, bool *bC
 		particle_Vertex_Buffer_DESC.Usage = D3D11_USAGE_DYNAMIC;
 		particle_Vertex_Buffer_DESC.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 		particle_Vertex_Buffer_DESC.MiscFlags = 0.0f;
-		particle_Vertex_Buffer_DESC.ByteWidth = sizeof(tVertex) * 300;
-		particle_Vertex_Buffer_DESC.StructureByteStride = sizeof(tVertex);
+		particle_Vertex_Buffer_DESC.ByteWidth = sizeof(particle) * 300;
+		particle_Vertex_Buffer_DESC.StructureByteStride = sizeof(particle);
 
 		c_Graphics_Setup->Get_Device()->CreateBuffer(&particle_Vertex_Buffer_DESC, NULL, particle_Vertex_Buffer.GetAddressOf());
 
@@ -710,7 +714,7 @@ void cRender_Manager::Draw(int nScene_Id, tScene_Objects* tObject_List, bool *bC
 		c_Graphics_Setup->Get_Device().Get()->CreatePixelShader(PixelShader, sizeof(PixelShader), NULL, particle_Pixel_Shader.GetAddressOf());
 
 		UINT Offsett[1] = { 0 };
-		UINT Stride[1] = { sizeof(tVertex) };
+		UINT Stride[1] = { sizeof(particle) };
 
 		c_Graphics_Setup->Get_Context().Get()->ClearDepthStencilView(c_Graphics_Setup->Get_DSV().Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1, 0);
 		c_Graphics_Setup->Get_Context().Get()->OMSetRenderTargets(1, c_Graphics_Setup->Get_RTV().GetAddressOf(), 0);
@@ -748,9 +752,24 @@ particle* cRender_Manager::get_particle_array()  // void  // tVertex
 	return line_vert;
 }
 
-void cRender_Manager::set_particle_array(particle* p_arr)
+void cRender_Manager::set_particle_array(particle* p_arr)  // Gets called twice when break point is in the function
 {
-	line_vert = p_arr;
+	/*for (int i = 0; i < 300; i++)
+	{
+		line_vert[i].position.fX = p_arr[i].position.fX;
+		line_vert[i].position.fY = p_arr[i].position.fY;
+		line_vert[i].position.fZ = p_arr[i].position.fZ;
+
+		line_vert[i].prev_Position.fX = p_arr[i].prev_Position.fX;
+		line_vert[i].prev_Position.fY = p_arr[i].prev_Position.fY;
+		line_vert[i].prev_Position.fZ = p_arr[i].prev_Position.fZ;
+
+		line_vert[i].color.fX = p_arr[i].color.fX;
+		line_vert[i].color.fY = p_arr[i].color.fY;
+		line_vert[i].color.fZ = p_arr[i].color.fZ;
+		line_vert[i].color.fW = p_arr[i].color.fW;
+	}*/
+	line_vert = p_arr;   // has data the first time but isn't showing an array, is NULL the second time
 }
 
 

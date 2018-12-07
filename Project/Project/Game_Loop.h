@@ -41,6 +41,8 @@ private:
 
 	tFloat4 color = { 0.2078f, 0.2078f, 0.2078f, 0.0f };
 
+	int test = 0;
+
 public:
 	cGame_Loop();
 	~cGame_Loop();

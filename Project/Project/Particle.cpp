@@ -4,6 +4,11 @@
 
 Particle::Particle()
 {
+	for (int i = 0; i < num_particles; i++)
+	{
+		temp_particle_effects[i] = nullptr;
+		//part_array[i] = nullptr;
+	}
 }
 
 
@@ -16,26 +21,11 @@ void Particle::create_particles(tFloat4 color, double timer, tFloat3 acceleratio
 	//int num_particles = 300;   // 626              // May need to be a member variable
 	//particle* temp_particle_effects[300];    // May need to be a mamber variable
 
-	particle temp_particle;
-
-	for (int i = 0; i < num_particles; i++)
-	{
-		temp_particle_effects[i] = nullptr;
-	}
-
-	float particle_timer;
-	particle_timer = 0;
-
-	double t;
-	t = timer;
-
-	tFloat3 accel;
-	accel = acceleration;
-
-	tFloat3 pos;
-	tFloat3 prevPos;
-
-	tFloat3 delta;
+	//for (int i = 0; i < num_particles; i++)
+	//{
+	//	temp_particle_effects[i] = nullptr;
+	//	//part_array[i] = nullptr;
+	//}
 
 	particle_timer += timer;
 
@@ -57,51 +47,55 @@ void Particle::create_particles(tFloat4 color, double timer, tFloat3 acceleratio
 		}
 	}
 
-	for (int i = 0; i < num_particles; i++)
-	{
-		if (temp_particle_effects[i] == nullptr)
-		{
-			continue;
-		}
-		// DRAW PARTICLES HERE
-		//renderer.get_particle_array()[i] = temp_particle_effects[i];
+	// HAS INFO AFTER THIS
 
-		//part_array[i] = temp_particle_effects[i];
+	//for (int i = 0; i < num_particles; i++)
+	//{
+	//	if (temp_particle_effects[i] == nullptr)    // STILL HAS DATA
+	//	{
+	//		continue;
+	//	}
+	//	// DRAW PARTICLES HERE
+	//	//renderer.get_particle_array()[i] = temp_particle_effects[i];
 
-		part_array[i]->position.fX = temp_particle_effects[i]->position.fX;
-		part_array[i]->position.fY = temp_particle_effects[i]->position.fY;
-		part_array[i]->position.fZ = temp_particle_effects[i]->position.fZ;
+	//	part_array[i] = temp_particle_effects[i];  // broke on commented out line
 
-		part_array[i]->prev_Position.fX = temp_particle_effects[i]->prev_Position.fX;
-		part_array[i]->prev_Position.fY = temp_particle_effects[i]->prev_Position.fY;
-		part_array[i]->prev_Position.fZ = temp_particle_effects[i]->prev_Position.fZ;
+	//	//part_array[i]->position.fX = temp_particle_effects[i]->position.fX;   // BREAKS HERE      Exception thrown at 0x00007FF7ADAC682E in Project.exe: 0xC0000005: Access violation writing location 0x0000000000000000.
+	//	//part_array[i]->position.fY = temp_particle_effects[i]->position.fY;
+	//	//part_array[i]->position.fZ = temp_particle_effects[i]->position.fZ;
 
-		part_array[i]->color.fX = color.fX;
-		part_array[i]->color.fY = color.fY;
-		part_array[i]->color.fZ = color.fZ;
-		part_array[i]->color.fW = color.fW;
+	//	//part_array[i]->prev_Position.fX = temp_particle_effects[i]->prev_Position.fX;
+	//	//part_array[i]->prev_Position.fY = temp_particle_effects[i]->prev_Position.fY;
+	//	//part_array[i]->prev_Position.fZ = temp_particle_effects[i]->prev_Position.fZ;
 
-		//renderer.set_particle_array(part_array);
-	}
+	//	//part_array[i]->color.fX = color.fX;
+	//	//part_array[i]->color.fY = color.fY;
+	//	//part_array[i]->color.fZ = color.fZ;
+	//	//part_array[i]->color.fW = color.fW;
+
+	//	//renderer.set_particle_array(part_array);
+	//}
 	// take the data from the array of pointers and put it into a regular array of non pointers
 
-	for (int i = 0; i < num_particles; i++)
-	{
-		temp_p_array[i].color.fX = part_array[i]->color.fX;
-		temp_p_array[i].color.fY = part_array[i]->color.fY;
-		temp_p_array[i].color.fZ = part_array[i]->color.fZ;
-		temp_p_array[i].color.fW = part_array[i]->color.fW;
+	//for (int i = 0; i < num_particles; i++)
+	//{
+	//	temp_p_array[i] = temp_particle_effects[i];
+	//	/*temp_p_array[i].color.fX = part_array[i]->color.fX;
+	//	temp_p_array[i].color.fY = part_array[i]->color.fY;
+	//	temp_p_array[i].color.fZ = part_array[i]->color.fZ;
+	//	temp_p_array[i].color.fW = part_array[i]->color.fW;
 
-		temp_p_array[i].position.fX = part_array[i]->position.fX;
-		temp_p_array[i].position.fY = part_array[i]->position.fY;
-		temp_p_array[i].position.fZ = part_array[i]->position.fZ;
+	//	temp_p_array[i].position.fX = part_array[i]->position.fX;
+	//	temp_p_array[i].position.fY = part_array[i]->position.fY;
+	//	temp_p_array[i].position.fZ = part_array[i]->position.fZ;
 
-		temp_p_array[i].prev_Position.fX = part_array[i]->prev_Position.fX;
-		temp_p_array[i].prev_Position.fY = part_array[i]->prev_Position.fY;
-		temp_p_array[i].prev_Position.fZ = part_array[i]->prev_Position.fZ;
-	}
+	//	temp_p_array[i].prev_Position.fX = part_array[i]->prev_Position.fX;
+	//	temp_p_array[i].prev_Position.fY = part_array[i]->prev_Position.fY;
+	//	temp_p_array[i].prev_Position.fZ = part_array[i]->prev_Position.fZ;*/
+	//}
 
-	p_arr = temp_p_array;
+	p_arr = *temp_particle_effects;
+	//p_arr = temp_p_array;
 
 	for (int i = 0; i < num_particles; i++)
 	{
@@ -137,9 +131,9 @@ void Particle::create_particles(tFloat4 color, double timer, tFloat3 acceleratio
 		prevPos.fY = pos.fY;
 		prevPos.fZ = pos.fZ;
 
-		pos.fX += (delta.fX) + accel.fX * (t * t);
-		pos.fY += (delta.fY) + accel.fY * (t * t);
-		pos.fZ += (delta.fZ) + accel.fZ * (t * t);
+		pos.fX += (delta.fX) + acceleration.fX * (timer * timer);
+		pos.fY += (delta.fY) + acceleration.fY * (timer * timer);
+		pos.fZ += (delta.fZ) + acceleration.fZ * (timer * timer);
 
 		temp_particle_effects[i]->position.fX = pos.fX;
 		temp_particle_effects[i]->position.fY = pos.fY;
@@ -150,7 +144,6 @@ void Particle::create_particles(tFloat4 color, double timer, tFloat3 acceleratio
 		temp_particle_effects[i]->prev_Position.fZ = prevPos.fZ;
 
 
-
 		if (pos.fY < 0)
 		{
 			particle_pool.release(temp_particle_effects[i]);
@@ -159,7 +152,7 @@ void Particle::create_particles(tFloat4 color, double timer, tFloat3 acceleratio
 	}
 }
 
-particle* Particle::get_particles()
+particle* Particle::get_particles()  // Gets called twice when break point is in the function
 {
-	return p_arr;
+	return p_arr;  // has data the first time but isn't showing an array, is NULL the second time
 }
