@@ -1,7 +1,7 @@
 /************************************************************************
 * Filename:  		Controller.cpp
 * Date:      		29/11/2018
-* Mod. Date: 		05/12/2018
+* Mod. Date: 		07/12/2018
 * Mod. Initials:	WM
 * Author:    		Wichet Manawanitjarern
 * Purpose:   		Handle Controller related task for VR
@@ -97,7 +97,6 @@ void cControllers::Update_Controller(int nScene_Id, bool *bChange_Scene, bool *b
 			c_VR_Setup->Get_HMD()->PollNextEventWithPose(TrackingUniverseStanding, &vrEvent, sizeof(vrEvent), &trackedDevicePose);
 			u_int Axis_Id;
 
-			// -1 = not controller  -2 = role not valid   1 = left controller   2 = right controller
 			if (Identify_Controller(vrEvent.trackedDeviceIndex) > 0)
 				printf("%d : ", Identify_Controller(vrEvent.trackedDeviceIndex));
 			
@@ -254,7 +253,7 @@ void cControllers::Update_Controller(int nScene_Id, bool *bChange_Scene, bool *b
 		{
 			Matrix4 in = mat;
 			Matrix4 controller_offset = tFloat4x4_To_Matrix4(offset);
-			in = in * controller_offset;
+			in = controller_offset * in;
 			tFloat4x4 out = Matrix4_To_tFloat4x4(in);
 			if (Identify_Controller(unTrackedDevice) == 1)
 				Set_Left_Hand(out);

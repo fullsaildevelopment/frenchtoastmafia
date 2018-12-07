@@ -1,7 +1,7 @@
 /************************************************************************
 * Filename:  		Head_Mount.h
 * Date:      		28/11/2018
-* Mod. Date: 		05/12/2018
+* Mod. Date: 		07/12/2018
 * Mod. Initials:	WM
 * Author:    		Wichet Manawanitjarern
 * Purpose:   		Handle Head Mount related task for VR
@@ -36,8 +36,8 @@ public:
 	void SetupCameras();
 	tFloat4x4 GetCurrentViewProjectionMatrix(vr::Hmd_Eye nEye, Matrix4 offset);
 	Matrix4 ConvertSteamVRMatrixToMatrix4(const vr::HmdMatrix34_t &matPose);
-	void UpdateHMDMatrixPose(tFloat4x4 offset);
-	void VR_Render(tFloat4x4 offset);
+	void UpdateHMDMatrixPose();
+	void VR_Render();
 
 	tFloat4x4 Get_mat4HMDPose();
 };

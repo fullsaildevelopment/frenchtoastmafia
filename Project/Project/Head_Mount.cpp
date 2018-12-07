@@ -1,7 +1,7 @@
 /************************************************************************
 * Filename:  		Head_Mount.cpp
 * Date:      		28/11/2018
-* Mod. Date: 		05/12/2018
+* Mod. Date: 		07/12/2018
 * Mod. Initials:	WM
 * Author:    		Wichet Manawanitjarern
 * Purpose:   		Handle Head Mount related task for VR
@@ -39,7 +39,7 @@ Matrix4 cHead_Mount::GetHMDMatrixPoseEye(vr::Hmd_Eye nEye)
 		matEye.m[0][3], matEye.m[1][3], matEye.m[2][3], 1.0f
 	);
 
-	return matrixObj;// .invert();
+	return matrixObj;
 }
 
 Matrix4 cHead_Mount::GetHMDMatrixProjectionEye(vr::Hmd_Eye nEye)
@@ -71,13 +71,9 @@ tFloat4x4 cHead_Mount::GetCurrentViewProjectionMatrix(vr::Hmd_Eye nEye, Matrix4 
 	tFloat4x4 out_mat;
 	Matrix4 matMVP;
 	if (nEye == vr::Eye_Left)
-	{
 		matMVP = c_VR_Setup->Get_mat4ProjectionLeft() * (offset * c_VR_Setup->Get_mat4eyePosLeft() * c_VR_Setup->Get_mat4HMDPose()).invert();
-	}
 	else if (nEye == vr::Eye_Right)
-	{
 		matMVP = c_VR_Setup->Get_mat4ProjectionRight() * (offset * c_VR_Setup->Get_mat4eyePosRight() * c_VR_Setup->Get_mat4HMDPose()).invert();
-	}
 
 	out_mat = Matrix4_To_tFloat4x4(matMVP);
 	return out_mat;
@@ -94,7 +90,7 @@ Matrix4 cHead_Mount::ConvertSteamVRMatrixToMatrix4(const vr::HmdMatrix34_t & mat
 	return matrixObj;
 }
 
-void cHead_Mount::UpdateHMDMatrixPose(tFloat4x4 offset)
+void cHead_Mount::UpdateHMDMatrixPose()
 {
 	if (!c_VR_Setup->Get_HMD())
 		return;
@@ -128,21 +124,14 @@ void cHead_Mount::UpdateHMDMatrixPose(tFloat4x4 offset)
 
 	if (m_rTrackedDevicePose[vr::k_unTrackedDeviceIndex_Hmd].bPoseIsValid)
 	{
-		//c_VR_Setup->Set_mat4HMDPose(m_rmat4DevicePose[vr::k_unTrackedDeviceIndex_Hmd].invert());
 		Matrix4 hmd = m_rmat4DevicePose[vr::k_unTrackedDeviceIndex_Hmd];
-		//float y_data = hmd[13];
-		//hmd = tFloat4x4_To_Matrix4(offset) * hmd;
-		//hmd = hmd * tFloat4x4_To_Matrix4(offset);
-		//hmd[13] = y_data;
-		//hmd = hmd.invert();
-		//hmd = tFloat4x4_To_Matrix4(offset) * hmd;
 		c_VR_Setup->Set_mat4HMDPose(hmd);
 	}
 	c_VR_Setup->Set_rTrackedDevicePose(m_rTrackedDevicePose);
 	c_VR_Setup->Set_rmat4DevicePose(m_rmat4DevicePose);
 }
 
-void cHead_Mount::VR_Render(tFloat4x4 offset)
+void cHead_Mount::VR_Render()
 {
 	c_Graphics_Setup->Get_Swap_Chain().Get()->Present(1, 0);
 
@@ -151,7 +140,7 @@ void cHead_Mount::VR_Render(tFloat4x4 offset)
 	vr::Texture_t rightEyeTexture = { c_Graphics_Setup->Get_Texture_Right_Eye().Get(), vr::TextureType_DirectX, vr::ColorSpace_Auto };
 	vr::VRCompositor()->Submit(vr::Eye_Right, &rightEyeTexture);
 
-	UpdateHMDMatrixPose(offset);
+	UpdateHMDMatrixPose();
 }
 
 tFloat4x4 cHead_Mount::Get_mat4HMDPose()
