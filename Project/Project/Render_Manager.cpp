@@ -427,7 +427,7 @@ void cRender_Manager::Draw_World(int nScene_Id, tScene_Objects* tObject_List, bo
 		if (GetAsyncKeyState('J'))
 		{
 			XMMATRIX oldPos = XMLoadFloat4x4(&tFloat4x4_to_XMFLOAT4x4(tObject_List->fWorld_Matrix[5]));
-			XMMATRIX moveMat = XMMatrixTranslation(0, 0, 10);
+			XMMATRIX moveMat = XMMatrixTranslation(0, 0, 20);
 
 			XMMATRIX newMat = XMMatrixMultiply(moveMat, oldPos);
 			XMFLOAT4X4 newMat2;
@@ -437,20 +437,32 @@ void cRender_Manager::Draw_World(int nScene_Id, tScene_Objects* tObject_List, bo
 		if (GetAsyncKeyState('L'))
 		{
 			XMMATRIX oldPos = XMLoadFloat4x4(&tFloat4x4_to_XMFLOAT4x4(tObject_List->fWorld_Matrix[5]));
-			XMMATRIX moveMat = XMMatrixTranslation(0, 0, -10);
+			XMMATRIX moveMat = XMMatrixTranslation(0, 0, -20);
 
 			XMMATRIX newMat = XMMatrixMultiply(moveMat, oldPos);
 			XMFLOAT4X4 newMat2;
 			XMStoreFloat4x4(&newMat2, newMat);
 			tObject_List->fWorld_Matrix[5] = XMFLOAT4x4_to_tFloat4x4(newMat2);
 		}
-		if (GetAsyncKeyState('E'))
+		if (GetAsyncKeyState('I'))
 		{
+			XMMATRIX oldPos = XMLoadFloat4x4(&tFloat4x4_to_XMFLOAT4x4(tObject_List->fWorld_Matrix[5]));
+			XMMATRIX moveMat = XMMatrixTranslation(-20, 0, 0);
 
+			XMMATRIX newMat = XMMatrixMultiply(moveMat, oldPos);
+			XMFLOAT4X4 newMat2;
+			XMStoreFloat4x4(&newMat2, newMat);
+			tObject_List->fWorld_Matrix[5] = XMFLOAT4x4_to_tFloat4x4(newMat2);
 		}
-		if (GetAsyncKeyState('E'))
+		if (GetAsyncKeyState('K'))
 		{
+			XMMATRIX oldPos = XMLoadFloat4x4(&tFloat4x4_to_XMFLOAT4x4(tObject_List->fWorld_Matrix[5]));
+			XMMATRIX moveMat = XMMatrixTranslation(20, 0, 0);
 
+			XMMATRIX newMat = XMMatrixMultiply(moveMat, oldPos);
+			XMFLOAT4X4 newMat2;
+			XMStoreFloat4x4(&newMat2, newMat);
+			tObject_List->fWorld_Matrix[5] = XMFLOAT4x4_to_tFloat4x4(newMat2);
 		}
 		if (GetAsyncKeyState('E'))
 		{
