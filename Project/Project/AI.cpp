@@ -66,7 +66,8 @@ void AI::resolveDragonState(tScene_Objects* tObject_List, tFloat4x4 _playerPos, 
 
 		//projectile stuff
 
-		if (tObject_List->fWorld_Matrix[3].tW.fX >= -1 || tObject_List->fWorld_Matrix[3].tW.fY < -1)
+		//if (tObject_List->fWorld_Matrix[3].tW.fX >= -1 || tObject_List->fWorld_Matrix[3].tW.fY < -1)
+		if (tObject_List->fWorld_Matrix[3].tW.fY < -5)
 		{
 			tObject_List->fWorld_Matrix[3].tW.fX = tObject_List->fWorld_Matrix[2].tW.fX + 10;
 			tObject_List->fWorld_Matrix[3].tW.fY = tObject_List->fWorld_Matrix[2].tW.fY;

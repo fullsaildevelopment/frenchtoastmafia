@@ -424,6 +424,43 @@ void cRender_Manager::Draw_World(int nScene_Id, tScene_Objects* tObject_List, bo
 {
 	if (nScene_Id == 2)
 	{
+		if (GetAsyncKeyState('J'))
+		{
+			XMMATRIX oldPos = XMLoadFloat4x4(&tFloat4x4_to_XMFLOAT4x4(tObject_List->fWorld_Matrix[5]));
+			XMMATRIX moveMat = XMMatrixTranslation(0, 0, 10);
+
+			XMMATRIX newMat = XMMatrixMultiply(moveMat, oldPos);
+			XMFLOAT4X4 newMat2;
+			XMStoreFloat4x4(&newMat2, newMat);
+			tObject_List->fWorld_Matrix[5] = XMFLOAT4x4_to_tFloat4x4(newMat2);
+		}
+		if (GetAsyncKeyState('L'))
+		{
+			XMMATRIX oldPos = XMLoadFloat4x4(&tFloat4x4_to_XMFLOAT4x4(tObject_List->fWorld_Matrix[5]));
+			XMMATRIX moveMat = XMMatrixTranslation(0, 0, -10);
+
+			XMMATRIX newMat = XMMatrixMultiply(moveMat, oldPos);
+			XMFLOAT4X4 newMat2;
+			XMStoreFloat4x4(&newMat2, newMat);
+			tObject_List->fWorld_Matrix[5] = XMFLOAT4x4_to_tFloat4x4(newMat2);
+		}
+		if (GetAsyncKeyState('E'))
+		{
+
+		}
+		if (GetAsyncKeyState('E'))
+		{
+
+		}
+		if (GetAsyncKeyState('E'))
+		{
+
+		}
+		if (GetAsyncKeyState('E'))
+		{
+
+		}
+
 		flashTime = 1.0f;
 
 		if (GetAsyncKeyState('E') && flashTimer == 0.0f)
@@ -466,7 +503,7 @@ void cRender_Manager::Draw_World(int nScene_Id, tScene_Objects* tObject_List, bo
 			flashTimer -= cTime.Delta();
 		}
 
-		if (tObject_List->fWorld_Matrix[3].tW.fX >= -1)
+		if (tObject_List->fWorld_Matrix[3].tW.fY < -5)
 		{
 			if (tObject_List->dragHP != 0)
 			{
