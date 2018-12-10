@@ -348,7 +348,7 @@ tScene_Objects cScene_Manager::Get_World_Scene(int nScene_Id)
 
 			tScene.fWorld_Matrix[2] = XMFLOAT4x4_to_tFloat4x4(temp);
 			tScene.bIs_Animated[2] = true;
-			tMesh_Skinned tDragon = cBinary_Read.Read_Mesh_Skinned("testCylSkinned.bin");
+			tMesh_Skinned tDragon = cBinary_Read.Read_Mesh_Skinned("Test_Cylinder_30bonesSkinned.bin");
 
 			//for (int i = 0; i < tDragon.nVertex_Count; i++)
 			//{
@@ -370,10 +370,10 @@ tScene_Objects cScene_Manager::Get_World_Scene(int nScene_Id)
 			}
 			tScene.tMesh_Skinned_Data[2].nIndex_Count = tDragon.nIndex_Count;
 
-			tScene.tMaterials_Data[2] = cBinary_Read.Read_Material("testCylMaterial.bin");
+			tScene.tMaterials_Data[2] = cBinary_Read.Read_Material("Test_Cylinder_30bonesMaterial.bin");
 			tScene.tMaterials_Data[2].tMats[0].szDiffuse_File_Path = "Dragon.fbm\\DarkDragon_D.png";
 
-			tScene.tAnim_Clip[2] = cBinary_Read.Read_Skeleton("testCylSkeleton.bin");
+			tScene.tAnim_Clip[2] = cBinary_Read.Read_Skeleton("Test_Cylinder_30bonesSkeleton.bin");
 			tScene.tAnim_Data[2] = Create_Inverse_Bind_Pose(tScene.tAnim_Clip[2].tKeyFrames[0]);
 		}
 		// Anim Test
