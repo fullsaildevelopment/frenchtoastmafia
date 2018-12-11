@@ -1,7 +1,7 @@
 /************************************************************************
 * Filename:  		Base_Spell.cpp
 * Date:      		05/10/2018
-* Mod. Date: 		09/10/2018
+* Mod. Date: 		11/12/2018
 * Mod. Initials:	WM
 * Author:    		Wichet Manawanitjarern
 * Purpose:   		Base Spell Module to be inherit by various specific spell
@@ -10,51 +10,51 @@
 
 
 
-Base_Spell::Base_Spell()
+cBase_Spell::cBase_Spell()
 {
 }
 
 
-Base_Spell::~Base_Spell()
+cBase_Spell::~cBase_Spell()
 {
 }
 
-int Base_Spell::getSpellId()
+int cBase_Spell::getSpellId()
 {
 	return m_nSpell_Id;
 }
 
-bool Base_Spell::getIsActive()
+bool cBase_Spell::getIsActive()
 {
 	return m_bIsActive;
 }
 
-tFloat4 Base_Spell::getPosition()
+tFloat4 cBase_Spell::getPosition()
 {
 	return m_tPosition;
 }
 
-tFloat4 Base_Spell::getHeading()
+tFloat4 cBase_Spell::getHeading()
 {
 	return m_tHeading;
 }
 
-void Base_Spell::setSpellId(int nSpellId)
+void cBase_Spell::setSpellId(int nSpellId)
 {
 	m_nSpell_Id = nSpellId;
 }
 
-void Base_Spell::setIsActive(bool bActive)
+void cBase_Spell::setIsActive(bool bActive)
 {
 	m_bIsActive = bActive;
 }
 
-void Base_Spell::setPosition(tFloat4 tPosition)
+void cBase_Spell::setPosition(tFloat4 tPosition)
 {
 	m_tPosition = tPosition;
 }
 
-void Base_Spell::setHeading(tFloat4 tHeading)
+void cBase_Spell::setHeading(tFloat4 tHeading)
 {
 	m_tHeading = tHeading;
 }

@@ -1,7 +1,7 @@
 /************************************************************************
 * Filename:  		Base_Spell.h
 * Date:      		05/10/2018
-* Mod. Date: 		09/10/2018
+* Mod. Date: 		11/12/2018
 * Mod. Initials:	WM
 * Author:    		Wichet Manawanitjarern
 * Purpose:   		Base Spell Module to be inherit by various specific spell
@@ -9,7 +9,7 @@
 #pragma once
 #include "basic_structs.h"
 
-class Base_Spell
+class cBase_Spell
 {
 private:
 	// Gameplay Data
@@ -30,8 +30,8 @@ private:
 	//float m_fVelocity;
 
 public:
-	Base_Spell();
-	~Base_Spell();
+	cBase_Spell();
+	~cBase_Spell();
 
 	/***************
 	* Accessors

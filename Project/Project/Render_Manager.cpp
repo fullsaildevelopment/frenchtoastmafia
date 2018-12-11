@@ -280,7 +280,7 @@ void cRender_Manager::Unload(tScene_Objects* tObject_List)
 	ZeroMemory(&tObject_List, sizeof(tScene_Objects));
 }
 
-void cRender_Manager::Draw_Personal(tScene_Objects* tObject_List, cHead_Mount c_Head_Mount, cControllers c_Controllers, tFloat4x4 offset)
+void cRender_Manager::Draw_Personal(tScene_Objects* tObject_List, cHead_Mount c_Head_Mount, cControllers c_Controllers, tFloat4x4 offset, cBase_Spell c_Player_Fireball)
 {
 	float clear_color[4] = { 0.000000000f, 1.000000000f, 0.48235f, 1.000000000f };
 	for (int _eyeID = 0; _eyeID < 3; _eyeID++)
@@ -322,21 +322,23 @@ void cRender_Manager::Draw_Personal(tScene_Objects* tObject_List, cHead_Mount c_
 			{
 				if (i == 0)
 				{
-					tFloat4x4 temp = tObject_List->fWorld_Matrix[i];
-					//temp.tW.fX = c_Controllers.Get_Left_Hand().fX;
-					//temp.tW.fY = c_Controllers.Get_Left_Hand().fY;
-					//temp.tW.fZ = c_Controllers.Get_Left_Hand().fZ;
-					temp = c_Controllers.Get_Left_Hand();
+					tFloat4x4 temp = c_Controllers.Get_Left_Hand();
+					tWVP.fWorld_Matrix = tFloat4x4_to_XMFLOAT4x4(temp);
+				}
+				else if (i == 1)
+				{
+					tFloat4x4 temp = c_Controllers.Get_Right_Hand();
 					tWVP.fWorld_Matrix = tFloat4x4_to_XMFLOAT4x4(temp);
 				}
 				else
 				{
 					tFloat4x4 temp = tObject_List->fWorld_Matrix[i];
-					//temp.tW.fX = c_Controllers.Get_Right_Hand().fX;
-					//temp.tW.fY = c_Controllers.Get_Right_Hand().fY;
-					//temp.tW.fZ = c_Controllers.Get_Right_Hand().fZ;
-					temp = c_Controllers.Get_Right_Hand();
-					tWVP.fWorld_Matrix = tFloat4x4_to_XMFLOAT4x4(temp);
+					temp.tW.fX = c_Player_Fireball.getPosition().fX;
+					temp.tW.fY = c_Player_Fireball.getPosition().fY;
+					temp.tW.fZ = c_Player_Fireball.getPosition().fZ + 1;
+					temp.tZ.fX = c_Player_Fireball.getHeading().fX;
+					temp.tZ.fY = c_Player_Fireball.getHeading().fY;
+					temp.tZ.fZ = c_Player_Fireball.getHeading().fZ;
 				}
 
 				// MAP DATA
@@ -415,11 +417,13 @@ void cRender_Manager::Draw_Personal(tScene_Objects* tObject_List, cHead_Mount c_
 			ID3D11Buffer *tmp_con_buffer[] = { tObject_List->tMaterials_Buffers[i].Get() };
 			c_Graphics_Setup->Get_Context().Get()->PSSetConstantBuffers(0, 1, tmp_con_buffer);
 
-			if (tObject_List->bIs_Animated[i])
-				c_Graphics_Setup->Get_Context().Get()->DrawIndexed(tObject_List->tMesh_Skinned_Data[i].nIndex_Count, 0, 0);
-			else
-				c_Graphics_Setup->Get_Context().Get()->DrawIndexed(tObject_List->tMesh_Data[i].nIndex_Count, 0, 0);
-
+			//if (i == 2 && c_Player_Fireball.getIsActive())
+			//{
+				if (tObject_List->bIs_Animated[i])
+					c_Graphics_Setup->Get_Context().Get()->DrawIndexed(tObject_List->tMesh_Skinned_Data[i].nIndex_Count, 0, 0);
+				else
+					c_Graphics_Setup->Get_Context().Get()->DrawIndexed(tObject_List->tMesh_Data[i].nIndex_Count, 0, 0);
+			//}
 		}
 	}
 
@@ -697,7 +701,7 @@ void cRender_Manager::Draw_World(int nScene_Id, tScene_Objects* tObject_List, bo
 				ID3D11Buffer *tmp_con_buffer[] = { tObject_List->tMaterials_Buffers[i].Get() };
 				c_Graphics_Setup->Get_Context().Get()->PSSetConstantBuffers(0, 1, tmp_con_buffer);
 			}
-
+			
 			if (tObject_List->bIs_Animated[i])
 				c_Graphics_Setup->Get_Context().Get()->DrawIndexed(tObject_List->tMesh_Skinned_Data[i].nIndex_Count, 0, 0);
 			else

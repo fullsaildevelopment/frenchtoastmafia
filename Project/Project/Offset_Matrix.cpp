@@ -1,7 +1,7 @@
 /************************************************************************
 * Filename:  		Offset_Matrix.cpp (Recreate from Camera)
 * Date:      		05/12/2018
-* Mod. Date: 		07/12/2018
+* Mod. Date: 		11/12/2018
 * Mod. Initials:	WM
 * Author:    		Wichet Manawanitjarern
 * Purpose:   		Offset Matrix applies to Headset and Controller to move player's view and hand
@@ -44,7 +44,17 @@ void cOffset_Matrix::ResetPosition()
 	tOffset_Matrix.tW.fW = 1.0f;
 }
 
-tFloat4x4 cOffset_Matrix::GetPosition()
+tFloat4 cOffset_Matrix::GetHeading()
+{
+	return tFloat4{ tOffset_Matrix.tW.fX, tOffset_Matrix.tW.fY, tOffset_Matrix.tW.fZ, tOffset_Matrix.tW.fW };
+}
+
+tFloat4 cOffset_Matrix::GetPosition4()
+{
+	return tFloat4{ tOffset_Matrix.tZ.fX, tOffset_Matrix.tZ.fY, tOffset_Matrix.tZ.fZ, tOffset_Matrix.tZ.fW };
+}
+
+tFloat4x4 cOffset_Matrix::GetPosition4x4()
 {
 	return tOffset_Matrix;
 }

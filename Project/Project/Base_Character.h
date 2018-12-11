@@ -1,7 +1,7 @@
 /************************************************************************
 * Filename:  		Base_Character.h
 * Date:      		05/10/2018
-* Mod. Date: 		09/10/2018
+* Mod. Date: 		11/12/2018
 * Mod. Initials:	WM
 * Author:    		Wichet Manawanitjarern
 * Purpose:   		Base Character Module to be inherit by Player and AI
@@ -9,12 +9,12 @@
 #pragma once
 #include "basic_structs.h"
 
-class Base_Character
+class cBase_Character
 {
 private:
 	// Game Data
-	bool m_bIsAlive = false;
-	// int nHealth = 100; unused placeholder
+	bool m_bIsAlive = true;
+	int m_nHealth = 100;
 	// int nPower = 0; unused placeholder
 
 	// Movement
@@ -35,8 +35,8 @@ private:
 
 
 public:
-	Base_Character();
-	~Base_Character();
+	cBase_Character();
+	~cBase_Character();
 
 	/***************
 	* Accessors
@@ -54,6 +54,19 @@ public:
 	* Mod. Initials:	 WM
 	*****************************************************************/
 	bool getIsAlive();
+	/*****************************************************************
+	* getIsAlive():      Get the character's HP
+	*
+	* Ins:			     none
+	*
+	* Outs:		         none
+	*
+	* Returns:		     int
+	*
+	* Mod. Date:		 11/12/2018
+	* Mod. Initials:	 WM
+	*****************************************************************/
+	int getHealth();
 	/*****************************************************************
 	* getIsMovable():    Check is the character is movable (Notes: gameplay as of current date character can't move while casting or charging)
 	*
@@ -228,5 +241,18 @@ public:
 	* Mod. Initials:	 WM
 	*****************************************************************/
 	void setHeading(tFloat4 tHeading);
+	/*****************************************************************
+	* getHeading():      Decrease Character's HP
+	*
+	* Ins:			     int
+	*
+	* Outs:		         none
+	*
+	* Returns:		     void
+	*
+	* Mod. Date:		 11/12/2018
+	* Mod. Initials:	 WM
+	*****************************************************************/
+	void TakeDamage(int damage);
 };
 

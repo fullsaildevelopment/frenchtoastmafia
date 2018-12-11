@@ -8,6 +8,7 @@
 *************************************************************************/
 #pragma once
 
+#include "Base_Spell.h"
 #include "Collisions.h"
 #include "Controllers.h"
 #include "DDSTextureLoader.h"
@@ -27,8 +28,8 @@
 class cRender_Manager
 {
 private:
-
 	cGraphics_Setup *c_Graphics_Setup;
+	cBase_Spell *c_Player_Fireball;
 	tCollisions t_Collisions;
 	dopeSoundSystem sound;
 
@@ -76,6 +77,6 @@ public:
 	void Initialize(cGraphics_Setup* c_Graphics_Setup);
 	void Load_Data(int nScene_Id, tScene_Objects* tObject_List);
 	void Unload(tScene_Objects* t_Object_List);
-	void Draw_Personal(tScene_Objects* t_Object_List, cHead_Mount c_Head_Mount, cControllers c_Controllers, tFloat4x4 offset);
+	void Draw_Personal(tScene_Objects* t_Object_List, cHead_Mount c_Head_Mount, cControllers c_Controllers, tFloat4x4 offset, cBase_Spell c_Player_Fireball);
 	void Draw_World(int nScene_Id, tScene_Objects* t_Object_List, bool *bChange_Scene, bool *bMove_Bullet, cHead_Mount c_Head_Mount, tFloat4x4 offset);
 };

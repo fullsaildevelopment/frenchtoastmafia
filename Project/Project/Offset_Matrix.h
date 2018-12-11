@@ -1,7 +1,7 @@
 /************************************************************************
 * Filename:  		Offset_Matrix.h (Recreate from Camera)
 * Date:      		05/12/2018
-* Mod. Date: 		07/12/2018
+* Mod. Date: 		11/12/2018
 * Mod. Initials:	WM
 * Author:    		Wichet Manawanitjarern
 * Purpose:   		Offset Matrix applies to Headset and Controller to move player's view and hand
@@ -22,7 +22,9 @@ public:
 
 	void Initialize();
 	void ResetPosition();
-	tFloat4x4 GetPosition();
+	tFloat4 GetHeading();
+	tFloat4 GetPosition4();
+	tFloat4x4 GetPosition4x4();
 	void Update_Offset(double dDelta, tFloat4x4 tHMDPose, tFloat4 fMovement_Vect);
 };
 
