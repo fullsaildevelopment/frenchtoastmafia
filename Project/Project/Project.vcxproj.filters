@@ -70,6 +70,9 @@
     <Filter Include="Renderer Manager\Shaders\Unused">
       <UniqueIdentifier>{3e4c90d7-056f-4102-986b-ecb56d349fc2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Effects">
+      <UniqueIdentifier>{febf2638-5d5d-47af-8c1f-22142ece07dc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="header.h">
@@ -156,6 +159,12 @@
     <ClInclude Include="Offset_Matrix.h">
       <Filter>VR</Filter>
     </ClInclude>
+    <ClInclude Include="Particle.h">
+      <Filter>Effects</Filter>
+    </ClInclude>
+    <ClInclude Include="Effects.h">
+      <Filter>Effects</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Project.cpp">
@@ -215,6 +224,9 @@
     <ClCompile Include="Offset_Matrix.cpp">
       <Filter>VR</Filter>
     </ClCompile>
+    <ClCompile Include="Particle.cpp">
+      <Filter>Effects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Project.rc">
@@ -259,6 +271,9 @@
     </FxCompile>
     <FxCompile Include="VertexShader_Bullet.hlsl">
       <Filter>Renderer Manager\Shaders\Unused</Filter>
+    </FxCompile>
+    <FxCompile Include="Particle_Pixel_Shader.hlsl">
+      <Filter>Renderer Manager\Shaders\Pixel</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>

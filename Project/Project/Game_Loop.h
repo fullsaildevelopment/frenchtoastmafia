@@ -21,6 +21,7 @@
 #include "VR_Setup.h"
 #include "XTime.h"
 #include "dopeSoundSystem.h"
+#include "Particle.h"
 
 class cGame_Loop
 {
@@ -50,6 +51,18 @@ private:
 
 
 	tAABB tAABB_Player, tAABB_Player_Fireball, tAABB_Dragon, tAABB_Dragon_Fireball;
+
+	// Particle Stuff
+
+	Particle p;
+
+	tFloat3 acceleration = { 0.0f, 0.0f, -9.81f };
+
+	tFloat4 color = { 0.2078f, 0.2078f, 0.2078f, 1.0f };
+
+	int test = 0;
+
+	// Particle Stuff
 
 public:
 	cGame_Loop();

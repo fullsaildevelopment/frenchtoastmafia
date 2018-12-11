@@ -19,6 +19,10 @@ cRender_Manager::~cRender_Manager()
 
 void cRender_Manager::Initialize(cGraphics_Setup* _setup)
 {
+	//tVertex line_vert_array[line_vert_count];
+	line_vert = new particle[50];    // The array that is meant to hold the particles to draw 
+									 // tVertex
+
 	dragonTint.fX = 0.0f;
 	dragonTint.fZ = 0.0f;
 	dragonTint.fY = 0.0f;
@@ -47,6 +51,22 @@ void cRender_Manager::Initialize(cGraphics_Setup* _setup)
 	d3d_Constant_Buffer_Desc.StructureByteStride = 0;
 
 	c_Graphics_Setup->Get_Device().Get()->CreateBuffer(&d3d_Constant_Buffer_Desc, nullptr, d3d_Constant_Buffer_Animation.GetAddressOf());
+
+	// CONSTANT BUFFER - Particles
+	ZeroMemory(&particle_Const_Buff_Desc, sizeof(D3D11_BUFFER_DESC));
+	particle_Const_Buff_Desc.ByteWidth = sizeof(tConstantBuffer_VertexShader_Bullet);
+	particle_Const_Buff_Desc.Usage = D3D11_USAGE_DYNAMIC;
+	particle_Const_Buff_Desc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+	particle_Const_Buff_Desc.CPUAccessFlags = D3D10_CPU_ACCESS_WRITE;
+	particle_Const_Buff_Desc.MiscFlags = 0;
+	particle_Const_Buff_Desc.StructureByteStride = 0;
+
+	ZeroMemory(&particle_Const_Buff_Data, sizeof(D3D11_SUBRESOURCE_DATA));
+	particle_Const_Buff_Data.SysMemSlicePitch = 0;
+	particle_Const_Buff_Data.SysMemPitch = 0;
+	particle_Const_Buff_Data.pSysMem = &tPart;
+
+	c_Graphics_Setup->Get_Device().Get()->CreateBuffer(&particle_Const_Buff_Desc, &particle_Const_Buff_Data, particle_Constant_Buffer.GetAddressOf());
 }
 
 void cRender_Manager::Load_Data(int nScene_Id, tScene_Objects* tObject_List)
@@ -431,7 +451,7 @@ void cRender_Manager::Draw_Personal(tScene_Objects* tObject_List, cHead_Mount c_
 }
 
 
-void cRender_Manager::Draw_World(int nScene_Id, tScene_Objects* tObject_List, bool *bChange_Scene, bool *bMove_Bullet, cHead_Mount c_Head_Mount, tFloat4x4 offset)
+void cRender_Manager::Draw_World(int nScene_Id, tScene_Objects* tObject_List, bool *bChange_Scene, bool *bMove_Bullet, cHead_Mount c_Head_Mount, tFloat4x4 offset, double timer)
 {
 	// SIGNALS
 	cTime.Signal();
@@ -459,7 +479,7 @@ void cRender_Manager::Draw_World(int nScene_Id, tScene_Objects* tObject_List, bo
 		}
 
 		c_Graphics_Setup->Get_Context().Get()->ClearDepthStencilView(c_Graphics_Setup->Get_DSV().Get(), D3D11_CLEAR_DEPTH, 1.0f, 0);
-		
+
 		if (nScene_Id == 2)
 		{
 			//dragon controls
@@ -581,7 +601,7 @@ void cRender_Manager::Draw_World(int nScene_Id, tScene_Objects* tObject_List, bo
 		unsigned int verts_size = sizeof(tVertex);
 		unsigned int verts_skinned_size = sizeof(tVertex_Skinned);
 		unsigned int off_set = 0;
-		
+
 		for (int i = 0; i < tObject_List->nObject_Count; i++)
 		{
 			// TO TURN OFF OBJECTS
@@ -701,14 +721,152 @@ void cRender_Manager::Draw_World(int nScene_Id, tScene_Objects* tObject_List, bo
 				ID3D11Buffer *tmp_con_buffer[] = { tObject_List->tMaterials_Buffers[i].Get() };
 				c_Graphics_Setup->Get_Context().Get()->PSSetConstantBuffers(0, 1, tmp_con_buffer);
 			}
-			
+
 			if (tObject_List->bIs_Animated[i])
 				c_Graphics_Setup->Get_Context().Get()->DrawIndexed(tObject_List->tMesh_Skinned_Data[i].nIndex_Count, 0, 0);
 			else
 				c_Graphics_Setup->Get_Context().Get()->DrawIndexed(tObject_List->tMesh_Data[i].nIndex_Count, 0, 0);
 
 		}
-	}
 
-	//c_Graphics_Setup->Get_Swap_Chain().Get()->Present(1, 0);
+		// sixeof(particle) * 300
+		static std::array<tVertex, 100> preAlloc_particle;  // send this to the processor
+
+															// PARTICLES 
+		if (nScene_Id == 2 && line_vert != nullptr)
+		{
+			//tObject_List->fWorld_Matrix->tW.fX
+			//preAlloc_particle[];
+			for (int k = 0, l = 0; k < 100; k += 2, l++) // if there is no break point in the getter and setter this array break on a random index
+			{
+				random_color = 53 + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (203 - 53)));
+				random_alpha = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+
+				preAlloc_particle[k].fPosition.fX = line_vert[l].prev_Position.fX;    // line_vert = null
+				preAlloc_particle[k].fPosition.fY = line_vert[l].prev_Position.fY;
+				preAlloc_particle[k].fPosition.fZ = line_vert[l].prev_Position.fZ;
+				preAlloc_particle[k].fPosition.fW = 1.0f;
+
+				preAlloc_particle[k + 1].fPosition.fX = line_vert[l].position.fX;
+				preAlloc_particle[k + 1].fPosition.fY = line_vert[l].position.fY;
+				preAlloc_particle[k + 1].fPosition.fZ = line_vert[l].position.fZ;
+				preAlloc_particle[k + 1].fPosition.fW = 1.0f;
+
+				preAlloc_particle[k].fColor.fX = line_vert[l].color.fX;   // 0.2078f  // line_vert[l].color.fX;
+				preAlloc_particle[k].fColor.fY = line_vert[l].color.fY;   // 0.2078f
+				preAlloc_particle[k].fColor.fZ = line_vert[l].color.fZ;   // 0.2078f
+				preAlloc_particle[k].fColor.fW = line_vert[l].color.fW;      // 1.0f
+
+				preAlloc_particle[k + 1].fColor.fX = line_vert[l].color.fX;   // 0.2078f
+				preAlloc_particle[k + 1].fColor.fY = line_vert[l].color.fY;   // 0.2078f
+				preAlloc_particle[k + 1].fColor.fZ = line_vert[l].color.fZ;   // 0.2078f
+				preAlloc_particle[k + 1].fColor.fW = line_vert[l].color.fW;      // 1.0f
+
+				line_vert_count = preAlloc_particle.size();
+			}
+
+
+			D3D11_BUFFER_DESC particle_Vertex_Buffer_DESC;
+			ZeroMemory(&particle_Vertex_Buffer_DESC, sizeof(D3D11_BUFFER_DESC));
+			particle_Vertex_Buffer_DESC.CPUAccessFlags = NULL;
+			particle_Vertex_Buffer_DESC.Usage = D3D11_USAGE_IMMUTABLE;
+			particle_Vertex_Buffer_DESC.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+			particle_Vertex_Buffer_DESC.MiscFlags = 0.0f;
+			particle_Vertex_Buffer_DESC.ByteWidth = sizeof(tVertex) * 100;
+			particle_Vertex_Buffer_DESC.StructureByteStride = 0;
+
+			D3D11_SUBRESOURCE_DATA particle_Vertex_Buffer_DATA;
+			ZeroMemory(&particle_Vertex_Buffer_DATA, sizeof(D3D11_SUBRESOURCE_DATA));
+			particle_Vertex_Buffer_DATA.pSysMem = &preAlloc_particle;
+			particle_Vertex_Buffer_DATA.SysMemPitch = 0;
+			particle_Vertex_Buffer_DATA.SysMemSlicePitch = 0;
+
+			c_Graphics_Setup->Get_Device()->CreateBuffer(&particle_Vertex_Buffer_DESC, &particle_Vertex_Buffer_DATA, particle_Vertex_Buffer.GetAddressOf());
+
+			//D3D11_MAPPED_SUBRESOURCE mapped_Particle_Buffer;
+			//c_Graphics_Setup->Get_Context().Get()->Map(particle_Vertex_Buffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &d3d_MSR);
+			//memcpy(mapped_Particle_Buffer.pData, preAlloc_particle.data(), sizeof(tVertex) * 888);
+			//c_Graphics_Setup->Get_Context().Get()->Unmap(particle_Vertex_Buffer.Get(), 0);
+
+			c_Graphics_Setup->Get_Device().Get()->CreateVertexShader(VertexShader, sizeof(VertexShader), NULL, particle_Vertex_Shader.GetAddressOf());
+			c_Graphics_Setup->Get_Device().Get()->CreatePixelShader(Particle_Pixel_Shader, sizeof(Particle_Pixel_Shader), NULL, particle_Pixel_Shader.GetAddressOf());
+
+			UINT Offsett[1] = { 0 };
+			UINT Stride[1] = { sizeof(tVertex) };
+
+			//c_Graphics_Setup->Get_Context().Get()->ClearDepthStencilView(c_Graphics_Setup->Get_DSV().Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1, 0);
+			//c_Graphics_Setup->Get_Context().Get()->OMSetRenderTargets(1, c_Graphics_Setup->Get_RTV().GetAddressOf(), 0);
+			//c_Graphics_Setup->Get_Context().Get()->ClearRenderTargetView(c_Graphics_Setup->Get_RTV().Get(),);
+			//c_Graphics_Setup->Get_Context().Get()->RSSetViewports(1, &c_Graphics_Setup->Get_View_Port());
+
+			// Set particles position
+			tObject_List->fWorld_Matrix->tW.fX;
+			tObject_List->fWorld_Matrix->tW.fY;
+			tObject_List->fWorld_Matrix->tW.fZ - 2;
+			//tObject_List->fWorld_Matrix->tW.fW + 50;
+
+			tWVP.fWorld_Matrix = tFloat4x4_to_XMFLOAT4x4(tObject_List->fWorld_Matrix[4]);
+
+			// particle constant buffer goes here
+
+			tPart.direction.w = timer;
+
+			c_Graphics_Setup->Get_Context().Get()->Map(particle_Constant_Buffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &particle_Constant_Mapped_RS);
+			memcpy(particle_Constant_Mapped_RS.pData, &tPart, sizeof(tConstantBuffer_VertexShader_Bullet));
+			c_Graphics_Setup->Get_Context().Get()->Unmap(particle_Constant_Buffer.Get(), 0);
+
+			// particle constant buffer goes here
+
+			c_Graphics_Setup->Get_Context().Get()->Map(d3d_Constant_Buffer_WVP.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &d3d_MSR);
+			memcpy(d3d_MSR.pData, &tWVP, sizeof(tConstantBuffer_VertexShader_WVP));
+			c_Graphics_Setup->Get_Context().Get()->Unmap(d3d_Constant_Buffer_WVP.Get(), 0);
+
+			//tObject_List->fWorld_Matrix[4]    // BULLETS WORLD POSITION
+
+			c_Graphics_Setup->Get_Context().Get()->VSSetConstantBuffers(0, 1, d3d_Constant_Buffer_WVP.GetAddressOf());
+
+			c_Graphics_Setup->Get_Context().Get()->IASetVertexBuffers(0, 1, particle_Vertex_Buffer.GetAddressOf(), Stride, Offsett);
+			c_Graphics_Setup->Get_Context().Get()->IASetInputLayout(c_Graphics_Setup->Get_Input_Layout().Get());
+			c_Graphics_Setup->Get_Context().Get()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
+
+			c_Graphics_Setup->Get_Context().Get()->VSSetShader(particle_Vertex_Shader.Get(), NULL, 0);
+			c_Graphics_Setup->Get_Context().Get()->PSSetShader(particle_Pixel_Shader.Get(), NULL, 0);
+
+			c_Graphics_Setup->Get_Context().Get()->Draw(50, 0);
+			// PARTICLES 
+
+		}
+
+		//c_Graphics_Setup->Get_Swap_Chain().Get()->Present(1, 0);
+	}
 }
+
+particle* cRender_Manager::get_particle_array()  // void  // tVertex 
+{
+	return line_vert;
+}
+
+void cRender_Manager::set_particle_array(particle* p_arr)  // Gets called twice when break point is in the function
+{
+	/*for (int i = 0; i < 300; i++)
+	{
+	line_vert[i].position.fX = p_arr[i].position.fX;
+	line_vert[i].position.fY = p_arr[i].position.fY;
+	line_vert[i].position.fZ = p_arr[i].position.fZ;
+
+	line_vert[i].prev_Position.fX = p_arr[i].prev_Position.fX;
+	line_vert[i].prev_Position.fY = p_arr[i].prev_Position.fY;
+	line_vert[i].prev_Position.fZ = p_arr[i].prev_Position.fZ;
+
+	line_vert[i].color.fX = p_arr[i].color.fX;
+	line_vert[i].color.fY = p_arr[i].color.fY;
+	line_vert[i].color.fZ = p_arr[i].color.fZ;
+	line_vert[i].color.fW = p_arr[i].color.fW;
+	}*/
+	line_vert = p_arr;   // has data the first time but isn't showing an array, is NULL the second time
+}
+
+//tScene_Objects* cRender_Manager::get_object_world()
+//{
+//	return;
+//}

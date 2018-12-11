@@ -25,6 +25,11 @@
 #include "PixelShader_Screen.csh"
 #include "dopeSoundSystem.h"
 
+#include "Particle.h"
+#include "basic_structs.h"
+#include "Effects.h"
+#include "Particle_Pixel_Shader.csh"
+
 class cRender_Manager
 {
 private:
@@ -70,6 +75,33 @@ private:
 	D3D11_BUFFER_DESC d3dBuffer_Desc;
 	D3D11_SUBRESOURCE_DATA d3dSRD;
 
+
+
+	static size_t pp_vert_count;
+
+	particle *line_vert;      // tVertex
+	int line_vert_count = 0;
+
+
+	//Particle p;
+
+	// Particle Stuff
+	ComPtr<ID3D11Buffer> particle_Vertex_Buffer;
+	ComPtr<ID3D11PixelShader> particle_Pixel_Shader;
+	ComPtr<ID3D11VertexShader> particle_Vertex_Shader;
+
+	ComPtr<ID3D11Buffer> particle_Constant_Buffer;
+	D3D11_MAPPED_SUBRESOURCE particle_Constant_Mapped_RS;
+
+	D3D11_BUFFER_DESC particle_Const_Buff_Desc;
+	D3D11_SUBRESOURCE_DATA particle_Const_Buff_Data;
+
+	tConstantBuffer_VertexShader_Bullet tPart;
+
+	float random_color;
+	float random_alpha;
+	// Particle Stuff
+
 public:
 	cRender_Manager();
 	~cRender_Manager();
@@ -78,5 +110,7 @@ public:
 	void Load_Data(int nScene_Id, tScene_Objects* tObject_List);
 	void Unload(tScene_Objects* t_Object_List);
 	void Draw_Personal(tScene_Objects* t_Object_List, cHead_Mount c_Head_Mount, cControllers c_Controllers, tFloat4x4 offset, cBase_Spell c_Player_Fireball);
-	void Draw_World(int nScene_Id, tScene_Objects* t_Object_List, bool *bChange_Scene, bool *bMove_Bullet, cHead_Mount c_Head_Mount, tFloat4x4 offset);
+	void Draw_World(int nScene_Id, tScene_Objects* t_Object_List, bool *bChange_Scene, bool *bMove_Bullet, cHead_Mount c_Head_Mount, tFloat4x4 offset, double timer);
+	particle* get_particle_array();
+	void set_particle_array(particle* p_arr);
 };

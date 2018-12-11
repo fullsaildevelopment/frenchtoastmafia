@@ -210,6 +210,7 @@
   <ItemGroup>
     <ClInclude Include="Base_Character.h" />
     <ClInclude Include="Base_Spell.h" />
+    <ClInclude Include="Effects.h" />
     <ClInclude Include="Game_Loop.h" />
     <ClInclude Include="Graphic_Setup.h" />
     <ClInclude Include="header.h" />
@@ -217,6 +218,7 @@
     <ClInclude Include="Math_Conversion.h" />
     <ClInclude Include="Matrices.h" />
     <ClInclude Include="Offset_Matrix.h" />
+    <ClInclude Include="Particle.h" />
     <ClInclude Include="Physics_Structs.h" />
     <ClInclude Include="Project.h" />
     <ClInclude Include="Renderer_Structs.h" />
@@ -238,6 +240,7 @@
     <ClCompile Include="Head_Mount.cpp" />
     <ClCompile Include="Matrices.cpp" />
     <ClCompile Include="Offset_Matrix.cpp" />
+    <ClCompile Include="Particle.cpp" />
     <ClCompile Include="Project.cpp" />
     <ClCompile Include="Render_Manager.cpp" />
     <ClCompile Include="Scene_Manager.cpp" />
@@ -253,6 +256,10 @@
     <Image Include="small.ico" />
   </ItemGroup>
   <ItemGroup>
+    <FxCompile Include="Particle_Pixel_Shader.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+    </FxCompile>
     <FxCompile Include="PixelShader.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
