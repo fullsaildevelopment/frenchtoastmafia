@@ -17,7 +17,7 @@ cbuffer tWVP : register(b0)
 
 cbuffer tAnimation : register(b1)
 {
-	float4x4 fAnimation_Data[28];
+	float4x4 fAnimation_Data[99];
 };
 
 struct INPUT_DATA

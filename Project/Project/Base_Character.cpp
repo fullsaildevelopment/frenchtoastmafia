@@ -1,19 +1,19 @@
 /************************************************************************
 * Filename:  		Base_Character.cpp
 * Date:      		05/10/2018
-* Mod. Date: 		09/10/2018
+* Mod. Date: 		11/12/2018
 * Mod. Initials:	WM
 * Author:    		Wichet Manawanitjarern
 * Purpose:   		Base Character Module to be inherit by Player and AI
 *************************************************************************/
 #include "Base_Character.h"
 
-Base_Character::Base_Character()
+cBase_Character::cBase_Character()
 {
 }
 
 
-Base_Character::~Base_Character()
+cBase_Character::~cBase_Character()
 {
 }
 
@@ -22,37 +22,42 @@ Base_Character::~Base_Character()
 * Accessors
 ***************/
 
-bool Base_Character::getIsAlive()
+bool cBase_Character::getIsAlive()
 {
 	return m_bIsAlive;
 }
 
-bool Base_Character::getIsMovable()
+int cBase_Character::getHealth()
+{
+	return m_nHealth;
+}
+
+bool cBase_Character::getIsMovable()
 {
 	return m_bIsMovable;
 }
 
-bool Base_Character::getIsGrounded()
+bool cBase_Character::getIsGrounded()
 {
 	return m_bIsGrounded;
 }
 
-bool Base_Character::getIsCasting()
+bool cBase_Character::getIsCasting()
 {
 	return m_bIsCasting;
 }
 
-bool Base_Character::getIsCharging()
+bool cBase_Character::getIsCharging()
 {
 	return m_bIsCharging;
 }
 
-tFloat4 Base_Character::getPosition()
+tFloat4 cBase_Character::getPosition()
 {
 	return m_tPosition;
 }
 
-tFloat4 Base_Character::getHeading()
+tFloat4 cBase_Character::getHeading()
 {
 	return m_tHeading;
 }
@@ -62,38 +67,43 @@ tFloat4 Base_Character::getHeading()
 * Mutators
 ***************/
 
-void Base_Character::setIsAlive(bool bAlive)
+void cBase_Character::setIsAlive(bool bAlive)
 {
 	m_bIsAlive = bAlive;
 }
 
-void Base_Character::setIsMovable(bool bMovable)
+void cBase_Character::setIsMovable(bool bMovable)
 {
 	m_bIsMovable = bMovable;
 }
 
-void Base_Character::setIsGrounded(bool bGrounded)
+void cBase_Character::setIsGrounded(bool bGrounded)
 {
 	m_bIsGrounded = bGrounded;
 }
 
-void Base_Character::setIsCasting(bool bCasting)
+void cBase_Character::setIsCasting(bool bCasting)
 {
 	m_bIsCasting = bCasting;
 }
 
-void Base_Character::setIsCharging(bool bCharging)
+void cBase_Character::setIsCharging(bool bCharging)
 {
 	m_bIsCharging = bCharging;
 }
 
-void Base_Character::setPosition(tFloat4 tPosition)
+void cBase_Character::setPosition(tFloat4 tPosition)
 {
 	m_tPosition = tPosition;
 }
 
-void Base_Character::setHeading(tFloat4 tHeading)
+void cBase_Character::setHeading(tFloat4 tHeading)
 {
 	m_tHeading = tHeading;
+}
+
+void cBase_Character::TakeDamage(int damage)
+{
+	m_nHealth -= damage;
 }
 

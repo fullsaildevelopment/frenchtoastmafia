@@ -1,7 +1,7 @@
 /************************************************************************
 * Filename:  		Base_Spell.h
 * Date:      		05/10/2018
-* Mod. Date: 		09/10/2018
+* Mod. Date: 		11/12/2018
 * Mod. Initials:	WM
 * Author:    		Wichet Manawanitjarern
 * Purpose:   		Base Spell Module to be inherit by various specific spell
@@ -9,7 +9,7 @@
 #pragma once
 #include "basic_structs.h"
 
-class Base_Spell
+class cBase_Spell
 {
 private:
 	// Gameplay Data
@@ -30,8 +30,8 @@ private:
 	//float m_fVelocity;
 
 public:
-	Base_Spell();
-	~Base_Spell();
+	cBase_Spell();
+	~cBase_Spell();
 
 	/***************
 	* Accessors
@@ -45,7 +45,7 @@ public:
 	*
 	* Returns:		     int
 	*
-	* Mod. Date:		 10/09/2018
+	* Mod. Date:		 09/10/2018
 	* Mod. Initials:	 WM
 	*****************************************************************/
 	int getSpellId();
@@ -58,7 +58,7 @@ public:
 	*
 	* Returns:		     bool
 	*
-	* Mod. Date:		 10/09/2018
+	* Mod. Date:		 09/10/2018
 	* Mod. Initials:	 WM
 	*****************************************************************/
 	bool getIsActive();
@@ -71,7 +71,7 @@ public:
 	*
 	* Returns:		     tFloat4 (float4 structure, see basic_structs.h for detail)
 	*
-	* Mod. Date:		 10/09/2018
+	* Mod. Date:		 09/10/2018
 	* Mod. Initials:	 WM
 	*****************************************************************/
 	tFloat4 getPosition();
@@ -84,7 +84,7 @@ public:
 	*
 	* Returns:		     tFloat4 (float4 structure, see basic_structs.h for detail)
 	*
-	* Mod. Date:		 10/09/2018
+	* Mod. Date:		 09/10/2018
 	* Mod. Initials:	 WM
 	*****************************************************************/
 	tFloat4 getHeading();
@@ -102,7 +102,7 @@ public:
 	*
 	* Returns:		     void
 	*
-	* Mod. Date:		 10/09/2018
+	* Mod. Date:		 09/10/2018
 	* Mod. Initials:	 WM
 	*****************************************************************/
 	void setSpellId(int nSpellId);
@@ -115,7 +115,7 @@ public:
 	*
 	* Returns:		     void
 	*
-	* Mod. Date:		 10/09/2018
+	* Mod. Date:		 09/10/2018
 	* Mod. Initials:	 WM
 	*****************************************************************/
 	void setIsActive(bool bActive);
@@ -128,7 +128,7 @@ public:
 	*
 	* Returns:		     void
 	*
-	* Mod. Date:		 10/09/2018
+	* Mod. Date:		 09/10/2018
 	* Mod. Initials:	 WM
 	*****************************************************************/
 	void setPosition(tFloat4 tPosition);
@@ -141,7 +141,7 @@ public:
 	*
 	* Returns:		     void
 	*
-	* Mod. Date:		 10/09/2018
+	* Mod. Date:		 09/10/2018
 	* Mod. Initials:	 WM
 	*****************************************************************/
 	void setHeading(tFloat4 tHeading);

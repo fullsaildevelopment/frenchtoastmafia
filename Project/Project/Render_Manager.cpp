@@ -1,7 +1,7 @@
 /************************************************************************
 * Filename:  		Render_Manager.cpp
 * Date:      		02/10/2018
-* Mod. Date: 		08/11/2018
+* Mod. Date: 		04/12/2018
 * Mod. Initials:	WM
 * Author:    		Wichet Manawanitjarern
 * Purpose:   		Managing system to handle all rendering related task.
@@ -280,138 +280,189 @@ void cRender_Manager::Unload(tScene_Objects* tObject_List)
 	ZeroMemory(&tObject_List, sizeof(tScene_Objects));
 }
 
-void cRender_Manager::Draw(int nScene_Id, tScene_Objects* tObject_List, bool *bChange_Scene, bool *bMove_Bullet, tFloat3 lhand)
+void cRender_Manager::Draw_Personal(tScene_Objects* tObject_List, cHead_Mount c_Head_Mount, cControllers c_Controllers, tFloat4x4 offset, cBase_Spell c_Player_Fireball)
 {
-	for (int _eyeID = 0; _eyeID < 2; _eyeID++)
+	float clear_color[4] = { 0.000000000f, 1.000000000f, 0.48235f, 1.000000000f };
+	for (int _eyeID = 0; _eyeID < 3; _eyeID++)
 	{
-		// SIGNALS
-		cTime.Signal();
-
 		if (_eyeID == 0)
 		{
 			ID3D11RenderTargetView *tmp_rtv[] = { c_Graphics_Setup->Get_RTV_Left().Get() };
 			c_Graphics_Setup->Get_Context().Get()->OMSetRenderTargets(1, tmp_rtv, c_Graphics_Setup->Get_DSV().Get());
+			//c_Graphics_Setup->Get_Context().Get()->ClearRenderTargetView(c_Graphics_Setup->Get_RTV_Left().Get(), clear_color);
 		}
-		else
+		else if (_eyeID == 1)
 		{
 			ID3D11RenderTargetView *tmp_rtv[] = { c_Graphics_Setup->Get_RTV_Right().Get() };
 			c_Graphics_Setup->Get_Context().Get()->OMSetRenderTargets(1, tmp_rtv, c_Graphics_Setup->Get_DSV().Get());
+			//c_Graphics_Setup->Get_Context().Get()->ClearRenderTargetView(c_Graphics_Setup->Get_RTV_Right().Get(), clear_color);
 		}
-
-		// RESIZE / RESET RTV AND VP
-		//c_Graphics_Setup->Get_Context().Get()->OMSetRenderTargets(0, 0, 0);
-		//c_Graphics_Setup->Get_RTV().Release();
-		//c_Graphics_Setup->Get_Swap_Chain()->ResizeBuffers(0, 0, 0, DXGI_FORMAT_UNKNOWN, DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH);
-		//ID3D11Texture2D *back_buffer;
-		//c_Graphics_Setup->Get_Swap_Chain()->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&back_buffer);
-		//c_Graphics_Setup->Get_Device().Get()->CreateRenderTargetView(back_buffer, NULL, &c_Graphics_Setup->Get_RTV());
-		//ID3D11RenderTargetView *tmp_rtv[] = { c_Graphics_Setup->Get_RTV() };
-		////c_Graphics_Setup->Get_Context().Get()->OMSetDepthStencilState(c_Graphics_Setup->Get_Depth_Stencil_State(), 1);
-		//c_Graphics_Setup->Get_Context().Get()->OMSetRenderTargets(1, tmp_rtv, c_Graphics_Setup->Get_DSV());
-		//c_Graphics_Setup->Get_Context().Get()->RSSetViewports(1, &c_Graphics_Setup->Get_View_Port());
-		// SKY BLUE
-		float clear_color[4] = { 1.000000000f, 0.000000000f, 0.83137255f, 1.000000000f };
-		// WHITE
-		//float clear_color[4] = { 1.0f, 1.0f, 1.0f, 1.0f };
-		c_Graphics_Setup->Get_Context().Get()->ClearRenderTargetView(c_Graphics_Setup->Get_RTV().Get(), clear_color);
-		c_Graphics_Setup->Get_Context().Get()->ClearDepthStencilView(c_Graphics_Setup->Get_DSV().Get(), D3D11_CLEAR_DEPTH, 1.0f, 0);
-
-		//XMFLOAT4X4 fCamera_Matrix = tFloat4x4_to_XMFLOAT4x4(cCam.GetPosition());
-		//XMMATRIX mCamera_Matrix = XMLoadFloat4x4(&fCamera_Matrix);
-
-		// Get Current Window Size
-		/*RECT current_window_size;
-		GetClientRect(hWnd, &current_window_size);
-		float fWindow_Height = (float)current_window_size.bottom - (float)current_window_size.top;
-		float fWindow_Width = (float)current_window_size.right - (float)current_window_size.left;*/
-
-		// CONTROLS
-
-	/*
+		else// if (_eyeID == 2)
 		{
-			tFloat4 change_data;
-
-			// A - move left
-			if (GetAsyncKeyState('A'))
-			{
-				change_data = { ((float)cTime.Delta() * 25), 0.0f, 0.0f, 0.0f };
-				cCam.Translation(change_data);
-			}
-
-			// D - move right
-			if (GetAsyncKeyState('D'))
-			{
-				change_data = { -((float)cTime.Delta() * 25), 0.0f, 0.0f, 0.0f };
-				cCam.Translation(change_data);
-			}
-
-			// Q - move up
-			if (GetAsyncKeyState('Q'))
-			{
-				change_data = { 0.0f, -((float)cTime.Delta() * 25), 0.0f, 1.0f };
-				cCam.Translation(change_data);
-			}
-
-			// E - move down
-			if (GetAsyncKeyState('E'))
-			{
-				change_data = { 0.0f, ((float)cTime.Delta() * 25), 0.0f, 1.0f };
-				cCam.Translation(change_data);
-			}
-
-			// S - move backwards
-			if (GetAsyncKeyState('S'))
-			{
-				change_data = { 0.0f, 0.0f, ((float)cTime.Delta() * 25), 0.0f };
-				cCam.Translation(change_data);
-			}
-
-			// W - move forward
-			if (GetAsyncKeyState('W'))
-			{
-				change_data = { 0.0f, 0.0f, -((float)cTime.Delta() * 25), 0.0f };
-				cCam.Translation(change_data);
-			}
-
-			// I - look up
-			if (GetAsyncKeyState('I'))
-			{
-				change_data = { -(float)cTime.Delta(), 0.0f, 0.0f, 0.0f };
-				cCam.Rotation(change_data);
-			}
-
-			// K - look down
-			if (GetAsyncKeyState('K'))
-			{
-				change_data = { (float)cTime.Delta(), 0.0f, 0.0f, 1.0f };
-				cCam.Rotation(change_data);
-			}
-
-			// L - look right
-			if (GetAsyncKeyState('L'))
-			{
-				change_data = { 0.0f, (float)cTime.Delta(), 0.0f, 2.0f };
-				cCam.Rotation(change_data);
-			}
-
-			// J - look left
-			if (GetAsyncKeyState('J'))
-			{
-				change_data = { 0.0f, -(float)cTime.Delta(), 0.0f, 3.0f };
-				cCam.Rotation(change_data);
-			}
-
-			cCam.Normalize();
+			ID3D11RenderTargetView *tmp_rtv[] = { c_Graphics_Setup->Get_RTV().Get() };
+			c_Graphics_Setup->Get_Context().Get()->OMSetRenderTargets(1, tmp_rtv, c_Graphics_Setup->Get_DSV().Get());
+			//c_Graphics_Setup->Get_Context().Get()->ClearRenderTargetView(c_Graphics_Setup->Get_RTV().Get(), clear_color);
 		}
-		*/
+
+		c_Graphics_Setup->Get_Context().Get()->ClearDepthStencilView(c_Graphics_Setup->Get_DSV().Get(), D3D11_CLEAR_DEPTH, 1.0f, 0);
+		
+		XMStoreFloat4x4(&tWVP.fView_Matrix, XMMatrixIdentity());
+		if (_eyeID == 0)
+			tWVP.fProjection_Matrix = tFloat4x4_to_XMFLOAT4x4(c_Head_Mount.GetCurrentViewProjectionMatrix(vr::Eye_Left, tFloat4x4_To_Matrix4(offset)));
+		else
+			tWVP.fProjection_Matrix = tFloat4x4_to_XMFLOAT4x4(c_Head_Mount.GetCurrentViewProjectionMatrix(vr::Eye_Right, tFloat4x4_To_Matrix4(offset)));
+
+		unsigned int verts_size = sizeof(tVertex);
+		unsigned int verts_skinned_size = sizeof(tVertex_Skinned);
+		unsigned int off_set = 0;
+
+		for (int i = 0; i < tObject_List->nObject_Count; i++)
+		{
+			// CONSTANT BUFFER - WVPC
+			{
+				if (i == 0)
+				{
+					tFloat4x4 temp = c_Controllers.Get_Left_Hand();
+					tWVP.fWorld_Matrix = tFloat4x4_to_XMFLOAT4x4(temp);
+				}
+				else if (i == 1)
+				{
+					tFloat4x4 temp = c_Controllers.Get_Right_Hand();
+					tWVP.fWorld_Matrix = tFloat4x4_to_XMFLOAT4x4(temp);
+				}
+				else
+				{
+					tFloat4x4 temp = tObject_List->fWorld_Matrix[i];
+					temp.tW.fX = c_Player_Fireball.getPosition().fX;
+					temp.tW.fY = c_Player_Fireball.getPosition().fY;
+					temp.tW.fZ = c_Player_Fireball.getPosition().fZ + 1;
+					temp.tZ.fX = c_Player_Fireball.getHeading().fX;
+					temp.tZ.fY = c_Player_Fireball.getHeading().fY;
+					temp.tZ.fZ = c_Player_Fireball.getHeading().fZ;
+				}
+
+				// MAP DATA
+				c_Graphics_Setup->Get_Context().Get()->Map(d3d_Constant_Buffer_WVP.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &d3d_MSR);
+				memcpy(d3d_MSR.pData, &tWVP, sizeof(tConstantBuffer_VertexShader_WVP));
+				c_Graphics_Setup->Get_Context().Get()->Unmap(d3d_Constant_Buffer_WVP.Get(), 0);
+				ID3D11Buffer *tmp_wvpc_buffer[] = { d3d_Constant_Buffer_WVP.Get() };
+				c_Graphics_Setup->Get_Context().Get()->VSSetConstantBuffers(0, 1, tmp_wvpc_buffer);
+			}
+
+			if (tObject_List->bIs_Animated[i])
+			{
+				for (int j = 0; j < 99; j++)
+					tAnim.fAnimation_Data[j] = tFloat4x4_to_XMFLOAT4x4(tObject_List->tAnim_Data[i].tTweened[j]);
+
+				c_Graphics_Setup->Get_Context().Get()->Map(d3d_Constant_Buffer_Animation.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &d3d_MSR);
+				memcpy(d3d_MSR.pData, &tAnim, sizeof(tConstantBuffer_VertexShader_Animation));
+				c_Graphics_Setup->Get_Context().Get()->Unmap(d3d_Constant_Buffer_Animation.Get(), 0);
+				ID3D11Buffer *tmp_anim_buffer[] = { d3d_Constant_Buffer_Animation.Get() };
+				c_Graphics_Setup->Get_Context().Get()->VSSetConstantBuffers(1, 1, tmp_anim_buffer);
+			}
+
+			ID3D11Buffer *ts_v_buffer[] = { tObject_List->d3d_Vertex_Buffers[i].Get() };
+			if (tObject_List->bIs_Animated[i])
+				c_Graphics_Setup->Get_Context().Get()->IASetVertexBuffers(0, 1, ts_v_buffer, &verts_skinned_size, &off_set);
+			else
+				c_Graphics_Setup->Get_Context().Get()->IASetVertexBuffers(0, 1, ts_v_buffer, &verts_size, &off_set);
+			
+			c_Graphics_Setup->Get_Context().Get()->IASetIndexBuffer(tObject_List->d3d_Index_Buffers[i].Get(), DXGI_FORMAT_R32_UINT, 0);
+			c_Graphics_Setup->Get_Context().Get()->IASetInputLayout(c_Graphics_Setup->Get_Input_Layout().Get());
+			c_Graphics_Setup->Get_Context().Get()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+			c_Graphics_Setup->Get_Context().Get()->VSSetShader(tObject_List->d3d_Vertex_Shaders[i].Get(), NULL, 0);
+			c_Graphics_Setup->Get_Context().Get()->PSSetShader(tObject_List->d3d_Pixel_Shaders[i].Get(), NULL, 0);
+			c_Graphics_Setup->Get_Context().Get()->PSSetShaderResources(0, 1, tObject_List->d3d_SRV[i][0].GetAddressOf());
+
+			tCB_PS.ambient.x = tObject_List->tMaterials_Data[i].tMats[0].tAmbient.fX;
+			tCB_PS.ambient.y = tObject_List->tMaterials_Data[i].tMats[0].tAmbient.fY;
+			tCB_PS.ambient.z = tObject_List->tMaterials_Data[i].tMats[0].tAmbient.fZ;
+			tCB_PS.ambient.w = tObject_List->tMaterials_Data[i].tMats[0].tAmbient.fW;
+
+			tCB_PS.diffuse.x = tObject_List->tMaterials_Data[i].tMats[0].tDiffuse.fX;
+			tCB_PS.diffuse.y = tObject_List->tMaterials_Data[i].tMats[0].tDiffuse.fY;
+			tCB_PS.diffuse.z = tObject_List->tMaterials_Data[i].tMats[0].tDiffuse.fZ;
+			tCB_PS.diffuse.w = tObject_List->tMaterials_Data[i].tMats[0].tDiffuse.fW;
+
+			tCB_PS.emissive.x = tObject_List->tMaterials_Data[i].tMats[0].tEmissive.fX;
+			tCB_PS.emissive.y = tObject_List->tMaterials_Data[i].tMats[0].tEmissive.fY;
+			tCB_PS.emissive.z = tObject_List->tMaterials_Data[i].tMats[0].tEmissive.fZ;
+			tCB_PS.emissive.w = tObject_List->tMaterials_Data[i].tMats[0].tEmissive.fW;
+
+			tCB_PS.reflection.x = tObject_List->tMaterials_Data[i].tMats[0].tReflection.fX;
+			tCB_PS.reflection.y = tObject_List->tMaterials_Data[i].tMats[0].tReflection.fY;
+			tCB_PS.reflection.z = tObject_List->tMaterials_Data[i].tMats[0].tReflection.fZ;
+			tCB_PS.reflection.w = tObject_List->tMaterials_Data[i].tMats[0].tReflection.fW;
+
+			tCB_PS.shininess.x = tObject_List->tMaterials_Data[i].tMats[0].fShininess;
+
+			tCB_PS.specular.x = tObject_List->tMaterials_Data[i].tMats[0].tSpecular.fX;
+			tCB_PS.specular.y = tObject_List->tMaterials_Data[i].tMats[0].tSpecular.fY;
+			tCB_PS.specular.z = tObject_List->tMaterials_Data[i].tMats[0].tSpecular.fZ;
+			tCB_PS.specular.w = tObject_List->tMaterials_Data[i].tMats[0].tSpecular.fW;
+
+			tCB_PS.transparency.x = tObject_List->tMaterials_Data[i].tMats[0].tTransparency.fX;
+			tCB_PS.transparency.y = tObject_List->tMaterials_Data[i].tMats[0].tTransparency.fY;
+			tCB_PS.transparency.z = tObject_List->tMaterials_Data[i].tMats[0].tTransparency.fZ;
+			tCB_PS.transparency.w = tObject_List->tMaterials_Data[i].tMats[0].tTransparency.fW;
+
+			tCB_PS.tint.x = 0.0f;
+			tCB_PS.tint.y = 0.0f;
+			tCB_PS.tint.z = 0.0f;
+			tCB_PS.tint.w = 1.0f;
+
+			c_Graphics_Setup->Get_Context().Get()->Map(tObject_List->tMaterials_Buffers[i].Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &d3d_MSR);
+			memcpy(d3d_MSR.pData, &tCB_PS, sizeof(tConstantBuffer_PixelShader));
+			c_Graphics_Setup->Get_Context().Get()->Unmap(tObject_List->tMaterials_Buffers[i].Get(), 0);
+			ID3D11Buffer *tmp_con_buffer[] = { tObject_List->tMaterials_Buffers[i].Get() };
+			c_Graphics_Setup->Get_Context().Get()->PSSetConstantBuffers(0, 1, tmp_con_buffer);
+
+			//if (i == 2 && c_Player_Fireball.getIsActive())
+			//{
+				if (tObject_List->bIs_Animated[i])
+					c_Graphics_Setup->Get_Context().Get()->DrawIndexed(tObject_List->tMesh_Skinned_Data[i].nIndex_Count, 0, 0);
+				else
+					c_Graphics_Setup->Get_Context().Get()->DrawIndexed(tObject_List->tMesh_Data[i].nIndex_Count, 0, 0);
+			//}
+		}
+	}
+
+	//c_Graphics_Setup->Get_Swap_Chain().Get()->Present(1, 0);
+}
+
+
+void cRender_Manager::Draw_World(int nScene_Id, tScene_Objects* tObject_List, bool *bChange_Scene, bool *bMove_Bullet, cHead_Mount c_Head_Mount, tFloat4x4 offset)
+{
+	// SIGNALS
+	cTime.Signal();
+	float clear_color[4] = { 0.000000000f, 1.000000000f, 0.48235f, 1.000000000f };
+
+	for (int _eyeID = 0; _eyeID < 3; _eyeID++)
+	{
+		if (_eyeID == 0)
+		{
+			ID3D11RenderTargetView *tmp_rtv[] = { c_Graphics_Setup->Get_RTV_Left().Get() };
+			c_Graphics_Setup->Get_Context().Get()->OMSetRenderTargets(1, tmp_rtv, c_Graphics_Setup->Get_DSV().Get());
+			c_Graphics_Setup->Get_Context().Get()->ClearRenderTargetView(c_Graphics_Setup->Get_RTV_Left().Get(), clear_color);
+		}
+		else if (_eyeID == 1)
+		{
+			ID3D11RenderTargetView *tmp_rtv[] = { c_Graphics_Setup->Get_RTV_Right().Get() };
+			c_Graphics_Setup->Get_Context().Get()->OMSetRenderTargets(1, tmp_rtv, c_Graphics_Setup->Get_DSV().Get());
+			c_Graphics_Setup->Get_Context().Get()->ClearRenderTargetView(c_Graphics_Setup->Get_RTV_Right().Get(), clear_color);
+		}
+		else if (_eyeID == 2)
+		{
+			ID3D11RenderTargetView *tmp_rtv[] = { c_Graphics_Setup->Get_RTV().Get() };
+			c_Graphics_Setup->Get_Context().Get()->OMSetRenderTargets(1, tmp_rtv, c_Graphics_Setup->Get_DSV().Get());
+			c_Graphics_Setup->Get_Context().Get()->ClearRenderTargetView(c_Graphics_Setup->Get_RTV().Get(), clear_color);
+		}
+
+		c_Graphics_Setup->Get_Context().Get()->ClearDepthStencilView(c_Graphics_Setup->Get_DSV().Get(), D3D11_CLEAR_DEPTH, 1.0f, 0);
 		
 		if (nScene_Id == 2)
 		{
 			//dragon controls
-			//if (GetAsyncKeyState('E') && flashTimer == 0.0f)
-			//{
-			//	isHit = true;
-			//}
 			if (isHit)
 			{
 				isHit = false;
@@ -522,13 +573,9 @@ void cRender_Manager::Draw(int nScene_Id, tScene_Objects* tObject_List, bool *bC
 
 		XMStoreFloat4x4(&tWVP.fView_Matrix, XMMatrixIdentity());
 		if (_eyeID == 0)
-		{
-			tWVP.fProjection_Matrix = tFloat4x4_to_XMFLOAT4x4(c_Graphics_Setup->GetCurrentViewProjectionMatrix(vr::Eye_Left));
-		}
+			tWVP.fProjection_Matrix = tFloat4x4_to_XMFLOAT4x4(c_Head_Mount.GetCurrentViewProjectionMatrix(vr::Eye_Left, tFloat4x4_To_Matrix4(offset)));
 		else
-		{
-			tWVP.fProjection_Matrix = tFloat4x4_to_XMFLOAT4x4(c_Graphics_Setup->GetCurrentViewProjectionMatrix(vr::Eye_Right));
-		}
+			tWVP.fProjection_Matrix = tFloat4x4_to_XMFLOAT4x4(c_Head_Mount.GetCurrentViewProjectionMatrix(vr::Eye_Right, tFloat4x4_To_Matrix4(offset)));
 
 
 		unsigned int verts_size = sizeof(tVertex);
@@ -545,16 +592,16 @@ void cRender_Manager::Draw(int nScene_Id, tScene_Objects* tObject_List, bool *bC
 
 			// CONSTANT BUFFER - WVPC
 			{
-				if (i == 7)
-				{
-					tFloat4x4 temp = tObject_List->fWorld_Matrix[i];
-					temp.tW.fX += lhand.fX;
-					temp.tW.fY += lhand.fY;
-					temp.tW.fZ += lhand.fZ;
-					tWVP.fWorld_Matrix = tFloat4x4_to_XMFLOAT4x4(temp);
-				}
-				else
-					tWVP.fWorld_Matrix = tFloat4x4_to_XMFLOAT4x4(tObject_List->fWorld_Matrix[i]);
+				//if (i == 7)
+				//{
+				//	tFloat4x4 temp = tObject_List->fWorld_Matrix[i];
+				//	temp.tW.fX += lhand.fX;
+				//	temp.tW.fY += lhand.fY;
+				//	temp.tW.fZ += lhand.fZ;
+				//	tWVP.fWorld_Matrix = tFloat4x4_to_XMFLOAT4x4(temp);
+				//}
+				//else
+				tWVP.fWorld_Matrix = tFloat4x4_to_XMFLOAT4x4(tObject_List->fWorld_Matrix[i]);
 
 				// MAP DATA
 				c_Graphics_Setup->Get_Context().Get()->Map(d3d_Constant_Buffer_WVP.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &d3d_MSR);
@@ -654,13 +701,14 @@ void cRender_Manager::Draw(int nScene_Id, tScene_Objects* tObject_List, bool *bC
 				ID3D11Buffer *tmp_con_buffer[] = { tObject_List->tMaterials_Buffers[i].Get() };
 				c_Graphics_Setup->Get_Context().Get()->PSSetConstantBuffers(0, 1, tmp_con_buffer);
 			}
-
+			
 			if (tObject_List->bIs_Animated[i])
 				c_Graphics_Setup->Get_Context().Get()->DrawIndexed(tObject_List->tMesh_Skinned_Data[i].nIndex_Count, 0, 0);
 			else
 				c_Graphics_Setup->Get_Context().Get()->DrawIndexed(tObject_List->tMesh_Data[i].nIndex_Count, 0, 0);
+
 		}
 	}
 
-	c_Graphics_Setup->Get_Swap_Chain().Get()->Present(1, 0);
+	//c_Graphics_Setup->Get_Swap_Chain().Get()->Present(1, 0);
 }
