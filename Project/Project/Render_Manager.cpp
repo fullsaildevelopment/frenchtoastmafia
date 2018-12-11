@@ -342,7 +342,7 @@ void cRender_Manager::Draw_Personal(tScene_Objects* tObject_List, cHead_Mount c_
 
 			if (tObject_List->bIs_Animated[i])
 			{
-				for (int j = 0; j < 99; j++)
+				for (int j = 0; j < 72; j++)
 					tAnim.fAnimation_Data[j] = tFloat4x4_to_XMFLOAT4x4(tObject_List->tAnim_Data[i].tTweened[j]);
 
 				c_Graphics_Setup->Get_Context().Get()->Map(d3d_Constant_Buffer_Animation.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &d3d_MSR);
@@ -644,7 +644,7 @@ void cRender_Manager::Draw_World(int nScene_Id, tScene_Objects* tObject_List, bo
 
 			if (tObject_List->bIs_Animated[i])
 			{
-				for (int j = 0; j < 99; j++)
+				for (int j = 0; j < 72; j++)
 					tAnim.fAnimation_Data[j] = tFloat4x4_to_XMFLOAT4x4(tObject_List->tAnim_Data[i].tTweened[j]);
 
 				c_Graphics_Setup->Get_Context().Get()->Map(d3d_Constant_Buffer_Animation.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &d3d_MSR);

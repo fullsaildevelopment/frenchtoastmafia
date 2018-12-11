@@ -123,7 +123,7 @@ struct tConstantBuffer_VertexShader_Bullet
 
 struct tConstantBuffer_VertexShader_Animation
 {
-	XMFLOAT4X4 fAnimation_Data[99];
+	XMFLOAT4X4 fAnimation_Data[72];
 };
 
 struct tConstantBuffer_PixelShader
