@@ -37,7 +37,7 @@ OUTPUT_DATA main(INPUT_DATA tInput)
 
 	float4 fCurrent_Position = float4(tInput.fPosition.xyz, 1.0f);
 
-	fCurrent_Position.y += (sin(fCurrent_Position.x + pData.w + pData.z) * 0.1f);
+	fCurrent_Position.y += (sin(fCurrent_Position.x + pData.w + pData.z) * 0.3f);
 
 	fCurrent_Position = mul(fCurrent_Position, fWorld_Matrix);
 

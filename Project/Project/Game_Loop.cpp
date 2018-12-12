@@ -29,7 +29,7 @@ void cGame_Loop::Initialize(cGraphics_Setup* _gsetup, cVR_Setup* _vsetup)
 	c_Head_Mount.SetupCameras();
 	c_Head_Mount.UpdateHMDMatrixPose();
 	c_XTime.Restart();
-	m_nScene_Id = 2;  // 0
+	m_nScene_Id = 0;  // 0
 }
 
 void cGame_Loop::Setup()
@@ -56,8 +56,8 @@ void cGame_Loop::Update()
 
 		// Physics
 		tAABB_Player.center = c_Player.getPosition().fXYZ;
-		tAABB_Player.center.fY -= 3;
-		tAABB_Player.extents = tFloat3{ 1.0f, 3.0f, 1.0f };
+		//tAABB_Player.center.fY -= 3;
+		tAABB_Player.extents = tFloat3{ 3.0f, 3.0f, 3.0f };
 
 		tAABB_Player_Fireball.center = c_Player_Fireball.getPosition().fXYZ;
 		tAABB_Player_Fireball.extents = tFloat3{ 0.2f, 0.13f, 0.2f };
@@ -70,9 +70,12 @@ void cGame_Loop::Update()
 
 		// Collisions
 		if (t_Collisions.Detect_AABB_To_AABB(tAABB_Player, tAABB_Dragon_Fireball))
+		{
+			sound.playSoundEffect("Pain-SoundBible.com-1883168362.mp3", FMOD_DEFAULT, 0.7f);
 			c_Player.TakeDamage(10);
+		}
 		
-		if (t_Collisions.Detect_AABB_To_AABB(tAABB_Dragon, tAABB_Player_Fireball))
+		if (t_Collisions.Detect_AABB_To_AABB(tAABB_Dragon, tAABB_Player_Fireball))  // never enters this function
 		{
 			dragon_hit = true;
 			c_Dragon.TakeDamage(10);
@@ -80,7 +83,6 @@ void cGame_Loop::Update()
 			{
 				c_Render_Manager.set_particle_array(p.get_particles());
 				p.create_particles(dragon_blast_color, c_XTime.Delta(), dragon_blast_acceleration, dragon_blast_kill);
-				dragon_hit = false;
 			}
 		}
 
@@ -121,6 +123,7 @@ void cGame_Loop::Update()
 	c_Render_Manager.set_particle_array(p.get_particles());   // JUST ADDED THIS
 	p.create_particles(fireball_color, c_XTime.Delta(), fireball_acceleration, fireball_kill);  // needs to be called when a fireball is thrown
 	c_Render_Manager.Draw_World(m_nScene_Id, &tWorld_Object_List, &bChange_Scene, &bMove_Bullet, c_Head_Mount, c_Offset_Matrix.GetPosition4x4(), c_XTime.TotalTime(), dragon_hit, c_XTime.Delta());  // c_player_Fireball
+	dragon_hit = false;
 	c_Render_Manager.Draw_Personal(&tPersonal_Object_List, c_Head_Mount, c_Controllers, c_Offset_Matrix.GetPosition4x4(), c_Player_Fireball);
 	c_Head_Mount.VR_Render();
 
