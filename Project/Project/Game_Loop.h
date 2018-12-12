@@ -22,7 +22,7 @@
 #include "XTime.h"
 #include "dopeSoundSystem.h"
 #include "Particle.h"
-
+#include "AI.h"
 class cGame_Loop
 {
 private:
@@ -40,6 +40,8 @@ private:
 	cVR_Setup *c_VR_Setup;
 	XTime c_XTime;
 	dopeSoundSystem sound;
+
+	AI c_AI;
 
 	int m_nScene_Id;
 	bool bChange_Scene = false;

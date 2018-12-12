@@ -29,7 +29,7 @@ void cGame_Loop::Initialize(cGraphics_Setup* _gsetup, cVR_Setup* _vsetup)
 	c_Head_Mount.SetupCameras();
 	c_Head_Mount.UpdateHMDMatrixPose();
 	c_XTime.Restart();
-	m_nScene_Id = 0;
+	m_nScene_Id = 2;
 }
 
 void cGame_Loop::Setup()
@@ -45,7 +45,6 @@ void cGame_Loop::Setup()
 void cGame_Loop::Update()
 {
 	c_XTime.Signal();
-
 	if (m_nScene_Id == 2)
 	{
 		// Gameplay
@@ -108,6 +107,10 @@ void cGame_Loop::Update()
 	}
 
 	// Renders
+	if (m_nScene_Id == 2)
+	{
+		c_AI.resolveDragonState(&tWorld_Object_List, c_Offset_Matrix.GetPosition4x4(), c_XTime.Delta());
+	}
 	c_Animation_Manager.Animate(c_XTime.Delta(), c_XTime.TotalTimeExact(), &tWorld_Object_List);
 	p.create_particles(color, c_XTime.Delta(), acceleration);  // needs to be called when a fireball is thrown
 	c_Render_Manager.set_particle_array(p.get_particles());   // JUST ADDED THIS

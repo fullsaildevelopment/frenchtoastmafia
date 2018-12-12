@@ -65,7 +65,6 @@ private:
 	float flashTimer = 0.0f;
 
 	bool dragonAlive;
-	int dragonHealth;
 	tFloat4 dragonTint;
 
 	// Collision
@@ -113,4 +112,5 @@ public:
 	void Draw_World(int nScene_Id, tScene_Objects* t_Object_List, bool *bChange_Scene, bool *bMove_Bullet, cHead_Mount c_Head_Mount, tFloat4x4 offset, double timer);
 	particle* get_particle_array();
 	void set_particle_array(particle* p_arr);
+	void keyboardInputs(tScene_Objects* tObject_List);
 };

@@ -85,7 +85,6 @@ void cRender_Manager::Load_Data(int nScene_Id, tScene_Objects* tObject_List)
 			if (i == 2)
 			{
 				dragonAlive = true;
-				dragonHealth = 7;
 			}
 		}
 
@@ -453,6 +452,92 @@ void cRender_Manager::Draw_Personal(tScene_Objects* tObject_List, cHead_Mount c_
 
 void cRender_Manager::Draw_World(int nScene_Id, tScene_Objects* tObject_List, bool *bChange_Scene, bool *bMove_Bullet, cHead_Mount c_Head_Mount, tFloat4x4 offset, double timer)
 {
+	keyboardInputs(tObject_List);
+
+	if (GetAsyncKeyState('E') && flashTimer == 0.0f)
+	{
+		isHit = true;
+	}
+	if (isHit)
+	{
+		isHit = false;
+		flashTimer = flashTime;
+		sound.playSoundEffect("DragonSound1.mp3", FMOD_DEFAULT);
+		tObject_List->dragHP -= 1;
+		if (tObject_List->dragHP == 3)
+		{
+			dragonTint = { 0.0f, 0.0f, 1.0f, 1.0f };
+		}
+		if (tObject_List->dragHP == 2)
+		{
+			dragonTint = { 1.0f, 1.0f, 0.0f, 1.0f };
+		}
+		if (tObject_List->dragHP == 1)
+		{
+			dragonTint = { 1.0f, 0.0f, 0.0f, 1.0f };
+		}
+
+		if (tObject_List->dragHP <= 0)
+		{
+			*bChange_Scene = true;
+		}
+
+	}
+
+	if (flashTimer < 0.0f)
+	{
+		flashTimer = 0.0f;
+		dragonTint = { 0.0f, 0.0f, 0.0f, 1.0f };
+	}
+	if (flashTimer > 0.0f)
+	{
+		flashTimer -= cTime.Delta();
+	}
+
+	if (tObject_List->fWorld_Matrix[3].tW.fY < -5)
+	{
+		if (tObject_List->dragHP != 0)
+		{
+			sound.playSoundEffect("Fireball+1.mp3", FMOD_DEFAULT);
+		}
+	}
+
+	// Bullet
+	if (*bMove_Bullet == true)
+	{
+		tObject_List->fWorld_Matrix[4].tW.fX -= 0.1;
+		tObject_List->fWorld_Matrix[4].tW.fY += 0.1;
+	}
+	
+	// Collision
+	{
+		tAABB_Bullet.center.fX = tObject_List->fWorld_Matrix[4].tW.fX;
+		tAABB_Bullet.center.fY = tObject_List->fWorld_Matrix[4].tW.fY;
+		tAABB_Bullet.center.fZ = tObject_List->fWorld_Matrix[4].tW.fZ;
+	
+		tAABB_Bullet.extents.fX = 0.2f;
+		tAABB_Bullet.extents.fY = 0.13f;
+		tAABB_Bullet.extents.fZ = 0.2f;
+	
+		tAABB_Dragon.center.fX = tObject_List->fWorld_Matrix[2].tW.fX;
+		tAABB_Dragon.center.fY = tObject_List->fWorld_Matrix[2].tW.fY;
+		tAABB_Dragon.center.fZ = tObject_List->fWorld_Matrix[2].tW.fZ;
+	
+		tAABB_Dragon.extents.fX = 17.0f;
+		tAABB_Dragon.extents.fY = 9.0f;
+		tAABB_Dragon.extents.fZ = 17.0f;
+	
+		bCollided = t_Collisions.Detect_AABB_To_AABB(tAABB_Bullet, tAABB_Dragon);
+	
+		if (bCollided)
+		{
+			tObject_List->fWorld_Matrix[4].tW.fX = -0.1;
+			tObject_List->fWorld_Matrix[4].tW.fY = 0.1;
+			tObject_List->fWorld_Matrix[4].tW.fX = -0.1;
+			*bMove_Bullet = false;
+			isHit = true;
+		}
+	}
 	// SIGNALS
 	cTime.Signal();
 	float clear_color[4] = { 0.000000000f, 1.000000000f, 0.48235f, 1.000000000f };
@@ -479,117 +564,6 @@ void cRender_Manager::Draw_World(int nScene_Id, tScene_Objects* tObject_List, bo
 		}
 
 		c_Graphics_Setup->Get_Context().Get()->ClearDepthStencilView(c_Graphics_Setup->Get_DSV().Get(), D3D11_CLEAR_DEPTH, 1.0f, 0);
-
-		if (nScene_Id == 2)
-		{
-			//dragon controls
-			if (isHit)
-			{
-				isHit = false;
-				flashTimer = flashTime;
-				sound.playSoundEffect("DragonSound1.mp3", FMOD_DEFAULT);
-				dragonHealth -= 1;
-				if (dragonHealth == 6)
-				{
-					dragonTint = { 0.0f, 0.0f, 1.0f, 1.0f };
-				}
-				if (dragonHealth == 5)
-				{
-					dragonTint = { 0.0f, 1.0f, 1.0f, 1.0f };
-				}
-				if (dragonHealth == 4)
-				{
-					dragonTint = { 0.0f, 1.0f, 0.0f, 1.0f };
-				}
-				if (dragonHealth == 3)
-				{
-					dragonTint = { 1.0f, 1.0f, 0.0f, 1.0f };
-				}
-				if (dragonHealth == 2)
-				{
-					dragonTint = { 1.0f, 0.5f, 0.0f, 1.0f };
-				}
-				if (dragonHealth == 1)
-				{
-					dragonTint = { 1.0f, 0.0f, 0.0f, 1.0f };
-				}
-
-				if (dragonHealth <= 0)
-				{
-					dragonAlive = false;
-					*bChange_Scene = true;
-				}
-
-			}
-
-			if (flashTimer < 0.0f)
-			{
-				flashTimer = 0.0f;
-				dragonTint = { 0.0f, 0.0f, 0.0f, 1.0f };
-			}
-			if (flashTimer > 0.0f)
-			{
-				flashTimer -= cTime.Delta();
-			}
-
-			if (dragonHealth > 3)
-			{
-				tObject_List->fWorld_Matrix[3].tW.fX += 0.1;
-				tObject_List->fWorld_Matrix[3].tW.fY -= 0.1;
-			}
-			else
-			{
-				tObject_List->fWorld_Matrix[3].tW.fX += 0.3;
-				tObject_List->fWorld_Matrix[3].tW.fY -= 0.3;
-			}
-
-			if (tObject_List->fWorld_Matrix[3].tW.fX >= -1)
-			{
-				if (dragonAlive == true)
-				{
-					sound.playSoundEffect("Fireball+1.mp3", FMOD_DEFAULT);
-				}
-				tObject_List->fWorld_Matrix[3].tW.fX = -10;
-				tObject_List->fWorld_Matrix[3].tW.fY = 10;
-			}
-
-			// Bullet
-			if (*bMove_Bullet == true)
-			{
-				tObject_List->fWorld_Matrix[4].tW.fX -= 0.1;
-				tObject_List->fWorld_Matrix[4].tW.fY += 0.1;
-			}
-
-			// Collision
-			{
-				tAABB_Bullet.center.fX = tObject_List->fWorld_Matrix[4].tW.fX;
-				tAABB_Bullet.center.fY = tObject_List->fWorld_Matrix[4].tW.fY;
-				tAABB_Bullet.center.fZ = tObject_List->fWorld_Matrix[4].tW.fZ;
-
-				tAABB_Bullet.extents.fX = 0.2f;
-				tAABB_Bullet.extents.fY = 0.13f;
-				tAABB_Bullet.extents.fZ = 0.2f;
-
-				tAABB_Dragon.center.fX = tObject_List->fWorld_Matrix[2].tW.fX;
-				tAABB_Dragon.center.fY = tObject_List->fWorld_Matrix[2].tW.fY;
-				tAABB_Dragon.center.fZ = tObject_List->fWorld_Matrix[2].tW.fZ;
-
-				tAABB_Dragon.extents.fX = 175.0f;
-				tAABB_Dragon.extents.fY = 90.0f;
-				tAABB_Dragon.extents.fZ = 170.0f;
-
-				bCollided = t_Collisions.Detect_AABB_To_AABB(tAABB_Bullet, tAABB_Dragon);
-
-				if (bCollided)
-				{
-					tObject_List->fWorld_Matrix[4].tW.fX = -0.1;
-					tObject_List->fWorld_Matrix[4].tW.fY = 0.1;
-					tObject_List->fWorld_Matrix[4].tW.fX = -0.1;
-					*bMove_Bullet = false;
-					isHit = true;
-				}
-			}
-		}
 
 		XMStoreFloat4x4(&tWVP.fView_Matrix, XMMatrixIdentity());
 		if (_eyeID == 0)
@@ -870,3 +844,47 @@ void cRender_Manager::set_particle_array(particle* p_arr)  // Gets called twice 
 //{
 //	return;
 //}
+
+void cRender_Manager::keyboardInputs(tScene_Objects* tObject_List)
+{
+	if (GetAsyncKeyState('J'))
+	{
+		XMMATRIX oldPos = XMLoadFloat4x4(&tFloat4x4_to_XMFLOAT4x4(tObject_List->fWorld_Matrix[5]));
+		XMMATRIX moveMat = XMMatrixTranslation(0, 0, 20);
+
+		XMMATRIX newMat = XMMatrixMultiply(moveMat, oldPos);
+		XMFLOAT4X4 newMat2;
+		XMStoreFloat4x4(&newMat2, newMat);
+		tObject_List->fWorld_Matrix[5] = XMFLOAT4x4_to_tFloat4x4(newMat2);
+	}
+	if (GetAsyncKeyState('L'))
+	{
+		XMMATRIX oldPos = XMLoadFloat4x4(&tFloat4x4_to_XMFLOAT4x4(tObject_List->fWorld_Matrix[5]));
+		XMMATRIX moveMat = XMMatrixTranslation(0, 0, -20);
+
+		XMMATRIX newMat = XMMatrixMultiply(moveMat, oldPos);
+		XMFLOAT4X4 newMat2;
+		XMStoreFloat4x4(&newMat2, newMat);
+		tObject_List->fWorld_Matrix[5] = XMFLOAT4x4_to_tFloat4x4(newMat2);
+	}
+	if (GetAsyncKeyState('I'))
+	{
+		XMMATRIX oldPos = XMLoadFloat4x4(&tFloat4x4_to_XMFLOAT4x4(tObject_List->fWorld_Matrix[5]));
+		XMMATRIX moveMat = XMMatrixTranslation(-20, 0, 0);
+
+		XMMATRIX newMat = XMMatrixMultiply(moveMat, oldPos);
+		XMFLOAT4X4 newMat2;
+		XMStoreFloat4x4(&newMat2, newMat);
+		tObject_List->fWorld_Matrix[5] = XMFLOAT4x4_to_tFloat4x4(newMat2);
+	}
+	if (GetAsyncKeyState('K'))
+	{
+		XMMATRIX oldPos = XMLoadFloat4x4(&tFloat4x4_to_XMFLOAT4x4(tObject_List->fWorld_Matrix[5]));
+		XMMATRIX moveMat = XMMatrixTranslation(20, 0, 0);
+
+		XMMATRIX newMat = XMMatrixMultiply(moveMat, oldPos);
+		XMFLOAT4X4 newMat2;
+		XMStoreFloat4x4(&newMat2, newMat);
+		tObject_List->fWorld_Matrix[5] = XMFLOAT4x4_to_tFloat4x4(newMat2);
+	}
+}

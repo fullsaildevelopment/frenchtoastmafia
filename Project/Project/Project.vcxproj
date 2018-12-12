@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AI.cpp" />
     <ClCompile Include="Animation_Manager.cpp" />
     <ClCompile Include="Binary_Reader.cpp" />
     <ClCompile Include="Collisions.cpp" />
@@ -27,6 +28,7 @@
     <ClCompile Include="dopeSoundSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AI.h" />
     <ClInclude Include="Animation_Manager.h" />
     <ClInclude Include="Basic_Structs.h" />
     <ClInclude Include="Binary_Reader.h" />

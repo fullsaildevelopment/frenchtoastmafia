@@ -336,20 +336,24 @@ tScene_Objects cScene_Manager::Get_World_Scene(int nScene_Id)
 
 			XMMATRIX tempMatrix = XMMatrixIdentity();
 
-			tempMatrix = XMMatrixMultiply(XMMatrixRotationX(3.14 / 3), tempMatrix);
-			//tempMatrix = XMMatrixMultiply(XMMatrixRotationZ(3.14 / 2), tempMatrix);
-			tempMatrix = XMMatrixMultiply(tempMatrix, XMMatrixRotationY(3.14 / 2));
-			//tempMatrix = XMMatrixMultiply(XMMatrixScaling(0.9, 0.9, 0.9), tempMatrix);
+			//tempMatrix = XMMatrixMultiply(XMMatrixRotationX(3.14 / 3), tempMatrix);
+			////tempMatrix = XMMatrixMultiply(XMMatrixRotationZ(3.14 / 2), tempMatrix);
+			//tempMatrix = XMMatrixMultiply(tempMatrix, XMMatrixRotationY(3.14 / 2));
+			////tempMatrix = XMMatrixMultiply(XMMatrixScaling(0.9, 0.9, 0.9), tempMatrix);
+			//
+			//tempMatrix = XMMatrixMultiply(tempMatrix, XMMatrixTranslation(200, 0, 0));
+			//
+			//tempMatrix = XMMatrixMultiply(tempMatrix, XMMatrixRotationY(3.14));
 
-			tempMatrix = XMMatrixMultiply(tempMatrix, XMMatrixTranslation(200, 0, 0));
+			tempMatrix = XMMatrixMultiply(tempMatrix, XMMatrixTranslation(-170, 0, 0));
 
-			tempMatrix = XMMatrixMultiply(tempMatrix, XMMatrixRotationY(3.14));
+			tempMatrix = XMMatrixMultiply(XMMatrixRotationY(-3.14 / 15), tempMatrix);
 
 
 			XMStoreFloat4x4(&temp, tempMatrix);
 
 			tScene.fWorld_Matrix[2] = XMFLOAT4x4_to_tFloat4x4(temp);
-			tMesh tDragon = cBinary_Read.Read_Mesh("dragonMesh.bin");
+			tMesh tDragon = cBinary_Read.Read_Mesh("DarkDragon3Mesh.bin");
 
 			for (int i = 0; i < tDragon.nVertex_Count; i++)
 			{
@@ -370,7 +374,7 @@ tScene_Objects cScene_Manager::Get_World_Scene(int nScene_Id)
 			}
 			tScene.tMesh_Data[2].nIndex_Count = tDragon.nIndex_Count;
 
-			tScene.tMaterials_Data[2] = cBinary_Read.Read_Material("dragonMaterial.bin");
+			tScene.tMaterials_Data[2] = cBinary_Read.Read_Material("DarkDragon3Material.bin");
 			tScene.tMaterials_Data[2].tMats[0].szDiffuse_File_Path = "Dragon.fbm\\DarkDragon_D.png";
 		}
 		// Dragon
@@ -381,7 +385,7 @@ tScene_Objects cScene_Manager::Get_World_Scene(int nScene_Id)
 
 			XMMATRIX tempMatrix = XMMatrixIdentity();
 
-			tempMatrix = XMMatrixMultiply(tempMatrix, XMMatrixTranslation(-10, 10, 0));
+			tempMatrix = XMMatrixMultiply(tempMatrix, XMMatrixTranslation(-10, -10, 0));
 
 			XMStoreFloat4x4(&temp, tempMatrix);
 
@@ -418,7 +422,7 @@ tScene_Objects cScene_Manager::Get_World_Scene(int nScene_Id)
 
 			XMMATRIX tempMatrix = XMMatrixIdentity();
 
-			tempMatrix = XMMatrixMultiply(tempMatrix, XMMatrixTranslation(-0.1, 0.1, -0.1));
+			tempMatrix = XMMatrixMultiply(tempMatrix, XMMatrixTranslation(-0.1, -10.1, -0.1));
 
 			XMStoreFloat4x4(&temp, tempMatrix);
 
