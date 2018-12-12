@@ -1,7 +1,7 @@
 /************************************************************************
 * Filename:  		Scene_Manager.cpp
 * Date:      		24/10/2018
-* Mod. Date: 		08/11/2018
+* Mod. Date: 		12/12/2018
 * Mod. Initials:	WM
 * Author:    		Wichet Manawanitjarern
 * Purpose:   		Managing system to handle all objects within a scene and related task.
@@ -20,7 +20,7 @@ tScene_Objects cScene_Manager::Get_Personal_Scene()
 {
 	tScene_Objects tScene;
 
-	tScene.nObject_Count = 3;
+	tScene.nObject_Count = 2;
 
 	// Left Hand - 0
 	{

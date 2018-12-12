@@ -1,7 +1,7 @@
 /************************************************************************
 * Filename:  		Game_Loop.cpp
 * Date:      		24/10/2018
-* Mod. Date: 		12/12/2018
+* Mod. Date: 		11/12/2018
 * Mod. Initials:	WM
 * Author:    		Wichet Manawanitjarern
 * Purpose:   		Main Loop of the Game, System Initialization, System Procedure
@@ -49,32 +49,17 @@ void cGame_Loop::Update()
 	if (m_nScene_Id == 2)
 	{
 		// Gameplay
-		c_Player.setPosition4x4(c_Head_Mount.Get_CurrentLook(c_Offset_Matrix.GetPosition4x4()));
-		c_Player.setHeading(c_Head_Mount.Get_CurrentLook(c_Offset_Matrix.GetPosition4x4()).tZ);
-		if (bMove_Bullet)
-		{
-			xmf_in = tFloat4x4_to_XMFLOAT4x4(tWorld_Object_List.fWorld_Matrix[4]);
-			xmm_in = XMLoadFloat4x4(&xmf_in);
-			xmm_in = XMMatrixMultiply(XMMatrixTranslation(0.0f, 0.0f, -1.0f), xmm_in);
-			XMStoreFloat4x4(&xmf_out, xmm_in);
-			c_Player_Fireball.setPosition4x4(XMFLOAT4x4_to_tFloat4x4(xmf_out));
-			tWorld_Object_List.fWorld_Matrix[4] = c_Player_Fireball.getPosition4x4();
-		}
-		else
-		{
-			xmf_in = tFloat4x4_to_XMFLOAT4x4(c_Head_Mount.Get_CurrentLook(c_Offset_Matrix.GetPosition4x4()));
-			xmm_in = XMLoadFloat4x4(&xmf_in);
-			xmm_in = XMMatrixMultiply(XMMatrixTranslation(0.0f, 0.0f, -1.0f), xmm_in);
-			XMStoreFloat4x4(&xmf_out, xmm_in);
-			c_Player_Fireball.setPosition4x4(XMFLOAT4x4_to_tFloat4x4(xmf_out));
-			tWorld_Object_List.fWorld_Matrix[4] = c_Player_Fireball.getPosition4x4();
-		}
+		c_Player.setPosition(c_Offset_Matrix.GetPosition4());
+		c_Player.setHeading(c_Offset_Matrix.GetHeading());
+		c_Player_Fireball.setPosition(c_Offset_Matrix.GetPosition4());
+		c_Player_Fireball.setHeading(c_Offset_Matrix.GetHeading());
 
 		// Physics
-		tAABB_Player.center = c_Player.getPosition4().fXYZ;
-		tAABB_Player.extents = tFloat3{ 3.0f, 3.0f, 3.0f };
+		tAABB_Player.center = c_Player.getPosition().fXYZ;
+		tAABB_Player.center.fY -= 3;
+		tAABB_Player.extents = tFloat3{ 1.0f, 3.0f, 1.0f };
 
-		tAABB_Player_Fireball.center = c_Player_Fireball.getPosition4().fXYZ;
+		tAABB_Player_Fireball.center = c_Player_Fireball.getPosition().fXYZ;
 		tAABB_Player_Fireball.extents = tFloat3{ 0.2f, 0.13f, 0.2f };
 
 		tAABB_Dragon.center = tWorld_Object_List.fWorld_Matrix[2].tW.fXYZ;
@@ -85,23 +70,13 @@ void cGame_Loop::Update()
 
 		// Collisions
 		if (t_Collisions.Detect_AABB_To_AABB(tAABB_Player, tAABB_Dragon_Fireball))
-		{
-			c_Player.setHealth(-10);
-			if (c_Player.getHealth() <= 0)
-				c_Player.setIsAlive(false);
-		}
+			c_Player.TakeDamage(10);
 		
 		if (t_Collisions.Detect_AABB_To_AABB(tAABB_Dragon, tAABB_Player_Fireball))
-		{
-			c_Dragon.setHealth(-10);
-			c_Player_Fireball.setIsActive(false);
-			
-			if (c_Player.getHealth() <= 0)
-				c_Player.setIsAlive(false);
-		}
+			c_Dragon.TakeDamage(10);
 
-		if ((!c_Player.getIsAlive() || !c_Dragon.getIsAlive()) && m_nScene_Id == 2)
-			bChange_Scene = true;
+		if ((c_Player.getHealth() <= 0 || c_Dragon.getHealth() <= 0) && m_nScene_Id == 2)
+			m_nScene_Id++;
 	}
 
 	// Trackpad movement
@@ -110,12 +85,6 @@ void cGame_Loop::Update()
 
 	// Controller Inputs
 	c_Controllers.Update_Controller(m_nScene_Id, &bChange_Scene, &bMove_Bullet, &bReset_Offset, &movement, c_Offset_Matrix.GetPosition4x4());
-
-	// Player Fireball
-	if (bMove_Bullet)
-		c_Player_Fireball.setIsActive(true);
-	else
-		c_Player_Fireball.setIsActive(false);
 
 	// Special (Reset Position)
 	if (bReset_Offset && m_nScene_Id != 2)
@@ -130,13 +99,7 @@ void cGame_Loop::Update()
 		c_Render_Manager.Unload(&tWorld_Object_List);
 		m_nScene_Id++;
 		if (m_nScene_Id > 3)
-		{
 			m_nScene_Id = 2;
-			c_Player.setIsAlive(true);
-			c_Player.setHealth(100);
-			c_Dragon.setIsAlive(true);
-			c_Dragon.setHealth(100);
-		}
 		tWorld_Object_List = c_Scene_Manager.Get_World_Scene(m_nScene_Id);
 		c_Render_Manager.Load_Data(m_nScene_Id, &tWorld_Object_List);
 
@@ -146,9 +109,7 @@ void cGame_Loop::Update()
 
 	// Renders
 	c_Animation_Manager.Animate(c_XTime.Delta(), c_XTime.TotalTimeExact(), &tWorld_Object_List);
-	p.create_particles(color, c_XTime.Delta(), acceleration);  // needs to be called when a fireball is thrown
-	c_Render_Manager.set_particle_array(p.get_particles());   // JUST ADDED THIS
-	c_Render_Manager.Draw_World(m_nScene_Id, &tWorld_Object_List, &bChange_Scene, &bMove_Bullet, c_Head_Mount, c_Offset_Matrix.GetPosition4x4(), c_XTime.TotalTime(), c_Player_Fireball);
+	c_Render_Manager.Draw_World(m_nScene_Id, &tWorld_Object_List, &bChange_Scene, &bMove_Bullet, c_Head_Mount, c_Offset_Matrix.GetPosition4x4());
 	c_Render_Manager.Draw_Personal(&tPersonal_Object_List, c_Head_Mount, c_Controllers, c_Offset_Matrix.GetPosition4x4(), c_Player_Fireball);
 	c_Head_Mount.VR_Render();
 

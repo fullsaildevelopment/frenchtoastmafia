@@ -1,7 +1,7 @@
 /************************************************************************
 * Filename:  		Game_Loop.h
 * Date:      		24/10/2018
-* Mod. Date: 		11/12/2018
+* Mod. Date: 		12/12/2018
 * Mod. Initials:	WM
 * Author:    		Wichet Manawanitjarern
 * Purpose:   		Main Loop of the Game, System Initialization, System Procedure
@@ -62,6 +62,8 @@ private:
 
 	int test = 0;
 
+	XMFLOAT4X4 xmf_in, xmf_out;
+	XMMATRIX xmm_in;
 	// Particle Stuff
 
 public:
