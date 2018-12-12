@@ -62,20 +62,20 @@ void cGame_Loop::Update()
 		tAABB_Player_Fireball.extents = tFloat3{ 0.2f, 0.13f, 0.2f };
 
 		tAABB_Dragon.center = tWorld_Object_List.fWorld_Matrix[2].tW.fXYZ;
-		tAABB_Dragon.extents = tFloat3{ 175.0f, 90.0f, 170.0f };
+		tAABB_Dragon.extents = tFloat3{ 100.0f, 90.0f, 100.0f };
 
 		tAABB_Dragon_Fireball.center = tWorld_Object_List.fWorld_Matrix[3].tW.fXYZ;
 		tAABB_Dragon_Fireball.extents = tFloat3{ 0.2f, 0.13f, 0.2f };
 
 		// Collisions
-		if (t_Collisions.Detect_AABB_To_AABB(tAABB_Player, tAABB_Dragon_Fireball))
-			c_Player.TakeDamage(10);
-		
-		if (t_Collisions.Detect_AABB_To_AABB(tAABB_Dragon, tAABB_Player_Fireball))
-			c_Dragon.TakeDamage(10);
-
-		if ((c_Player.getHealth() <= 0 || c_Dragon.getHealth() <= 0) && m_nScene_Id == 2)
-			m_nScene_Id++;
+		//if (t_Collisions.Detect_AABB_To_AABB(tAABB_Player, tAABB_Dragon_Fireball))
+		//	c_Player.TakeDamage(10);
+		//
+		//if (t_Collisions.Detect_AABB_To_AABB(tAABB_Dragon, tAABB_Player_Fireball))
+		//	c_Dragon.TakeDamage(10);
+		//
+		//if ((c_Player.getHealth() <= 0 || c_Dragon.getHealth() <= 0) && m_nScene_Id == 2)
+		//	m_nScene_Id++;
 	}
 
 	// Trackpad movement
