@@ -275,5 +275,8 @@
     <FxCompile Include="Particle_Pixel_Shader.hlsl">
       <Filter>Renderer Manager\Shaders\Pixel</Filter>
     </FxCompile>
+    <FxCompile Include="Particle_Vertex_Shader.hlsl">
+      <Filter>Renderer Manager\Shaders\Vertex</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

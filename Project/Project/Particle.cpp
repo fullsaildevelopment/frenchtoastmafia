@@ -16,7 +16,7 @@ Particle::~Particle()
 {
 }
 
-void Particle::create_particles(tFloat4 color, double timer, tFloat3 acceleration)   // if it doesn't work try passing in the array as a parameter and fill it out in the &function
+void Particle::create_particles(tFloat4 color, double timer, tFloat3 acceleration, float particle_kill_condition)   // if it doesn't work try passing in the array as a parameter and fill it out in the &function
 {
 	//int num_particles = 300;   // 626              // May need to be a member variable
 	//particle* temp_particle_effects[300];    // May need to be a mamber variable
@@ -159,7 +159,7 @@ void Particle::create_particles(tFloat4 color, double timer, tFloat3 acceleratio
 		// changing the alpha over time
 
 		     // y < -2
-		if (pos.fZ < -2)  // kill condition for particles
+		if (pos.fZ < particle_kill_condition)  // kill condition for particles
 		{
 			particle_pool.release(temp_particle_effects[i]);
 			temp_particle_effects[i] = nullptr;

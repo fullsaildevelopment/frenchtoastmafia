@@ -51,7 +51,7 @@ void cGame_Loop::Update()
 		// Gameplay
 		c_Player.setPosition(c_Offset_Matrix.GetPosition4());
 		c_Player.setHeading(c_Offset_Matrix.GetHeading());
-		c_Player_Fireball.setPosition(c_Offset_Matrix.GetPosition4());
+		c_Player_Fireball.setPosition(tWorld_Object_List.fWorld_Matrix[4].tW);
 		c_Player_Fireball.setHeading(c_Offset_Matrix.GetHeading());
 
 		// Physics
@@ -73,7 +73,16 @@ void cGame_Loop::Update()
 			c_Player.TakeDamage(10);
 		
 		if (t_Collisions.Detect_AABB_To_AABB(tAABB_Dragon, tAABB_Player_Fireball))
+		{
+			dragon_hit = true;
 			c_Dragon.TakeDamage(10);
+			if (dragon_hit == true)
+			{
+				c_Render_Manager.set_particle_array(p.get_particles());
+				p.create_particles(dragon_blast_color, c_XTime.Delta(), dragon_blast_acceleration, dragon_blast_kill);
+				dragon_hit = false;
+			}
+		}
 
 		if ((c_Player.getHealth() <= 0 || c_Dragon.getHealth() <= 0) && m_nScene_Id == 2)
 			m_nScene_Id++;
@@ -109,9 +118,9 @@ void cGame_Loop::Update()
 
 	// Renders
 	c_Animation_Manager.Animate(c_XTime.Delta(), c_XTime.TotalTimeExact(), &tWorld_Object_List);
-	p.create_particles(color, c_XTime.Delta(), acceleration);  // needs to be called when a fireball is thrown
 	c_Render_Manager.set_particle_array(p.get_particles());   // JUST ADDED THIS
-	c_Render_Manager.Draw_World(m_nScene_Id, &tWorld_Object_List, &bChange_Scene, &bMove_Bullet, c_Head_Mount, c_Offset_Matrix.GetPosition4x4(), c_XTime.TotalTime());
+	p.create_particles(fireball_color, c_XTime.Delta(), fireball_acceleration, fireball_kill);  // needs to be called when a fireball is thrown
+	c_Render_Manager.Draw_World(m_nScene_Id, &tWorld_Object_List, &bChange_Scene, &bMove_Bullet, c_Head_Mount, c_Offset_Matrix.GetPosition4x4(), c_XTime.TotalTime(), dragon_hit, c_XTime.Delta());  // c_player_Fireball
 	c_Render_Manager.Draw_Personal(&tPersonal_Object_List, c_Head_Mount, c_Controllers, c_Offset_Matrix.GetPosition4x4(), c_Player_Fireball);
 	c_Head_Mount.VR_Render();
 
@@ -122,3 +131,5 @@ void cGame_Loop::Update()
 void cGame_Loop::Clean_Up()
 {
 }
+
+

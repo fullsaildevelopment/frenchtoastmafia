@@ -56,11 +56,20 @@ private:
 
 	Particle p;
 
-	tFloat3 acceleration = { 0.0f, 0.0f, -9.81f };
+	tFloat3 fireball_acceleration = { 0.0f, 0.0f, -9.81f };
 
-	tFloat4 color = { 0.2078f, 0.2078f, 0.2078f, 1.0f };
+	tFloat3 dragon_blast_acceleration = { 0.0f, -9.81f, 0.0f };
+
+	tFloat4 fireball_color = { 0.2078f, 0.2078f, 0.2078f, 1.0f };
+
+	tFloat4 dragon_blast_color = { 1.0f, 0.38039f, 0.0f, 1.0f };
 
 	int test = 0;
+
+	float fireball_kill = -2.0f;
+	float dragon_blast_kill = 150.0f;
+
+	bool dragon_hit = false;
 
 	// Particle Stuff
 

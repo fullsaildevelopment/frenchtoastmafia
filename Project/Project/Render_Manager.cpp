@@ -451,7 +451,7 @@ void cRender_Manager::Draw_Personal(tScene_Objects* tObject_List, cHead_Mount c_
 }
 
 
-void cRender_Manager::Draw_World(int nScene_Id, tScene_Objects* tObject_List, bool *bChange_Scene, bool *bMove_Bullet, cHead_Mount c_Head_Mount, tFloat4x4 offset, double timer)
+void cRender_Manager::Draw_World(int nScene_Id, tScene_Objects* tObject_List, bool *bChange_Scene, bool *bMove_Bullet, cHead_Mount c_Head_Mount, tFloat4x4 offset, double totalTime, bool dragon_hit, double timeDelta)
 {
 	// SIGNALS
 	cTime.Signal();
@@ -753,7 +753,7 @@ void cRender_Manager::Draw_World(int nScene_Id, tScene_Objects* tObject_List, bo
 				preAlloc_particle[k + 1].fPosition.fW = 1.0f;
 
 				preAlloc_particle[k].fColor.fX = line_vert[l].color.fX;   // 0.2078f  // line_vert[l].color.fX;
-				preAlloc_particle[k].fColor.fY = line_vert[l].color.fY;   // 0.2078f
+				preAlloc_particle[k].fColor.fY = line_vert[l].color.fY;   // 0.2078f   * timer +/ - 5
 				preAlloc_particle[k].fColor.fZ = line_vert[l].color.fZ;   // 0.2078f
 				preAlloc_particle[k].fColor.fW = line_vert[l].color.fW;      // 1.0f
 
@@ -788,7 +788,7 @@ void cRender_Manager::Draw_World(int nScene_Id, tScene_Objects* tObject_List, bo
 			//memcpy(mapped_Particle_Buffer.pData, preAlloc_particle.data(), sizeof(tVertex) * 888);
 			//c_Graphics_Setup->Get_Context().Get()->Unmap(particle_Vertex_Buffer.Get(), 0);
 
-			c_Graphics_Setup->Get_Device().Get()->CreateVertexShader(VertexShader, sizeof(VertexShader), NULL, particle_Vertex_Shader.GetAddressOf());
+			c_Graphics_Setup->Get_Device().Get()->CreateVertexShader(Particle_Vertex_Shader, sizeof(Particle_Vertex_Shader), NULL, particle_Vertex_Shader.GetAddressOf());
 			c_Graphics_Setup->Get_Device().Get()->CreatePixelShader(Particle_Pixel_Shader, sizeof(Particle_Pixel_Shader), NULL, particle_Pixel_Shader.GetAddressOf());
 
 			UINT Offsett[1] = { 0 };
@@ -809,7 +809,8 @@ void cRender_Manager::Draw_World(int nScene_Id, tScene_Objects* tObject_List, bo
 
 			// particle constant buffer goes here
 
-			tPart.direction.w = timer;
+			tPart.direction.z = timeDelta;
+			tPart.direction.w = totalTime;
 
 			c_Graphics_Setup->Get_Context().Get()->Map(particle_Constant_Buffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &particle_Constant_Mapped_RS);
 			memcpy(particle_Constant_Mapped_RS.pData, &tPart, sizeof(tConstantBuffer_VertexShader_Bullet));
@@ -834,6 +835,48 @@ void cRender_Manager::Draw_World(int nScene_Id, tScene_Objects* tObject_List, bo
 
 			c_Graphics_Setup->Get_Context().Get()->Draw(50, 0);
 			// PARTICLES 
+
+			// DRAGON PARTICLES
+
+			if (dragon_hit == true)
+			{
+				tObject_List->fWorld_Matrix->tW.fX;
+				tObject_List->fWorld_Matrix->tW.fY;
+				tObject_List->fWorld_Matrix->tW.fZ - 2;
+				//tObject_List->fWorld_Matrix->tW.fW + 50;
+
+				tWVP.fWorld_Matrix = tFloat4x4_to_XMFLOAT4x4(tObject_List->fWorld_Matrix[2]);
+
+				// particle constant buffer goes here
+
+				tPart.direction.z = timeDelta;
+				tPart.direction.w = totalTime;
+
+				c_Graphics_Setup->Get_Context().Get()->Map(particle_Constant_Buffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &particle_Constant_Mapped_RS);
+				memcpy(particle_Constant_Mapped_RS.pData, &tPart, sizeof(tConstantBuffer_VertexShader_Bullet));
+				c_Graphics_Setup->Get_Context().Get()->Unmap(particle_Constant_Buffer.Get(), 0);
+
+				// particle constant buffer goes here
+
+				c_Graphics_Setup->Get_Context().Get()->Map(d3d_Constant_Buffer_WVP.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &d3d_MSR);
+				memcpy(d3d_MSR.pData, &tWVP, sizeof(tConstantBuffer_VertexShader_WVP));
+				c_Graphics_Setup->Get_Context().Get()->Unmap(d3d_Constant_Buffer_WVP.Get(), 0);
+
+				//tObject_List->fWorld_Matrix[4]    // BULLETS WORLD POSITION
+
+				c_Graphics_Setup->Get_Context().Get()->VSSetConstantBuffers(0, 1, d3d_Constant_Buffer_WVP.GetAddressOf());
+
+				c_Graphics_Setup->Get_Context().Get()->IASetVertexBuffers(0, 1, particle_Vertex_Buffer.GetAddressOf(), Stride, Offsett);
+				c_Graphics_Setup->Get_Context().Get()->IASetInputLayout(c_Graphics_Setup->Get_Input_Layout().Get());
+				c_Graphics_Setup->Get_Context().Get()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
+
+				c_Graphics_Setup->Get_Context().Get()->VSSetShader(particle_Vertex_Shader.Get(), NULL, 0);
+				c_Graphics_Setup->Get_Context().Get()->PSSetShader(particle_Pixel_Shader.Get(), NULL, 0);
+
+				c_Graphics_Setup->Get_Context().Get()->Draw(50, 0);
+			}
+
+			// DRAGON PARTICLES
 
 		}
 

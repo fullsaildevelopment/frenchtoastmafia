@@ -57,7 +57,7 @@ class Particle
 public:
 	Particle();
 	~Particle();
-	void create_particles(tFloat4 color, double timer, tFloat3 acceleration);
+	void create_particles(tFloat4 color, double timer, tFloat3 acceleration, float particle_kill_condition);
 	particle* Particle::get_particles();
 };
 
