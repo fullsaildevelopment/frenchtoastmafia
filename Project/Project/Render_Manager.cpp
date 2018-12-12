@@ -472,7 +472,7 @@ void cRender_Manager::Draw_World(int nScene_Id, tScene_Objects* tObject_List, bo
 	{
 		isHit = false;
 		flashTimer = flashTime;
-		sound.playSoundEffect("DragonSound1.mp3", FMOD_DEFAULT);
+		sound.playSoundEffect("DragonSound1.mp3", FMOD_DEFAULT, 1.0f);
 		tObject_List->dragHP -= 1;
 		if (tObject_List->dragHP == 3)
 		{
@@ -508,7 +508,7 @@ void cRender_Manager::Draw_World(int nScene_Id, tScene_Objects* tObject_List, bo
 	{
 		if (tObject_List->dragHP != 0)
 		{
-			sound.playSoundEffect("Fireball+1.mp3", FMOD_DEFAULT);
+			sound.playSoundEffect("Fireball+1.mp3", FMOD_DEFAULT, 0.5f);
 		}
 	}
 

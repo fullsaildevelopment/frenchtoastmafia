@@ -124,16 +124,16 @@ void cBase_Character::setHeading(tFloat4 tHeading)
 }
 
 
-tFloat4x4 cBase_Character::getPosition4x4()
-{
-	tFloat4x4 temp
-		=
-	{
-		1, 0, 0, 0,
-		0, 1, 0, 0,
-		0, 0, 1, 0,
-		0, 0, 0, 1
-	};
-
-	return temp;
-}
+//tFloat4x4 cBase_Character::getPosition4x4()
+//{
+//	tFloat4x4 temp
+//		=
+//	{
+//		1, 0, 0, 0,
+//		0, 1, 0, 0,
+//		0, 0, 1, 0,
+//		0, 0, 0, 1
+//	};
+//
+//	return temp;
+//}
