@@ -107,3 +107,16 @@ void cBase_Character::TakeDamage(int damage)
 	m_nHealth -= damage;
 }
 
+tFloat4x4 cBase_Character::getPosition4x4()
+{
+	tFloat4x4 temp
+		=
+	{
+		1, 0, 0, 0,
+		0, 1, 0, 0,
+		0, 0, 1, 0,
+		0, 0, 0, 1
+	};
+
+	return temp;
+}

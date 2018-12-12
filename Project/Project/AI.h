@@ -32,7 +32,7 @@ private:
 	float yMove = 0.0f;
 	float zMove = 0.0f;
 
-	float dragSpeed = 1.0f;
+	float dragSpeed = 10.0f;
 
 	void fire();
 

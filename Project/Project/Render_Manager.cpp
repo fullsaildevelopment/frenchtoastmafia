@@ -509,35 +509,35 @@ void cRender_Manager::Draw_World(int nScene_Id, tScene_Objects* tObject_List, bo
 		tObject_List->fWorld_Matrix[4].tW.fY += 0.1;
 	}
 	
-	// Collision
-	{
-		tAABB_Bullet.center.fX = tObject_List->fWorld_Matrix[4].tW.fX;
-		tAABB_Bullet.center.fY = tObject_List->fWorld_Matrix[4].tW.fY;
-		tAABB_Bullet.center.fZ = tObject_List->fWorld_Matrix[4].tW.fZ;
-	
-		tAABB_Bullet.extents.fX = 0.2f;
-		tAABB_Bullet.extents.fY = 0.13f;
-		tAABB_Bullet.extents.fZ = 0.2f;
-	
-		tAABB_Dragon.center.fX = tObject_List->fWorld_Matrix[2].tW.fX;
-		tAABB_Dragon.center.fY = tObject_List->fWorld_Matrix[2].tW.fY;
-		tAABB_Dragon.center.fZ = tObject_List->fWorld_Matrix[2].tW.fZ;
-	
-		tAABB_Dragon.extents.fX = 17.0f;
-		tAABB_Dragon.extents.fY = 9.0f;
-		tAABB_Dragon.extents.fZ = 17.0f;
-	
-		bCollided = t_Collisions.Detect_AABB_To_AABB(tAABB_Bullet, tAABB_Dragon);
-	
-		if (bCollided)
-		{
-			tObject_List->fWorld_Matrix[4].tW.fX = -0.1;
-			tObject_List->fWorld_Matrix[4].tW.fY = 0.1;
-			tObject_List->fWorld_Matrix[4].tW.fX = -0.1;
-			*bMove_Bullet = false;
-			isHit = true;
-		}
-	}
+	//// Collision
+	//{
+	//	tAABB_Bullet.center.fX = tObject_List->fWorld_Matrix[4].tW.fX;
+	//	tAABB_Bullet.center.fY = tObject_List->fWorld_Matrix[4].tW.fY;
+	//	tAABB_Bullet.center.fZ = tObject_List->fWorld_Matrix[4].tW.fZ;
+	//
+	//	tAABB_Bullet.extents.fX = 0.2f;
+	//	tAABB_Bullet.extents.fY = 0.13f;
+	//	tAABB_Bullet.extents.fZ = 0.2f;
+	//
+	//	tAABB_Dragon.center.fX = tObject_List->fWorld_Matrix[2].tW.fX;
+	//	tAABB_Dragon.center.fY = tObject_List->fWorld_Matrix[2].tW.fY;
+	//	tAABB_Dragon.center.fZ = tObject_List->fWorld_Matrix[2].tW.fZ;
+	//
+	//	tAABB_Dragon.extents.fX = 17.0f;
+	//	tAABB_Dragon.extents.fY = 9.0f;
+	//	tAABB_Dragon.extents.fZ = 17.0f;
+	//
+	//	bCollided = t_Collisions.Detect_AABB_To_AABB(tAABB_Bullet, tAABB_Dragon);
+	//
+	//	if (bCollided)
+	//	{
+	//		tObject_List->fWorld_Matrix[4].tW.fX = -0.1;
+	//		tObject_List->fWorld_Matrix[4].tW.fY = 0.1;
+	//		tObject_List->fWorld_Matrix[4].tW.fX = -0.1;
+	//		*bMove_Bullet = false;
+	//		isHit = true;
+	//	}
+	//}
 	// SIGNALS
 	cTime.Signal();
 	float clear_color[4] = { 0.000000000f, 1.000000000f, 0.48235f, 1.000000000f };

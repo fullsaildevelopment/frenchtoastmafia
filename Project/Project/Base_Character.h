@@ -21,6 +21,8 @@ private:
 	bool m_bIsMovable = true;
 	bool m_bIsGrounded = true;
 
+	tFloat4 m_tPosition4x4;
+
 	tFloat4 m_tPosition;
 	tFloat4 m_tHeading;
 	//float m_fVelocity;
@@ -254,5 +256,7 @@ public:
 	* Mod. Initials:	 WM
 	*****************************************************************/
 	void TakeDamage(int damage);
+
+	tFloat4x4 getPosition4x4();
 };
 

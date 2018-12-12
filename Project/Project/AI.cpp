@@ -17,7 +17,7 @@ void AI::resolveDragonState(tScene_Objects* tObject_List, tFloat4x4 _playerPos, 
 	//playerPos = Matrix4_To_tFloat4x4(_playerPos);
 	XMMATRIX playerPosMat = XMLoadFloat4x4(&tFloat4x4_to_XMFLOAT4x4(_playerPos));
 
-	if (tObject_List->fWorld_Matrix[3].tW.fY < -5)
+	if (tObject_List->fWorld_Matrix[3].tW.fY < 0)
 	{
 		tObject_List->fWorld_Matrix[3].tW.fX = tObject_List->fWorld_Matrix[2].tW.fX + 10;
 		tObject_List->fWorld_Matrix[3].tW.fY = tObject_List->fWorld_Matrix[2].tW.fY;
@@ -55,23 +55,23 @@ void AI::resolveDragonState(tScene_Objects* tObject_List, tFloat4x4 _playerPos, 
 		//	xMove *= -1;
 		//}
 
-		if (tObject_List->fWorld_Matrix[2].tW.fZ > 10.0f)
-		{
-			xMove = -5;
-		}
-
-		if (tObject_List->fWorld_Matrix[2].tW.fZ < -10.0f)
+		if (tObject_List->fWorld_Matrix[2].tW.fZ > 50.0f)
 		{
 			xMove = 5;
+		}
+
+		if (tObject_List->fWorld_Matrix[2].tW.fZ < -50.0f)
+		{
+			xMove = -5;
 		}
 
 		if (tObject_List->dragHP != 4)
 		{
 			XMMATRIX oldPosMat = XMLoadFloat4x4(&tFloat4x4_to_XMFLOAT4x4(tObject_List->fWorld_Matrix[2]));
-			XMMATRIX moveMat = XMMatrixTranslation(0.0f, 0.0f, dragSpeed * xMove * _dTime);
+			XMMATRIX moveMat = XMMatrixTranslation(dragSpeed * xMove * _dTime, 0.0f, 0.0f);
 
-			//XMMATRIX newPosMat = dragonLookAtMatrix(XMMatrixMultiply(moveMat, oldPosMat), playerPosMat);
-			XMMATRIX newPosMat = XMMatrixMultiply(moveMat, oldPosMat);
+			XMMATRIX newPosMat = lookAtMatrix(XMMatrixMultiply(moveMat, oldPosMat), playerPosMat);
+			//XMMATRIX newPosMat = XMMatrixMultiply(moveMat, oldPosMat);
 
 
 			XMFLOAT4X4 newPos4x4;
@@ -87,7 +87,7 @@ void AI::resolveDragonState(tScene_Objects* tObject_List, tFloat4x4 _playerPos, 
 			if (tObject_List->dragHP == 3)
 			{
 				XMMATRIX oldPosMat = XMLoadFloat4x4(&tFloat4x4_to_XMFLOAT4x4(tObject_List->fWorld_Matrix[3]));
-				XMMATRIX moveMat = XMMatrixTranslation(0.0f, 0.0f, 1.0f);
+				XMMATRIX moveMat = XMMatrixTranslation(0.0f, 0.0f, 5.0f);
 
 				XMMATRIX newPosMat = XMMatrixMultiply(moveMat, oldPosMat);
 				XMFLOAT4X4 newPos4x4;
@@ -96,9 +96,8 @@ void AI::resolveDragonState(tScene_Objects* tObject_List, tFloat4x4 _playerPos, 
 			}
 			else if(tObject_List->dragHP == 2)
 			{
-				dragSpeed = 2.0f;
 				XMMATRIX oldPosMat = XMLoadFloat4x4(&tFloat4x4_to_XMFLOAT4x4(tObject_List->fWorld_Matrix[3]));
-				XMMATRIX moveMat = XMMatrixTranslation(0.0f, 0.0f, 2.0f);
+				XMMATRIX moveMat = XMMatrixTranslation(0.0f, 0.0f, 10.0f);
 
 				XMMATRIX newPosMat = XMMatrixMultiply(moveMat, oldPosMat);
 				XMFLOAT4X4 newPos4x4;
@@ -107,9 +106,8 @@ void AI::resolveDragonState(tScene_Objects* tObject_List, tFloat4x4 _playerPos, 
 			}
 			else if (tObject_List->dragHP == 1)
 			{
-				dragSpeed = 3.0f;
 				XMMATRIX oldPosMat = XMLoadFloat4x4(&tFloat4x4_to_XMFLOAT4x4(tObject_List->fWorld_Matrix[3]));
-				XMMATRIX moveMat = XMMatrixTranslation(0.0f, 0.0f, 3.0f);
+				XMMATRIX moveMat = XMMatrixTranslation(0.0f, 0.0f, 15.0f);
 
 				XMMATRIX newPosMat = XMMatrixMultiply(moveMat, oldPosMat);
 				XMFLOAT4X4 newPos4x4;

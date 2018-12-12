@@ -68,14 +68,14 @@ void cGame_Loop::Update()
 		tAABB_Dragon_Fireball.extents = tFloat3{ 0.2f, 0.13f, 0.2f };
 
 		// Collisions
-		//if (t_Collisions.Detect_AABB_To_AABB(tAABB_Player, tAABB_Dragon_Fireball))
-		//	c_Player.TakeDamage(10);
-		//
-		//if (t_Collisions.Detect_AABB_To_AABB(tAABB_Dragon, tAABB_Player_Fireball))
-		//	c_Dragon.TakeDamage(10);
-		//
-		//if ((c_Player.getHealth() <= 0 || c_Dragon.getHealth() <= 0) && m_nScene_Id == 2)
-		//	m_nScene_Id++;
+		if (t_Collisions.Detect_AABB_To_AABB(tAABB_Player, tAABB_Dragon_Fireball))
+			c_Player.TakeDamage(10);
+		
+		if (t_Collisions.Detect_AABB_To_AABB(tAABB_Dragon, tAABB_Player_Fireball))
+			c_Dragon.TakeDamage(10);
+		
+		if ((c_Player.getHealth() <= 0 || c_Dragon.getHealth() <= 0) && m_nScene_Id == 2)
+			bChange_Scene = true;
 	}
 
 	// Trackpad movement
@@ -103,13 +103,15 @@ void cGame_Loop::Update()
 		c_Render_Manager.Load_Data(m_nScene_Id, &tWorld_Object_List);
 
 		c_Offset_Matrix.ResetPosition();
+		tWorld_Object_List.dragHP = 4;
 		bChange_Scene = false;
 	}
 
 	// Renders
 	if (m_nScene_Id == 2)
 	{
-		c_AI.resolveDragonState(&tWorld_Object_List, c_Offset_Matrix.GetPosition4x4(), c_XTime.Delta());
+		//c_AI.resolveDragonState(&tWorld_Object_List, c_Offset_Matrix.GetPosition4x4(), c_XTime.Delta());
+		c_AI.resolveDragonState(&tWorld_Object_List, c_Player.getPosition4x4(), c_XTime.Delta());
 	}
 	c_Animation_Manager.Animate(c_XTime.Delta(), c_XTime.TotalTimeExact(), &tWorld_Object_List);
 	p.create_particles(color, c_XTime.Delta(), acceleration);  // needs to be called when a fireball is thrown

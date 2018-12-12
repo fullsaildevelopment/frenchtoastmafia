@@ -48,7 +48,6 @@ tScene_Objects cScene_Manager::Get_Personal_Scene()
 
 		tScene.tMesh_Data[obj_id].nVertex_Count = tLeft_Hand.nVertex_Count;
 
-
 		for (int i = 0; i < tLeft_Hand.nIndex_Count; i++)
 		{
 			tScene.tMesh_Data[obj_id].nIndicies.push_back(tLeft_Hand.nIndicies[i]);
@@ -336,25 +335,15 @@ tScene_Objects cScene_Manager::Get_World_Scene(int nScene_Id)
 
 			XMMATRIX tempMatrix = XMMatrixIdentity();
 
-			tempMatrix = XMMatrixMultiply(XMMatrixRotationZ(3.14), tempMatrix);
-
-			tempMatrix = XMMatrixMultiply(XMMatrixRotationX(-3.14 / 2), tempMatrix);
-
-			tempMatrix = XMMatrixMultiply(XMMatrixRotationZ(-3.14/2), tempMatrix);
-
-			tempMatrix = XMMatrixMultiply(XMMatrixRotationX(-3.14 / 5), tempMatrix);
-			////tempMatrix = XMMatrixMultiply(XMMatrixRotationZ(3.14 / 2), tempMatrix);
-			//tempMatrix = XMMatrixMultiply(tempMatrix, XMMatrixRotationY(3.14 / 2));
-			////tempMatrix = XMMatrixMultiply(XMMatrixScaling(0.9, 0.9, 0.9), tempMatrix);
+			//tempMatrix = XMMatrixMultiply(XMMatrixRotationZ(3.14), tempMatrix);
 			//
-			//tempMatrix = XMMatrixMultiply(tempMatrix, XMMatrixTranslation(200, 0, 0));
-
-			//tempMatrix = XMMatrixMultiply(tempMatrix, XMMatrixTranslation(200, 0, 0));
+			//tempMatrix = XMMatrixMultiply(XMMatrixRotationX(-3.14 / 2), tempMatrix);
+			//
+			//tempMatrix = XMMatrixMultiply(XMMatrixRotationZ(-3.14/2), tempMatrix);
+			//
+			//tempMatrix = XMMatrixMultiply(XMMatrixRotationX(-3.14 / 5), tempMatrix);
 
 			tempMatrix = XMMatrixMultiply(tempMatrix, XMMatrixTranslation(-200, 0, 0));
-			//
-			//tempMatrix = XMMatrixMultiply(XMMatrixRotationY(-3.14 / 15), tempMatrix);
-
 
 			XMStoreFloat4x4(&temp, tempMatrix);
 
@@ -363,7 +352,14 @@ tScene_Objects cScene_Manager::Get_World_Scene(int nScene_Id)
 
 			for (int i = 0; i < tDragon.nVertex_Count; i++)
 			{
+				float oldY = tDragon.tVerts[i].fPosition.fY;
+				float oldZ = tDragon.tVerts[i].fPosition.fZ;
+				
+				tDragon.tVerts[i].fPosition.fY = oldZ;
+				tDragon.tVerts[i].fPosition.fZ = oldY;
+
 				tDragon.tVerts[i].fPosition.fZ *= -1;
+
 			}
 
 			for (int i = 0; i < tDragon.nVertex_Count; i++)
@@ -401,6 +397,10 @@ tScene_Objects cScene_Manager::Get_World_Scene(int nScene_Id)
 			for (int i = 0; i < tFireball.nVertex_Count; i++)
 			{
 				tFireball.tVerts[i].fPosition.fZ *= -1;
+
+				tFireball.tVerts[i].fPosition.fX = tFireball.tVerts[i].fPosition.fX * 20;
+				tFireball.tVerts[i].fPosition.fY = tFireball.tVerts[i].fPosition.fY * 20;
+				tFireball.tVerts[i].fPosition.fZ = tFireball.tVerts[i].fPosition.fZ * 20;
 			}
 
 			for (int i = 0; i < tFireball.nVertex_Count; i++)
