@@ -1,7 +1,7 @@
 /************************************************************************
 * Filename:  		Offset_Matrix.cpp (Recreate from Camera)
 * Date:      		05/12/2018
-* Mod. Date: 		11/12/2018
+* Mod. Date: 		12/12/2018
 * Mod. Initials:	WM
 * Author:    		Wichet Manawanitjarern
 * Purpose:   		Offset Matrix applies to Headset and Controller to move player's view and hand

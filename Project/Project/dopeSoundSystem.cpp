@@ -75,7 +75,7 @@ void dopeSoundSystem::playSong(const char* soundName, FMOD_MODE channel_mode, fl
 		return;
 	}
 }
-void dopeSoundSystem::play3DSound(const char* soundName, FMOD_MODE channel_mode)
+void dopeSoundSystem::play3DSound(const char* soundName, FMOD_MODE channel_mode, float volume_level)
 {
 	System->createSound(soundName, FMOD_3D, NULL, &threeD_SoundEffect);
 
@@ -88,6 +88,8 @@ void dopeSoundSystem::play3DSound(const char* soundName, FMOD_MODE channel_mode)
 	//FMOD_3D_INVERSEROLLOFF  // All sounds naturally attenuate (fade out) in the real world using a inverse distance attenuation
 	//FMOD_3D_LINEARROLLOFF   // All sounds naturally attenuate (fade out) in the real world using a linear distance attenuation
 	// set3DSettings you can use to change the mindistance/ distance factor, doppler effect, rolloff scale
+
+	threeDSoundChannel->setVolume(volume_level);
 }
 void dopeSoundSystem::pauseNUnPause()
 {
@@ -145,7 +147,7 @@ void dopeSoundSystem::muteAudio()
 		return;
 	}
 }
-void dopeSoundSystem::playSoundEffect(const char* soundName, FMOD_MODE channel_mode)
+void dopeSoundSystem::playSoundEffect(const char* soundName, FMOD_MODE channel_mode, float volume_level)
 {
 	System->createSound(soundName, FMOD_DEFAULT, NULL, &soundEffect);
 	//System->createSound("celtic-harp-and-flute-music-call-of-the-ancients.mp3", FMOD_LOOP_NORMAL, NULL, &song2);
@@ -159,5 +161,6 @@ void dopeSoundSystem::playSoundEffect(const char* soundName, FMOD_MODE channel_m
 	soundEffectChannel->setMode(channel_mode);  // if i want sounds to cue them call default and play another song
 	// FMOD_LOOP_NORMAL
 	//soundEffectChannel->setLoopCount(-1);
+	soundEffectChannel->setVolume(volume_level);
 }
 

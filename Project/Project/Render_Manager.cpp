@@ -1,7 +1,7 @@
 /************************************************************************
 * Filename:  		Render_Manager.cpp
 * Date:      		02/10/2018
-* Mod. Date: 		04/12/2018
+* Mod. Date: 		12/12/2018
 * Mod. Initials:	WM
 * Author:    		Wichet Manawanitjarern
 * Purpose:   		Managing system to handle all rendering related task.
@@ -20,7 +20,7 @@ cRender_Manager::~cRender_Manager()
 void cRender_Manager::Initialize(cGraphics_Setup* _setup)
 {
 	//tVertex line_vert_array[line_vert_count];
-	line_vert = new particle[50];    // The array that is meant to hold the particles to draw 
+	line_vert = new particle[50];    // The array that is meant to hold the particles to draw
 									 // tVertex
 
 	dragonTint.fX = 0.0f;
@@ -324,7 +324,7 @@ void cRender_Manager::Draw_Personal(tScene_Objects* tObject_List, cHead_Mount c_
 		}
 
 		c_Graphics_Setup->Get_Context().Get()->ClearDepthStencilView(c_Graphics_Setup->Get_DSV().Get(), D3D11_CLEAR_DEPTH, 1.0f, 0);
-		
+
 		XMStoreFloat4x4(&tWVP.fView_Matrix, XMMatrixIdentity());
 		if (_eyeID == 0)
 			tWVP.fProjection_Matrix = tFloat4x4_to_XMFLOAT4x4(c_Head_Mount.GetCurrentViewProjectionMatrix(vr::Eye_Left, tFloat4x4_To_Matrix4(offset)));
@@ -352,9 +352,9 @@ void cRender_Manager::Draw_Personal(tScene_Objects* tObject_List, cHead_Mount c_
 				else
 				{
 					tFloat4x4 temp = tObject_List->fWorld_Matrix[i];
-					temp.tW.fX = c_Player_Fireball.getPosition().fX;
-					temp.tW.fY = c_Player_Fireball.getPosition().fY;
-					temp.tW.fZ = c_Player_Fireball.getPosition().fZ + 1;
+					temp.tW.fX = c_Player_Fireball.getPosition4().fX;
+					temp.tW.fY = c_Player_Fireball.getPosition4().fY;
+					temp.tW.fZ = c_Player_Fireball.getPosition4().fZ + 1;
 					temp.tZ.fX = c_Player_Fireball.getHeading().fX;
 					temp.tZ.fY = c_Player_Fireball.getHeading().fY;
 					temp.tZ.fZ = c_Player_Fireball.getHeading().fZ;
@@ -385,7 +385,7 @@ void cRender_Manager::Draw_Personal(tScene_Objects* tObject_List, cHead_Mount c_
 				c_Graphics_Setup->Get_Context().Get()->IASetVertexBuffers(0, 1, ts_v_buffer, &verts_skinned_size, &off_set);
 			else
 				c_Graphics_Setup->Get_Context().Get()->IASetVertexBuffers(0, 1, ts_v_buffer, &verts_size, &off_set);
-			
+
 			c_Graphics_Setup->Get_Context().Get()->IASetIndexBuffer(tObject_List->d3d_Index_Buffers[i].Get(), DXGI_FORMAT_R32_UINT, 0);
 			c_Graphics_Setup->Get_Context().Get()->IASetInputLayout(c_Graphics_Setup->Get_Input_Layout().Get());
 			c_Graphics_Setup->Get_Context().Get()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
@@ -436,12 +436,22 @@ void cRender_Manager::Draw_Personal(tScene_Objects* tObject_List, cHead_Mount c_
 			ID3D11Buffer *tmp_con_buffer[] = { tObject_List->tMaterials_Buffers[i].Get() };
 			c_Graphics_Setup->Get_Context().Get()->PSSetConstantBuffers(0, 1, tmp_con_buffer);
 
-			//if (i == 2 && c_Player_Fireball.getIsActive())
+			//if (i != 2)
 			//{
 				if (tObject_List->bIs_Animated[i])
 					c_Graphics_Setup->Get_Context().Get()->DrawIndexed(tObject_List->tMesh_Skinned_Data[i].nIndex_Count, 0, 0);
 				else
 					c_Graphics_Setup->Get_Context().Get()->DrawIndexed(tObject_List->tMesh_Data[i].nIndex_Count, 0, 0);
+			//}
+			//else
+			//{
+			//	if (c_Player_Fireball.getIsActive())
+			//	{
+			//		if (tObject_List->bIs_Animated[i])
+			//			c_Graphics_Setup->Get_Context().Get()->DrawIndexed(tObject_List->tMesh_Skinned_Data[i].nIndex_Count, 0, 0);
+			//		else
+			//			c_Graphics_Setup->Get_Context().Get()->DrawIndexed(tObject_List->tMesh_Data[i].nIndex_Count, 0, 0);
+			//	}
 			//}
 		}
 	}
@@ -450,7 +460,7 @@ void cRender_Manager::Draw_Personal(tScene_Objects* tObject_List, cHead_Mount c_
 }
 
 
-void cRender_Manager::Draw_World(int nScene_Id, tScene_Objects* tObject_List, bool *bChange_Scene, bool *bMove_Bullet, cHead_Mount c_Head_Mount, tFloat4x4 offset, double timer)
+void cRender_Manager::Draw_World(int nScene_Id, tScene_Objects* tObject_List, bool *bChange_Scene, bool *bMove_Bullet, cHead_Mount c_Head_Mount, tFloat4x4 offset, double timer, cBase_Spell c_Player_Fireball)
 {
 	keyboardInputs(tObject_List);
 
@@ -508,7 +518,7 @@ void cRender_Manager::Draw_World(int nScene_Id, tScene_Objects* tObject_List, bo
 		tObject_List->fWorld_Matrix[4].tW.fX -= 0.1;
 		tObject_List->fWorld_Matrix[4].tW.fY += 0.1;
 	}
-	
+
 	//// Collision
 	//{
 	//	tAABB_Bullet.center.fX = tObject_List->fWorld_Matrix[4].tW.fX;
@@ -696,17 +706,29 @@ void cRender_Manager::Draw_World(int nScene_Id, tScene_Objects* tObject_List, bo
 				c_Graphics_Setup->Get_Context().Get()->PSSetConstantBuffers(0, 1, tmp_con_buffer);
 			}
 
-			if (tObject_List->bIs_Animated[i])
-				c_Graphics_Setup->Get_Context().Get()->DrawIndexed(tObject_List->tMesh_Skinned_Data[i].nIndex_Count, 0, 0);
+			if (i != 4)
+			{
+				if (tObject_List->bIs_Animated[i])
+					c_Graphics_Setup->Get_Context().Get()->DrawIndexed(tObject_List->tMesh_Skinned_Data[i].nIndex_Count, 0, 0);
+				else
+					c_Graphics_Setup->Get_Context().Get()->DrawIndexed(tObject_List->tMesh_Data[i].nIndex_Count, 0, 0);
+			}
 			else
-				c_Graphics_Setup->Get_Context().Get()->DrawIndexed(tObject_List->tMesh_Data[i].nIndex_Count, 0, 0);
-
+			{
+				if (c_Player_Fireball.getIsActive())
+				{
+					if (tObject_List->bIs_Animated[i])
+						c_Graphics_Setup->Get_Context().Get()->DrawIndexed(tObject_List->tMesh_Skinned_Data[i].nIndex_Count, 0, 0);
+					else
+						c_Graphics_Setup->Get_Context().Get()->DrawIndexed(tObject_List->tMesh_Data[i].nIndex_Count, 0, 0);
+				}
+			}
 		}
 
 		// sixeof(particle) * 300
 		static std::array<tVertex, 100> preAlloc_particle;  // send this to the processor
 
-															// PARTICLES 
+															// PARTICLES
 		if (nScene_Id == 2 && line_vert != nullptr)
 		{
 			//tObject_List->fWorld_Matrix->tW.fX
@@ -806,8 +828,9 @@ void cRender_Manager::Draw_World(int nScene_Id, tScene_Objects* tObject_List, bo
 			c_Graphics_Setup->Get_Context().Get()->VSSetShader(particle_Vertex_Shader.Get(), NULL, 0);
 			c_Graphics_Setup->Get_Context().Get()->PSSetShader(particle_Pixel_Shader.Get(), NULL, 0);
 
-			c_Graphics_Setup->Get_Context().Get()->Draw(50, 0);
-			// PARTICLES 
+			if (c_Player_Fireball.getIsActive())
+				c_Graphics_Setup->Get_Context().Get()->Draw(50, 0);
+			// PARTICLES
 
 		}
 
@@ -815,7 +838,7 @@ void cRender_Manager::Draw_World(int nScene_Id, tScene_Objects* tObject_List, bo
 	}
 }
 
-particle* cRender_Manager::get_particle_array()  // void  // tVertex 
+particle* cRender_Manager::get_particle_array()  // void  // tVertex
 {
 	return line_vert;
 }
