@@ -57,7 +57,7 @@ class Particle
 public:
 	Particle();
 	~Particle();
-	void create_particles(tFloat4 color, double timer, tFloat3 acceleration, float particle_kill_condition);
+	void create_particles(tFloat4 color, double timer, tFloat3 acceleration, float particle_kill_condition, bool dragon_hit);
 	particle* Particle::get_particles();
 };
 

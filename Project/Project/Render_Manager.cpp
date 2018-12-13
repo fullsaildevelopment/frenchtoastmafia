@@ -463,7 +463,7 @@ void cRender_Manager::Draw_World(int nScene_Id, tScene_Objects* tObject_List, bo
 	if (_AI->getIsHit())
 	{
 		flashTimer = flashTime;
-		sound.playSoundEffect("DragonSound1.mp3", FMOD_DEFAULT, 1.0f);
+		sound.playSoundEffect("DragonSound1.mp3", FMOD_DEFAULT, 0.7f);
 
 		//tObject_List->dragHP -= 1;
 		if (_AI->getHP() == 3)
@@ -542,7 +542,7 @@ void cRender_Manager::Draw_World(int nScene_Id, tScene_Objects* tObject_List, bo
 	//}
 	// SIGNALS
 	cTime.Signal();
-	float clear_color[4] = { 0.000000000f, 1.000000000f, 0.48235f, 1.000000000f };
+	float clear_color[4] = { 0.2078f, 0.2078f, 0.2078f, 1.0f };  //{ 0.000000000f, 1.000000000f, 0.48235f, 1.000000000f };
 
 	for (int _eyeID = 0; _eyeID < 3; _eyeID++)
 	{
@@ -829,12 +829,75 @@ void cRender_Manager::Draw_World(int nScene_Id, tScene_Objects* tObject_List, bo
 
 			if (dragon_hit == true)
 			{
-				tObject_List->fWorld_Matrix->tW.fX;
-				tObject_List->fWorld_Matrix->tW.fY;
-				tObject_List->fWorld_Matrix->tW.fZ - 2;
+				static std::array<tVertex, 100> preAlloc_particle_D;
+
+				for (int k = 0, l = 0; k < 100; k += 2, l++) // if there is no break point in the getter and setter this array break on a random index
+				{
+					random_color = 53 + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (203 - 53)));
+					random_alpha = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+
+					preAlloc_particle_D[k].fPosition.fX = line_vert[l].prev_Position.fX;    // line_vert = null
+					preAlloc_particle_D[k].fPosition.fY = line_vert[l].prev_Position.fY;
+					preAlloc_particle_D[k].fPosition.fZ = line_vert[l].prev_Position.fZ;
+					preAlloc_particle[k].fPosition.fW = 1.0f;
+
+					preAlloc_particle_D[k + 1].fPosition.fX = line_vert[l].position.fX;
+					preAlloc_particle_D[k + 1].fPosition.fY = line_vert[l].position.fY;
+					preAlloc_particle_D[k + 1].fPosition.fZ = line_vert[l].position.fZ;
+					preAlloc_particle_D[k + 1].fPosition.fW = 1.0f;
+
+					preAlloc_particle_D[k].fColor.fX = line_vert[l].color.fX;   // 0.2078f  // line_vert[l].color.fX;
+					preAlloc_particle_D[k].fColor.fY = line_vert[l].color.fY;   // 0.2078f   * timer +/ - 5
+					preAlloc_particle_D[k].fColor.fZ = line_vert[l].color.fZ;   // 0.2078f
+					preAlloc_particle_D[k].fColor.fW = line_vert[l].color.fW;      // 1.0f
+
+					preAlloc_particle_D[k + 1].fColor.fX = line_vert[l].color.fX;   // 0.2078f
+					preAlloc_particle_D[k + 1].fColor.fY = line_vert[l].color.fY;   // 0.2078f
+					preAlloc_particle_D[k + 1].fColor.fZ = line_vert[l].color.fZ;   // 0.2078f
+					preAlloc_particle_D[k + 1].fColor.fW = line_vert[l].color.fW;      // 1.0f
+
+					line_vert_count_D = preAlloc_particle_D.size();
+				}
+
+				D3D11_BUFFER_DESC particle_Vertex_Buffer_DESC;
+				ZeroMemory(&particle_Vertex_Buffer_DESC, sizeof(D3D11_BUFFER_DESC));
+				particle_Vertex_Buffer_DESC.CPUAccessFlags = NULL;
+				particle_Vertex_Buffer_DESC.Usage = D3D11_USAGE_IMMUTABLE;
+				particle_Vertex_Buffer_DESC.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+				particle_Vertex_Buffer_DESC.MiscFlags = 0.0f;
+				particle_Vertex_Buffer_DESC.ByteWidth = sizeof(tVertex) * 100;
+				particle_Vertex_Buffer_DESC.StructureByteStride = 0;
+
+				D3D11_SUBRESOURCE_DATA particle_Vertex_Buffer_DATA;
+				ZeroMemory(&particle_Vertex_Buffer_DATA, sizeof(D3D11_SUBRESOURCE_DATA));
+				particle_Vertex_Buffer_DATA.pSysMem = &preAlloc_particle_D;
+				particle_Vertex_Buffer_DATA.SysMemPitch = 0;
+				particle_Vertex_Buffer_DATA.SysMemSlicePitch = 0;
+
+				c_Graphics_Setup->Get_Device()->CreateBuffer(&particle_Vertex_Buffer_DESC, &particle_Vertex_Buffer_DATA, particle_Vertex_Buffer.GetAddressOf());
+
+				//D3D11_MAPPED_SUBRESOURCE mapped_Particle_Buffer;
+				//c_Graphics_Setup->Get_Context().Get()->Map(particle_Vertex_Buffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &d3d_MSR);
+				//memcpy(mapped_Particle_Buffer.pData, preAlloc_particle.data(), sizeof(tVertex) * 888);
+				//c_Graphics_Setup->Get_Context().Get()->Unmap(particle_Vertex_Buffer.Get(), 0);
+
+				c_Graphics_Setup->Get_Device().Get()->CreateVertexShader(Particle_Vertex_Shader, sizeof(Particle_Vertex_Shader), NULL, particle_Vertex_Shader.GetAddressOf());
+				c_Graphics_Setup->Get_Device().Get()->CreatePixelShader(PixelShader, sizeof(PixelShader), NULL, particle_Pixel_Shader.GetAddressOf());
+
+				UINT Offsett[1] = { 0 };
+				UINT Stride[1] = { sizeof(tVertex) };
+
 				//tObject_List->fWorld_Matrix->tW.fW + 50;
 
-				tWVP.fWorld_Matrix = tFloat4x4_to_XMFLOAT4x4(tObject_List->fWorld_Matrix[2]);
+				float x = tObject_List->fWorld_Matrix[2].tW.fX + 125;  // + 125
+				float y = tObject_List->fWorld_Matrix[2].tW.fY + 80;  // + 100
+				float z = tObject_List->fWorld_Matrix[2].tW.fZ;
+				tFloat4x4 matrix = tObject_List->fWorld_Matrix[2];
+				matrix.tW.fX = x;
+				matrix.tW.fY = y;
+				matrix.tW.fZ = z;
+
+				tWVP.fWorld_Matrix = tFloat4x4_to_XMFLOAT4x4(matrix);
 
 				// particle constant buffer goes here
 

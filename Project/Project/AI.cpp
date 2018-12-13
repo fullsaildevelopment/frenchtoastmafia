@@ -11,7 +11,7 @@ AI::~AI()
 {
 }
 
-void AI::resolveDragonState(tScene_Objects* tObject_List, tFloat4x4 _playerPos, double _dTime)
+void AI::resolveDragonState(tScene_Objects* tObject_List, tFloat4x4 _playerPos, double _dTime, cBase_Spell* _spell)
 {
 	//dragonPos = tObject_List->fWorld_Matrix[2];
 	//playerPos = Matrix4_To_tFloat4x4(_playerPos);
@@ -72,6 +72,7 @@ void AI::resolveDragonState(tScene_Objects* tObject_List, tFloat4x4 _playerPos, 
 
 			if (tObject_List->fWorld_Matrix[3].tW.fY < 0 || tObject_List->fWorld_Matrix[3].tW.fY > 499)
 			{
+				_spell->setIsActive(true);
 				tObject_List->fWorld_Matrix[3] = tObject_List->fWorld_Matrix[2];
 
 				XMMATRIX oldProjPosMat = XMLoadFloat4x4(&tFloat4x4_to_XMFLOAT4x4(tObject_List->fWorld_Matrix[3]));
@@ -81,6 +82,7 @@ void AI::resolveDragonState(tScene_Objects* tObject_List, tFloat4x4 _playerPos, 
 				oldProjPosMat = XMMatrixMultiply(XMMatrixTranslation(2, 0, 0), oldProjPosMat);
 
 				XMMATRIX newProjPosMat = lookAtMatrix(oldProjPosMat, playerPosMat);
+
 				XMFLOAT4X4 newProjPos4x4;
 				XMStoreFloat4x4(&newProjPos4x4, newProjPosMat);
 				tObject_List->fWorld_Matrix[3] = XMFLOAT4x4_to_tFloat4x4(newProjPos4x4);

@@ -84,7 +84,7 @@ private:
 
 	particle *line_vert;      // tVertex
 	int line_vert_count = 0;
-
+	int line_vert_count_D = 0;
 
 	//Particle p;
 

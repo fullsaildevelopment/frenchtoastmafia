@@ -86,18 +86,26 @@ void cGame_Loop::Update()
 		tAABB_Dragon_Fireball.extents = tFloat3{ 0.2f, 0.13f, 0.2f };
 
 		// Collisions
-		if (t_Collisions.Detect_AABB_To_AABB(tAABB_Player, tAABB_Dragon_Fireball))
+		if (t_Collisions.Detect_AABB_To_AABB(tAABB_Player, tAABB_Dragon_Fireball) && c_Dragon_Fireball.getIsActive())
 		{
+			c_Dragon_Fireball.setIsActive(false);
 			c_Player.setHealth(-10);
+			tWorld_Object_List.fWorld_Matrix[3].tW.fY = 500;
 			sound.playSoundEffect("Pain-SoundBible.com-1883168362.mp3", FMOD_DEFAULT, 0.7f);
 			if (c_Player.getHealth() <= 0)
 				c_Player.setIsAlive(false);
 		}
 
-		if (t_Collisions.Detect_AABB_To_AABB(tAABB_Dragon, tAABB_Player_Fireball))
+		if (t_Collisions.Detect_AABB_To_AABB(tAABB_Dragon, tAABB_Player_Fireball) && c_Player_Fireball.getIsActive())
 		{
+			dragon_hit = true;
+			//dragon_hit = c_AI.setIsHit(true);
+			//dragon_hit = c_AI.getIsHit();
+			c_Player_Fireball.setIsActive(false);
 			c_AI.setIsHit(true);
 			c_Dragon.setHealth(-10);
+			c_Render_Manager.set_particle_array(p.get_particles());
+			p.create_particles(dragon_blast_color, c_XTime.Delta(), dragon_blast_acceleration, dragon_blast_kill, dragon_hit);
 			c_Player_Fireball.setIsActive(false);
 
 			if (c_Player.getHealth() <= 0)
@@ -105,7 +113,13 @@ void cGame_Loop::Update()
 
 			bMove_Bullet = false;
 		}
-
+		if (dragon_hit == true)
+			timeCheck += 1;
+		if (timeCheck > 75)
+		{
+			dragon_hit = false;
+			timeCheck = 0;
+		}
 		if ((!c_Player.getIsAlive() || !c_Dragon.getIsAlive()) && m_nScene_Id == 2)
 			bChange_Scene = true;
 	}
@@ -160,11 +174,12 @@ void cGame_Loop::Update()
 	if (m_nScene_Id == 2)
 	{
 		//c_AI.resolveDragonState(&tWorld_Object_List, c_Offset_Matrix.GetPosition4x4(), c_XTime.Delta());
-		c_AI.resolveDragonState(&tWorld_Object_List, c_Player.getPosition4x4(), c_XTime.Delta());
+		c_AI.resolveDragonState(&tWorld_Object_List, c_Player.getPosition4x4(), c_XTime.Delta(), &c_Dragon_Fireball);
 	}
 	c_Animation_Manager.Animate(c_XTime.Delta(), c_XTime.TotalTimeExact(), &tWorld_Object_List);
 	c_Render_Manager.set_particle_array(p.get_particles());   // JUST ADDED THIS
-	c_Render_Manager.Draw_World(m_nScene_Id, &tWorld_Object_List, &bChange_Scene, &bMove_Bullet, c_Head_Mount, c_Offset_Matrix.GetPosition4x4(), c_XTime.TotalTime(), c_Player_Fireball, &c_AI);
+	p.create_particles(fireball_color, c_XTime.Delta(), fireball_acceleration, fireball_kill, dragon_hit);
+	c_Render_Manager.Draw_World(m_nScene_Id, &tWorld_Object_List, &bChange_Scene, &bMove_Bullet, c_Head_Mount, c_Offset_Matrix.GetPosition4x4(), c_XTime.TotalTime(), c_Player_Fireball, &c_AI, dragon_hit, c_XTime.Delta());
 	c_Render_Manager.Draw_Personal(&tPersonal_Object_List, c_Head_Mount, c_Controllers, c_Offset_Matrix.GetPosition4x4(), c_Player_Fireball);
 	c_Head_Mount.VR_Render();
 

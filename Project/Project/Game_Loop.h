@@ -64,7 +64,7 @@ private:
 
 	tFloat4 fireball_color = { 0.2078f, 0.2078f, 0.2078f, 1.0f };
 
-	tFloat4 dragon_blast_color = { 1.0f, 0.38039f, 0.0f, 1.0f };
+	tFloat4 dragon_blast_color = { 1.0f, 0.0f, 0.0f, 1.0f };  // { 1.0f, 0.38039f, 0.0f, 1.0f };
 
 	int test = 0;
 
@@ -72,9 +72,10 @@ private:
 	XMMATRIX xmm_in;
 
 	float fireball_kill = -2.0f;
-	float dragon_blast_kill = 150.0f;
+	float dragon_blast_kill = 0;
 
 	bool dragon_hit = false;
+	float timeCheck = 0;
 	// Particle Stuff
 
 public:

@@ -16,7 +16,7 @@ Particle::~Particle()
 {
 }
 
-void Particle::create_particles(tFloat4 color, double timer, tFloat3 acceleration, float particle_kill_condition)   // if it doesn't work try passing in the array as a parameter and fill it out in the &function
+void Particle::create_particles(tFloat4 color, double timer, tFloat3 acceleration, float particle_kill_condition, bool dragon_hit)   // if it doesn't work try passing in the array as a parameter and fill it out in the &function
 {
 	//int num_particles = 300;   // 626              // May need to be a member variable
 	//particle* temp_particle_effects[300];    // May need to be a mamber variable
@@ -144,7 +144,7 @@ void Particle::create_particles(tFloat4 color, double timer, tFloat3 acceleratio
 
 		// changing the alpha over time
 
-		random_color = 53 + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (203 - 53)));
+		/*random_color = 53 + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (203 - 53)));
 
 		random_alpha = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
 
@@ -154,17 +154,24 @@ void Particle::create_particles(tFloat4 color, double timer, tFloat3 acceleratio
 			temp_particle_effects[i]->color.fY = random_color;
 			temp_particle_effects[i]->color.fZ = random_color;
 			temp_particle_effects[i]->color.fW = random_alpha;
-		}
+		}*/
 
 		// changing the alpha over time
 
 		     // y < -2
+		/*if (acceleration.fY < 0)
+		{
+			if (dragon_hit == false)
+			{
+				particle_pool.release(temp_particle_effects[i]);
+				temp_particle_effects[i] = nullptr;
+			}
+		}*/
 		if (pos.fZ < particle_kill_condition)  // kill condition for particles
 		{
 			particle_pool.release(temp_particle_effects[i]);
 			temp_particle_effects[i] = nullptr;
 		}
-
 		if (temp_particle_effects[i] != nullptr)
 			p_arr[i] = *temp_particle_effects[i];
 	}

@@ -31,7 +31,7 @@ float4 main(INPUT_DATA input) : SV_TARGET
 	float4 BLACK = float4(0.0f, 0.0f, 0.0f, 1.0f);
 	float4 RED = float4(1.0f, 0.0f, 0.0f, 1.0f);
 
-	fEnd_Color = BLACK;
-
+	//fEnd_Color = BLACK;
+	fEnd_Color = RED;
 	return fEnd_Color;
 }
