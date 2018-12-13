@@ -29,7 +29,7 @@ void cGame_Loop::Initialize(cGraphics_Setup* _gsetup, cVR_Setup* _vsetup)
 	c_Head_Mount.SetupCameras();
 	c_Head_Mount.UpdateHMDMatrixPose();
 	c_XTime.Restart();
-	m_nScene_Id = 2;
+	m_nScene_Id = 0;
 }
 
 void cGame_Loop::Setup()
@@ -111,6 +111,9 @@ void cGame_Loop::Update()
 	c_Controllers.Update_Controller(m_nScene_Id, &bChange_Scene, &bMove_Bullet, &bReset_Offset, &movement, c_Offset_Matrix.GetPosition4x4());
 
 	// Player Fireball
+	if (c_Player_Fireball.getPosition4().fX < -200 || c_Player_Fireball.getPosition4().fY > 100 || c_Player_Fireball.getPosition4().fZ > 100)
+		bMove_Bullet = false;
+
 	if (bMove_Bullet)
 		c_Player_Fireball.setIsActive(true);
 	else
@@ -122,6 +125,7 @@ void cGame_Loop::Update()
 		c_Offset_Matrix.ResetPosition();
 		bReset_Offset = false;
 	}
+
 
 	// Scene Transitions
 	if (bChange_Scene)
