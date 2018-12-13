@@ -73,6 +73,9 @@
     <Filter Include="Effects">
       <UniqueIdentifier>{febf2638-5d5d-47af-8c1f-22142ece07dc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="AI">
+      <UniqueIdentifier>{3c6be320-7d7d-4d22-9e10-690efab81c1d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="header.h">
@@ -165,6 +168,9 @@
     <ClInclude Include="Effects.h">
       <Filter>Effects</Filter>
     </ClInclude>
+    <ClInclude Include="AI.h">
+      <Filter>AI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Project.cpp">
@@ -226,6 +232,9 @@
     </ClCompile>
     <ClCompile Include="Particle.cpp">
       <Filter>Effects</Filter>
+    </ClCompile>
+    <ClCompile Include="AI.cpp">
+      <Filter>AI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -1,7 +1,7 @@
 /************************************************************************
 * Filename:  		Head_Mount.h
 * Date:      		28/11/2018
-* Mod. Date: 		07/12/2018
+* Mod. Date: 		12/12/2018
 * Mod. Initials:	WM
 * Author:    		Wichet Manawanitjarern
 * Purpose:   		Handle Head Mount related task for VR
@@ -24,6 +24,8 @@ private:
 
 	int m_iValidPoseCount;
 
+	Matrix4 current_look;
+
 public:
 	cHead_Mount();
 	~cHead_Mount();
@@ -40,5 +42,6 @@ public:
 	void VR_Render();
 
 	tFloat4x4 Get_mat4HMDPose();
+	tFloat4x4 Get_CurrentLook(tFloat4x4 offset);
 };
 

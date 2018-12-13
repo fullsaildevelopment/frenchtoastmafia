@@ -1,7 +1,7 @@
 /************************************************************************
 * Filename:  		Scene_Manager.cpp
 * Date:      		24/10/2018
-* Mod. Date: 		08/11/2018
+* Mod. Date: 		12/12/2018
 * Mod. Initials:	WM
 * Author:    		Wichet Manawanitjarern
 * Purpose:   		Managing system to handle all objects within a scene and related task.
@@ -20,7 +20,7 @@ tScene_Objects cScene_Manager::Get_Personal_Scene()
 {
 	tScene_Objects tScene;
 
-	tScene.nObject_Count = 3;
+	tScene.nObject_Count = 2;
 
 	// Left Hand - 0
 	{
@@ -47,7 +47,6 @@ tScene_Objects cScene_Manager::Get_Personal_Scene()
 		}
 
 		tScene.tMesh_Data[obj_id].nVertex_Count = tLeft_Hand.nVertex_Count;
-
 
 		for (int i = 0; i < tLeft_Hand.nIndex_Count; i++)
 		{
@@ -336,15 +335,15 @@ tScene_Objects cScene_Manager::Get_World_Scene(int nScene_Id)
 
 			XMMATRIX tempMatrix = XMMatrixIdentity();
 
-			tempMatrix = XMMatrixMultiply(XMMatrixRotationX(3.14 / 3), tempMatrix);
-			//tempMatrix = XMMatrixMultiply(XMMatrixRotationZ(3.14 / 2), tempMatrix);
-			tempMatrix = XMMatrixMultiply(tempMatrix, XMMatrixRotationY(3.14 / 2));
-			//tempMatrix = XMMatrixMultiply(XMMatrixScaling(0.9, 0.9, 0.9), tempMatrix);
+			//tempMatrix = XMMatrixMultiply(XMMatrixRotationZ(3.14), tempMatrix);
+			//
+			//tempMatrix = XMMatrixMultiply(XMMatrixRotationX(-3.14 / 2), tempMatrix);
+			//
+			//tempMatrix = XMMatrixMultiply(XMMatrixRotationZ(-3.14/2), tempMatrix);
+			//
+			//tempMatrix = XMMatrixMultiply(XMMatrixRotationX(3.14 / 5), tempMatrix);
 
-			tempMatrix = XMMatrixMultiply(tempMatrix, XMMatrixTranslation(200, 0, 0));
-
-			tempMatrix = XMMatrixMultiply(tempMatrix, XMMatrixRotationY(3.14));
-
+			tempMatrix = XMMatrixMultiply(tempMatrix, XMMatrixTranslation(-200, 0, 0));
 
 			XMStoreFloat4x4(&temp, tempMatrix);
 
@@ -353,7 +352,14 @@ tScene_Objects cScene_Manager::Get_World_Scene(int nScene_Id)
 
 			for (int i = 0; i < tDragon.nVertex_Count; i++)
 			{
+				float oldY = tDragon.tVerts[i].fPosition.fY;
+				float oldZ = tDragon.tVerts[i].fPosition.fZ;
+				
+				tDragon.tVerts[i].fPosition.fY = oldZ;
+				tDragon.tVerts[i].fPosition.fZ = oldY;
+
 				tDragon.tVerts[i].fPosition.fZ *= -1;
+
 			}
 
 			for (int i = 0; i < tDragon.nVertex_Count; i++)
@@ -381,7 +387,7 @@ tScene_Objects cScene_Manager::Get_World_Scene(int nScene_Id)
 
 			XMMATRIX tempMatrix = XMMatrixIdentity();
 
-			tempMatrix = XMMatrixMultiply(tempMatrix, XMMatrixTranslation(-10, 10, 0));
+			tempMatrix = XMMatrixMultiply(tempMatrix, XMMatrixTranslation(0, 500, 0));
 
 			XMStoreFloat4x4(&temp, tempMatrix);
 
@@ -391,6 +397,10 @@ tScene_Objects cScene_Manager::Get_World_Scene(int nScene_Id)
 			for (int i = 0; i < tFireball.nVertex_Count; i++)
 			{
 				tFireball.tVerts[i].fPosition.fZ *= -1;
+
+				tFireball.tVerts[i].fPosition.fX = tFireball.tVerts[i].fPosition.fX * 5;
+				tFireball.tVerts[i].fPosition.fY = tFireball.tVerts[i].fPosition.fY * 5;
+				tFireball.tVerts[i].fPosition.fZ = tFireball.tVerts[i].fPosition.fZ * 5;
 			}
 
 			for (int i = 0; i < tFireball.nVertex_Count; i++)
@@ -418,7 +428,7 @@ tScene_Objects cScene_Manager::Get_World_Scene(int nScene_Id)
 
 			XMMATRIX tempMatrix = XMMatrixIdentity();
 
-			tempMatrix = XMMatrixMultiply(tempMatrix, XMMatrixTranslation(-0.1, 0.1, -0.1));
+			tempMatrix = XMMatrixMultiply(tempMatrix, XMMatrixTranslation(-0.1, -10.1, -0.1));
 
 			XMStoreFloat4x4(&temp, tempMatrix);
 

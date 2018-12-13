@@ -1,7 +1,7 @@
 /************************************************************************
 * Filename:  		Base_Spell.cpp
 * Date:      		05/10/2018
-* Mod. Date: 		11/12/2018
+* Mod. Date: 		12/12/2018
 * Mod. Initials:	WM
 * Author:    		Wichet Manawanitjarern
 * Purpose:   		Base Spell Module to be inherit by various specific spell
@@ -29,7 +29,12 @@ bool cBase_Spell::getIsActive()
 	return m_bIsActive;
 }
 
-tFloat4 cBase_Spell::getPosition()
+tFloat4 cBase_Spell::getPosition4()
+{
+	return m_tPosition.tW;
+}
+
+tFloat4x4 cBase_Spell::getPosition4x4()
 {
 	return m_tPosition;
 }
@@ -49,7 +54,12 @@ void cBase_Spell::setIsActive(bool bActive)
 	m_bIsActive = bActive;
 }
 
-void cBase_Spell::setPosition(tFloat4 tPosition)
+void cBase_Spell::setPosition4(tFloat4 tPosition)
+{
+	m_tPosition.tW = tPosition;
+}
+
+void cBase_Spell::setPosition4x4(tFloat4x4 tPosition)
 {
 	m_tPosition = tPosition;
 }

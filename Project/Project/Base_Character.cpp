@@ -1,7 +1,7 @@
 /************************************************************************
 * Filename:  		Base_Character.cpp
 * Date:      		05/10/2018
-* Mod. Date: 		11/12/2018
+* Mod. Date: 		12/12/2018
 * Mod. Initials:	WM
 * Author:    		Wichet Manawanitjarern
 * Purpose:   		Base Character Module to be inherit by Player and AI
@@ -10,6 +10,12 @@
 
 cBase_Character::cBase_Character()
 {
+	m_tPosition = {
+					1.0f, 0.0f, 0.0f, 0.0f,
+					0.0f, 1.0f, 0.0f, 0.0f,
+					0.0f, 0.0f, 1.0f, 0.0f,
+					0.0f, 0.0f, 0.0f, 1.0f
+				  };
 }
 
 
@@ -52,7 +58,12 @@ bool cBase_Character::getIsCharging()
 	return m_bIsCharging;
 }
 
-tFloat4 cBase_Character::getPosition()
+tFloat4 cBase_Character::getPosition4()
+{
+	return m_tPosition.tW;
+}
+
+tFloat4x4 cBase_Character::getPosition4x4()
 {
 	return m_tPosition;
 }
@@ -70,6 +81,11 @@ tFloat4 cBase_Character::getHeading()
 void cBase_Character::setIsAlive(bool bAlive)
 {
 	m_bIsAlive = bAlive;
+}
+
+void cBase_Character::setHealth(int change)
+{
+	m_nHealth += change;
 }
 
 void cBase_Character::setIsMovable(bool bMovable)
@@ -92,7 +108,12 @@ void cBase_Character::setIsCharging(bool bCharging)
 	m_bIsCharging = bCharging;
 }
 
-void cBase_Character::setPosition(tFloat4 tPosition)
+void cBase_Character::setPosition4(tFloat4 tPosition)
+{
+	m_tPosition.tW = tPosition;
+}
+
+void cBase_Character::setPosition4x4(tFloat4x4 tPosition)
 {
 	m_tPosition = tPosition;
 }
@@ -102,8 +123,17 @@ void cBase_Character::setHeading(tFloat4 tHeading)
 	m_tHeading = tHeading;
 }
 
-void cBase_Character::TakeDamage(int damage)
-{
-	m_nHealth -= damage;
-}
 
+//tFloat4x4 cBase_Character::getPosition4x4()
+//{
+//	tFloat4x4 temp
+//		=
+//	{
+//		1, 0, 0, 0,
+//		0, 1, 0, 0,
+//		0, 0, 1, 0,
+//		0, 0, 0, 1
+//	};
+//
+//	return temp;
+//}

@@ -1,7 +1,7 @@
 /************************************************************************
 * Filename:  		Game_Loop.h
 * Date:      		24/10/2018
-* Mod. Date: 		11/12/2018
+* Mod. Date: 		12/12/2018
 * Mod. Initials:	WM
 * Author:    		Wichet Manawanitjarern
 * Purpose:   		Main Loop of the Game, System Initialization, System Procedure
@@ -22,7 +22,7 @@
 #include "XTime.h"
 #include "dopeSoundSystem.h"
 #include "Particle.h"
-
+#include "AI.h"
 class cGame_Loop
 {
 private:
@@ -36,10 +36,12 @@ private:
 	cRender_Manager c_Render_Manager;
 	cScene_Manager c_Scene_Manager;
 	tCollisions t_Collisions;
-	
+
 	cVR_Setup *c_VR_Setup;
 	XTime c_XTime;
 	dopeSoundSystem sound;
+
+	AI c_AI;
 
 	int m_nScene_Id;
 	bool bChange_Scene = false;
@@ -66,11 +68,13 @@ private:
 
 	int test = 0;
 
+	XMFLOAT4X4 xmf_in, xmf_out;
+	XMMATRIX xmm_in;
+
 	float fireball_kill = -2.0f;
 	float dragon_blast_kill = 150.0f;
 
 	bool dragon_hit = false;
-
 	// Particle Stuff
 
 public:

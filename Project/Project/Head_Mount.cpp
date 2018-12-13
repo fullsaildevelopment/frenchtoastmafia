@@ -1,7 +1,7 @@
 /************************************************************************
 * Filename:  		Head_Mount.cpp
 * Date:      		28/11/2018
-* Mod. Date: 		07/12/2018
+* Mod. Date: 		12/12/2018
 * Mod. Initials:	WM
 * Author:    		Wichet Manawanitjarern
 * Purpose:   		Handle Head Mount related task for VR
@@ -147,5 +147,12 @@ tFloat4x4 cHead_Mount::Get_mat4HMDPose()
 {
 	tFloat4x4 hmd = Matrix4_To_tFloat4x4(c_VR_Setup->Get_mat4HMDPose());
 	return hmd;
+}
+
+tFloat4x4 cHead_Mount::Get_CurrentLook(tFloat4x4 offset)
+{
+	current_look = tFloat4x4_To_Matrix4(offset) * c_VR_Setup->Get_mat4HMDPose();
+	tFloat4x4 tmp = Matrix4_To_tFloat4x4(current_look);
+	return tmp;
 }
 

@@ -1,7 +1,7 @@
 /************************************************************************
 * Filename:  		Base_Character.h
 * Date:      		05/10/2018
-* Mod. Date: 		11/12/2018
+* Mod. Date: 		12/12/2018
 * Mod. Initials:	WM
 * Author:    		Wichet Manawanitjarern
 * Purpose:   		Base Character Module to be inherit by Player and AI
@@ -21,7 +21,7 @@ private:
 	bool m_bIsMovable = true;
 	bool m_bIsGrounded = true;
 
-	tFloat4 m_tPosition;
+	tFloat4x4 m_tPosition;
 	tFloat4 m_tHeading;
 	//float m_fVelocity;
 
@@ -43,11 +43,11 @@ public:
 	***************/
 	/*****************************************************************
 	* getIsAlive():      Check is the character is alive
-	*				     
+	*
 	* Ins:			     none
-	*				     
+	*
 	* Outs:		         none
-	*				     
+	*
 	* Returns:		     bool
 	*
 	* Mod. Date:		 09/10/2018
@@ -63,7 +63,7 @@ public:
 	*
 	* Returns:		     int
 	*
-	* Mod. Date:		 11/12/2018
+	* Mod. Date:		 12/12/2018
 	* Mod. Initials:	 WM
 	*****************************************************************/
 	int getHealth();
@@ -120,7 +120,7 @@ public:
 	*****************************************************************/
 	bool getIsCharging();
 	/*****************************************************************
-	* getPosition():     Get the character's current position
+	* getPosition4():    Get the character's current position
 	*
 	* Ins:			     none
 	*
@@ -128,10 +128,23 @@ public:
 	*
 	* Returns:		     tFloat4 (float4 structure, see basic_structs.h for detail)
 	*
-	* Mod. Date:		 09/10/2018
+	* Mod. Date:		 12/12/2018
 	* Mod. Initials:	 WM
 	*****************************************************************/
-	tFloat4 getPosition();
+	tFloat4 getPosition4();
+	/*****************************************************************
+	* getPosition4x4():  Get the character's current position
+	*
+	* Ins:			     none
+	*
+	* Outs:		         none
+	*
+	* Returns:		     tFloat4x4 (float4 structure, see basic_structs.h for detail)
+	*
+	* Mod. Date:		 12/12/2018
+	* Mod. Initials:	 WM
+	*****************************************************************/
+	tFloat4x4 getPosition4x4();
 	/*****************************************************************
 	* getHeading():      Get the character's current heading
 	*
@@ -152,11 +165,11 @@ public:
 	***************/
 	/*****************************************************************
 	* setIsAlive():      Set the character's alive state
-	*				     
+	*
 	* Ins:			     bAlive
-	*				     
+	*
 	* Outs:		         none
-	*				     
+	*
 	* Returns:		     void
 	*
 	* Mod. Date:		 09/10/2018
@@ -164,7 +177,20 @@ public:
 	*****************************************************************/
 	void setIsAlive(bool bAlive);
 	/*****************************************************************
-	* getIsMovable():    Set the character's movable state (Notes: gameplay as of current date character can't move while casting or charging)
+	* getHeading():      Set the Character's HP
+	*
+	* Ins:			     int
+	*
+	* Outs:		         none
+	*
+	* Returns:		     void
+	*
+	* Mod. Date:		 12/12/2018
+	* Mod. Initials:	 WM
+	*****************************************************************/
+	void setHealth(int change);
+	/*****************************************************************
+	* setIsMovable():    Set the character's movable state (Notes: gameplay as of current date character can't move while casting or charging)
 	*
 	* Ins:			     bMovable
 	*
@@ -177,7 +203,7 @@ public:
 	*****************************************************************/
 	void setIsMovable(bool bMovable);
 	/*****************************************************************
-	* getIsGrounded():   Set the character's ground state.
+	* setIsGrounded():   Set the character's ground state.
 	*
 	* Ins:			     bGrounded
 	*
@@ -190,7 +216,7 @@ public:
 	*****************************************************************/
 	void setIsGrounded(bool bGrounded);
 	/*****************************************************************
-	* getIsCasting():    Set the character's casting state
+	* setIsCasting():    Set the character's casting state
 	*
 	* Ins:			     bCasting
 	*
@@ -203,7 +229,7 @@ public:
 	*****************************************************************/
 	void setIsCasting(bool bCasting);
 	/*****************************************************************
-	* getIsCharging():   Set the character's charging state.
+	* setIsCharging():   Set the character's charging state.
 	*
 	* Ins:			     bCharging
 	*
@@ -216,7 +242,7 @@ public:
 	*****************************************************************/
 	void setIsCharging(bool bCharging);
 	/*****************************************************************
-	* getPosition():     Set the character's current position
+	* setPosition4():    Set the character's current position
 	*
 	* Ins:			     tPosition
 	*
@@ -224,12 +250,25 @@ public:
 	*
 	* Returns:		     void
 	*
-	* Mod. Date:		 09/10/2018
+	* Mod. Date:		 12/12/2018
 	* Mod. Initials:	 WM
 	*****************************************************************/
-	void setPosition(tFloat4 tPosition);
+	void setPosition4(tFloat4 tPosition);
 	/*****************************************************************
-	* getHeading():      Set the character's current heading
+	* setPosition4x4():  Set the character's current position
+	*
+	* Ins:			     tPosition
+	*
+	* Outs:		         none
+	*
+	* Returns:		     void
+	*
+	* Mod. Date:		 12/12/2018
+	* Mod. Initials:	 WM
+	*****************************************************************/
+	void setPosition4x4(tFloat4x4 tPosition);
+	/*****************************************************************
+	* setHeading():      Set the character's current heading
 	*
 	* Ins:			     tHeading
 	*
@@ -241,18 +280,4 @@ public:
 	* Mod. Initials:	 WM
 	*****************************************************************/
 	void setHeading(tFloat4 tHeading);
-	/*****************************************************************
-	* getHeading():      Decrease Character's HP
-	*
-	* Ins:			     int
-	*
-	* Outs:		         none
-	*
-	* Returns:		     void
-	*
-	* Mod. Date:		 11/12/2018
-	* Mod. Initials:	 WM
-	*****************************************************************/
-	void TakeDamage(int damage);
 };
-
