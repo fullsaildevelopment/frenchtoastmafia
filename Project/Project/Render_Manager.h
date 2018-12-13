@@ -66,7 +66,6 @@ private:
 	float flashTime = 0.5f;
 	float flashTimer = 0.0f;
 
-	bool dragonAlive;
 	tFloat4 dragonTint;
 
 	// Collision

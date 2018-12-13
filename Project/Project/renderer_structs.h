@@ -105,7 +105,7 @@ struct tScene_Objects
 	std::string							szPS_File_Path[32]{};
 	ComPtr<ID3D11PixelShader>			d3d_Pixel_Shaders[32]{};
 
-	int									dragHP = 4;
+	//int									dragHP = 4;
 };
 
 

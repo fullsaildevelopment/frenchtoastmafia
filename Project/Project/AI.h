@@ -18,10 +18,15 @@ public:
 	void setIsHit(bool _set);
 	bool getIsHit();
 
+	int getHP();
+	void resetHP();
+
 	AI();
 	~AI();
 
 private:
+
+	int dragHP = 4;
 
 	//tFloat4x4 dragonPos;
 	tFloat4x4 dragonMouthPos;

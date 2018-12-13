@@ -80,14 +80,6 @@ void cRender_Manager::Load_Data(int nScene_Id, tScene_Objects* tObject_List)
 		D3D11_BUFFER_DESC d3dBuffer_Desc;
 		D3D11_SUBRESOURCE_DATA d3dSRD;
 
-		if (nScene_Id == 2)
-		{
-			if (i == 2)
-			{
-				dragonAlive = true;
-			}
-		}
-
 		if (!tObject_List->bIs_Animated[i])
 		{
 			// VERTEX
@@ -464,31 +456,30 @@ void cRender_Manager::Draw_World(int nScene_Id, tScene_Objects* tObject_List, bo
 {
 	keyboardInputs(tObject_List);
 
-	if (GetAsyncKeyState('E') && flashTimer == 0.0f)
+	//if (GetAsyncKeyState('E') && flashTimer == 0.0f)
+	//{
+	//	isHit = true;
+	//}
+	if (_AI->getIsHit())
 	{
-		isHit = true;
-	}
-	if (isHit)
-	{
-		isHit = false;
 		flashTimer = flashTime;
 		sound.playSoundEffect("DragonSound1.mp3", FMOD_DEFAULT, 1.0f);
 
-		tObject_List->dragHP -= 1;
-		if (tObject_List->dragHP == 3)
+		//tObject_List->dragHP -= 1;
+		if (_AI->getHP() == 3)
 		{
 			dragonTint = { 0.0f, 0.0f, 1.0f, 1.0f };
 		}
-		if (tObject_List->dragHP == 2)
+		if (_AI->getHP() == 2)
 		{
 			dragonTint = { 1.0f, 1.0f, 0.0f, 1.0f };
 		}
-		if (tObject_List->dragHP == 1)
+		if (_AI->getHP() == 1)
 		{
 			dragonTint = { 1.0f, 0.0f, 0.0f, 1.0f };
 		}
 
-		if (tObject_List->dragHP <= 0)
+		if (_AI->getHP() <= 0)
 		{
 			*bChange_Scene = true;
 		}
@@ -507,7 +498,7 @@ void cRender_Manager::Draw_World(int nScene_Id, tScene_Objects* tObject_List, bo
 
 	if (tObject_List->fWorld_Matrix[3].tW.fY < -5)
 	{
-		if (tObject_List->dragHP != 0)
+		if (_AI->getHP() != 0)
 		{
 			sound.playSoundEffect("Fireball+1.mp3", FMOD_DEFAULT, 0.5f);
 		}
@@ -590,7 +581,7 @@ void cRender_Manager::Draw_World(int nScene_Id, tScene_Objects* tObject_List, bo
 		for (int i = 0; i < tObject_List->nObject_Count; i++)
 		{
 			// TO TURN OFF OBJECTS
-			if (((i == 2) || (i == 3)) && !dragonAlive)
+			if ((i == 3) && _AI->aggro == false)
 			{
 				continue;
 			}

@@ -341,7 +341,7 @@ tScene_Objects cScene_Manager::Get_World_Scene(int nScene_Id)
 			//
 			//tempMatrix = XMMatrixMultiply(XMMatrixRotationZ(-3.14/2), tempMatrix);
 			//
-			//tempMatrix = XMMatrixMultiply(XMMatrixRotationX(-3.14 / 5), tempMatrix);
+			//tempMatrix = XMMatrixMultiply(XMMatrixRotationX(3.14 / 5), tempMatrix);
 
 			tempMatrix = XMMatrixMultiply(tempMatrix, XMMatrixTranslation(-200, 0, 0));
 
@@ -387,7 +387,7 @@ tScene_Objects cScene_Manager::Get_World_Scene(int nScene_Id)
 
 			XMMATRIX tempMatrix = XMMatrixIdentity();
 
-			tempMatrix = XMMatrixMultiply(tempMatrix, XMMatrixTranslation(-10, -10, 0));
+			tempMatrix = XMMatrixMultiply(tempMatrix, XMMatrixTranslation(0, 500, 0));
 
 			XMStoreFloat4x4(&temp, tempMatrix);
 
@@ -398,9 +398,9 @@ tScene_Objects cScene_Manager::Get_World_Scene(int nScene_Id)
 			{
 				tFireball.tVerts[i].fPosition.fZ *= -1;
 
-				tFireball.tVerts[i].fPosition.fX = tFireball.tVerts[i].fPosition.fX * 20;
-				tFireball.tVerts[i].fPosition.fY = tFireball.tVerts[i].fPosition.fY * 20;
-				tFireball.tVerts[i].fPosition.fZ = tFireball.tVerts[i].fPosition.fZ * 20;
+				tFireball.tVerts[i].fPosition.fX = tFireball.tVerts[i].fPosition.fX * 5;
+				tFireball.tVerts[i].fPosition.fY = tFireball.tVerts[i].fPosition.fY * 5;
+				tFireball.tVerts[i].fPosition.fZ = tFireball.tVerts[i].fPosition.fZ * 5;
 			}
 
 			for (int i = 0; i < tFireball.nVertex_Count; i++)

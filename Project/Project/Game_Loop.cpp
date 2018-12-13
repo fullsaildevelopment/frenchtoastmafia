@@ -117,7 +117,7 @@ void cGame_Loop::Update()
 	c_Controllers.Update_Controller(m_nScene_Id, &bChange_Scene, &bMove_Bullet, &bReset_Offset, &movement, c_Offset_Matrix.GetPosition4x4());
 
 	// Player Fireball
-	if (c_Player_Fireball.getPosition4().fX < -200 || c_Player_Fireball.getPosition4().fY > 100 || c_Player_Fireball.getPosition4().fZ > 100)
+	if (c_Player_Fireball.getPosition4().fX < -200 || c_Player_Fireball.getPosition4().fX > 200 || c_Player_Fireball.getPosition4().fY < -50 || c_Player_Fireball.getPosition4().fY > 200 || c_Player_Fireball.getPosition4().fZ < -200 || c_Player_Fireball.getPosition4().fZ > 200)
 		bMove_Bullet = false;
 
 	if (bMove_Bullet)
@@ -150,7 +150,8 @@ void cGame_Loop::Update()
 		c_Render_Manager.Load_Data(m_nScene_Id, &tWorld_Object_List);
 
 		c_Offset_Matrix.ResetPosition();
-		tWorld_Object_List.dragHP = 4;
+		c_AI.resetHP();
+		bMove_Bullet = false;
 		bChange_Scene = false;
 	}
 
