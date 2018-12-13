@@ -24,6 +24,7 @@ private:
 
 	tFloat2 tReset_Offset;
 
+
 public:
 	cControllers();
 	~cControllers();

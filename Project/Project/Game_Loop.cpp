@@ -80,7 +80,7 @@ void cGame_Loop::Update()
 		tAABB_Player_Fireball.extents = tFloat3{ 0.2f, 0.13f, 0.2f };
 
 		tAABB_Dragon.center = c_Dragon.getPosition4().fXYZ;
-		tAABB_Dragon.extents = tFloat3{ 100.0f, 90.0f, 100.0f };
+		tAABB_Dragon.extents = tFloat3{ 50.0f, 80.0f, 50.0f };
 
 		tAABB_Dragon_Fireball.center = tWorld_Object_List.fWorld_Matrix[3].tW.fXYZ;
 		tAABB_Dragon_Fireball.extents = tFloat3{ 0.2f, 0.13f, 0.2f };
@@ -136,7 +136,12 @@ void cGame_Loop::Update()
 		bMove_Bullet = false;
 
 	if (bMove_Bullet)
+	{
+		if (!c_Player_Fireball.getIsActive())
+			sound.playSoundEffect("Large Fireball-SoundBible.com-301502490.mp3", FMOD_DEFAULT, 0.6f);
+
 		c_Player_Fireball.setIsActive(true);
+	}
 	else
 		c_Player_Fireball.setIsActive(false);
 

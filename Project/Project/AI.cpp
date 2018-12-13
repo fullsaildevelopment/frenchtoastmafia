@@ -72,6 +72,7 @@ void AI::resolveDragonState(tScene_Objects* tObject_List, tFloat4x4 _playerPos, 
 
 			if (tObject_List->fWorld_Matrix[3].tW.fY < 0 || tObject_List->fWorld_Matrix[3].tW.fY > 499)
 			{
+				sound.playSoundEffect("Fireball+1.mp3", FMOD_DEFAULT, 0.5f);
 				_spell->setIsActive(true);
 				tObject_List->fWorld_Matrix[3] = tObject_List->fWorld_Matrix[2];
 

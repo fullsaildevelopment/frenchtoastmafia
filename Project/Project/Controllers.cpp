@@ -146,7 +146,12 @@ void cControllers::Update_Controller(int nScene_Id, bool *bChange_Scene, bool *b
 					{
 						printf("Trigger Press\n");
 						if (nScene_Id == 2)
+						{
+							//if (!bMove_Bullet)
+								//sound.playSoundEffect("Large Fireball-SoundBible.com-301502490.mp3", FMOD_DEFAULT, 0.6f);
+							
 							*bMove_Bullet = true;
+						}
 						else
 							*bChange_Scene = true;
 					}

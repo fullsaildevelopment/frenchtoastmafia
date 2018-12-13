@@ -505,11 +505,11 @@ void cRender_Manager::Draw_World(int nScene_Id, tScene_Objects* tObject_List, bo
 	}
 
 	// Bullet
-	if (*bMove_Bullet == true)
+	/*if (*bMove_Bullet == true)
 	{
 		tObject_List->fWorld_Matrix[4].tW.fX -= 0.1;
 		tObject_List->fWorld_Matrix[4].tW.fY += 0.1;
-	}
+	}*/
 
 	//// Collision
 	//{

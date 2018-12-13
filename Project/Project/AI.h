@@ -4,6 +4,7 @@
 #include "Matrices.h"
 #include "math_conversion.h"
 #include "Base_Spell.h"
+#include "dopeSoundSystem.h"
 
 class AI
 {
@@ -14,6 +15,8 @@ public:
 	bool lookingAtPlayer = false;
 
 	float speed = 5.0f;
+
+	dopeSoundSystem sound;
 
 	void resolveDragonState(tScene_Objects* tObject_List, tFloat4x4 _playerPos, double _dTime, cBase_Spell* _spell);
 	void setIsHit(bool _set);
