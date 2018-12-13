@@ -188,3 +188,13 @@ XMMATRIX AI::dragonLookAtMatrix(XMMATRIX _viewer, XMMATRIX _target)
 	return ret;
 
 }
+
+void AI::setIsHit(bool _set)
+{
+	isHit = _set;
+}
+
+bool AI::getIsHit()
+{
+	return isHit;
+}

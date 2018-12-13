@@ -30,6 +30,8 @@
 #include "Effects.h"
 #include "Particle_Pixel_Shader.csh"
 
+#include "AI.h"
+
 class cRender_Manager
 {
 private:
@@ -109,7 +111,7 @@ public:
 	void Load_Data(int nScene_Id, tScene_Objects* tObject_List);
 	void Unload(tScene_Objects* t_Object_List);
 	void Draw_Personal(tScene_Objects* t_Object_List, cHead_Mount c_Head_Mount, cControllers c_Controllers, tFloat4x4 offset, cBase_Spell c_Player_Fireball);
-	void Draw_World(int nScene_Id, tScene_Objects* t_Object_List, bool *bChange_Scene, bool *bMove_Bullet, cHead_Mount c_Head_Mount, tFloat4x4 offset, double timer, cBase_Spell c_Player_Fireball);
+	void Draw_World(int nScene_Id, tScene_Objects* t_Object_List, bool *bChange_Scene, bool *bMove_Bullet, cHead_Mount c_Head_Mount, tFloat4x4 offset, double timer, cBase_Spell c_Player_Fireball, AI* _AI);
 	particle* get_particle_array();
 	void set_particle_array(particle* p_arr);
 	void keyboardInputs(tScene_Objects* tObject_List);

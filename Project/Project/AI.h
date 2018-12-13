@@ -15,6 +15,8 @@ public:
 	float speed = 5.0f;
 
 	void resolveDragonState(tScene_Objects* tObject_List, tFloat4x4 _playerPos, double _dTime);
+	void setIsHit(bool _set);
+	bool getIsHit();
 
 	AI();
 	~AI();
@@ -33,6 +35,8 @@ private:
 	float zMove = 0.0f;
 
 	float dragSpeed = 10.0f;
+
+	bool isHit = false;
 
 	void fire();
 

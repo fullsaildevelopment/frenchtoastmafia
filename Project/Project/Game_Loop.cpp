@@ -50,6 +50,9 @@ void cGame_Loop::Update()
 		// Gameplay
 		c_Player.setPosition4x4(c_Head_Mount.Get_CurrentLook(c_Offset_Matrix.GetPosition4x4()));
 		c_Player.setHeading(c_Head_Mount.Get_CurrentLook(c_Offset_Matrix.GetPosition4x4()).tZ);
+		c_Dragon.setPosition4x4(tWorld_Object_List.fWorld_Matrix[2]);
+		c_Dragon_Fireball.setPosition4x4(tWorld_Object_List.fWorld_Matrix[3]);
+		c_AI.setIsHit(false);
 		if (bMove_Bullet)
 		{
 			xmf_in = tFloat4x4_to_XMFLOAT4x4(tWorld_Object_List.fWorld_Matrix[4]);
@@ -76,7 +79,7 @@ void cGame_Loop::Update()
 		tAABB_Player_Fireball.center = c_Player_Fireball.getPosition4().fXYZ;
 		tAABB_Player_Fireball.extents = tFloat3{ 0.2f, 0.13f, 0.2f };
 
-		tAABB_Dragon.center = tWorld_Object_List.fWorld_Matrix[2].tW.fXYZ;
+		tAABB_Dragon.center = c_Dragon.getPosition4().fXYZ;
 		tAABB_Dragon.extents = tFloat3{ 100.0f, 90.0f, 100.0f };
 
 		tAABB_Dragon_Fireball.center = tWorld_Object_List.fWorld_Matrix[3].tW.fXYZ;
@@ -92,11 +95,14 @@ void cGame_Loop::Update()
 
 		if (t_Collisions.Detect_AABB_To_AABB(tAABB_Dragon, tAABB_Player_Fireball))
 		{
+			c_AI.setIsHit(true);
 			c_Dragon.setHealth(-10);
 			c_Player_Fireball.setIsActive(false);
 
 			if (c_Player.getHealth() <= 0)
 				c_Player.setIsAlive(false);
+
+			bMove_Bullet = false;
 		}
 
 		if ((!c_Player.getIsAlive() || !c_Dragon.getIsAlive()) && m_nScene_Id == 2)
@@ -157,7 +163,7 @@ void cGame_Loop::Update()
 	c_Animation_Manager.Animate(c_XTime.Delta(), c_XTime.TotalTimeExact(), &tWorld_Object_List);
 	p.create_particles(color, c_XTime.Delta(), acceleration);  // needs to be called when a fireball is thrown
 	c_Render_Manager.set_particle_array(p.get_particles());   // JUST ADDED THIS
-	c_Render_Manager.Draw_World(m_nScene_Id, &tWorld_Object_List, &bChange_Scene, &bMove_Bullet, c_Head_Mount, c_Offset_Matrix.GetPosition4x4(), c_XTime.TotalTime(), c_Player_Fireball);
+	c_Render_Manager.Draw_World(m_nScene_Id, &tWorld_Object_List, &bChange_Scene, &bMove_Bullet, c_Head_Mount, c_Offset_Matrix.GetPosition4x4(), c_XTime.TotalTime(), c_Player_Fireball, &c_AI);
 	c_Render_Manager.Draw_Personal(&tPersonal_Object_List, c_Head_Mount, c_Controllers, c_Offset_Matrix.GetPosition4x4(), c_Player_Fireball);
 	c_Head_Mount.VR_Render();
 

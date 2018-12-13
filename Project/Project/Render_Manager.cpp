@@ -460,7 +460,7 @@ void cRender_Manager::Draw_Personal(tScene_Objects* tObject_List, cHead_Mount c_
 }
 
 
-void cRender_Manager::Draw_World(int nScene_Id, tScene_Objects* tObject_List, bool *bChange_Scene, bool *bMove_Bullet, cHead_Mount c_Head_Mount, tFloat4x4 offset, double timer, cBase_Spell c_Player_Fireball)
+void cRender_Manager::Draw_World(int nScene_Id, tScene_Objects* tObject_List, bool *bChange_Scene, bool *bMove_Bullet, cHead_Mount c_Head_Mount, tFloat4x4 offset, double timer, cBase_Spell c_Player_Fireball, AI* _AI)
 {
 	keyboardInputs(tObject_List);
 
@@ -473,6 +473,7 @@ void cRender_Manager::Draw_World(int nScene_Id, tScene_Objects* tObject_List, bo
 		isHit = false;
 		flashTimer = flashTime;
 		sound.playSoundEffect("DragonSound1.mp3", FMOD_DEFAULT, 1.0f);
+
 		tObject_List->dragHP -= 1;
 		if (tObject_List->dragHP == 3)
 		{
