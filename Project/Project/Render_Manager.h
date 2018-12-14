@@ -1,7 +1,7 @@
 /************************************************************************
 * Filename:  		Render_Manager.h
 * Date:      		02/10/2018
-* Mod. Date: 		05/12/2018
+* Mod. Date: 		12/12/2018
 * Mod. Initials:	WM
 * Author:    		Wichet Manawanitjarern
 * Purpose:   		Managing system to handle all rendering related task.
@@ -25,6 +25,16 @@
 #include "PixelShader_Screen.csh"
 #include "dopeSoundSystem.h"
 
+#include "Particle.h"
+#include "basic_structs.h"
+#include "Effects.h"
+// Particle Stuff
+#include "Particle_Pixel_Shader.csh"
+#include "Particle_Vertex_Shader.csh"
+// Particle Stuff
+
+#include "AI.h"
+
 class cRender_Manager
 {
 private:
@@ -47,7 +57,7 @@ private:
 
 	// CPS
 	tConstantBuffer_PixelShader tCB_PS;
-	
+
 	//XMFLOAT4X4 fCamera_Matrix;
 	//XMFLOAT4X4 fCamera_Origin;
 
@@ -59,8 +69,6 @@ private:
 	float flashTime = 0.5f;
 	float flashTimer = 0.0f;
 
-	bool dragonAlive;
-	int dragonHealth;
 	tFloat4 dragonTint;
 
 	// Collision
@@ -70,6 +78,33 @@ private:
 	D3D11_BUFFER_DESC d3dBuffer_Desc;
 	D3D11_SUBRESOURCE_DATA d3dSRD;
 
+
+
+	static size_t pp_vert_count;
+
+	particle *line_vert;      // tVertex
+	int line_vert_count = 0;
+	int line_vert_count_D = 0;
+
+	//Particle p;
+
+	// Particle Stuff
+	ComPtr<ID3D11Buffer> particle_Vertex_Buffer;
+	ComPtr<ID3D11PixelShader> particle_Pixel_Shader;
+	ComPtr<ID3D11VertexShader> particle_Vertex_Shader;
+
+	ComPtr<ID3D11Buffer> particle_Constant_Buffer;
+	D3D11_MAPPED_SUBRESOURCE particle_Constant_Mapped_RS;
+
+	D3D11_BUFFER_DESC particle_Const_Buff_Desc;
+	D3D11_SUBRESOURCE_DATA particle_Const_Buff_Data;
+
+	tConstantBuffer_VertexShader_Bullet tPart;
+
+	float random_color;
+	float random_alpha;
+	// Particle Stuff
+
 public:
 	cRender_Manager();
 	~cRender_Manager();
@@ -78,5 +113,8 @@ public:
 	void Load_Data(int nScene_Id, tScene_Objects* tObject_List);
 	void Unload(tScene_Objects* t_Object_List);
 	void Draw_Personal(tScene_Objects* t_Object_List, cHead_Mount c_Head_Mount, cControllers c_Controllers, tFloat4x4 offset, cBase_Spell c_Player_Fireball);
-	void Draw_World(int nScene_Id, tScene_Objects* t_Object_List, bool *bChange_Scene, bool *bMove_Bullet, cHead_Mount c_Head_Mount, tFloat4x4 offset);
+	void Draw_World(int nScene_Id, tScene_Objects* t_Object_List, bool *bChange_Scene, bool *bMove_Bullet, cHead_Mount c_Head_Mount, tFloat4x4 offset, double totalTime, cBase_Spell c_Player_Fireball, AI* _AI, bool dragon_hit, double timeDelta);
+	particle* get_particle_array();
+	void set_particle_array(particle* p_arr);
+	void keyboardInputs(tScene_Objects* tObject_List);
 };
