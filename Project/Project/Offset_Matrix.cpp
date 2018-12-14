@@ -69,16 +69,16 @@ void cOffset_Matrix::Update_Offset(double dDelta, tFloat4x4 tHMDPose, tFloat4 fM
 	float z_move = 0.0f;
 
 	if (fMovement_Vect.fX == 1.0f)
-		z_move = -15.0f;
+		z_move = -20.0f;
 
 	if (fMovement_Vect.fY == 1.0f)
-		x_move = 15.0f;
+		x_move = 20.0f;
 
 	if (fMovement_Vect.fZ == 1.0f)
-		z_move = 15.0f;
+		z_move = 20.0f;
 
 	if (fMovement_Vect.fW == 1.0f)
-		x_move = -15.0f;
+		x_move = -20.0f;
 
 	XMMATRIX x_offset = XMMatrixTranslation(tHMDPose.tX.fX * x_move * (float)dDelta, 0.0f, tHMDPose.tX.fZ * x_move * (float)dDelta);
 	XMMATRIX z_offset = XMMatrixTranslation(tHMDPose.tZ.fX * z_move * (float)dDelta, 0.0f, tHMDPose.tZ.fZ * z_move * (float)dDelta);
