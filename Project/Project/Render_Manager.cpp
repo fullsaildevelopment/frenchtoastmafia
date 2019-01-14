@@ -1008,4 +1008,12 @@ void cRender_Manager::keyboardInputs(tScene_Objects* tObject_List)
 		XMStoreFloat4x4(&newMat2, newMat);
 		tObject_List->fWorld_Matrix[5] = XMFLOAT4x4_to_tFloat4x4(newMat2);
 	}
+	if (GetAsyncKeyState('N'))
+	{
+		tObject_List->currAnim[2] = 0;
+	}
+	if (GetAsyncKeyState('M'))
+	{
+		tObject_List->currAnim[2] = 1;
+	}
 }

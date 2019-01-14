@@ -94,8 +94,10 @@ struct tScene_Objects
 	ComPtr<ID3D11ShaderResourceView>	d3d_SRV[32][32]{};
 
 	// Animation
-	tAnimation_Clip						tAnim_Clip[32]{};
+	tAnimation_Clip						tAnim_Clip[32][8]{};
 	tAnimation_Data						tAnim_Data[32]{}; // try to combine with clip when create binary writer
+
+	int									currAnim[32]{};
 
 	// Vertex Shaders
 	std::string							szVS_File_Path[32]{};

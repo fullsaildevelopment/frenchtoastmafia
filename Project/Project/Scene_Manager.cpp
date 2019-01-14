@@ -282,8 +282,10 @@ tScene_Objects cScene_Manager::Get_World_Scene(int nScene_Id)
 			tScene.tMesh_Skinned_Data[0].nIndex_Count = tMage.nIndex_Count;
 
 			tScene.tMaterials_Data[0] = cBinary_Read.Read_Material("material.bin");
-			tScene.tAnim_Clip[0] = cBinary_Read.Read_Skeleton("skeleton.bin");
-			tScene.tAnim_Data[0] = Create_Inverse_Bind_Pose(tScene.tAnim_Clip[0].tKeyFrames[0]);
+			tScene.tAnim_Clip[0][0] = cBinary_Read.Read_Skeleton("skeleton.bin");
+			tScene.tAnim_Data[0] = Create_Inverse_Bind_Pose(tScene.tAnim_Clip[0][0].tKeyFrames[0]);
+
+			tScene.currAnim[0] = 0;
 		}
 		// Battle Mage
 
@@ -396,7 +398,7 @@ tScene_Objects cScene_Manager::Get_World_Scene(int nScene_Id)
 
 			tScene.fWorld_Matrix[2] = XMFLOAT4x4_to_tFloat4x4(temp);
 			tScene.bIs_Animated[2] = true;
-			tMesh_Skinned tDragon = cBinary_Read.Read_Mesh_Skinned("animTest_20framesSkinned.bin");
+			tMesh_Skinned tDragon = cBinary_Read.Read_Mesh_Skinned("animTest_9framesSkinned.bin");
 
 			//for (int i = 0; i < tDragon.nVertex_Count; i++)
 			//{
@@ -418,11 +420,14 @@ tScene_Objects cScene_Manager::Get_World_Scene(int nScene_Id)
 			}
 			tScene.tMesh_Skinned_Data[2].nIndex_Count = tDragon.nIndex_Count;
 
-			tScene.tMaterials_Data[2] = cBinary_Read.Read_Material("animTest_20framesMaterial.bin");
+			tScene.tMaterials_Data[2] = cBinary_Read.Read_Material("animTest_9framesMaterial.bin");
 			tScene.tMaterials_Data[2].tMats[0].szDiffuse_File_Path = "Dragon.fbm\\DarkDragon_D.png";
 
-			tScene.tAnim_Clip[2] = cBinary_Read.Read_Skeleton("animTest_20framesSkeleton.bin");
-			tScene.tAnim_Data[2] = Create_Inverse_Bind_Pose(tScene.tAnim_Clip[2].tKeyFrames[0]);
+			tScene.tAnim_Clip[2][0] = cBinary_Read.Read_Skeleton("animTest_9framesSkeleton.bin");
+			tScene.tAnim_Clip[2][1] = cBinary_Read.Read_Skeleton("animTest_20framesSkeleton.bin");
+			tScene.tAnim_Data[2] = Create_Inverse_Bind_Pose(tScene.tAnim_Clip[2][0].tKeyFrames[0]);
+
+			tScene.currAnim[2] = 1;
 		}
 		// Anim Test
 

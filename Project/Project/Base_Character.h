@@ -33,7 +33,6 @@ private:
 	bool m_bIsCasting = false;
 	bool m_bIsCharging = false;
 
-
 public:
 	cBase_Character();
 	~cBase_Character();
