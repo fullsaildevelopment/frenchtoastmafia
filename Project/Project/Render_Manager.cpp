@@ -968,45 +968,46 @@ void cRender_Manager::set_particle_array(particle* p_arr)  // Gets called twice 
 
 void cRender_Manager::keyboardInputs(tScene_Objects* tObject_List)
 {
+	int objectMover = 2;
 	if (GetAsyncKeyState('J'))
 	{
-		XMMATRIX oldPos = XMLoadFloat4x4(&tFloat4x4_to_XMFLOAT4x4(tObject_List->fWorld_Matrix[5]));
+		XMMATRIX oldPos = XMLoadFloat4x4(&tFloat4x4_to_XMFLOAT4x4(tObject_List->fWorld_Matrix[objectMover]));
 		XMMATRIX moveMat = XMMatrixTranslation(0, 0, 20);
 
 		XMMATRIX newMat = XMMatrixMultiply(moveMat, oldPos);
 		XMFLOAT4X4 newMat2;
 		XMStoreFloat4x4(&newMat2, newMat);
-		tObject_List->fWorld_Matrix[5] = XMFLOAT4x4_to_tFloat4x4(newMat2);
+		tObject_List->fWorld_Matrix[objectMover] = XMFLOAT4x4_to_tFloat4x4(newMat2);
 	}
 	if (GetAsyncKeyState('L'))
 	{
-		XMMATRIX oldPos = XMLoadFloat4x4(&tFloat4x4_to_XMFLOAT4x4(tObject_List->fWorld_Matrix[5]));
+		XMMATRIX oldPos = XMLoadFloat4x4(&tFloat4x4_to_XMFLOAT4x4(tObject_List->fWorld_Matrix[objectMover]));
 		XMMATRIX moveMat = XMMatrixTranslation(0, 0, -20);
 
 		XMMATRIX newMat = XMMatrixMultiply(moveMat, oldPos);
 		XMFLOAT4X4 newMat2;
 		XMStoreFloat4x4(&newMat2, newMat);
-		tObject_List->fWorld_Matrix[5] = XMFLOAT4x4_to_tFloat4x4(newMat2);
+		tObject_List->fWorld_Matrix[objectMover] = XMFLOAT4x4_to_tFloat4x4(newMat2);
 	}
 	if (GetAsyncKeyState('I'))
 	{
-		XMMATRIX oldPos = XMLoadFloat4x4(&tFloat4x4_to_XMFLOAT4x4(tObject_List->fWorld_Matrix[5]));
+		XMMATRIX oldPos = XMLoadFloat4x4(&tFloat4x4_to_XMFLOAT4x4(tObject_List->fWorld_Matrix[objectMover]));
 		XMMATRIX moveMat = XMMatrixTranslation(-20, 0, 0);
 
 		XMMATRIX newMat = XMMatrixMultiply(moveMat, oldPos);
 		XMFLOAT4X4 newMat2;
 		XMStoreFloat4x4(&newMat2, newMat);
-		tObject_List->fWorld_Matrix[5] = XMFLOAT4x4_to_tFloat4x4(newMat2);
+		tObject_List->fWorld_Matrix[objectMover] = XMFLOAT4x4_to_tFloat4x4(newMat2);
 	}
 	if (GetAsyncKeyState('K'))
 	{
-		XMMATRIX oldPos = XMLoadFloat4x4(&tFloat4x4_to_XMFLOAT4x4(tObject_List->fWorld_Matrix[5]));
+		XMMATRIX oldPos = XMLoadFloat4x4(&tFloat4x4_to_XMFLOAT4x4(tObject_List->fWorld_Matrix[objectMover]));
 		XMMATRIX moveMat = XMMatrixTranslation(20, 0, 0);
 
 		XMMATRIX newMat = XMMatrixMultiply(moveMat, oldPos);
 		XMFLOAT4X4 newMat2;
 		XMStoreFloat4x4(&newMat2, newMat);
-		tObject_List->fWorld_Matrix[5] = XMFLOAT4x4_to_tFloat4x4(newMat2);
+		tObject_List->fWorld_Matrix[objectMover] = XMFLOAT4x4_to_tFloat4x4(newMat2);
 	}
 	if (GetAsyncKeyState('N'))
 	{

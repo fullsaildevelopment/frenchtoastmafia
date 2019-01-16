@@ -24,7 +24,7 @@ void cAnimation_Manager::Animate(double dDelta, double dTotal, tScene_Objects* t
 	{
 		if (tObject_List->bIs_Animated[i])
 		{
-			m_fCurrent_Time += (float)dDelta;
+			m_fCurrent_Time += (float)dDelta * 0.5;
 
 			int nFrame_Size = tObject_List->tAnim_Clip[i][tObject_List->currAnim[i]].tKeyFrames.size();
 
