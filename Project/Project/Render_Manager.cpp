@@ -931,7 +931,7 @@ void cRender_Manager::Draw_World(int nScene_Id, tScene_Objects* tObject_List, bo
 
 			for (int k = 0, l = 0; k < 100; k += 4, l++) // if there is no break point in the getter and setter this array break on a random index
 			{                                                                                     // 5
-				random_color = 1 + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (10 - 1)));
+				random_color = 1 + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (5 - 1)));
 				random_alpha = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
 
 				preAlloc_particle[k].fPosition.fX = line_vert[l].prev_Position.fX;    // line_vert = null
