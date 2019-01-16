@@ -23,6 +23,7 @@
 
 #include "PixelShader_Mage.csh"
 #include "PixelShader_Screen.csh"
+#include "PixelShader_Spell.csh"
 #include "dopeSoundSystem.h"
 
 #include "Particle.h"
@@ -57,6 +58,7 @@ private:
 
 	// CPS
 	tConstantBuffer_PixelShader tCB_PS;
+	
 
 	//XMFLOAT4X4 fCamera_Matrix;
 	//XMFLOAT4X4 fCamera_Origin;
@@ -70,6 +72,7 @@ private:
 	float flashTimer = 0.0f;
 
 	tFloat4 dragonTint;
+	FLOAT blend[4];
 
 	// Collision
 	bool bCollided;
@@ -112,9 +115,12 @@ public:
 	void Initialize(cGraphics_Setup* c_Graphics_Setup);
 	void Load_Data(int nScene_Id, tScene_Objects* tObject_List);
 	void Unload(tScene_Objects* t_Object_List);
-	void Draw_Personal(tScene_Objects* t_Object_List, cHead_Mount c_Head_Mount, cControllers c_Controllers, tFloat4x4 offset, cBase_Spell c_Player_Fireball);
+	void Draw_Personal(tScene_Objects* t_Object_List, cHead_Mount c_Head_Mount, cControllers c_Controllers, tFloat4x4 offset, bool *bMove_Bullet, bool *bSpell_Ready, cBase_Spell c_Player_Fireball);
+	void Draw_Spell(tScene_Objects* t_Object_List, cHead_Mount c_Head_Mount, tFloat4x4 offset, bool bDisplay_Spell_Book);
 	void Draw_World(int nScene_Id, tScene_Objects* t_Object_List, bool *bChange_Scene, bool *bMove_Bullet, cHead_Mount c_Head_Mount, tFloat4x4 offset, double totalTime, cBase_Spell c_Player_Fireball, AI* _AI, bool dragon_hit, double timeDelta);
 	particle* get_particle_array();
 	void set_particle_array(particle* p_arr);
 	void keyboardInputs(tScene_Objects* tObject_List);
+
+	void Debugging_AABB(tAABB obj, cHead_Mount c_Head_Mount, tFloat4x4 offset);
 };
