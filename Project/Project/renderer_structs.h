@@ -90,7 +90,7 @@ struct tScene_Objects
 	ComPtr<ID3D11Buffer>				tMaterials_Buffers[32]{};
 
 	// SRV
-	std::string							szSRV_File_Path;
+	std::string							szSRV_File_Path[32];
 	ComPtr<ID3D11ShaderResourceView>	d3d_SRV[32][32]{};
 
 	// Animation
@@ -139,4 +139,9 @@ struct tConstantBuffer_PixelShader
 	XMFLOAT4 specular = { 0.0f, 0.0f, 0.0f, 0.0f };
 	XMFLOAT4 transparency = { 0.0f, 0.0f, 0.0f, 0.0f };
 	XMFLOAT4 tint = { 0.0f, 0.0f, 0.0f, 1.0f };
+};
+
+struct tConstantBuffer_PixelShader_Alpha
+{
+	//XMFLOAT2 alpha;
 };

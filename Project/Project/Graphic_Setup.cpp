@@ -51,8 +51,6 @@ void cGraphics_Setup::Initialize()
 	m_nRenderHeight = (float)current_window_size.bottom - (float)current_window_size.top;
 	m_nRenderWidth = (float)current_window_size.right - (float)current_window_size.left;
 
-
-
 	ZeroMemory(&d3d_Swap_Chain_Desc, sizeof(DXGI_SWAP_CHAIN_DESC));
 	d3d_Swap_Chain_Desc.BufferCount = 1;
 	d3d_Swap_Chain_Desc.BufferDesc.Width = m_nRenderWidth;
@@ -234,6 +232,21 @@ void cGraphics_Setup::Initialize()
 
 	d3d_Device.Get()->CreateSamplerState(&d3d_Sampler_State_Desc, d3d_Sampler_State.GetAddressOf());
 
+	// BLEND STATE
+	ZeroMemory(&d3d_Blend_State_Desc, sizeof(D3D11_BLEND_DESC));
+	d3d_Blend_State_Desc.RenderTarget[0].BlendEnable = TRUE;
+	d3d_Blend_State_Desc.RenderTarget[0].SrcBlend = D3D11_BLEND_SRC_ALPHA;
+	d3d_Blend_State_Desc.RenderTarget[0].DestBlend = D3D11_BLEND_INV_SRC_ALPHA;
+	d3d_Blend_State_Desc.RenderTarget[0].BlendOp = D3D11_BLEND_OP_ADD;
+	d3d_Blend_State_Desc.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_ONE;
+	d3d_Blend_State_Desc.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ZERO;
+	d3d_Blend_State_Desc.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;
+	d3d_Blend_State_Desc.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
+	d3d_Blend_State_Desc.AlphaToCoverageEnable = 0;
+	d3d_Blend_State_Desc.IndependentBlendEnable = 0;
+
+	d3d_Device.Get()->CreateBlendState(&d3d_Blend_State_Desc, d3d_Blend_State.GetAddressOf());
+
 	// SHADERS
 	d3d_Device.Get()->CreateVertexShader(VertexShader, sizeof(VertexShader), NULL, d3d_Vertex_Shader.GetAddressOf());
 	d3d_Device.Get()->CreatePixelShader(PixelShader, sizeof(PixelShader), NULL, d3d_Pixel_Shader.GetAddressOf());
@@ -369,6 +382,11 @@ D3D11_VIEWPORT cGraphics_Setup::Get_View_Port()
 ComPtr<ID3D11DepthStencilState> cGraphics_Setup::Get_Depth_Stencil_State()
 {
 	return d3d_DSS;
+}
+
+ComPtr<ID3D11BlendState> cGraphics_Setup::Get_Blend_State()
+{
+	return d3d_Blend_State;
 }
 
 ComPtr<ID3D11Texture2D> cGraphics_Setup::Get_Texture_Left_Eye()
