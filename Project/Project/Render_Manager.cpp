@@ -22,6 +22,180 @@ void cRender_Manager::Initialize(cGraphics_Setup* _setup)
 	//tVertex line_vert_array[line_vert_count];
 	line_vert = new particle[50];    // The array that is meant to hold the particles to draw
 									 // tVertex
+	quad_indexes[0] = 0;
+	quad_indexes[1] = 2;
+	quad_indexes[2] = 3;
+	quad_indexes[3] = 0;
+	quad_indexes[4] = 1;
+	quad_indexes[5] = 2;
+
+	quad_indexes[6] = 4;
+	quad_indexes[7] = 7;
+	quad_indexes[8] = 6;
+	quad_indexes[9] = 4;
+	quad_indexes[10] = 5;
+	quad_indexes[11] = 7;
+
+	quad_indexes[12] = 8;
+	quad_indexes[13] = 11;
+	quad_indexes[14] = 10;
+	quad_indexes[15] = 8;
+	quad_indexes[16] = 9;
+	quad_indexes[17] = 11;
+
+	quad_indexes[18] = 12;
+	quad_indexes[19] = 15;
+	quad_indexes[20] = 14;
+	quad_indexes[21] = 12;
+	quad_indexes[22] = 13;
+	quad_indexes[23] = 15;
+
+	quad_indexes[24] = 16;
+	quad_indexes[25] = 19;
+	quad_indexes[26] = 18;
+	quad_indexes[27] = 16;
+	quad_indexes[28] = 17;
+	quad_indexes[29] = 19;
+
+	quad_indexes[30] = 20;
+	quad_indexes[31] = 23;
+	quad_indexes[32] = 22;
+	quad_indexes[33] = 20;
+	quad_indexes[34] = 21;
+	quad_indexes[35] = 23;
+
+	quad_indexes[36] = 24;
+	quad_indexes[37] = 27;
+	quad_indexes[38] = 26;
+	quad_indexes[39] = 24;
+	quad_indexes[40] = 25;
+	quad_indexes[41] = 27;
+
+	quad_indexes[42] = 28;
+	quad_indexes[43] = 31;
+	quad_indexes[44] = 30;
+	quad_indexes[45] = 28;
+	quad_indexes[46] = 29;
+	quad_indexes[47] = 31;
+
+	quad_indexes[48] = 32;
+	quad_indexes[49] = 35;
+	quad_indexes[50] = 34;
+	quad_indexes[51] = 32;
+	quad_indexes[52] = 33;
+	quad_indexes[53] = 35;
+
+	quad_indexes[54] = 36;
+	quad_indexes[55] = 39;
+	quad_indexes[56] = 38;
+	quad_indexes[57] = 36;
+	quad_indexes[58] = 37;
+	quad_indexes[59] = 39;
+
+	quad_indexes[60] = 40;
+	quad_indexes[61] = 43;
+	quad_indexes[62] = 42;
+	quad_indexes[63] = 40;
+	quad_indexes[64] = 41;
+	quad_indexes[65] = 43;
+
+	quad_indexes[66] = 44;
+	quad_indexes[67] = 47;
+	quad_indexes[68] = 46;
+	quad_indexes[69] = 44;
+	quad_indexes[70] = 45;
+	quad_indexes[71] = 47;
+
+	quad_indexes[72] = 48;
+	quad_indexes[73] = 51;
+	quad_indexes[74] = 50;
+	quad_indexes[75] = 48;
+	quad_indexes[76] = 49;
+	quad_indexes[77] = 51;
+
+	quad_indexes[78] = 52;
+	quad_indexes[79] = 55;
+	quad_indexes[80] = 54;
+	quad_indexes[81] = 52;
+	quad_indexes[82] = 53;
+	quad_indexes[83] = 55;
+
+	quad_indexes[84] = 56;
+	quad_indexes[85] = 59;
+	quad_indexes[86] = 58;
+	quad_indexes[87] = 56;
+	quad_indexes[88] = 57;
+	quad_indexes[89] = 59;
+
+	quad_indexes[90] = 60;
+	quad_indexes[91] = 63;
+	quad_indexes[92] = 62;
+	quad_indexes[93] = 60;
+	quad_indexes[94] = 61;
+	quad_indexes[95] = 63;
+
+	quad_indexes[96] = 64;
+	quad_indexes[97] = 67;
+	quad_indexes[98] = 66;
+	quad_indexes[99] = 64;
+	quad_indexes[100] = 65;
+	quad_indexes[101] = 67;
+
+	quad_indexes[102] = 68;
+	quad_indexes[103] = 71;
+	quad_indexes[104] = 70;
+	quad_indexes[105] = 68;
+	quad_indexes[106] = 69;
+	quad_indexes[107] = 71;
+
+	quad_indexes[108] = 72;
+	quad_indexes[109] = 75;
+	quad_indexes[110] = 74;
+	quad_indexes[111] = 72;
+	quad_indexes[112] = 73;
+	quad_indexes[113] = 75;
+
+	quad_indexes[114] = 76;
+	quad_indexes[115] = 79;
+	quad_indexes[116] = 78;
+	quad_indexes[117] = 76;
+	quad_indexes[118] = 77;
+	quad_indexes[119] = 79;
+
+	quad_indexes[120] = 80;
+	quad_indexes[121] = 83;
+	quad_indexes[122] = 82;
+	quad_indexes[123] = 80;
+	quad_indexes[124] = 81;
+	quad_indexes[125] = 83;
+
+	quad_indexes[126] = 84;
+	quad_indexes[127] = 87;
+	quad_indexes[128] = 86;
+	quad_indexes[129] = 84;
+	quad_indexes[130] = 85;
+	quad_indexes[131] = 87;
+
+	quad_indexes[132] = 88;
+	quad_indexes[133] = 91;
+	quad_indexes[134] = 90;
+	quad_indexes[135] = 88;
+	quad_indexes[136] = 89;
+	quad_indexes[137] = 91;
+
+	quad_indexes[138] = 92;
+	quad_indexes[139] = 95;
+	quad_indexes[140] = 94;
+	quad_indexes[141] = 92;
+	quad_indexes[142] = 93;
+	quad_indexes[143] = 95;
+
+	quad_indexes[144] = 96;
+	quad_indexes[145] = 99;
+	quad_indexes[146] = 98;
+	quad_indexes[147] = 96;
+	quad_indexes[148] = 97;
+	quad_indexes[149] = 99;
 
 	dragonTint.fX = 0.0f;
 	dragonTint.fZ = 0.0f;
@@ -463,7 +637,7 @@ void cRender_Manager::Draw_World(int nScene_Id, tScene_Objects* tObject_List, bo
 	if (_AI->getIsHit())
 	{
 		flashTimer = flashTime;
-		sound.playSoundEffect("DragonSound1.mp3", FMOD_DEFAULT, 0.7f);
+		sound.playSoundEffect("DragonSound1.mp3", FMOD_DEFAULT, 0.45f);
 
 		//tObject_List->dragHP -= 1;
 		if (_AI->getHP() == 3)
@@ -725,9 +899,39 @@ void cRender_Manager::Draw_World(int nScene_Id, tScene_Objects* tObject_List, bo
 		{
 			//tObject_List->fWorld_Matrix->tW.fX
 			//preAlloc_particle[];
-			for (int k = 0, l = 0; k < 100; k += 2, l++) // if there is no break point in the getter and setter this array break on a random index
+			//for (int k = 0, l = 0; k < 100; k += 2, l++) // if there is no break point in the getter and setter this array break on a random index
+			//{
+			//	random_color = 53 + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (203 - 53)));
+			//	random_alpha = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+
+			//	preAlloc_particle[k].fPosition.fX = line_vert[l].prev_Position.fX;    // line_vert = null
+			//	preAlloc_particle[k].fPosition.fY = line_vert[l].prev_Position.fY;
+			//	preAlloc_particle[k].fPosition.fZ = line_vert[l].prev_Position.fZ;
+			//	preAlloc_particle[k].fPosition.fW = 1.0f;
+
+			//	preAlloc_particle[k + 1].fPosition.fX = line_vert[l].position.fX;
+			//	preAlloc_particle[k + 1].fPosition.fY = line_vert[l].position.fY;
+			//	preAlloc_particle[k + 1].fPosition.fZ = line_vert[l].position.fZ;
+			//	preAlloc_particle[k + 1].fPosition.fW = 1.0f;
+
+			//	preAlloc_particle[k].fColor.fX = line_vert[l].color.fX;   // 0.2078f  // line_vert[l].color.fX;
+			//	preAlloc_particle[k].fColor.fY = line_vert[l].color.fY;   // 0.2078f   * timer +/ - 5
+			//	preAlloc_particle[k].fColor.fZ = line_vert[l].color.fZ;   // 0.2078f
+			//	preAlloc_particle[k].fColor.fW = line_vert[l].color.fW;      // 1.0f
+
+			//	preAlloc_particle[k + 1].fColor.fX = line_vert[l].color.fX;   // 0.2078f
+			//	preAlloc_particle[k + 1].fColor.fY = line_vert[l].color.fY;   // 0.2078f
+			//	preAlloc_particle[k + 1].fColor.fZ = line_vert[l].color.fZ;   // 0.2078f
+			//	preAlloc_particle[k + 1].fColor.fW = line_vert[l].color.fW;      // 1.0f
+
+			//	
+
+			//	line_vert_count = preAlloc_particle.size();
+			//}
+
+			for (int k = 0, l = 0; k < 100; k += 4, l++) // if there is no break point in the getter and setter this array break on a random index
 			{
-				random_color = 53 + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (203 - 53)));
+				random_color = 1 + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (5 - 1)));
 				random_alpha = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
 
 				preAlloc_particle[k].fPosition.fX = line_vert[l].prev_Position.fX;    // line_vert = null
@@ -743,15 +947,85 @@ void cRender_Manager::Draw_World(int nScene_Id, tScene_Objects* tObject_List, bo
 				preAlloc_particle[k].fColor.fX = line_vert[l].color.fX;   // 0.2078f  // line_vert[l].color.fX;
 				preAlloc_particle[k].fColor.fY = line_vert[l].color.fY;   // 0.2078f   * timer +/ - 5
 				preAlloc_particle[k].fColor.fZ = line_vert[l].color.fZ;   // 0.2078f
-				preAlloc_particle[k].fColor.fW = line_vert[l].color.fW;      // 1.0f
+				preAlloc_particle[k].fColor.fW = 0.3f;      // 1.0f
 
 				preAlloc_particle[k + 1].fColor.fX = line_vert[l].color.fX;   // 0.2078f
 				preAlloc_particle[k + 1].fColor.fY = line_vert[l].color.fY;   // 0.2078f
 				preAlloc_particle[k + 1].fColor.fZ = line_vert[l].color.fZ;   // 0.2078f
-				preAlloc_particle[k + 1].fColor.fW = line_vert[l].color.fW;      // 1.0f
+				preAlloc_particle[k + 1].fColor.fW = 0.3f;      // 1.0f
+
+				// Extra vertices to make quad
+
+				preAlloc_particle[k + 2].fPosition.fX = line_vert[l].prev_Position.fX + random_color;
+				preAlloc_particle[k + 2].fPosition.fY = line_vert[l].prev_Position.fY + random_color;
+				preAlloc_particle[k + 2].fPosition.fZ = line_vert[l].prev_Position.fZ + random_color;
+				preAlloc_particle[k + 2].fPosition.fW = 1.0f;
+
+				preAlloc_particle[k + 3].fPosition.fX = line_vert[l].position.fX + random_color;
+				preAlloc_particle[k + 3].fPosition.fY = line_vert[l].position.fY + random_color;
+				preAlloc_particle[k + 3].fPosition.fZ = line_vert[l].position.fZ + random_color;
+				preAlloc_particle[k + 3].fPosition.fW = 1.0f;
+
+				preAlloc_particle[k + 2].fColor.fX = line_vert[l].color.fX;
+				preAlloc_particle[k + 2].fColor.fY = line_vert[l].color.fY;
+				preAlloc_particle[k + 2].fColor.fZ = line_vert[l].color.fZ;
+				preAlloc_particle[k + 2].fColor.fW = 0.3f;
+
+				preAlloc_particle[k + 3].fColor.fX = line_vert[l].color.fX;
+				preAlloc_particle[k + 3].fColor.fY = line_vert[l].color.fY;
+				preAlloc_particle[k + 3].fColor.fZ = line_vert[l].color.fZ;
+				preAlloc_particle[k + 3].fColor.fW = 0.3f;
+
+				// Extra vertices to make quad
+
+				// UV's
+
+				preAlloc_particle[k].fTexture_Coordinate.fX = 0;
+				preAlloc_particle[k].fTexture_Coordinate.fY = 0;
+
+				preAlloc_particle[k + 1].fTexture_Coordinate.fX = 1;
+				preAlloc_particle[k + 1].fTexture_Coordinate.fY = 0;
+
+				preAlloc_particle[k + 2].fTexture_Coordinate.fX = 0;
+				preAlloc_particle[k + 2].fTexture_Coordinate.fY = 1;
+
+				preAlloc_particle[k + 3].fTexture_Coordinate.fX = 1;
+				preAlloc_particle[k + 3].fTexture_Coordinate.fY = 1;
+
+				// UV's
 
 				line_vert_count = preAlloc_particle.size();
 			}
+
+			D3D11_BLEND_DESC particle_Blend_DESC;
+			ZeroMemory(&particle_Blend_DESC, sizeof(D3D11_BLEND_DESC));
+			particle_Blend_DESC.RenderTarget[0].BlendEnable = TRUE;
+			particle_Blend_DESC.RenderTarget[0].SrcBlend = D3D11_BLEND_SRC_ALPHA;
+			particle_Blend_DESC.RenderTarget[0].DestBlend = D3D11_BLEND_INV_SRC_ALPHA;
+			particle_Blend_DESC.RenderTarget[0].BlendOp = D3D11_BLEND_OP_ADD;
+			particle_Blend_DESC.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_ONE;
+			particle_Blend_DESC.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ZERO;
+			particle_Blend_DESC.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;
+			particle_Blend_DESC.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
+			particle_Blend_DESC.AlphaToCoverageEnable = 0;
+			particle_Blend_DESC.IndependentBlendEnable = 0;
+
+			c_Graphics_Setup->Get_Device().Get()->CreateBlendState(&particle_Blend_DESC, particle_Blend_State.GetAddressOf());
+
+			D3D11_SAMPLER_DESC particle_Sample_State_DESC;
+			ZeroMemory(&particle_Sample_State_DESC, sizeof(D3D11_SAMPLER_DESC));
+			particle_Sample_State_DESC.AddressU = D3D11_TEXTURE_ADDRESS_CLAMP;
+			particle_Sample_State_DESC.AddressV = D3D11_TEXTURE_ADDRESS_CLAMP;
+			particle_Sample_State_DESC.AddressW = D3D11_TEXTURE_ADDRESS_CLAMP;
+			particle_Sample_State_DESC.ComparisonFunc = D3D11_COMPARISON_ALWAYS;
+			particle_Sample_State_DESC.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
+			particle_Sample_State_DESC.MaxAnisotropy = 1.0f;
+			particle_Sample_State_DESC.MaxLOD = D3D11_FLOAT32_MAX;
+			particle_Sample_State_DESC.MinLOD = 0.0f;
+			particle_Sample_State_DESC.MipLODBias = 0.0f;
+
+			HRESULT tex = CreateDDSTextureFromFile(c_Graphics_Setup->Get_Device().Get(), L"smoke_texture.dds", nullptr, particle_Shader_Resource_View.GetAddressOf());
+			c_Graphics_Setup->Get_Device().Get()->CreateSamplerState(&particle_Sample_State_DESC, particle_Sample_State.GetAddressOf());
 
 
 			D3D11_BUFFER_DESC particle_Vertex_Buffer_DESC;
@@ -769,7 +1043,22 @@ void cRender_Manager::Draw_World(int nScene_Id, tScene_Objects* tObject_List, bo
 			particle_Vertex_Buffer_DATA.SysMemPitch = 0;
 			particle_Vertex_Buffer_DATA.SysMemSlicePitch = 0;
 
+			D3D11_BUFFER_DESC particle_Index_Buffer_DESC;
+			ZeroMemory(&particle_Index_Buffer_DESC, sizeof(D3D11_BUFFER_DESC));
+			particle_Index_Buffer_DESC.CPUAccessFlags = 0;
+			particle_Index_Buffer_DESC.Usage = D3D11_USAGE_DEFAULT;
+			particle_Index_Buffer_DESC.BindFlags = D3D11_BIND_INDEX_BUFFER;
+			particle_Index_Buffer_DESC.ByteWidth = sizeof(UINT) * 150;
+			particle_Index_Buffer_DESC.MiscFlags = 0;
+
+			D3D11_SUBRESOURCE_DATA particle_Index_Buffer_DATA;
+			ZeroMemory(&particle_Index_Buffer_DATA, sizeof(D3D11_SUBRESOURCE_DATA));
+			particle_Index_Buffer_DATA.pSysMem = &quad_indexes[0];
+			particle_Index_Buffer_DATA.SysMemPitch = 0;
+			particle_Index_Buffer_DATA.SysMemSlicePitch = 0;
+
 			c_Graphics_Setup->Get_Device()->CreateBuffer(&particle_Vertex_Buffer_DESC, &particle_Vertex_Buffer_DATA, particle_Vertex_Buffer.GetAddressOf());
+			c_Graphics_Setup->Get_Device()->CreateBuffer(&particle_Index_Buffer_DESC, &particle_Index_Buffer_DATA, particle_Index_Buffer.GetAddressOf());
 
 			//D3D11_MAPPED_SUBRESOURCE mapped_Particle_Buffer;
 			//c_Graphics_Setup->Get_Context().Get()->Map(particle_Vertex_Buffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &d3d_MSR);
@@ -815,14 +1104,20 @@ void cRender_Manager::Draw_World(int nScene_Id, tScene_Objects* tObject_List, bo
 			c_Graphics_Setup->Get_Context().Get()->VSSetConstantBuffers(0, 1, d3d_Constant_Buffer_WVP.GetAddressOf());
 
 			c_Graphics_Setup->Get_Context().Get()->IASetVertexBuffers(0, 1, particle_Vertex_Buffer.GetAddressOf(), Stride, Offsett);
+			c_Graphics_Setup->Get_Context().Get()->IASetIndexBuffer(particle_Index_Buffer.Get(), DXGI_FORMAT_R32_UINT, 0);
 			c_Graphics_Setup->Get_Context().Get()->IASetInputLayout(c_Graphics_Setup->Get_Input_Layout().Get());
-			c_Graphics_Setup->Get_Context().Get()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
+			c_Graphics_Setup->Get_Context().Get()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+
+			c_Graphics_Setup->Get_Context().Get()->OMSetBlendState(particle_Blend_State.Get(), blend_Ratio, 0xffffffff);
 
 			c_Graphics_Setup->Get_Context().Get()->VSSetShader(particle_Vertex_Shader.Get(), NULL, 0);
 			c_Graphics_Setup->Get_Context().Get()->PSSetShader(particle_Pixel_Shader.Get(), NULL, 0);
 
+			ID3D11ShaderResourceView *temp_particle_Shader_Resource_View[1] = { particle_Shader_Resource_View.Get() };
+			c_Graphics_Setup->Get_Context().Get()->PSSetShaderResources(0, 1, temp_particle_Shader_Resource_View);
+
 			if (c_Player_Fireball.getIsActive())
-				c_Graphics_Setup->Get_Context().Get()->Draw(50, 0);
+				c_Graphics_Setup->Get_Context().Get()->DrawIndexed(50, 0, 0);  // 50  // 100
 			// PARTICLES
 
 			// DRAGON PARTICLES
@@ -855,6 +1150,8 @@ void cRender_Manager::Draw_World(int nScene_Id, tScene_Objects* tObject_List, bo
 					preAlloc_particle_D[k + 1].fColor.fY = line_vert[l].color.fY;   // 0.2078f
 					preAlloc_particle_D[k + 1].fColor.fZ = line_vert[l].color.fZ;   // 0.2078f
 					preAlloc_particle_D[k + 1].fColor.fW = line_vert[l].color.fW;      // 1.0f
+
+
 
 					line_vert_count_D = preAlloc_particle_D.size();
 				}
@@ -925,7 +1222,7 @@ void cRender_Manager::Draw_World(int nScene_Id, tScene_Objects* tObject_List, bo
 				c_Graphics_Setup->Get_Context().Get()->VSSetShader(particle_Vertex_Shader.Get(), NULL, 0);
 				c_Graphics_Setup->Get_Context().Get()->PSSetShader(particle_Pixel_Shader.Get(), NULL, 0);
 
-				c_Graphics_Setup->Get_Context().Get()->Draw(50, 0);
+				c_Graphics_Setup->Get_Context().Get()->Draw(50, 0);  // 50  // 100
 			}
 
 			// DRAGON PARTICLES

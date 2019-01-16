@@ -90,6 +90,7 @@ private:
 
 	// Particle Stuff
 	ComPtr<ID3D11Buffer> particle_Vertex_Buffer;
+	ComPtr<ID3D11Buffer> particle_Index_Buffer;
 	ComPtr<ID3D11PixelShader> particle_Pixel_Shader;
 	ComPtr<ID3D11VertexShader> particle_Vertex_Shader;
 
@@ -101,8 +102,17 @@ private:
 
 	tConstantBuffer_VertexShader_Bullet tPart;
 
+	ComPtr<ID3D11ShaderResourceView> particle_Shader_Resource_View;
+	ComPtr<ID3D11SamplerState> particle_Sample_State;
+
+	ComPtr<ID3D11BlendState> particle_Blend_State;
+
+	FLOAT blend_Ratio[4];
+
 	float random_color;
 	float random_alpha;
+
+	UINT quad_indexes[100];
 	// Particle Stuff
 
 public:
