@@ -626,7 +626,7 @@ void cRender_Manager::Draw_Personal(tScene_Objects* tObject_List, cHead_Mount c_
 }
 
 
-void cRender_Manager::Draw_World(int nScene_Id, tScene_Objects* tObject_List, bool *bChange_Scene, bool *bMove_Bullet, cHead_Mount c_Head_Mount, tFloat4x4 offset, double totalTime, cBase_Spell c_Player_Fireball, AI* _AI, bool dragon_hit, double timeDelta)
+void cRender_Manager::Draw_World(int nScene_Id, tScene_Objects* tObject_List, bool *bChange_Scene, bool *bMove_Bullet, cHead_Mount c_Head_Mount, tFloat4x4 offset, double totalTime, cBase_Spell c_Player_Fireball, AI* _AI, bool dragon_hit, double timeDelta, tFloat4x4 player_pos)
 {
 	keyboardInputs(tObject_List);
 
@@ -930,8 +930,8 @@ void cRender_Manager::Draw_World(int nScene_Id, tScene_Objects* tObject_List, bo
 			//}
 
 			for (int k = 0, l = 0; k < 100; k += 4, l++) // if there is no break point in the getter and setter this array break on a random index
-			{
-				random_color = 1 + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (5 - 1)));
+			{                                                                                     // 5
+				random_color = 1 + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (10 - 1)));
 				random_alpha = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
 
 				preAlloc_particle[k].fPosition.fX = line_vert[l].prev_Position.fX;    // line_vert = null
@@ -1077,13 +1077,25 @@ void cRender_Manager::Draw_World(int nScene_Id, tScene_Objects* tObject_List, bo
 			//c_Graphics_Setup->Get_Context().Get()->RSSetViewports(1, &c_Graphics_Setup->Get_View_Port());
 
 			// Set particles position
+
 			tObject_List->fWorld_Matrix->tW.fX;
 			tObject_List->fWorld_Matrix->tW.fY;
 			tObject_List->fWorld_Matrix->tW.fZ - 2;
 			//tObject_List->fWorld_Matrix->tW.fW + 50;
 
-			tWVP.fWorld_Matrix = tFloat4x4_to_XMFLOAT4x4(tObject_List->fWorld_Matrix[4]);
+			XMMATRIX lookat_Fireball_Matrix;
+			XMMATRIX player_Pos_Matrix;
 
+			XMFLOAT4X4 temp_f = tFloat4x4_to_XMFLOAT4x4(tObject_List->fWorld_Matrix[4]);   //  changes the fireball world matrix from a tFloat4x4 to a XMFLOAT4x4
+			lookat_Fireball_Matrix = DirectX::XMLoadFloat4x4(&temp_f);                     //  changes the fireball world matrix from a XMFloat4x4 to a XMMATRIX
+			temp_f = tFloat4x4_to_XMFLOAT4x4(player_pos);                                  //  changes the hmd_matrix from a tFloat4x4 to a XMFLOAT4x4
+			player_Pos_Matrix = DirectX::XMLoadFloat4x4(&temp_f);                          //  changes the hmd_matrix from a XMFLOAT4x4 to a XMMATRIX
+			lookat_Fireball_Matrix = lookAtMatrix(lookat_Fireball_Matrix, player_Pos_Matrix); 
+
+			//lookat_Fireball_Matrix = tFloat4x4_to_XMFLOAT4x4(lookat_Fireball_Matrix);
+			XMFLOAT4X4 lookAt_Fireball_4x4;  // &tWVP.fWorld_Matrix
+			DirectX::XMStoreFloat4x4(&lookAt_Fireball_4x4, lookat_Fireball_Matrix);  // tObject_List->fWorld_Matrix[4]   // tFloat4x4_to_XMFLOAT4x4();
+			tWVP.fWorld_Matrix = lookAt_Fireball_4x4;
 			// particle constant buffer goes here
 
 			tPart.direction.z = timeDelta;
