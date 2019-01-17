@@ -24,7 +24,7 @@ private:
 
 	int m_iValidPoseCount;
 
-	Matrix4 current_look;
+	//Matrix4 current_look;
 
 public:
 	cHead_Mount();
@@ -44,4 +44,3 @@ public:
 	tFloat4x4 Get_mat4HMDPose();
 	tFloat4x4 Get_CurrentLook(tFloat4x4 offset);
 };
-

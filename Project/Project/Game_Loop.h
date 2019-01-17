@@ -18,6 +18,7 @@
 #include "Graphic_Setup.h"
 #include "Render_Manager.h"
 #include "Scene_Manager.h"
+#include "Spell_Book.h"
 #include "VR_Setup.h"
 #include "XTime.h"
 #include "dopeSoundSystem.h"
@@ -35,6 +36,7 @@ private:
 	cOffset_Matrix c_Offset_Matrix;
 	cRender_Manager c_Render_Manager;
 	cScene_Manager c_Scene_Manager;
+	cSpell_Book c_Spell_Book;
 	tCollisions t_Collisions;
 
 	cVR_Setup *c_VR_Setup;
@@ -43,16 +45,58 @@ private:
 
 	AI c_AI;
 
-	int m_nScene_Id;
 	bool bChange_Scene = false;
+	bool bCharacter_Moving = false;
+	bool bDisplay_Spell_Book = false;
+	bool bDisplay_Spell_Node = false;
+	bool bDisplay_Fireball = false;
+	bool bDisplay_Icebolt = false;
+	bool bDisplay_Shield = false;
+	bool bNode_Order[3] = { false };
 	bool bMove_Bullet = false;
 	bool bReset_Offset = false;
+	bool bSpell_Ready = false;
 
-	tScene_Objects tPersonal_Object_List, tWorld_Object_List;
+	int m_nScene_Id;
+	int nDisplay_Spell_Node = 0;
+
 	tFloat4 movement = { 0.0f, 0.0f, 0.0f, 0.0f };
+	tScene_Objects *tPersonal_Object_List, *tWorld_Object_List, *tSpell_Book, *tFireball_Nodes, *tIcebolt_Nodes, *tShield_Nodes;
+	tAABB tAABB_Player, tAABB_Player_Fireball, tAABB_Dragon;
+	tAABB tAABB_Left_Hand, tAABB_Right_Hand;
+	tAABB tAABB_Spell_1, tAABB_Spell_2, tAABB_Spell_3, tAABB_Cancel;
+	tAABB tAABB_Fireball_1, tAABB_Fireball_2, tAABB_Fireball_3;
+	tAABB tAABB_Icebolt_1, tAABB_Icebolt_2, tAABB_Icebolt_3;
+	tAABB tAABB_Shield_1, tAABB_Shield_2, tAABB_Shield_3;
+
+	tNode *tNodeList;
+
+	tAABB tAABB_Dragon_Fireball[3];
 
 
-	tAABB tAABB_Player, tAABB_Player_Fireball, tAABB_Dragon, tAABB_Dragon_Fireball;
+	// Particle Stuff
+
+	Particle p;
+
+	tFloat3 fireball_acceleration = { 0.0f, 0.0f, -9.81f };
+
+	tFloat3 dragon_blast_acceleration = { 0.0f, -9.81f, 0.0f };
+
+	tFloat4 fireball_color = { 0.2078f, 0.2078f, 0.2078f, 1.0f };   // 1.0f
+
+	tFloat4 dragon_blast_color = { 1.0f, 0.0f, 0.0f, 1.0f };  // { 1.0f, 0.38039f, 0.0f, 1.0f };
+
+	int test = 0;
+
+	XMFLOAT4X4 xmf_in, xmf_out;
+	XMMATRIX xmm_in;
+
+	float fireball_kill = -2.0f;
+	float dragon_blast_kill = 0;
+
+	bool dragon_hit = false;
+	float timeCheck = 0;
+	// Particle Stuff
 
 	// Particle Stuff
 

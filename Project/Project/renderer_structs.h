@@ -76,6 +76,11 @@ struct tScene_Objects
 	tFloat3								fWorld_Position[32]{};
 	tFloat4x4							fWorld_Matrix[32]{};
 
+	tFloat4x4							fFireball_Matrix[3]{};
+	bool								fFireball_State[3]{};
+	int									fFireballs_Alive = 0;
+	int									maxFireballs = 3;
+
 	// Vertex and Index Data
 	bool								bIs_Animated[32]{};
 
@@ -90,12 +95,14 @@ struct tScene_Objects
 	ComPtr<ID3D11Buffer>				tMaterials_Buffers[32]{};
 
 	// SRV
-	std::string							szSRV_File_Path;
+	std::string							szSRV_File_Path[32];
 	ComPtr<ID3D11ShaderResourceView>	d3d_SRV[32][32]{};
 
 	// Animation
-	tAnimation_Clip						tAnim_Clip[32]{};
+	tAnimation_Clip						tAnim_Clip[32][8]{};
 	tAnimation_Data						tAnim_Data[32]{}; // try to combine with clip when create binary writer
+
+	int									currAnim[32]{};
 
 	// Vertex Shaders
 	std::string							szVS_File_Path[32]{};
@@ -139,4 +146,9 @@ struct tConstantBuffer_PixelShader
 	XMFLOAT4 specular = { 0.0f, 0.0f, 0.0f, 0.0f };
 	XMFLOAT4 transparency = { 0.0f, 0.0f, 0.0f, 0.0f };
 	XMFLOAT4 tint = { 0.0f, 0.0f, 0.0f, 1.0f };
+};
+
+struct tConstantBuffer_PixelShader_Alpha
+{
+	//XMFLOAT2 alpha;
 };

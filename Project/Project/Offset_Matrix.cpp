@@ -27,17 +27,17 @@ void cOffset_Matrix::ResetPosition()
 	tOffset_Matrix.tX.fY = 0.0f;
 	tOffset_Matrix.tX.fZ = 0.0f;
 	tOffset_Matrix.tX.fW = 0.0f;
-	
+
 	tOffset_Matrix.tY.fX = 0.0f;
 	tOffset_Matrix.tY.fY = 1.0f;
 	tOffset_Matrix.tY.fZ = 0.0f;
 	tOffset_Matrix.tY.fW = 0.0f;
-	
+
 	tOffset_Matrix.tZ.fX = 0.0f;
 	tOffset_Matrix.tZ.fY = 0.0f;
 	tOffset_Matrix.tZ.fZ = 1.0f;
 	tOffset_Matrix.tZ.fW = 0.0f;
-	
+
 	tOffset_Matrix.tW.fX = 0.0f;
 	tOffset_Matrix.tW.fY = 0.0f;
 	tOffset_Matrix.tW.fZ = 0.0f;
@@ -69,16 +69,16 @@ void cOffset_Matrix::Update_Offset(double dDelta, tFloat4x4 tHMDPose, tFloat4 fM
 	float z_move = 0.0f;
 
 	if (fMovement_Vect.fX == 1.0f)
-		z_move = -15.0f;
+		z_move = -20.0f;
 
 	if (fMovement_Vect.fY == 1.0f)
-		x_move = 15.0f;
+		x_move = 20.0f;
 
 	if (fMovement_Vect.fZ == 1.0f)
-		z_move = 15.0f;
+		z_move = 20.0f;
 
 	if (fMovement_Vect.fW == 1.0f)
-		x_move = -15.0f;
+		x_move = -20.0f;
 
 	XMMATRIX x_offset = XMMatrixTranslation(tHMDPose.tX.fX * x_move * (float)dDelta, 0.0f, tHMDPose.tX.fZ * x_move * (float)dDelta);
 	XMMATRIX z_offset = XMMatrixTranslation(tHMDPose.tZ.fX * z_move * (float)dDelta, 0.0f, tHMDPose.tZ.fZ * z_move * (float)dDelta);

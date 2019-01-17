@@ -26,6 +26,12 @@ void cVR_Setup::Initialize()
 	m_fNearClip = 0.1f;
 	m_fScale = 0.3f;
 	m_fScaleSpacing = 4.0f;
+
+	m_mat4HMDPose = Matrix4();
+	m_mat4eyePosLeft = Matrix4();
+	m_mat4eyePosRight = Matrix4();
+	m_mat4ProjectionLeft = Matrix4();
+	m_mat4ProjectionRight = Matrix4();
 }
 
 void cVR_Setup::Clean_Up()

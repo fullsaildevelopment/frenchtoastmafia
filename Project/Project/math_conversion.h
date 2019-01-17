@@ -181,3 +181,25 @@ inline tFloat4 Joint_Position_Lerp(tFloat3 prev, tFloat3 next, float ratio)
 
 	return tOut;
 }
+
+inline XMMATRIX lookAtMatrix(XMMATRIX _viewer, XMMATRIX _target)
+{
+	XMVECTOR up = { 0,1,0 };
+
+	XMVECTOR newX;
+	XMVECTOR newY;
+	XMVECTOR newZ = XMVector3Normalize(_target.r[3] - _viewer.r[3]);
+	XMVECTOR newP = _viewer.r[3];
+
+	newX = XMVector3Cross(up, newZ);
+	newY = XMVector3Cross(newZ, newX);
+
+	XMMATRIX ret =
+	{
+		newX.m128_f32[0], newX.m128_f32[1], newX.m128_f32[2], 0,
+		newY.m128_f32[0], newY.m128_f32[1], newY.m128_f32[2], 0,
+		newZ.m128_f32[0], newZ.m128_f32[1], newZ.m128_f32[2], 0,
+		newP.m128_f32[0], newP.m128_f32[1], newP.m128_f32[2], 1,
+	};
+	return ret;
+}

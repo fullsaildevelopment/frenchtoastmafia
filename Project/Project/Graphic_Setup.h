@@ -36,6 +36,7 @@ private:
 	ComPtr<ID3D11DepthStencilState> d3d_2D_DSS;
 	ComPtr<ID3D11RasterizerState> d3d_Rasterizer_State;
 	ComPtr<ID3D11SamplerState> d3d_Sampler_State;
+	ComPtr<ID3D11BlendState> d3d_Blend_State;
 	ComPtr<ID3D11InputLayout> d3d_Input_Layout;
 	ComPtr<ID3D11RenderTargetView> d3d_RTV;
 
@@ -48,6 +49,7 @@ private:
 	D3D11_DEPTH_STENCIL_VIEW_DESC d3d_DSV_Desc;
 	D3D11_RASTERIZER_DESC d3d_Rasterizer_Desc;
 	D3D11_SAMPLER_DESC d3d_Sampler_State_Desc;
+	D3D11_BLEND_DESC  d3d_Blend_State_Desc;
 
 	// SHADERS
 	ComPtr<ID3D11VertexShader> d3d_Vertex_Shader;
@@ -83,6 +85,7 @@ public:
 	ComPtr<IDXGISwapChain> Get_Swap_Chain();
 	D3D11_VIEWPORT Get_View_Port();
 	ComPtr<ID3D11DepthStencilState> Get_Depth_Stencil_State();
+	ComPtr<ID3D11BlendState> Get_Blend_State();
 	ComPtr<ID3D11Texture2D> Get_Texture_Left_Eye();
 	ComPtr<ID3D11Texture2D> Get_Texture_Right_Eye();
 };
