@@ -391,7 +391,7 @@ tScene_Objects* cScene_Manager::Get_World_Scene(int nScene_Id)
 			//tempMatrix = XMMatrixMultiply(XMMatrixRotationY(3.14 / 8), tempMatrix);
 			//tempMatrix = XMMatrixMultiply(XMMatrixScaling(0.9, 0.9, 0.9), tempMatrix);
 
-			tempMatrix = XMMatrixMultiply(tempMatrix, XMMatrixTranslation(-450, 0, 0));
+			tempMatrix = XMMatrixMultiply(tempMatrix, XMMatrixTranslation(-475, 0, 0));
 
 
 			XMStoreFloat4x4(&temp, tempMatrix);
