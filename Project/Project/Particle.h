@@ -46,7 +46,20 @@ class Particle
 
 	int num_particles = 50;
 
-	particle* temp_particle_effects[50];  
+	// QUAD STUFF
+
+	//tVertex* quad_particle_effects[50];   // NEW
+
+	//tVertex* quad_p[6];   // NEW
+	//tVertex quad_particles[quad_p[6]];   // NEW
+
+	//tVertex* quad_array = new tVertex[50];   // NEW
+
+	//Effects <tVertex, 50> quad_particle_pool;   // NEW
+
+	// QUAD STUFF
+
+	particle* temp_particle_effects[50];
 
 	particle* p_arr = new particle[50];
 	//particle* part_array[300];
@@ -60,4 +73,3 @@ public:
 	void create_particles(tFloat4 color, double timer, tFloat3 acceleration, float particle_kill_condition, bool dragon_hit);
 	particle* Particle::get_particles();
 };
-

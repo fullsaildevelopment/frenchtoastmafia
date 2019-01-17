@@ -44,6 +44,84 @@ void Particle::create_particles(tFloat4 color, double timer, tFloat3 acceleratio
 
 				temp_particle_effects[i] = particle_pool.allocate(part);
 			}
+	/*		if (quad_particle_effects[i] == nullptr)
+			{
+				tVertex vert1;
+				tVertex vert2;
+				tVertex vert3;
+
+				tVertex vert4;
+				tVertex vert5;
+				tVertex vert6;
+
+				int RN = (float)(rand() % 10 + 1 - 5) / 10.0f;
+
+				vert1.fColor.fX = color.fX;
+				vert1.fColor.fY = color.fY;
+				vert1.fColor.fZ = color.fZ;
+				vert1.fColor.fW = color.fW;
+
+				vert1.fPosition.fX = RN * -1;
+				vert1.fPosition.fY = RN * -1;
+				vert1.fPosition.fZ = RN;
+
+				quad_particle_effects[i] = quad_particle_pool.allocate(vert1);
+
+				vert2.fColor.fX = color.fX;
+				vert2.fColor.fY = color.fY;
+				vert2.fColor.fZ = color.fZ;
+				vert2.fColor.fW = color.fW;
+
+				vert2.fPosition.fX = RN - 5;
+				vert2.fPosition.fY = RN;
+				vert2.fPosition.fZ = RN;
+
+				quad_particle_effects[i] = quad_particle_pool.allocate(vert2);
+
+				vert3.fColor.fX = color.fX;
+				vert3.fColor.fY = color.fY;
+				vert3.fColor.fZ = color.fZ;
+				vert3.fColor.fW = color.fW;
+
+				vert3.fPosition.fX = RN + 5;
+				vert3.fPosition.fY = RN * -1;
+				vert3.fPosition.fZ = RN;
+
+				quad_particle_effects[i] = quad_particle_pool.allocate(vert3);
+
+				vert4.fColor.fX = color.fX;
+				vert4.fColor.fY = color.fY;
+				vert4.fColor.fZ = color.fZ;
+				vert4.fColor.fW = color.fW;
+
+				vert4.fPosition.fX = RN + 10;
+				vert4.fPosition.fY = RN;
+				vert4.fPosition.fZ = RN;
+
+				quad_particle_effects[i] = quad_particle_pool.allocate(vert4);
+
+				vert5.fColor.fX = color.fX;
+				vert5.fColor.fY = color.fY;
+				vert5.fColor.fZ = color.fZ;
+				vert5.fColor.fW = color.fW;
+
+				vert5.fPosition.fX = RN + 15;
+				vert5.fPosition.fY = RN * -1;
+				vert5.fPosition.fZ = RN;
+
+				quad_particle_effects[i] = quad_particle_pool.allocate(vert5);
+
+				vert6.fColor.fX = color.fX;
+				vert6.fColor.fY = color.fY;
+				vert6.fColor.fZ = color.fZ;
+				vert6.fColor.fW = color.fW;
+
+				vert6.fPosition.fX = RN + 20;
+				vert6.fPosition.fY = RN;
+				vert6.fPosition.fZ = RN;
+
+				quad_particle_effects[i] = quad_particle_pool.allocate(vert6);
+			}*/
 		}
 	}
 

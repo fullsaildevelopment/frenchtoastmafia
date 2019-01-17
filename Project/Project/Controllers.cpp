@@ -65,7 +65,7 @@ int cControllers::Identify_Controller(TrackedDeviceIndex_t vr_event)
 	return 0;
 }
 
-void cControllers::Update_Controller(int nScene_Id, bool *bChange_Scene, bool *bMove_Bullet, bool *bReset_Offset, tFloat4 *movement, tFloat4x4 offset)
+void cControllers::Update_Controller(int nScene_Id, bool *bChange_Scene, bool *bDisplay_Spell_Book, bool *bDisplay_Spell_Node, bool *bMove_Bullet, bool *bReset_Offset, bool *bSpell_Ready, tFloat4 *movement, tFloat4x4 offset)
 {
 	if (!c_VR_Setup->Get_HMD()->IsInputAvailable())
 		return;
@@ -99,7 +99,7 @@ void cControllers::Update_Controller(int nScene_Id, bool *bChange_Scene, bool *b
 
 			if (Identify_Controller(vrEvent.trackedDeviceIndex) > 0)
 				printf("%d : ", Identify_Controller(vrEvent.trackedDeviceIndex));
-			
+
 			switch (vrEvent.data.controller.button)
 			{
 			case k_EButton_Grip:
@@ -115,6 +115,9 @@ void cControllers::Update_Controller(int nScene_Id, bool *bChange_Scene, bool *b
 					{
 						printf("Grip Press\n");
 						tReset_Offset.fY = 1.0f;
+						if (nScene_Id == 2 && !(*bDisplay_Spell_Node))
+						//if (nScene_Id == 2)
+							*bDisplay_Spell_Book = true;
 					}
 
 					if (tReset_Offset.fX > 0.0f && tReset_Offset.fY > 0.0f)
@@ -149,8 +152,9 @@ void cControllers::Update_Controller(int nScene_Id, bool *bChange_Scene, bool *b
 						{
 							//if (!bMove_Bullet)
 								//sound.playSoundEffect("Large Fireball-SoundBible.com-301502490.mp3", FMOD_DEFAULT, 0.6f);
-							
-							*bMove_Bullet = true;
+
+							if (*bSpell_Ready)
+								*bMove_Bullet = true;
 						}
 						else
 							*bChange_Scene = true;
