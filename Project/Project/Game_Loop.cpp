@@ -64,17 +64,17 @@ void cGame_Loop::Update()
 		// Gameplay
 		c_Player.setPosition4x4(c_Head_Mount.Get_CurrentLook(c_Offset_Matrix.GetPosition4x4()));
 		c_Player.setHeading(c_Head_Mount.Get_CurrentLook(c_Offset_Matrix.GetPosition4x4()).tZ);
-		c_Dragon.setPosition4x4(tWorld_Object_List.fWorld_Matrix[2]);
-		c_Dragon_Fireball.setPosition4x4(tWorld_Object_List.fWorld_Matrix[3]);
+		c_Dragon.setPosition4x4(tWorld_Object_List->fWorld_Matrix[2]);
+		c_Dragon_Fireball.setPosition4x4(tWorld_Object_List->fWorld_Matrix[3]);
 		c_AI.setIsHit(false);
 		if (bMove_Bullet)
 		{
-			xmf_in = tFloat4x4_to_XMFLOAT4x4(tWorld_Object_List.fWorld_Matrix[4]);
+			xmf_in = tFloat4x4_to_XMFLOAT4x4(tWorld_Object_List->fWorld_Matrix[4]);
 			xmm_in = XMLoadFloat4x4(&xmf_in);
 			xmm_in = XMMatrixMultiply(XMMatrixTranslation(0.0f, 0.0f, -5.0f), xmm_in);
 			XMStoreFloat4x4(&xmf_out, xmm_in);
 			c_Player_Fireball.setPosition4x4(XMFLOAT4x4_to_tFloat4x4(xmf_out));
-			tWorld_Object_List.fWorld_Matrix[4] = c_Player_Fireball.getPosition4x4();
+			tWorld_Object_List->fWorld_Matrix[4] = c_Player_Fireball.getPosition4x4();
 		}
 		else
 		{
@@ -83,7 +83,7 @@ void cGame_Loop::Update()
 			xmm_in = XMMatrixMultiply(XMMatrixTranslation(0.0f, 0.0f, -1.0f), xmm_in);
 			XMStoreFloat4x4(&xmf_out, xmm_in);
 			c_Player_Fireball.setPosition4x4(XMFLOAT4x4_to_tFloat4x4(xmf_out));
-			tWorld_Object_List.fWorld_Matrix[4] = c_Player_Fireball.getPosition4x4();
+			tWorld_Object_List->fWorld_Matrix[4] = c_Player_Fireball.getPosition4x4();
 		}
 
 		// Physics
@@ -96,13 +96,13 @@ void cGame_Loop::Update()
 		tAABB_Dragon.center = c_Dragon.getPosition4().fXYZ;
 		tAABB_Dragon.extents = tFloat3{ 250.0f, 400.0f, 250.0f };
 
-		tAABB_Dragon_Fireball[0].center = tWorld_Object_List.fFireball_Matrix[0].tW.fXYZ;
+		tAABB_Dragon_Fireball[0].center = tWorld_Object_List->fFireball_Matrix[0].tW.fXYZ;
 		tAABB_Dragon_Fireball[0].extents = tFloat3{ 0.2f, 0.13f, 0.2f };
 
-		tAABB_Dragon_Fireball[1].center = tWorld_Object_List.fFireball_Matrix[1].tW.fXYZ;
+		tAABB_Dragon_Fireball[1].center = tWorld_Object_List->fFireball_Matrix[1].tW.fXYZ;
 		tAABB_Dragon_Fireball[1].extents = tFloat3{ 0.2f, 0.13f, 0.2f };
 
-		tAABB_Dragon_Fireball[2].center = tWorld_Object_List.fFireball_Matrix[2].tW.fXYZ;
+		tAABB_Dragon_Fireball[2].center = tWorld_Object_List->fFireball_Matrix[2].tW.fXYZ;
 		tAABB_Dragon_Fireball[2].extents = tFloat3{ 0.2f, 0.13f, 0.2f };
 
 		tAABB_Left_Hand.center = c_Controllers.Get_Left_Hand().tW.fXYZ;
@@ -112,34 +112,34 @@ void cGame_Loop::Update()
 		tAABB_Right_Hand.extents = tFloat3{ 0.125f, 0.125f, 0.15f };
 
 		// Collisions
-		for (int i = 0; i < tWorld_Object_List.maxFireballs; i++)
+		for (int i = 0; i < tWorld_Object_List->maxFireballs; i++)
 		{
-			if (tWorld_Object_List.fFireball_State[i] != true)
+			if (tWorld_Object_List->fFireball_State[i] != true)
 			{
 				continue;
 			}
 
 			if (t_Collisions.Detect_AABB_To_AABB(tAABB_Player, tAABB_Dragon_Fireball[i]))
 			{
-				tWorld_Object_List.fFireball_State[i] = false;
-				tWorld_Object_List.fFireballs_Alive -= 1;
+				tWorld_Object_List->fFireball_State[i] = false;
+				tWorld_Object_List->fFireballs_Alive -= 1;
 				//c_Dragon_Fireball.setIsActive(false);
 				c_Player.setHealth(-10);
-				//tWorld_Object_List.fWorld_Matrix[3].tW.fY = 500;
+				//tWorld_Object_List->fWorld_Matrix[3].tW.fY = 500;
 				sound.playSoundEffect("Pain-SoundBible.com-1883168362.mp3", FMOD_DEFAULT, 0.7f);
 				if (c_Player.getHealth() <= 0)
 					c_Player.setIsAlive(false);
 			}
-			else if (tWorld_Object_List.fFireball_Matrix[i].tW.fY < -5)
+			else if (tWorld_Object_List->fFireball_Matrix[i].tW.fY < -5)
 			{
-				tWorld_Object_List.fFireball_State[i] = false;
-				tWorld_Object_List.fFireballs_Alive -= 1;
+				tWorld_Object_List->fFireball_State[i] = false;
+				tWorld_Object_List->fFireballs_Alive -= 1;
 			}
 		}
 
 		if (t_Collisions.Detect_AABB_To_AABB(tAABB_Dragon, tAABB_Player_Fireball) && c_Player_Fireball.getIsActive())
 		{
-			tWorld_Object_List.currAnim[2] = 1;
+			tWorld_Object_List->currAnim[2] = 1;
 			//c_Animation_Manager.resetTime();
 			dragon_hit = true;
 			//dragon_hit = c_AI.setIsHit(true);
@@ -566,7 +566,7 @@ void cGame_Loop::Update()
 		}
 		else
 			c_Player_Fireball.setIsActive(false);
-	}
+	
 
 	// Trackpad movement
 	if (movement.fX > 0.0f || movement.fY > 0.0f || movement.fZ > 0.0f || movement.fW > 0.0f)

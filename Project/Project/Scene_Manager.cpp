@@ -281,11 +281,11 @@ tScene_Objects* cScene_Manager::Get_World_Scene(int nScene_Id)
 			}
 			tScene->tMesh_Skinned_Data[0].nIndex_Count = tMage.nIndex_Count;
 
-			tScene.tMaterials_Data[0] = cBinary_Read.Read_Material("material.bin");
-			tScene.tAnim_Clip[0][0] = cBinary_Read.Read_Skeleton("skeleton.bin");
-			tScene.tAnim_Data[0] = Create_Inverse_Bind_Pose(tScene.tAnim_Clip[0][0].tKeyFrames[0]);
+			tScene->tMaterials_Data[0] = cBinary_Read.Read_Material("material.bin");
+			tScene->tAnim_Clip[0][0] = cBinary_Read.Read_Skeleton("skeleton.bin");
+			tScene->tAnim_Data[0] = Create_Inverse_Bind_Pose(tScene->tAnim_Clip[0][0].tKeyFrames[0]);
 
-			tScene.currAnim[0] = 0;
+			tScene->currAnim[0] = 0;
 		}
 		// Battle Mage
 
@@ -397,8 +397,8 @@ tScene_Objects* cScene_Manager::Get_World_Scene(int nScene_Id)
 
 			XMStoreFloat4x4(&temp, tempMatrix);
 
-			tScene.fWorld_Matrix[2] = XMFLOAT4x4_to_tFloat4x4(temp);
-			tScene.bIs_Animated[2] = true;
+			tScene->fWorld_Matrix[2] = XMFLOAT4x4_to_tFloat4x4(temp);
+			tScene->bIs_Animated[2] = true;
 			tMesh_Skinned tDragon = cBinary_Read.Read_Mesh_Skinned("Dragon_FlyingSkinned.bin");
 
 			//for (int i = 0; i < tDragon.nVertex_Count; i++)
@@ -409,26 +409,26 @@ tScene_Objects* cScene_Manager::Get_World_Scene(int nScene_Id)
 
 			for (int i = 0; i < tDragon.nVertex_Count; i++)
 			{
-				tScene.tMesh_Skinned_Data[2].tVerts.push_back(tDragon.tVerts[i]);
+				tScene->tMesh_Skinned_Data[2].tVerts.push_back(tDragon.tVerts[i]);
 			}
 
-			tScene.tMesh_Skinned_Data[2].nVertex_Count = tDragon.nVertex_Count;
+			tScene->tMesh_Skinned_Data[2].nVertex_Count = tDragon.nVertex_Count;
 
 
 			for (int i = 0; i < tDragon.nIndex_Count; i++)
 			{
-				tScene.tMesh_Skinned_Data[2].nIndicies.push_back(tDragon.nIndicies[i]);
+				tScene->tMesh_Skinned_Data[2].nIndicies.push_back(tDragon.nIndicies[i]);
 			}
-			tScene.tMesh_Skinned_Data[2].nIndex_Count = tDragon.nIndex_Count;
+			tScene->tMesh_Skinned_Data[2].nIndex_Count = tDragon.nIndex_Count;
 
-			tScene.tMaterials_Data[2] = cBinary_Read.Read_Material("Dragon_FlyingMaterial.bin");
-			tScene.tMaterials_Data[2].tMats[0].szDiffuse_File_Path = "Dragon.fbm\\DarkDragon_D.png";
+			tScene->tMaterials_Data[2] = cBinary_Read.Read_Material("Dragon_FlyingMaterial.bin");
+			tScene->tMaterials_Data[2].tMats[0].szDiffuse_File_Path = "Dragon.fbm\\DarkDragon_D.png";
 
-			tScene.tAnim_Clip[2][0] = cBinary_Read.Read_Skeleton("Dragon_FlyingSkeleton.bin");
-			tScene.tAnim_Clip[2][1] = cBinary_Read.Read_Skeleton("Dragon_GetHitSkeleton.bin");
-			tScene.tAnim_Data[2] = Create_Inverse_Bind_Pose(tScene.tAnim_Clip[2][0].tKeyFrames[0]);
+			tScene->tAnim_Clip[2][0] = cBinary_Read.Read_Skeleton("Dragon_FlyingSkeleton.bin");
+			tScene->tAnim_Clip[2][1] = cBinary_Read.Read_Skeleton("Dragon_GetHitSkeleton.bin");
+			tScene->tAnim_Data[2] = Create_Inverse_Bind_Pose(tScene->tAnim_Clip[2][0].tKeyFrames[0]);
 
-			tScene.currAnim[2] = 0;
+			tScene->currAnim[2] = 0;
 		}
 		// Anim Test
 
@@ -442,14 +442,14 @@ tScene_Objects* cScene_Manager::Get_World_Scene(int nScene_Id)
 
 			XMStoreFloat4x4(&temp, tempMatrix);
 
-			tScene.fWorld_Matrix[3] = XMFLOAT4x4_to_tFloat4x4(temp);
-			tScene.fFireball_Matrix[0] = XMFLOAT4x4_to_tFloat4x4(temp);
-			tScene.fFireball_Matrix[1] = XMFLOAT4x4_to_tFloat4x4(temp);
-			tScene.fFireball_Matrix[2] = XMFLOAT4x4_to_tFloat4x4(temp);
+			tScene->fWorld_Matrix[3] = XMFLOAT4x4_to_tFloat4x4(temp);
+			tScene->fFireball_Matrix[0] = XMFLOAT4x4_to_tFloat4x4(temp);
+			tScene->fFireball_Matrix[1] = XMFLOAT4x4_to_tFloat4x4(temp);
+			tScene->fFireball_Matrix[2] = XMFLOAT4x4_to_tFloat4x4(temp);
 
-			tScene.fFireball_State[0] = false;
-			tScene.fFireball_State[1] = false;
-			tScene.fFireball_State[2] = false;
+			tScene->fFireball_State[0] = false;
+			tScene->fFireball_State[1] = false;
+			tScene->fFireball_State[2] = false;
 
 
 			tMesh tFireball = cBinary_Read.Read_Mesh("fireballMesh.bin");
