@@ -62,7 +62,7 @@ private:
 
 	tFloat4 movement = { 0.0f, 0.0f, 0.0f, 0.0f };
 	tScene_Objects *tPersonal_Object_List, *tWorld_Object_List, *tSpell_Book, *tFireball_Nodes, *tIcebolt_Nodes, *tShield_Nodes;
-	tAABB tAABB_Player, tAABB_Player_Fireball, tAABB_Dragon, tAABB_Dragon_Fireball;
+	tAABB tAABB_Player, tAABB_Player_Fireball, tAABB_Dragon;
 	tAABB tAABB_Left_Hand, tAABB_Right_Hand;
 	tAABB tAABB_Spell_1, tAABB_Spell_2, tAABB_Spell_3, tAABB_Cancel;
 	tAABB tAABB_Fireball_1, tAABB_Fireball_2, tAABB_Fireball_3;
@@ -70,6 +70,8 @@ private:
 	tAABB tAABB_Shield_1, tAABB_Shield_2, tAABB_Shield_3;
 
 	tNode *tNodeList;
+
+	tAABB tAABB_Dragon_Fireball[3];
 
 
 	// Particle Stuff

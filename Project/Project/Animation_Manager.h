@@ -18,6 +18,7 @@ private:
 	cGraphics_Setup * c_Graphics_Setup;
 
 	float m_fCurrent_Time;
+	int currentAnim = 0;
 
 public:
 	cAnimation_Manager();
