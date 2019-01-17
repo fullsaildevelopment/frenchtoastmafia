@@ -282,8 +282,8 @@ tScene_Objects* cScene_Manager::Get_World_Scene(int nScene_Id)
 			tScene->tMesh_Skinned_Data[0].nIndex_Count = tMage.nIndex_Count;
 
 			tScene->tMaterials_Data[0] = cBinary_Read.Read_Material("material.bin");
-			tScene->tAnim_Clip[0] = cBinary_Read.Read_Skeleton("skeleton.bin");
-			tScene->tAnim_Data[0] = Create_Inverse_Bind_Pose(tScene->tAnim_Clip[0].tKeyFrames[0]);
+			tScene->tAnim_Clip[0][0] = cBinary_Read.Read_Skeleton("skeleton.bin");
+			tScene->tAnim_Data[0] = Create_Inverse_Bind_Pose(tScene->tAnim_Clip[0][0].tKeyFrames[0]);
 		}
 		// Battle Mage
 
@@ -328,7 +328,7 @@ tScene_Objects* cScene_Manager::Get_World_Scene(int nScene_Id)
 			tScene->tMaterials_Data[1] = cBinary_Read.Read_Material("arenaMat.bin");
 		}
 		// Arena
-
+		/*
 		// Dragon - 2
 		{
 			XMFLOAT4X4 temp;
@@ -380,6 +380,56 @@ tScene_Objects* cScene_Manager::Get_World_Scene(int nScene_Id)
 			tScene->tMaterials_Data[2].tMats[0].szDiffuse_File_Path = "Dragon.fbm\\DarkDragon_D.png";
 		}
 		// Dragon
+		*/
+
+		// Anim Test - 2
+		{
+			XMFLOAT4X4 temp;
+
+			XMMATRIX tempMatrix = XMMatrixIdentity();
+			//tempMatrix = XMMatrixMultiply(XMMatrixTranslation(-40, 8, 0), tempMatrix);
+			//tempMatrix = XMMatrixMultiply(XMMatrixRotationY(3.14 / 8), tempMatrix);
+			//tempMatrix = XMMatrixMultiply(XMMatrixScaling(0.9, 0.9, 0.9), tempMatrix);
+
+			tempMatrix = XMMatrixMultiply(tempMatrix, XMMatrixTranslation(-450, 0, 0));
+
+
+			XMStoreFloat4x4(&temp, tempMatrix);
+
+			tScene->fWorld_Matrix[2] = XMFLOAT4x4_to_tFloat4x4(temp);
+			tScene->bIs_Animated[2] = true;
+			tMesh_Skinned tDragon = cBinary_Read.Read_Mesh_Skinned("Dragon_FlyingSkinned.bin");
+
+			//for (int i = 0; i < tDragon.nVertex_Count; i++)
+			//{
+			//	//tDragon.tVerts[i].fPosition.fZ *= -1;
+			//	//tDragon.tVerts[i].fNormal.fZ *= -1;
+			//}
+
+			for (int i = 0; i < tDragon.nVertex_Count; i++)
+			{
+				tScene->tMesh_Skinned_Data[2].tVerts.push_back(tDragon.tVerts[i]);
+			}
+
+			tScene->tMesh_Skinned_Data[2].nVertex_Count = tDragon.nVertex_Count;
+
+
+			for (int i = 0; i < tDragon.nIndex_Count; i++)
+			{
+				tScene->tMesh_Skinned_Data[2].nIndicies.push_back(tDragon.nIndicies[i]);
+			}
+			tScene->tMesh_Skinned_Data[2].nIndex_Count = tDragon.nIndex_Count;
+
+			tScene->tMaterials_Data[2] = cBinary_Read.Read_Material("Dragon_FlyingMaterial.bin");
+			tScene->tMaterials_Data[2].tMats[0].szDiffuse_File_Path = "Dragon.fbm\\DarkDragon_D.png";
+
+			tScene->tAnim_Clip[2][0] = cBinary_Read.Read_Skeleton("Dragon_FlyingSkeleton.bin");
+			tScene->tAnim_Clip[2][1] = cBinary_Read.Read_Skeleton("Dragon_GetHitSkeleton.bin");
+			tScene->tAnim_Data[2] = Create_Inverse_Bind_Pose(tScene->tAnim_Clip[2][0].tKeyFrames[0]);
+
+			tScene->currAnim[2] = 0;
+		}
+		// Anim Test
 
 		// Fireball - 3
 		{
