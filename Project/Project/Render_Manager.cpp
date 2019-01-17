@@ -1410,3 +1410,178 @@ void cRender_Manager::keyboardInputs(tScene_Objects* tObject_List)
 		tObject_List->currAnim[2] = 1;
 	}
 }
+
+void cRender_Manager::Debugging_AABB(tAABB obj, cHead_Mount c_Head_Mount, tFloat4x4 offset)
+{
+
+	ComPtr<ID3D11Buffer> d3d_tmp_vertex_buffer;
+	ComPtr<ID3D11Buffer> d3d_tmp_index_buffer;
+	ComPtr<ID3D11VertexShader> d3d_tmp_vertex_shader;
+	ComPtr<ID3D11PixelShader> d3d_tmp_pixel_shader;
+
+	ComPtr<ID3D11RasterizerState> raster_state;
+
+	D3D11_RASTERIZER_DESC raster_desc;
+	D3D11_BUFFER_DESC d3dBuffer_Desc;
+	D3D11_SUBRESOURCE_DATA d3dSRD;
+
+	tVertex *box = new tVertex[8];
+	box[0].fPosition.fX = obj.center.fX - obj.extents.fX;
+	box[0].fPosition.fY = obj.center.fY + obj.extents.fY;
+	box[0].fPosition.fZ = obj.center.fZ - obj.extents.fZ;
+
+	box[1].fPosition.fX = obj.center.fX + obj.extents.fX;
+	box[1].fPosition.fY = obj.center.fY + obj.extents.fY;
+	box[1].fPosition.fZ = obj.center.fZ - obj.extents.fZ;
+
+	box[2].fPosition.fX = obj.center.fX - obj.extents.fX;
+	box[2].fPosition.fY = obj.center.fY - obj.extents.fY;
+	box[2].fPosition.fZ = obj.center.fZ - obj.extents.fZ;
+
+	box[3].fPosition.fX = obj.center.fX + obj.extents.fX;
+	box[3].fPosition.fY = obj.center.fY - obj.extents.fY;
+	box[3].fPosition.fZ = obj.center.fZ - obj.extents.fZ;
+
+	box[4].fPosition.fX = obj.center.fX - obj.extents.fX;
+	box[4].fPosition.fY = obj.center.fY + obj.extents.fY;
+	box[4].fPosition.fZ = obj.center.fZ + obj.extents.fZ;
+
+	box[5].fPosition.fX = obj.center.fX + obj.extents.fX;
+	box[5].fPosition.fY = obj.center.fY + obj.extents.fY;
+	box[5].fPosition.fZ = obj.center.fZ + obj.extents.fZ;
+
+	box[6].fPosition.fX = obj.center.fX - obj.extents.fX;
+	box[6].fPosition.fY = obj.center.fY - obj.extents.fY;
+	box[6].fPosition.fZ = obj.center.fZ + obj.extents.fZ;
+
+	box[7].fPosition.fX = obj.center.fX + obj.extents.fX;
+	box[7].fPosition.fY = obj.center.fY - obj.extents.fY;
+	box[7].fPosition.fZ = obj.center.fZ + obj.extents.fZ;
+
+	tMesh tMesh_Data;
+	for (int i = 0; i < 8; i++)
+	{
+		tMesh_Data.tVerts.push_back(box[i]);
+	}
+
+	tMesh_Data.nVertex_Count = 8;
+
+	unsigned int box_indicies[36] =
+	{
+		0,1,2,
+		1,3,2,
+		4,0,6,
+		0,2,6,
+		5,4,7,
+		4,6,7,
+		1,5,3,
+		5,7,3,
+		4,5,0,
+		5,1,0,
+		2,3,6,
+		3,7,6
+	};
+
+	for (int i = 0; i < 6; i++)
+	{
+		tMesh_Data.nIndicies.push_back(box_indicies[i]);
+	}
+
+	tMesh_Data.nIndex_Count = 36;
+
+
+	ZeroMemory(&d3dBuffer_Desc, sizeof(D3D11_BUFFER_DESC));
+	d3dBuffer_Desc.ByteWidth = sizeof(tVertex) * tMesh_Data.nVertex_Count;
+	d3dBuffer_Desc.Usage = D3D11_USAGE_IMMUTABLE;
+	d3dBuffer_Desc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+	d3dBuffer_Desc.CPUAccessFlags = NULL;
+	d3dBuffer_Desc.MiscFlags = 0;
+	d3dBuffer_Desc.StructureByteStride = 0;
+
+	ZeroMemory(&d3dSRD, sizeof(D3D11_SUBRESOURCE_DATA));
+	d3dSRD.pSysMem = box;
+	d3dSRD.SysMemPitch = 0;
+	d3dSRD.SysMemSlicePitch = 0;
+
+	c_Graphics_Setup->Get_Device().Get()->CreateBuffer(&d3dBuffer_Desc, &d3dSRD, d3d_tmp_vertex_buffer.GetAddressOf());
+
+	ZeroMemory(&d3dBuffer_Desc, sizeof(D3D11_BUFFER_DESC));
+	d3dBuffer_Desc.ByteWidth = sizeof(unsigned int) * tMesh_Data.nIndex_Count;
+	d3dBuffer_Desc.Usage = D3D11_USAGE_IMMUTABLE;
+	d3dBuffer_Desc.BindFlags = D3D11_BIND_INDEX_BUFFER;
+	d3dBuffer_Desc.CPUAccessFlags = NULL;
+	d3dBuffer_Desc.MiscFlags = 0;
+	d3dBuffer_Desc.StructureByteStride = 0;
+
+	ZeroMemory(&d3dSRD, sizeof(D3D11_SUBRESOURCE_DATA));
+	d3dSRD.pSysMem = box_indicies;
+	d3dSRD.SysMemPitch = 0;
+	d3dSRD.SysMemSlicePitch = 0;
+
+	c_Graphics_Setup->Get_Device().Get()->CreateBuffer(&d3dBuffer_Desc, &d3dSRD, d3d_tmp_index_buffer.GetAddressOf());
+
+	c_Graphics_Setup->Get_Device().Get()->CreateVertexShader(VertexShader, sizeof(VertexShader), NULL, &d3d_tmp_vertex_shader);
+	c_Graphics_Setup->Get_Device().Get()->CreatePixelShader(PixelShader, sizeof(PixelShader), NULL, &d3d_tmp_pixel_shader);
+
+	// RASTERIZER
+	ZeroMemory(&raster_desc, sizeof(D3D11_RASTERIZER_DESC));
+	raster_desc.FillMode = D3D11_FILL_WIREFRAME;
+	raster_desc.CullMode = D3D11_CULL_NONE;
+	raster_desc.DepthBias = 0;
+	raster_desc.SlopeScaledDepthBias = 0.0f;
+	raster_desc.DepthBiasClamp = 0.0f;
+	raster_desc.DepthClipEnable = TRUE;
+	raster_desc.ScissorEnable = FALSE;
+	raster_desc.MultisampleEnable = FALSE;
+	raster_desc.AntialiasedLineEnable = FALSE;
+	c_Graphics_Setup->Get_Device().Get()->CreateRasterizerState(&raster_desc, raster_state.GetAddressOf());
+
+	for (int _eyeID = 0; _eyeID < 3; _eyeID++)
+	{
+		if (_eyeID == 0)
+		{
+			ID3D11RenderTargetView *tmp_rtv[] = { c_Graphics_Setup->Get_RTV_Left().Get() };
+			c_Graphics_Setup->Get_Context().Get()->OMSetRenderTargets(1, tmp_rtv, c_Graphics_Setup->Get_DSV().Get());
+		}
+		else if (_eyeID == 1)
+		{
+			ID3D11RenderTargetView *tmp_rtv[] = { c_Graphics_Setup->Get_RTV_Right().Get() };
+			c_Graphics_Setup->Get_Context().Get()->OMSetRenderTargets(1, tmp_rtv, c_Graphics_Setup->Get_DSV().Get());
+		}
+		else if (_eyeID == 2)
+		{
+			ID3D11RenderTargetView *tmp_rtv[] = { c_Graphics_Setup->Get_RTV().Get() };
+			c_Graphics_Setup->Get_Context().Get()->OMSetRenderTargets(1, tmp_rtv, c_Graphics_Setup->Get_DSV().Get());
+		}
+
+		c_Graphics_Setup->Get_Context().Get()->ClearDepthStencilView(c_Graphics_Setup->Get_DSV().Get(), D3D11_CLEAR_DEPTH, 1.0f, 0);
+
+		XMStoreFloat4x4(&tWVP.fWorld_Matrix, XMMatrixIdentity());
+		XMStoreFloat4x4(&tWVP.fView_Matrix, XMMatrixIdentity());
+		if (_eyeID == 0)
+			tWVP.fProjection_Matrix = tFloat4x4_to_XMFLOAT4x4(c_Head_Mount.GetCurrentViewProjectionMatrix(vr::Eye_Left, tFloat4x4_To_Matrix4(offset)));
+		else
+			tWVP.fProjection_Matrix = tFloat4x4_to_XMFLOAT4x4(c_Head_Mount.GetCurrentViewProjectionMatrix(vr::Eye_Right, tFloat4x4_To_Matrix4(offset)));
+
+
+		c_Graphics_Setup->Get_Context().Get()->Map(d3d_Constant_Buffer_WVP.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &d3d_MSR);
+		memcpy(d3d_MSR.pData, &tWVP, sizeof(tConstantBuffer_VertexShader_WVP));
+		c_Graphics_Setup->Get_Context().Get()->Unmap(d3d_Constant_Buffer_WVP.Get(), 0);
+		ID3D11Buffer *tmp_wvpc_buffer[] = { d3d_Constant_Buffer_WVP.Get() };
+		c_Graphics_Setup->Get_Context().Get()->VSSetConstantBuffers(0, 1, tmp_wvpc_buffer);
+
+		unsigned int verts_size = sizeof(tVertex);
+		unsigned int off_set = 0;
+		ID3D11Buffer *ts_v_buffer[] = { d3d_tmp_vertex_buffer.Get() };
+		c_Graphics_Setup->Get_Context().Get()->IASetVertexBuffers(0, 1, ts_v_buffer, &verts_size, &off_set);
+
+		c_Graphics_Setup->Get_Context().Get()->IASetIndexBuffer(d3d_tmp_index_buffer.Get(), DXGI_FORMAT_R32_UINT, 0);
+		c_Graphics_Setup->Get_Context().Get()->IASetInputLayout(c_Graphics_Setup->Get_Input_Layout().Get());
+		c_Graphics_Setup->Get_Context().Get()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+		c_Graphics_Setup->Get_Context().Get()->VSSetShader(d3d_tmp_vertex_shader.Get(), NULL, 0);
+		c_Graphics_Setup->Get_Context().Get()->PSSetShader(d3d_tmp_pixel_shader.Get(), NULL, 0);
+		c_Graphics_Setup->Get_Context().Get()->RSSetState(raster_state.Get());
+		c_Graphics_Setup->Get_Context().Get()->DrawIndexed(tMesh_Data.nIndex_Count, 0, 0);
+		c_Graphics_Setup->Get_Context().Get()->RSSetState(NULL);
+	}
+}
