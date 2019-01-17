@@ -18,11 +18,13 @@ private:
 	cGraphics_Setup * c_Graphics_Setup;
 
 	float m_fCurrent_Time;
+	int currentAnim = 0;
 
 public:
 	cAnimation_Manager();
 	~cAnimation_Manager();
 
 	void Animate(double dDelta, double dTotal, tScene_Objects* tObject_List);
+	void resetTime();
 };
 

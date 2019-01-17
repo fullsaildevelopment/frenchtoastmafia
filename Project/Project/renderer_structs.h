@@ -108,6 +108,7 @@ struct tScene_Objects
 	ComPtr<ID3D11PixelShader>			d3d_Pixel_Shaders[32]{};
 
 	//int									dragHP = 4;
+
 };
 
 

@@ -57,7 +57,7 @@ void cGame_Loop::Update()
 		{
 			xmf_in = tFloat4x4_to_XMFLOAT4x4(tWorld_Object_List.fWorld_Matrix[4]);
 			xmm_in = XMLoadFloat4x4(&xmf_in);
-			xmm_in = XMMatrixMultiply(XMMatrixTranslation(0.0f, 0.0f, -1.0f), xmm_in);
+			xmm_in = XMMatrixMultiply(XMMatrixTranslation(0.0f, 0.0f, -5.0f), xmm_in);
 			XMStoreFloat4x4(&xmf_out, xmm_in);
 			c_Player_Fireball.setPosition4x4(XMFLOAT4x4_to_tFloat4x4(xmf_out));
 			tWorld_Object_List.fWorld_Matrix[4] = c_Player_Fireball.getPosition4x4();
@@ -80,7 +80,7 @@ void cGame_Loop::Update()
 		tAABB_Player_Fireball.extents = tFloat3{ 0.2f, 0.13f, 0.2f };
 
 		tAABB_Dragon.center = c_Dragon.getPosition4().fXYZ;
-		tAABB_Dragon.extents = tFloat3{ 50.0f, 80.0f, 50.0f };
+		tAABB_Dragon.extents = tFloat3{ 250.0f, 400.0f, 250.0f };
 
 		tAABB_Dragon_Fireball.center = tWorld_Object_List.fWorld_Matrix[3].tW.fXYZ;
 		tAABB_Dragon_Fireball.extents = tFloat3{ 0.2f, 0.13f, 0.2f };
@@ -98,6 +98,8 @@ void cGame_Loop::Update()
 
 		if (t_Collisions.Detect_AABB_To_AABB(tAABB_Dragon, tAABB_Player_Fireball) && c_Player_Fireball.getIsActive())
 		{
+			tWorld_Object_List.currAnim[2] = 1;
+			//c_Animation_Manager.resetTime();
 			dragon_hit = true;
 			//dragon_hit = c_AI.setIsHit(true);
 			//dragon_hit = c_AI.getIsHit();
@@ -132,7 +134,7 @@ void cGame_Loop::Update()
 	c_Controllers.Update_Controller(m_nScene_Id, &bChange_Scene, &bMove_Bullet, &bReset_Offset, &movement, c_Offset_Matrix.GetPosition4x4());
 
 	// Player Fireball
-	if (c_Player_Fireball.getPosition4().fX < -200 || c_Player_Fireball.getPosition4().fX > 200 || c_Player_Fireball.getPosition4().fY < -50 || c_Player_Fireball.getPosition4().fY > 200 || c_Player_Fireball.getPosition4().fZ < -200 || c_Player_Fireball.getPosition4().fZ > 200)
+	if (c_Player_Fireball.getPosition4().fX < -600 || c_Player_Fireball.getPosition4().fX > 600 || c_Player_Fireball.getPosition4().fY < -50 || c_Player_Fireball.getPosition4().fY > 500 || c_Player_Fireball.getPosition4().fZ < -600 || c_Player_Fireball.getPosition4().fZ > 600)
 		bMove_Bullet = false;
 
 	if (bMove_Bullet)

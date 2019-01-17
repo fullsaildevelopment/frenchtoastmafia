@@ -383,7 +383,6 @@ tScene_Objects cScene_Manager::Get_World_Scene(int nScene_Id)
 		}
 		// Dragon
 		*/
-
 		// Anim Test - 2
 		{
 			XMFLOAT4X4 temp;
@@ -393,7 +392,7 @@ tScene_Objects cScene_Manager::Get_World_Scene(int nScene_Id)
 			//tempMatrix = XMMatrixMultiply(XMMatrixRotationY(3.14 / 8), tempMatrix);
 			//tempMatrix = XMMatrixMultiply(XMMatrixScaling(0.9, 0.9, 0.9), tempMatrix);
 
-			tempMatrix = XMMatrixMultiply(tempMatrix, XMMatrixTranslation(-200, 0, 0));
+			tempMatrix = XMMatrixMultiply(tempMatrix, XMMatrixTranslation(-450, 0, 0));
 
 
 			XMStoreFloat4x4(&temp, tempMatrix);
@@ -426,13 +425,13 @@ tScene_Objects cScene_Manager::Get_World_Scene(int nScene_Id)
 			tScene.tMaterials_Data[2].tMats[0].szDiffuse_File_Path = "Dragon.fbm\\DarkDragon_D.png";
 
 			tScene.tAnim_Clip[2][0] = cBinary_Read.Read_Skeleton("Dragon_FlyingSkeleton.bin");
-			tScene.tAnim_Clip[2][1] = cBinary_Read.Read_Skeleton("Dragon_FlyingShootSkeleton.bin");
+			tScene.tAnim_Clip[2][1] = cBinary_Read.Read_Skeleton("Dragon_GetHitSkeleton.bin");
 			tScene.tAnim_Data[2] = Create_Inverse_Bind_Pose(tScene.tAnim_Clip[2][0].tKeyFrames[0]);
 
 			tScene.currAnim[2] = 0;
 		}
 		// Anim Test
-
+		
 		// Fireball - 3
 		{
 			XMFLOAT4X4 temp;

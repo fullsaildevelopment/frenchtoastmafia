@@ -70,7 +70,7 @@ void AI::resolveDragonState(tScene_Objects* tObject_List, tFloat4x4 _playerPos, 
 			XMStoreFloat4x4(&newPos4x4, newPosMat);
 			tObject_List->fWorld_Matrix[2] = XMFLOAT4x4_to_tFloat4x4(newPos4x4);
 
-			if (tObject_List->fWorld_Matrix[3].tW.fY < 0 || tObject_List->fWorld_Matrix[3].tW.fY > 499)
+			if (tObject_List->fWorld_Matrix[3].tW.fY < -5 || tObject_List->fWorld_Matrix[3].tW.fY > 499)
 			{
 				sound.playSoundEffect("Fireball+1.mp3", FMOD_DEFAULT, 0.5f);
 				_spell->setIsActive(true);
@@ -78,7 +78,7 @@ void AI::resolveDragonState(tScene_Objects* tObject_List, tFloat4x4 _playerPos, 
 
 				XMMATRIX oldProjPosMat = XMLoadFloat4x4(&tFloat4x4_to_XMFLOAT4x4(tObject_List->fWorld_Matrix[3]));
 
-				oldProjPosMat = XMMatrixMultiply(XMMatrixTranslation(0, 105, 0), oldProjPosMat);
+				oldProjPosMat = XMMatrixMultiply(XMMatrixTranslation(0, 200, 0), oldProjPosMat);
 				oldProjPosMat = XMMatrixMultiply(XMMatrixTranslation(0, 0, 70), oldProjPosMat);
 				oldProjPosMat = XMMatrixMultiply(XMMatrixTranslation(2, 0, 0), oldProjPosMat);
 
@@ -100,7 +100,7 @@ void AI::resolveDragonState(tScene_Objects* tObject_List, tFloat4x4 _playerPos, 
 			if (dragHP == 3)
 			{
 				XMMATRIX oldPosMat = XMLoadFloat4x4(&tFloat4x4_to_XMFLOAT4x4(tObject_List->fWorld_Matrix[3]));
-				XMMATRIX moveMat = XMMatrixTranslation(0.0f, 0.0f, 2.0f);
+				XMMATRIX moveMat = XMMatrixTranslation(0.0f, 0.0f, 5.0f);
 
 				XMMATRIX newPosMat = XMMatrixMultiply(moveMat, oldPosMat);
 				XMFLOAT4X4 newPos4x4;
@@ -110,7 +110,7 @@ void AI::resolveDragonState(tScene_Objects* tObject_List, tFloat4x4 _playerPos, 
 			else if(dragHP == 2)
 			{
 				XMMATRIX oldPosMat = XMLoadFloat4x4(&tFloat4x4_to_XMFLOAT4x4(tObject_List->fWorld_Matrix[3]));
-				XMMATRIX moveMat = XMMatrixTranslation(0.0f, 0.0f, 4.0f);
+				XMMATRIX moveMat = XMMatrixTranslation(0.0f, 0.0f, 7.0f);
 
 				XMMATRIX newPosMat = XMMatrixMultiply(moveMat, oldPosMat);
 				XMFLOAT4X4 newPos4x4;
@@ -120,7 +120,7 @@ void AI::resolveDragonState(tScene_Objects* tObject_List, tFloat4x4 _playerPos, 
 			else if (dragHP == 1)
 			{
 				XMMATRIX oldPosMat = XMLoadFloat4x4(&tFloat4x4_to_XMFLOAT4x4(tObject_List->fWorld_Matrix[3]));
-				XMMATRIX moveMat = XMMatrixTranslation(0.0f, 0.0f, 7.0f);
+				XMMATRIX moveMat = XMMatrixTranslation(0.0f, 0.0f, 9.0f);
 
 				XMMATRIX newPosMat = XMMatrixMultiply(moveMat, oldPosMat);
 				XMFLOAT4X4 newPos4x4;

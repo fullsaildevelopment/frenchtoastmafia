@@ -22,37 +22,52 @@ void cAnimation_Manager::Animate(double dDelta, double dTotal, tScene_Objects* t
 {
 	for (int i = 0; i < tObject_List->nObject_Count; i++)
 	{
+		if(i==0)
+		{
+			continue;
+		}
 		if (tObject_List->bIs_Animated[i])
 		{
+			if (i == 2)
+			{
+				if (tObject_List->currAnim[i] != currentAnim)
+				{
+					currentAnim = tObject_List->currAnim[i];
+
+					m_fCurrent_Time = 0.0f;
+				}
+			}
 			m_fCurrent_Time += (float)dDelta * 0.5;
 
-			int nFrame_Size = tObject_List->tAnim_Clip[i][tObject_List->currAnim[i]].tKeyFrames.size();
+			int nFrame_Size = tObject_List->tAnim_Clip[i][currentAnim].tKeyFrames.size();
 
 			int nNext_Frame, nPrevious_Frame;
 			float fNext_Time, fPrevious_Time, fRatio, fTotal_Time;
 			std::vector<tJoint> tLerped_Joints;
 			std::vector<XMMATRIX> tTweened_Joints;
 
-			while (m_fCurrent_Time < (float)tObject_List->tAnim_Clip[i][tObject_List->currAnim[i]].tKeyFrames[0].dTime)
-				m_fCurrent_Time += (float)tObject_List->tAnim_Clip[i][tObject_List->currAnim[i]].dDuration;
+			while (m_fCurrent_Time < (float)tObject_List->tAnim_Clip[i][currentAnim].tKeyFrames[0].dTime)
+				m_fCurrent_Time += (float)tObject_List->tAnim_Clip[i][currentAnim].dDuration;
 
-			while (m_fCurrent_Time > (float)tObject_List->tAnim_Clip[i][tObject_List->currAnim[i]].dDuration)
-				m_fCurrent_Time -= (float)tObject_List->tAnim_Clip[i][tObject_List->currAnim[i]].dDuration;
+			while (m_fCurrent_Time > (float)tObject_List->tAnim_Clip[i][currentAnim].dDuration)
+				m_fCurrent_Time -= (float)tObject_List->tAnim_Clip[i][currentAnim].dDuration;
 
+			int testInt = currentAnim;
 			for (int j = 1; j < nFrame_Size; j++)
 			{
+				
 				nNext_Frame = j;
-				fNext_Time = (float)tObject_List->tAnim_Clip[i][tObject_List->currAnim[i]].tKeyFrames[nNext_Frame].dTime;
+				fNext_Time = (float)tObject_List->tAnim_Clip[i][currentAnim].tKeyFrames[nNext_Frame].dTime;
 
 				if (j == 1)
 				{
-					nPrevious_Frame = (int)tObject_List->tAnim_Clip[i][tObject_List->currAnim[i]].tKeyFrames.size() - 1;
+					nPrevious_Frame = (int)tObject_List->tAnim_Clip[i][currentAnim].tKeyFrames.size() - 1;
 					fPrevious_Time = 0.0f;
 				}
 				else
 				{
 					nPrevious_Frame = j - 1;
-					fPrevious_Time = (float)tObject_List->tAnim_Clip[i][tObject_List->currAnim[i]].tKeyFrames[nPrevious_Frame].dTime;
+					fPrevious_Time = (float)tObject_List->tAnim_Clip[i][currentAnim].tKeyFrames[nPrevious_Frame].dTime;
 				}
 
 				if (m_fCurrent_Time < fNext_Time)
@@ -65,12 +80,18 @@ void cAnimation_Manager::Animate(double dDelta, double dTotal, tScene_Objects* t
 			fTotal_Time = fNext_Time - fPrevious_Time;
 			fRatio = (m_fCurrent_Time - fPrevious_Time) / fTotal_Time;
 
-			int nJoint_Size = (int)tObject_List->tAnim_Clip[i][tObject_List->currAnim[i]].tKeyFrames[nNext_Frame].tJoints.size();
+			if (currentAnim == 1 && fRatio > 1)
+			{
+				tObject_List->currAnim[i] = 0;
+			}
+
+
+			int nJoint_Size = (int)tObject_List->tAnim_Clip[i][currentAnim].tKeyFrames[nNext_Frame].tJoints.size();
 
 			for (int j = 0; j < nJoint_Size; j++)
 			{
-				tJoint tNext_Joint = tObject_List->tAnim_Clip[i][tObject_List->currAnim[i]].tKeyFrames[nNext_Frame].tJoints[j];
-				tJoint tPrevious_Joint = tObject_List->tAnim_Clip[i][tObject_List->currAnim[i]].tKeyFrames[nPrevious_Frame].tJoints[j];
+				tJoint tNext_Joint = tObject_List->tAnim_Clip[i][currentAnim].tKeyFrames[nNext_Frame].tJoints[j];
+				tJoint tPrevious_Joint = tObject_List->tAnim_Clip[i][currentAnim].tKeyFrames[nPrevious_Frame].tJoints[j];
 
 				tFloat3 tNext_Position, tPrevious_Position;
 
@@ -123,4 +144,9 @@ void cAnimation_Manager::Animate(double dDelta, double dTotal, tScene_Objects* t
 			}
 		}
 	}
+}
+
+void cAnimation_Manager::resetTime()
+{
+	m_fCurrent_Time = 0.0f;
 }
