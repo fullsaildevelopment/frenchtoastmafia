@@ -73,7 +73,7 @@ void cGame_Loop::Update()
 			xmf_in = tFloat4x4_to_XMFLOAT4x4(tWorld_Object_List->fWorld_Matrix[4]);
 			//xmf_in = tFloat4x4_to_XMFLOAT4x4(tPersonal_Object_List->fWorld_Matrix[2]);
 			xmm_in = XMLoadFloat4x4(&xmf_in);
-			xmm_in = XMMatrixMultiply(XMMatrixTranslation(0.0f, 0.0f, -8.0f), xmm_in);
+			xmm_in = XMMatrixMultiply(XMMatrixTranslation(0.0f, 0.0f, -200.0f * c_XTime.Delta()), xmm_in);
 			XMStoreFloat4x4(&xmf_out, xmm_in);
 			c_Player_Fireball.setPosition4x4(XMFLOAT4x4_to_tFloat4x4(xmf_out));
 			tWorld_Object_List->fWorld_Matrix[4] = c_Player_Fireball.getPosition4x4();
@@ -105,7 +105,7 @@ void cGame_Loop::Update()
 			tAABB_Player_Fireball.extents = tFloat3{ 0.2f, 0.13f, 0.2f };
 
 			tAABB_Dragon.center = c_Dragon.getPosition4().fXYZ;
-			tAABB_Dragon.extents = tFloat3{ 250.0f, 400.0f, 250.0f };
+			tAABB_Dragon.extents = tFloat3{ 50.0f, 200.0f, 100.0f };
 
 			tAABB_Dragon_Fireball[0].center = tWorld_Object_List->fFireball_Matrix[0].tW.fXYZ;
 			tAABB_Dragon_Fireball[0].extents = tFloat3{ 0.2f, 0.13f, 0.2f };
