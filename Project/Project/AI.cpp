@@ -119,7 +119,7 @@ void AI::resolveDragonState(tScene_Objects* tObject_List, tFloat4x4 _playerPos, 
 				for (int i = 0; i < tObject_List->maxFireballs; i++)
 				{
 					XMMATRIX oldPosMat = XMLoadFloat4x4(&tFloat4x4_to_XMFLOAT4x4(tObject_List->fFireball_Matrix[i]));
-					XMMATRIX moveMat = XMMatrixTranslation(0.0f, 0.0f, 5.0f);
+					XMMATRIX moveMat = XMMatrixTranslation(0.0f, 0.0f, 250.0f * _dTime);
 
 					XMMATRIX newPosMat = XMMatrixMultiply(moveMat, oldPosMat);
 					XMFLOAT4X4 newPos4x4;
@@ -132,7 +132,7 @@ void AI::resolveDragonState(tScene_Objects* tObject_List, tFloat4x4 _playerPos, 
 				for (int i = 0; i < tObject_List->maxFireballs; i++)
 				{
 					XMMATRIX oldPosMat = XMLoadFloat4x4(&tFloat4x4_to_XMFLOAT4x4(tObject_List->fFireball_Matrix[i]));
-					XMMATRIX moveMat = XMMatrixTranslation(0.0f, 0.0f, 7.0f);
+					XMMATRIX moveMat = XMMatrixTranslation(0.0f, 0.0f, 350.0f * _dTime);
 
 					XMMATRIX newPosMat = XMMatrixMultiply(moveMat, oldPosMat);
 					XMFLOAT4X4 newPos4x4;
@@ -145,7 +145,7 @@ void AI::resolveDragonState(tScene_Objects* tObject_List, tFloat4x4 _playerPos, 
 				for (int i = 0; i < tObject_List->maxFireballs; i++)
 				{
 					XMMATRIX oldPosMat = XMLoadFloat4x4(&tFloat4x4_to_XMFLOAT4x4(tObject_List->fFireball_Matrix[i]));
-					XMMATRIX moveMat = XMMatrixTranslation(0.0f, 0.0f, 9.0f);
+					XMMATRIX moveMat = XMMatrixTranslation(0.0f, 0.0f, 450.0f * _dTime);
 
 					XMMATRIX newPosMat = XMMatrixMultiply(moveMat, oldPosMat);
 					XMFLOAT4X4 newPos4x4;
