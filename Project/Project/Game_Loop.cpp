@@ -82,18 +82,39 @@ void cGame_Loop::Update()
 		tAABB_Dragon.center = c_Dragon.getPosition4().fXYZ;
 		tAABB_Dragon.extents = tFloat3{ 250.0f, 400.0f, 250.0f };
 
-		tAABB_Dragon_Fireball.center = tWorld_Object_List.fWorld_Matrix[3].tW.fXYZ;
-		tAABB_Dragon_Fireball.extents = tFloat3{ 0.2f, 0.13f, 0.2f };
+		tAABB_Dragon_Fireball[0].center = tWorld_Object_List.fFireball_Matrix[0].tW.fXYZ;
+		tAABB_Dragon_Fireball[0].extents = tFloat3{ 0.2f, 0.13f, 0.2f };
+
+		tAABB_Dragon_Fireball[1].center = tWorld_Object_List.fFireball_Matrix[1].tW.fXYZ;
+		tAABB_Dragon_Fireball[1].extents = tFloat3{ 0.2f, 0.13f, 0.2f };
+
+		tAABB_Dragon_Fireball[2].center = tWorld_Object_List.fFireball_Matrix[2].tW.fXYZ;
+		tAABB_Dragon_Fireball[2].extents = tFloat3{ 0.2f, 0.13f, 0.2f };
 
 		// Collisions
-		if (t_Collisions.Detect_AABB_To_AABB(tAABB_Player, tAABB_Dragon_Fireball) && c_Dragon_Fireball.getIsActive())
+		for (int i = 0; i < tWorld_Object_List.maxFireballs; i++)
 		{
-			c_Dragon_Fireball.setIsActive(false);
-			c_Player.setHealth(-10);
-			tWorld_Object_List.fWorld_Matrix[3].tW.fY = 500;
-			sound.playSoundEffect("Pain-SoundBible.com-1883168362.mp3", FMOD_DEFAULT, 0.7f);
-			if (c_Player.getHealth() <= 0)
-				c_Player.setIsAlive(false);
+			if (tWorld_Object_List.fFireball_State[i] != true)
+			{
+				continue;
+			}
+
+			if (t_Collisions.Detect_AABB_To_AABB(tAABB_Player, tAABB_Dragon_Fireball[i]))
+			{
+				tWorld_Object_List.fFireball_State[i] = false;
+				tWorld_Object_List.fFireballs_Alive -= 1;
+				//c_Dragon_Fireball.setIsActive(false);
+				c_Player.setHealth(-10);
+				//tWorld_Object_List.fWorld_Matrix[3].tW.fY = 500;
+				sound.playSoundEffect("Pain-SoundBible.com-1883168362.mp3", FMOD_DEFAULT, 0.7f);
+				if (c_Player.getHealth() <= 0)
+					c_Player.setIsAlive(false);
+			}
+			else if (tWorld_Object_List.fFireball_Matrix[i].tW.fY < -5)
+			{
+				tWorld_Object_List.fFireball_State[i] = false;
+				tWorld_Object_List.fFireballs_Alive -= 1;
+			}
 		}
 
 		if (t_Collisions.Detect_AABB_To_AABB(tAABB_Dragon, tAABB_Player_Fireball) && c_Player_Fireball.getIsActive())

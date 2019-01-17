@@ -443,6 +443,15 @@ tScene_Objects cScene_Manager::Get_World_Scene(int nScene_Id)
 			XMStoreFloat4x4(&temp, tempMatrix);
 
 			tScene.fWorld_Matrix[3] = XMFLOAT4x4_to_tFloat4x4(temp);
+			tScene.fFireball_Matrix[0] = XMFLOAT4x4_to_tFloat4x4(temp);
+			tScene.fFireball_Matrix[1] = XMFLOAT4x4_to_tFloat4x4(temp);
+			tScene.fFireball_Matrix[2] = XMFLOAT4x4_to_tFloat4x4(temp);
+
+			tScene.fFireball_State[0] = false;
+			tScene.fFireball_State[1] = false;
+			tScene.fFireball_State[2] = false;
+
+
 			tMesh tFireball = cBinary_Read.Read_Mesh("fireballMesh.bin");
 
 			for (int i = 0; i < tFireball.nVertex_Count; i++)

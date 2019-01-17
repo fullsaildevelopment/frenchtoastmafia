@@ -52,7 +52,8 @@ private:
 	tFloat4 movement = { 0.0f, 0.0f, 0.0f, 0.0f };
 
 
-	tAABB tAABB_Player, tAABB_Player_Fireball, tAABB_Dragon, tAABB_Dragon_Fireball;
+	tAABB tAABB_Player, tAABB_Player_Fireball, tAABB_Dragon;
+	tAABB tAABB_Dragon_Fireball[3];
 
 	// Particle Stuff
 
