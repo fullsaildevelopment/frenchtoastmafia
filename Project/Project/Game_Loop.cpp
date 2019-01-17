@@ -594,6 +594,18 @@ void cGame_Loop::Update()
 	// Scene Transitions
 	if (bChange_Scene)
 	{
+		if (m_nScene_Id == 2)
+		{
+			memset(bNode_Order, 0, sizeof(bNode_Order));
+			bDisplay_Spell_Book = false;
+			bDisplay_Spell_Node = false;
+			bDisplay_Fireball = false;
+			bDisplay_Icebolt = false;
+			bDisplay_Shield = false;
+			bMove_Bullet = false;
+			bSpell_Ready = false;
+		}
+
 		c_Render_Manager.Unload(tWorld_Object_List);
 		m_nScene_Id++;
 		if (m_nScene_Id > 3)
