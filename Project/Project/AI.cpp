@@ -48,12 +48,12 @@ void AI::resolveDragonState(tScene_Objects* tObject_List, tFloat4x4 _playerPos, 
 
 		if (tObject_List->fWorld_Matrix[2].tW.fZ > 200.0f)
 		{
-			xMove = 1000 * _dTime;
+			xMove = 300 * _dTime;
 		}
 
 		if (tObject_List->fWorld_Matrix[2].tW.fZ < -200.0f)
 		{
-			xMove = -1000 * _dTime;
+			xMove = -300 * _dTime;
 		}
 
 		if (dragHP != 4)
