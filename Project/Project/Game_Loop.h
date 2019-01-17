@@ -100,26 +100,26 @@ private:
 
 	// Particle Stuff
 
-	Particle p;
-
-	tFloat3 fireball_acceleration = { 0.0f, 0.0f, -9.81f };
-
-	tFloat3 dragon_blast_acceleration = { 0.0f, -9.81f, 0.0f };
-
-	tFloat4 fireball_color = { 0.2078f, 0.2078f, 0.2078f, 1.0f };
-
-	tFloat4 dragon_blast_color = { 1.0f, 0.0f, 0.0f, 1.0f };  // { 1.0f, 0.38039f, 0.0f, 1.0f };
-
-	int test = 0;
-
-	XMFLOAT4X4 xmf_in, xmf_out;
-	XMMATRIX xmm_in;
-
-	float fireball_kill = -2.0f;
-	float dragon_blast_kill = 0;
-
-	bool dragon_hit = false;
-	float timeCheck = 0;
+	//Particle p;
+	//
+	//tFloat3 fireball_acceleration = { 0.0f, 0.0f, -9.81f };
+	//
+	//tFloat3 dragon_blast_acceleration = { 0.0f, -9.81f, 0.0f };
+	//
+	//tFloat4 fireball_color = { 0.2078f, 0.2078f, 0.2078f, 1.0f };
+	//
+	//tFloat4 dragon_blast_color = { 1.0f, 0.0f, 0.0f, 1.0f };  // { 1.0f, 0.38039f, 0.0f, 1.0f };
+	//
+	//int test = 0;
+	//
+	//XMFLOAT4X4 xmf_in, xmf_out;
+	//XMMATRIX xmm_in;
+	//
+	//float fireball_kill = -2.0f;
+	//float dragon_blast_kill = 0;
+	//
+	//bool dragon_hit = false;
+	//float timeCheck = 0;
 	// Particle Stuff
 
 public:
