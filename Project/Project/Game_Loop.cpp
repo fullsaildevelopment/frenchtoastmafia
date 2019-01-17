@@ -630,7 +630,7 @@ void cGame_Loop::Update()
 	c_Render_Manager.Draw_Personal(tPersonal_Object_List, c_Head_Mount, c_Controllers, c_Offset_Matrix.GetPosition4x4(), &bMove_Bullet, &bSpell_Ready, c_Player_Fireball);
 
 	// AABB Visual Debugging
-	if (m_nScene_Id == 2)
+	/*if (m_nScene_Id == 2)
 	{
 		c_Render_Manager.Debugging_AABB(tAABB_Left_Hand, c_Head_Mount, c_Offset_Matrix.GetPosition4x4());
 		c_Render_Manager.Debugging_AABB(tAABB_Right_Hand, c_Head_Mount, c_Offset_Matrix.GetPosition4x4());
@@ -664,7 +664,7 @@ void cGame_Loop::Update()
 			c_Render_Manager.Debugging_AABB(tAABB_Shield_3, c_Head_Mount, c_Offset_Matrix.GetPosition4x4());
 		}
 	}
-
+*/
 	c_Head_Mount.VR_Render();
 
 	// Other updates
