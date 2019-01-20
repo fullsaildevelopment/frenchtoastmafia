@@ -204,6 +204,60 @@ void cRender_Manager::Initialize(cGraphics_Setup* _setup)
 
 	c_Graphics_Setup = _setup;
 
+	HRESULT tex = CreateDDSTextureFromFile(c_Graphics_Setup->Get_Device().Get(), L"smoke_texture.dds", nullptr, particle_Shader_Resource_View.GetAddressOf());
+
+	ZeroMemory(&particle_Vertex_Buffer_DESC_D, sizeof(D3D11_BUFFER_DESC));
+	particle_Vertex_Buffer_DESC_D.CPUAccessFlags = NULL;
+	particle_Vertex_Buffer_DESC_D.Usage = D3D11_USAGE_IMMUTABLE;
+	particle_Vertex_Buffer_DESC_D.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+	particle_Vertex_Buffer_DESC_D.MiscFlags = 0.0f;
+	particle_Vertex_Buffer_DESC_D.ByteWidth = sizeof(tVertex) * 100;
+	particle_Vertex_Buffer_DESC_D.StructureByteStride = 0;
+
+	ZeroMemory(&particle_Sample_State_DESC, sizeof(D3D11_SAMPLER_DESC));
+	particle_Sample_State_DESC.AddressU = D3D11_TEXTURE_ADDRESS_CLAMP;
+	particle_Sample_State_DESC.AddressV = D3D11_TEXTURE_ADDRESS_CLAMP;
+	particle_Sample_State_DESC.AddressW = D3D11_TEXTURE_ADDRESS_CLAMP;
+	particle_Sample_State_DESC.ComparisonFunc = D3D11_COMPARISON_ALWAYS;
+	particle_Sample_State_DESC.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
+	particle_Sample_State_DESC.MaxAnisotropy = 1.0f;
+	particle_Sample_State_DESC.MaxLOD = D3D11_FLOAT32_MAX;
+	particle_Sample_State_DESC.MinLOD = 0.0f;
+	particle_Sample_State_DESC.MipLODBias = 0.0f;
+
+	ZeroMemory(&particle_Blend_DESC, sizeof(D3D11_BLEND_DESC));
+	particle_Blend_DESC.RenderTarget[0].BlendEnable = TRUE;
+	particle_Blend_DESC.RenderTarget[0].SrcBlend = D3D11_BLEND_SRC_ALPHA;
+	particle_Blend_DESC.RenderTarget[0].DestBlend = D3D11_BLEND_INV_SRC_ALPHA;
+	particle_Blend_DESC.RenderTarget[0].BlendOp = D3D11_BLEND_OP_ADD;
+	particle_Blend_DESC.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_ONE;
+	particle_Blend_DESC.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ZERO;
+	particle_Blend_DESC.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;
+	particle_Blend_DESC.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
+	particle_Blend_DESC.AlphaToCoverageEnable = 0;
+	particle_Blend_DESC.IndependentBlendEnable = 0;
+
+	ZeroMemory(&particle_Vertex_Buffer_DESC, sizeof(D3D11_BUFFER_DESC));
+	particle_Vertex_Buffer_DESC.CPUAccessFlags = NULL;
+	particle_Vertex_Buffer_DESC.Usage = D3D11_USAGE_IMMUTABLE;
+	particle_Vertex_Buffer_DESC.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+	particle_Vertex_Buffer_DESC.MiscFlags = 0.0f;
+	particle_Vertex_Buffer_DESC.ByteWidth = sizeof(tVertex) * 100;
+	particle_Vertex_Buffer_DESC.StructureByteStride = 0;
+
+	ZeroMemory(&particle_Index_Buffer_DESC, sizeof(D3D11_BUFFER_DESC));
+	particle_Index_Buffer_DESC.CPUAccessFlags = 0;
+	particle_Index_Buffer_DESC.Usage = D3D11_USAGE_DEFAULT;
+	particle_Index_Buffer_DESC.BindFlags = D3D11_BIND_INDEX_BUFFER;
+	particle_Index_Buffer_DESC.ByteWidth = sizeof(UINT) * 150;
+	particle_Index_Buffer_DESC.MiscFlags = 0;
+
+
+	ZeroMemory(&particle_Index_Buffer_DATA, sizeof(D3D11_SUBRESOURCE_DATA));
+	particle_Index_Buffer_DATA.pSysMem = &quad_indexes[0];
+	particle_Index_Buffer_DATA.SysMemPitch = 0;
+	particle_Index_Buffer_DATA.SysMemSlicePitch = 0;
+
 	// CONSTANT BUFFER - WORLD VIEW PROJECTION CAMERA
 	ZeroMemory(&d3d_Constant_Buffer_Desc, sizeof(D3D11_BUFFER_DESC));
 	d3d_Constant_Buffer_Desc.ByteWidth = sizeof(tConstantBuffer_VertexShader_WVP);
@@ -1080,65 +1134,15 @@ void cRender_Manager::Draw_World(int nScene_Id, tScene_Objects* tObject_List, bo
 				line_vert_count = preAlloc_particle.size();
 			}
 
-			D3D11_BLEND_DESC particle_Blend_DESC;
-			ZeroMemory(&particle_Blend_DESC, sizeof(D3D11_BLEND_DESC));
-			particle_Blend_DESC.RenderTarget[0].BlendEnable = TRUE;
-			particle_Blend_DESC.RenderTarget[0].SrcBlend = D3D11_BLEND_SRC_ALPHA;
-			particle_Blend_DESC.RenderTarget[0].DestBlend = D3D11_BLEND_INV_SRC_ALPHA;
-			particle_Blend_DESC.RenderTarget[0].BlendOp = D3D11_BLEND_OP_ADD;
-			particle_Blend_DESC.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_ONE;
-			particle_Blend_DESC.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ZERO;
-			particle_Blend_DESC.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;
-			particle_Blend_DESC.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
-			particle_Blend_DESC.AlphaToCoverageEnable = 0;
-			particle_Blend_DESC.IndependentBlendEnable = 0;
-
-			c_Graphics_Setup->Get_Device().Get()->CreateBlendState(&particle_Blend_DESC, particle_Blend_State.GetAddressOf());
-
-			D3D11_SAMPLER_DESC particle_Sample_State_DESC;
-			ZeroMemory(&particle_Sample_State_DESC, sizeof(D3D11_SAMPLER_DESC));
-			particle_Sample_State_DESC.AddressU = D3D11_TEXTURE_ADDRESS_CLAMP;
-			particle_Sample_State_DESC.AddressV = D3D11_TEXTURE_ADDRESS_CLAMP;
-			particle_Sample_State_DESC.AddressW = D3D11_TEXTURE_ADDRESS_CLAMP;
-			particle_Sample_State_DESC.ComparisonFunc = D3D11_COMPARISON_ALWAYS;
-			particle_Sample_State_DESC.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
-			particle_Sample_State_DESC.MaxAnisotropy = 1.0f;
-			particle_Sample_State_DESC.MaxLOD = D3D11_FLOAT32_MAX;
-			particle_Sample_State_DESC.MinLOD = 0.0f;
-			particle_Sample_State_DESC.MipLODBias = 0.0f;
-
-			HRESULT tex = CreateDDSTextureFromFile(c_Graphics_Setup->Get_Device().Get(), L"smoke_texture.dds", nullptr, particle_Shader_Resource_View.GetAddressOf());
-			c_Graphics_Setup->Get_Device().Get()->CreateSamplerState(&particle_Sample_State_DESC, particle_Sample_State.GetAddressOf());
-
-
-			D3D11_BUFFER_DESC particle_Vertex_Buffer_DESC;
-			ZeroMemory(&particle_Vertex_Buffer_DESC, sizeof(D3D11_BUFFER_DESC));
-			particle_Vertex_Buffer_DESC.CPUAccessFlags = NULL;
-			particle_Vertex_Buffer_DESC.Usage = D3D11_USAGE_IMMUTABLE;
-			particle_Vertex_Buffer_DESC.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-			particle_Vertex_Buffer_DESC.MiscFlags = 0.0f;
-			particle_Vertex_Buffer_DESC.ByteWidth = sizeof(tVertex) * 100;
-			particle_Vertex_Buffer_DESC.StructureByteStride = 0;
-
-			D3D11_SUBRESOURCE_DATA particle_Vertex_Buffer_DATA;
 			ZeroMemory(&particle_Vertex_Buffer_DATA, sizeof(D3D11_SUBRESOURCE_DATA));
 			particle_Vertex_Buffer_DATA.pSysMem = &preAlloc_particle;
 			particle_Vertex_Buffer_DATA.SysMemPitch = 0;
 			particle_Vertex_Buffer_DATA.SysMemSlicePitch = 0;
 
-			D3D11_BUFFER_DESC particle_Index_Buffer_DESC;
-			ZeroMemory(&particle_Index_Buffer_DESC, sizeof(D3D11_BUFFER_DESC));
-			particle_Index_Buffer_DESC.CPUAccessFlags = 0;
-			particle_Index_Buffer_DESC.Usage = D3D11_USAGE_DEFAULT;
-			particle_Index_Buffer_DESC.BindFlags = D3D11_BIND_INDEX_BUFFER;
-			particle_Index_Buffer_DESC.ByteWidth = sizeof(UINT) * 150;
-			particle_Index_Buffer_DESC.MiscFlags = 0;
+			c_Graphics_Setup->Get_Device().Get()->CreateBlendState(&particle_Blend_DESC, particle_Blend_State.GetAddressOf());
 
-			D3D11_SUBRESOURCE_DATA particle_Index_Buffer_DATA;
-			ZeroMemory(&particle_Index_Buffer_DATA, sizeof(D3D11_SUBRESOURCE_DATA));
-			particle_Index_Buffer_DATA.pSysMem = &quad_indexes[0];
-			particle_Index_Buffer_DATA.SysMemPitch = 0;
-			particle_Index_Buffer_DATA.SysMemSlicePitch = 0;
+			//HRESULT tex = CreateDDSTextureFromFile(c_Graphics_Setup->Get_Device().Get(), L"smoke_texture.dds", nullptr, particle_Shader_Resource_View.GetAddressOf());
+			c_Graphics_Setup->Get_Device().Get()->CreateSamplerState(&particle_Sample_State_DESC, particle_Sample_State.GetAddressOf());
 
 			c_Graphics_Setup->Get_Device()->CreateBuffer(&particle_Vertex_Buffer_DESC, &particle_Vertex_Buffer_DATA, particle_Vertex_Buffer.GetAddressOf());
 			c_Graphics_Setup->Get_Device()->CreateBuffer(&particle_Index_Buffer_DESC, &particle_Index_Buffer_DATA, particle_Index_Buffer.GetAddressOf());
@@ -1251,22 +1255,12 @@ void cRender_Manager::Draw_World(int nScene_Id, tScene_Objects* tObject_List, bo
 					line_vert_count_D = preAlloc_particle_D.size();
 				}
 
-				D3D11_BUFFER_DESC particle_Vertex_Buffer_DESC;
-				ZeroMemory(&particle_Vertex_Buffer_DESC, sizeof(D3D11_BUFFER_DESC));
-				particle_Vertex_Buffer_DESC.CPUAccessFlags = NULL;
-				particle_Vertex_Buffer_DESC.Usage = D3D11_USAGE_IMMUTABLE;
-				particle_Vertex_Buffer_DESC.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-				particle_Vertex_Buffer_DESC.MiscFlags = 0.0f;
-				particle_Vertex_Buffer_DESC.ByteWidth = sizeof(tVertex) * 100;
-				particle_Vertex_Buffer_DESC.StructureByteStride = 0;
+				ZeroMemory(&particle_Vertex_Buffer_DATA_D, sizeof(D3D11_SUBRESOURCE_DATA));
+				particle_Vertex_Buffer_DATA_D.pSysMem = &preAlloc_particle_D;
+				particle_Vertex_Buffer_DATA_D.SysMemPitch = 0;
+				particle_Vertex_Buffer_DATA_D.SysMemSlicePitch = 0;
 
-				D3D11_SUBRESOURCE_DATA particle_Vertex_Buffer_DATA;
-				ZeroMemory(&particle_Vertex_Buffer_DATA, sizeof(D3D11_SUBRESOURCE_DATA));
-				particle_Vertex_Buffer_DATA.pSysMem = &preAlloc_particle_D;
-				particle_Vertex_Buffer_DATA.SysMemPitch = 0;
-				particle_Vertex_Buffer_DATA.SysMemSlicePitch = 0;
-
-				c_Graphics_Setup->Get_Device()->CreateBuffer(&particle_Vertex_Buffer_DESC, &particle_Vertex_Buffer_DATA, particle_Vertex_Buffer.GetAddressOf());
+				c_Graphics_Setup->Get_Device()->CreateBuffer(&particle_Vertex_Buffer_DESC_D, &particle_Vertex_Buffer_DATA_D, particle_Vertex_Buffer.GetAddressOf());
 
 				//D3D11_MAPPED_SUBRESOURCE mapped_Particle_Buffer;
 				//c_Graphics_Setup->Get_Context().Get()->Map(particle_Vertex_Buffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &d3d_MSR);

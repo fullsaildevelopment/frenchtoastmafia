@@ -112,6 +112,19 @@ private:
 
 	ComPtr<ID3D11BlendState> particle_Blend_State;
 
+	D3D11_BUFFER_DESC particle_Vertex_Buffer_DESC;
+	D3D11_SUBRESOURCE_DATA particle_Vertex_Buffer_DATA;
+	D3D11_BUFFER_DESC particle_Index_Buffer_DESC;
+	D3D11_SUBRESOURCE_DATA particle_Index_Buffer_DATA;
+	D3D11_BLEND_DESC particle_Blend_DESC;
+	D3D11_SAMPLER_DESC particle_Sample_State_DESC;
+
+	D3D11_BUFFER_DESC particle_Vertex_Buffer_DESC_D;
+	D3D11_SUBRESOURCE_DATA particle_Vertex_Buffer_DATA_D;
+
+	//static std::array<tVertex, 100> preAlloc_particle;
+	//static std::array<tVertex, 100> preAlloc_particle_D;
+
 	FLOAT blend_Ratio[4];
 
 	float random_color;
