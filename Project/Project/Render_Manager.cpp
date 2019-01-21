@@ -625,6 +625,7 @@ void cRender_Manager::Draw_Personal(tScene_Objects* tObject_List, cHead_Mount c_
 			c_Graphics_Setup->Get_Context().Get()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 			c_Graphics_Setup->Get_Context().Get()->VSSetShader(tObject_List->d3d_Vertex_Shaders[i].Get(), NULL, 0);
 			c_Graphics_Setup->Get_Context().Get()->PSSetShader(tObject_List->d3d_Pixel_Shaders[i].Get(), NULL, 0);
+			c_Graphics_Setup->Get_Context().Get()->PSSetSamplers(0, 1, c_Graphics_Setup->Get_Sample_State().GetAddressOf());
 			c_Graphics_Setup->Get_Context().Get()->PSSetShaderResources(0, 1, tObject_List->d3d_SRV[i][0].GetAddressOf());
 
 			tCB_PS.ambient.x = tObject_List->tMaterials_Data[i].tMats[0].tAmbient.fX;
@@ -767,6 +768,7 @@ void cRender_Manager::Draw_Spell(tScene_Objects* tObject_List, cHead_Mount c_Hea
 			c_Graphics_Setup->Get_Context().Get()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 			c_Graphics_Setup->Get_Context().Get()->VSSetShader(tObject_List->d3d_Vertex_Shaders[i].Get(), NULL, 0);
 			c_Graphics_Setup->Get_Context().Get()->PSSetShader(tObject_List->d3d_Pixel_Shaders[i].Get(), NULL, 0);
+			c_Graphics_Setup->Get_Context().Get()->PSSetSamplers(0, 1, c_Graphics_Setup->Get_Sample_State().GetAddressOf());
 			c_Graphics_Setup->Get_Context().Get()->PSSetShaderResources(0, 1, tObject_List->d3d_SRV[i][0].GetAddressOf());
 			c_Graphics_Setup->Get_Context().Get()->OMSetBlendState(c_Graphics_Setup->Get_Blend_State().Get(), blend, 0xffffffff);
 
@@ -918,6 +920,7 @@ void cRender_Manager::Draw_World(int nScene_Id, tScene_Objects* tObject_List, bo
 			c_Graphics_Setup->Get_Context().Get()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 			c_Graphics_Setup->Get_Context().Get()->VSSetShader(tObject_List->d3d_Vertex_Shaders[i].Get(), NULL, 0);
 			c_Graphics_Setup->Get_Context().Get()->PSSetShader(tObject_List->d3d_Pixel_Shaders[i].Get(), NULL, 0);
+			c_Graphics_Setup->Get_Context().Get()->PSSetSamplers(0, 1, c_Graphics_Setup->Get_Sample_State().GetAddressOf());
 
 			if (nScene_Id < 2 || nScene_Id == 3)
 			{
@@ -1211,6 +1214,7 @@ void cRender_Manager::Draw_World(int nScene_Id, tScene_Objects* tObject_List, bo
 
 			c_Graphics_Setup->Get_Context().Get()->VSSetShader(particle_Vertex_Shader.Get(), NULL, 0);
 			c_Graphics_Setup->Get_Context().Get()->PSSetShader(particle_Pixel_Shader.Get(), NULL, 0);
+			c_Graphics_Setup->Get_Context().Get()->PSSetSamplers(0, 1, particle_Sample_State.GetAddressOf());
 
 			ID3D11ShaderResourceView *temp_particle_Shader_Resource_View[1] = { particle_Shader_Resource_View.Get() };
 			c_Graphics_Setup->Get_Context().Get()->PSSetShaderResources(0, 1, temp_particle_Shader_Resource_View);
