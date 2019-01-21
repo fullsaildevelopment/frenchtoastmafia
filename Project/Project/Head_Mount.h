@@ -44,4 +44,3 @@ public:
 	tFloat4x4 Get_mat4HMDPose();
 	tFloat4x4 Get_CurrentLook(tFloat4x4 offset);
 };
-

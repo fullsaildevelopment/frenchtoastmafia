@@ -69,22 +69,22 @@ void cHead_Mount::SetupCameras()
 tFloat4x4 cHead_Mount::GetCurrentViewProjectionMatrix(vr::Hmd_Eye nEye, Matrix4 offset)
 {
 	tFloat4x4 out_mat;
-	
+
 	out_mat.tX.fX = 1.0f;
 	out_mat.tX.fY = 0.0f;
 	out_mat.tX.fZ = 0.0f;
 	out_mat.tX.fW = 0.0f;
-	
+
 	out_mat.tY.fX = 0.0f;
 	out_mat.tY.fY = 1.0f;
 	out_mat.tY.fZ = 0.0f;
 	out_mat.tY.fW = 0.0f;
-	
+
 	out_mat.tZ.fX = 0.0f;
 	out_mat.tZ.fY = 0.0f;
 	out_mat.tZ.fZ = 1.0f;
 	out_mat.tZ.fW = 0.0f;
-	
+
 	out_mat.tW.fX = 0.0f;
 	out_mat.tW.fY = 0.0f;
 	out_mat.tW.fZ = 0.0f;
@@ -174,4 +174,3 @@ tFloat4x4 cHead_Mount::Get_CurrentLook(tFloat4x4 offset)
 {
 	return Matrix4_To_tFloat4x4(tFloat4x4_To_Matrix4(offset) * c_VR_Setup->Get_mat4HMDPose());
 }
-
