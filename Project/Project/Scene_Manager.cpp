@@ -354,7 +354,7 @@ tScene_Objects* cScene_Manager::Get_World_Scene(int nScene_Id)
 			{
 				float oldY = tDragon.tVerts[i].fPosition.fY;
 				float oldZ = tDragon.tVerts[i].fPosition.fZ;
-
+				
 				tDragon.tVerts[i].fPosition.fY = oldZ;
 				tDragon.tVerts[i].fPosition.fZ = oldY;
 
@@ -662,7 +662,7 @@ tScene_Objects* cScene_Manager::Get_Spell_Book()
 		tScene->szSRV_File_Path[obj_id] = "spellbook.dds";
 	}
 	// Background
-
+	
 	// Spells
 	{
 		for (int obj_id = 1; obj_id < tScene->nObject_Count; obj_id++)

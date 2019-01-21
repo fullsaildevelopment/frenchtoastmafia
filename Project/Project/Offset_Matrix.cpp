@@ -27,17 +27,17 @@ void cOffset_Matrix::ResetPosition()
 	tOffset_Matrix.tX.fY = 0.0f;
 	tOffset_Matrix.tX.fZ = 0.0f;
 	tOffset_Matrix.tX.fW = 0.0f;
-
+	
 	tOffset_Matrix.tY.fX = 0.0f;
 	tOffset_Matrix.tY.fY = 1.0f;
 	tOffset_Matrix.tY.fZ = 0.0f;
 	tOffset_Matrix.tY.fW = 0.0f;
-
+	
 	tOffset_Matrix.tZ.fX = 0.0f;
 	tOffset_Matrix.tZ.fY = 0.0f;
 	tOffset_Matrix.tZ.fZ = 1.0f;
 	tOffset_Matrix.tZ.fW = 0.0f;
-
+	
 	tOffset_Matrix.tW.fX = 0.0f;
 	tOffset_Matrix.tW.fY = 0.0f;
 	tOffset_Matrix.tW.fZ = 0.0f;

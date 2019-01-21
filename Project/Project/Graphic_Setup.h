@@ -85,7 +85,6 @@ public:
 	ComPtr<IDXGISwapChain> Get_Swap_Chain();
 	D3D11_VIEWPORT Get_View_Port();
 	ComPtr<ID3D11DepthStencilState> Get_Depth_Stencil_State();
-	ComPtr<ID3D11SamplerState> Get_Sample_State();
 	ComPtr<ID3D11BlendState> Get_Blend_State();
 	ComPtr<ID3D11Texture2D> Get_Texture_Left_Eye();
 	ComPtr<ID3D11Texture2D> Get_Texture_Right_Eye();

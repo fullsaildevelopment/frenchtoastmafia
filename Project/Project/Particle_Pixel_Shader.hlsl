@@ -44,12 +44,12 @@ float4 main(INPUT_DATA input) : SV_TARGET
 	//float4 returnThis;                                                      // time.x          // posUV.posT.x
 	//returnThis.xyz = saturate((dot(lightDirection, input.fNormal))) * color; // NEWColor          tan(time.z)
 	//returnThis.w = 1;
-
+	
 	color = tTexture.Sample(sSampler_State[0], input.fTexture.xy);
 	color.w = input.fColor.w;        // JUST ADDED
 	color = saturate(color.xyzw);    // JUST ADDED
 
 	//float4 baseColor = tTexture.Sample(sSampler_State[0], input.fTexture.xy) * returnThis; // gets the base color
-
+	
 	return color;   // color // tColor // sColor // cColor
 }

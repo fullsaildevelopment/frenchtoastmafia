@@ -625,7 +625,6 @@ void cRender_Manager::Draw_Personal(tScene_Objects* tObject_List, cHead_Mount c_
 			c_Graphics_Setup->Get_Context().Get()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 			c_Graphics_Setup->Get_Context().Get()->VSSetShader(tObject_List->d3d_Vertex_Shaders[i].Get(), NULL, 0);
 			c_Graphics_Setup->Get_Context().Get()->PSSetShader(tObject_List->d3d_Pixel_Shaders[i].Get(), NULL, 0);
-			c_Graphics_Setup->Get_Context().Get()->PSSetSamplers(0, 1, c_Graphics_Setup->Get_Sample_State().GetAddressOf());
 			c_Graphics_Setup->Get_Context().Get()->PSSetShaderResources(0, 1, tObject_List->d3d_SRV[i][0].GetAddressOf());
 
 			tCB_PS.ambient.x = tObject_List->tMaterials_Data[i].tMats[0].tAmbient.fX;
@@ -745,7 +744,7 @@ void cRender_Manager::Draw_Spell(tScene_Objects* tObject_List, cHead_Mount c_Hea
 			// CONSTANT BUFFER - WVPC
 			{
 				//XMFLOAT4X4 xmf_origin = tFloat4x4_to_XMFLOAT4x4(tPosition);
-
+				
 
 				XMFLOAT4X4 xmf_offset = tFloat4x4_to_XMFLOAT4x4(tObject_List->fWorld_Matrix[i]);
 				XMMATRIX xmm_offset = XMLoadFloat4x4(&xmf_offset);
@@ -770,10 +769,9 @@ void cRender_Manager::Draw_Spell(tScene_Objects* tObject_List, cHead_Mount c_Hea
 			c_Graphics_Setup->Get_Context().Get()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 			c_Graphics_Setup->Get_Context().Get()->VSSetShader(tObject_List->d3d_Vertex_Shaders[i].Get(), NULL, 0);
 			c_Graphics_Setup->Get_Context().Get()->PSSetShader(tObject_List->d3d_Pixel_Shaders[i].Get(), NULL, 0);
-			c_Graphics_Setup->Get_Context().Get()->PSSetSamplers(0, 1, c_Graphics_Setup->Get_Sample_State().GetAddressOf());
 			c_Graphics_Setup->Get_Context().Get()->PSSetShaderResources(0, 1, tObject_List->d3d_SRV[i][0].GetAddressOf());
 			c_Graphics_Setup->Get_Context().Get()->OMSetBlendState(c_Graphics_Setup->Get_Blend_State().Get(), blend, 0xffffffff);
-
+				
 			if (bDisplay_Spell_Book)
 				c_Graphics_Setup->Get_Context().Get()->DrawIndexed(tObject_List->tMesh_Data[i].nIndex_Count, 0, 0);
 		}
@@ -922,7 +920,6 @@ void cRender_Manager::Draw_World(int nScene_Id, tScene_Objects* tObject_List, bo
 			c_Graphics_Setup->Get_Context().Get()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 			c_Graphics_Setup->Get_Context().Get()->VSSetShader(tObject_List->d3d_Vertex_Shaders[i].Get(), NULL, 0);
 			c_Graphics_Setup->Get_Context().Get()->PSSetShader(tObject_List->d3d_Pixel_Shaders[i].Get(), NULL, 0);
-			c_Graphics_Setup->Get_Context().Get()->PSSetSamplers(0, 1, c_Graphics_Setup->Get_Sample_State().GetAddressOf());
 
 			if (nScene_Id < 2 || nScene_Id == 3)
 			{
@@ -1066,7 +1063,7 @@ void cRender_Manager::Draw_World(int nScene_Id, tScene_Objects* tObject_List, bo
 			//	preAlloc_particle[k + 1].fColor.fZ = line_vert[l].color.fZ;   // 0.2078f
 			//	preAlloc_particle[k + 1].fColor.fW = line_vert[l].color.fW;      // 1.0f
 
-			//
+			//	
 
 			//	line_vert_count = preAlloc_particle.size();
 			//}
@@ -1182,7 +1179,7 @@ void cRender_Manager::Draw_World(int nScene_Id, tScene_Objects* tObject_List, bo
 			lookat_Fireball_Matrix = DirectX::XMLoadFloat4x4(&temp_f);                     //  changes the fireball world matrix from a XMFloat4x4 to a XMMATRIX
 			temp_f = tFloat4x4_to_XMFLOAT4x4(player_pos);                                  //  changes the hmd_matrix from a tFloat4x4 to a XMFLOAT4x4
 			player_Pos_Matrix = DirectX::XMLoadFloat4x4(&temp_f);                          //  changes the hmd_matrix from a XMFLOAT4x4 to a XMMATRIX
-			lookat_Fireball_Matrix = lookAtMatrix(lookat_Fireball_Matrix, player_Pos_Matrix);
+			lookat_Fireball_Matrix = lookAtMatrix(lookat_Fireball_Matrix, player_Pos_Matrix); 
 
 			//lookat_Fireball_Matrix = tFloat4x4_to_XMFLOAT4x4(lookat_Fireball_Matrix);
 			XMFLOAT4X4 lookAt_Fireball_4x4;  // &tWVP.fWorld_Matrix
@@ -1216,7 +1213,6 @@ void cRender_Manager::Draw_World(int nScene_Id, tScene_Objects* tObject_List, bo
 
 			c_Graphics_Setup->Get_Context().Get()->VSSetShader(particle_Vertex_Shader.Get(), NULL, 0);
 			c_Graphics_Setup->Get_Context().Get()->PSSetShader(particle_Pixel_Shader.Get(), NULL, 0);
-			c_Graphics_Setup->Get_Context().Get()->PSSetSamplers(0, 1, particle_Sample_State.GetAddressOf());
 
 			c_Graphics_Setup->Get_Context().Get()->PSSetSamplers(0, 1, particle_Sample_State.GetAddressOf());
 
@@ -1422,15 +1418,15 @@ void cRender_Manager::Debugging_AABB(tAABB obj, cHead_Mount c_Head_Mount, tFloat
 	box[0].fPosition.fX = obj.center.fX - obj.extents.fX;
 	box[0].fPosition.fY = obj.center.fY + obj.extents.fY;
 	box[0].fPosition.fZ = obj.center.fZ - obj.extents.fZ;
-
+	
 	box[1].fPosition.fX = obj.center.fX + obj.extents.fX;
 	box[1].fPosition.fY = obj.center.fY + obj.extents.fY;
 	box[1].fPosition.fZ = obj.center.fZ - obj.extents.fZ;
-
+	
 	box[2].fPosition.fX = obj.center.fX - obj.extents.fX;
 	box[2].fPosition.fY = obj.center.fY - obj.extents.fY;
 	box[2].fPosition.fZ = obj.center.fZ - obj.extents.fZ;
-
+	
 	box[3].fPosition.fX = obj.center.fX + obj.extents.fX;
 	box[3].fPosition.fY = obj.center.fY - obj.extents.fY;
 	box[3].fPosition.fZ = obj.center.fZ - obj.extents.fZ;

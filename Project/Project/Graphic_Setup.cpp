@@ -384,11 +384,6 @@ ComPtr<ID3D11DepthStencilState> cGraphics_Setup::Get_Depth_Stencil_State()
 	return d3d_DSS;
 }
 
-ComPtr<ID3D11SamplerState> cGraphics_Setup::Get_Sample_State()
-{
-	return d3d_Sampler_State;
-}
-
 ComPtr<ID3D11BlendState> cGraphics_Setup::Get_Blend_State()
 {
 	return d3d_Blend_State;

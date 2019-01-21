@@ -37,7 +37,7 @@ void AI::resolveDragonState(tScene_Objects* tObject_List, tFloat4x4 _playerPos, 
 		}
 	}
 
-	if(aggro)
+	if (aggro)
 	{
 		//moveTimer += _dTime;
 		//if (moveTimer >= 4.0f)
@@ -46,14 +46,14 @@ void AI::resolveDragonState(tScene_Objects* tObject_List, tFloat4x4 _playerPos, 
 		//	xMove *= -1;
 		//}
 
-		if (tObject_List->fWorld_Matrix[2].tW.fZ > 200.0f)
+		if (tObject_List->fWorld_Matrix[2].tW.fZ > 50.0f)
 		{
-			xMove = 300 * _dTime;
+			xMove = 5;
 		}
 
-		if (tObject_List->fWorld_Matrix[2].tW.fZ < -200.0f)
+		if (tObject_List->fWorld_Matrix[2].tW.fZ < -50.0f)
 		{
-			xMove = -300 * _dTime;
+			xMove = -5;
 		}
 
 		if (dragHP != 4)
