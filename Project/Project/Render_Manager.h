@@ -133,6 +133,10 @@ private:
 	UINT quad_indexes[100];
 	// Particle Stuff
 
+	// Health Bar Stuff
+
+	// Health Bar Stuff
+
 public:
 	cRender_Manager();
 	~cRender_Manager();
@@ -148,4 +152,6 @@ public:
 	void keyboardInputs(tScene_Objects* tObject_List);
 
 	void Debugging_AABB(tAABB obj, cHead_Mount c_Head_Mount, tFloat4x4 offset);
+
+	void Draw_UI(tScene_Objects* t_Object_List, cHead_Mount c_Head_Mount, tFloat4x4 offset, tFloat4x4 drag_World_Matrix);
 };

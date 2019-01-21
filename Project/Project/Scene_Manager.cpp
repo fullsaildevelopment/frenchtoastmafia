@@ -1620,3 +1620,80 @@ tScene_Objects * cScene_Manager::Get_Spell_Node_Shield()
 
 	return tScene;
 }
+
+tScene_Objects* cScene_Manager::Get_UI()
+{
+	tScene_Objects* tScene = new tScene_Objects;
+
+	tScene->nObject_Count = 1;
+
+	// Dragon Health Bar
+	{
+		int obj_id = 0;
+		// World Position
+		XMFLOAT4X4 temp;
+		XMMATRIX tempMatrix = XMMatrixIdentity();
+		XMStoreFloat4x4(&temp, tempMatrix);
+		tScene->fWorld_Matrix[obj_id] = XMFLOAT4x4_to_tFloat4x4(temp);
+
+		tVertex *dragon_Health_Bar = new tVertex[4];
+		dragon_Health_Bar[0].fPosition.fX = -150.0f;
+		dragon_Health_Bar[0].fPosition.fY = 40.0f;
+		dragon_Health_Bar[0].fPosition.fZ = 0.0f;
+		
+		dragon_Health_Bar[0].fTexture_Coordinate.fX = 0.0f;
+		dragon_Health_Bar[0].fTexture_Coordinate.fY = 0.0f;
+		
+		dragon_Health_Bar[1].fPosition.fX = 150.0f;
+		dragon_Health_Bar[1].fPosition.fY = 40.0f;
+		dragon_Health_Bar[1].fPosition.fZ = 0.0f;
+		
+		dragon_Health_Bar[1].fTexture_Coordinate.fX = 1.0f;
+		dragon_Health_Bar[1].fTexture_Coordinate.fY = 0.0f;
+		
+		dragon_Health_Bar[2].fPosition.fX = -150.0f;
+		dragon_Health_Bar[2].fPosition.fY = -40.0f;
+		dragon_Health_Bar[2].fPosition.fZ = 0.0f;
+		
+		dragon_Health_Bar[2].fTexture_Coordinate.fX = 0.0f;
+		dragon_Health_Bar[2].fTexture_Coordinate.fY = 1.0f;
+		
+		dragon_Health_Bar[3].fPosition.fX = 150.0f;
+		dragon_Health_Bar[3].fPosition.fY = -40.0f;
+		dragon_Health_Bar[3].fPosition.fZ = 0.0f;
+		
+		dragon_Health_Bar[3].fTexture_Coordinate.fX = 1.0f;
+		dragon_Health_Bar[3].fTexture_Coordinate.fY = 1.0f;
+
+		/*for (int i = 0; i < 4; i++)
+		{
+			dragon_Health_Bar[i].fPosition.fZ *= -1;
+		}*/
+
+		for (int i = 0; i < 4; i++)
+		{
+			tScene->tMesh_Data[obj_id].tVerts.push_back(dragon_Health_Bar[i]);
+		}
+
+		tScene->tMesh_Data[obj_id].nVertex_Count = 4;
+
+		// INDEX BUFFER
+
+		unsigned int drag_Health_Bar_indicies[6] =
+		{
+			0,1,2,
+			1,3,2
+		};
+
+		for (int i = 0; i < 6; i++)
+		{
+			tScene->tMesh_Data[obj_id].nIndicies.push_back(drag_Health_Bar_indicies[i]);
+		}
+		tScene->tMesh_Data[obj_id].nIndex_Count = 6;
+
+		tScene->szSRV_File_Path[obj_id] = "Health_Bar.dds";
+	}
+	// Dragon Health Bar
+
+	return tScene;
+}

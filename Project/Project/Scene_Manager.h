@@ -29,5 +29,6 @@ public:
 	tScene_Objects* Get_Spell_Node_Fireball();
 	tScene_Objects* Get_Spell_Node_Icebolt();
 	tScene_Objects* Get_Spell_Node_Shield();
+	tScene_Objects* Get_UI();
 };
 

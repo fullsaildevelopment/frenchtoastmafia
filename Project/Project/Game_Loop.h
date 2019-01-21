@@ -61,7 +61,8 @@ private:
 	int nDisplay_Spell_Node = 0;
 
 	tFloat4 movement = { 0.0f, 0.0f, 0.0f, 0.0f };
-	tScene_Objects *tPersonal_Object_List, *tWorld_Object_List, *tSpell_Book, *tFireball_Nodes, *tIcebolt_Nodes, *tShield_Nodes;
+	tScene_Objects *tPersonal_Object_List, *tWorld_Object_List, *UI_Object_List;
+	tScene_Objects *tSpell_Book, *tFireball_Nodes, *tIcebolt_Nodes, *tShield_Nodes;
 	tAABB tAABB_Player, tAABB_Player_Fireball, tAABB_Dragon;
 	tAABB tAABB_Left_Hand, tAABB_Right_Hand;
 	tAABB tAABB_Spell_1, tAABB_Spell_2, tAABB_Spell_3, tAABB_Cancel;

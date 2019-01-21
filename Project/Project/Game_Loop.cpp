@@ -52,6 +52,9 @@ void cGame_Loop::Setup()
 	tShield_Nodes = c_Scene_Manager.Get_Spell_Node_Shield();
 	c_Render_Manager.Load_Data(4, tShield_Nodes);
 
+	UI_Object_List = c_Scene_Manager.Get_UI();
+	c_Render_Manager.Load_Data(4, UI_Object_List);
+
 	sound.playSong("fionnulas-tale-celtic-flute-music.mp3", FMOD_LOOP_NORMAL, 0.1f);
 }
 
@@ -628,6 +631,7 @@ void cGame_Loop::Update()
 	c_Render_Manager.Draw_Spell(tIcebolt_Nodes, c_Head_Mount, c_Offset_Matrix.GetPosition4x4(), bDisplay_Icebolt);
 	c_Render_Manager.Draw_Spell(tShield_Nodes, c_Head_Mount, c_Offset_Matrix.GetPosition4x4(), bDisplay_Shield);
 	c_Render_Manager.Draw_Personal(tPersonal_Object_List, c_Head_Mount, c_Controllers, c_Offset_Matrix.GetPosition4x4(), &bMove_Bullet, &bSpell_Ready, c_Player_Fireball);
+	c_Render_Manager.Draw_UI(UI_Object_List, c_Head_Mount, c_Offset_Matrix.GetPosition4x4(), tWorld_Object_List->fWorld_Matrix[2]);
 
 	// AABB Visual Debugging
 	/*if (m_nScene_Id == 2)
