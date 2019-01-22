@@ -339,9 +339,9 @@ tScene_Objects* cScene_Manager::Get_World_Scene(int nScene_Id)
 			//
 			//tempMatrix = XMMatrixMultiply(XMMatrixRotationX(-3.14 / 2), tempMatrix);
 			//
-			//tempMatrix = XMMatrixMultiply(XMMatrixRotationZ(-3.14/2), tempMatrix);
+			tempMatrix = XMMatrixMultiply(XMMatrixRotationY(3.14/2), tempMatrix);
 			//
-			//tempMatrix = XMMatrixMultiply(XMMatrixRotationX(3.14 / 5), tempMatrix);
+			tempMatrix = XMMatrixMultiply(XMMatrixRotationX(3.14 / 5), tempMatrix);
 
 			tempMatrix = XMMatrixMultiply(tempMatrix, XMMatrixTranslation(-200, 0, 0));
 
@@ -350,17 +350,17 @@ tScene_Objects* cScene_Manager::Get_World_Scene(int nScene_Id)
 			tScene->fWorld_Matrix[2] = XMFLOAT4x4_to_tFloat4x4(temp);
 			tMesh tDragon = cBinary_Read.Read_Mesh("mediumDragonMesh.bin");
 
-			for (int i = 0; i < tDragon.nVertex_Count; i++)
-			{
-				float oldY = tDragon.tVerts[i].fPosition.fY;
-				float oldZ = tDragon.tVerts[i].fPosition.fZ;
-				
-				tDragon.tVerts[i].fPosition.fY = oldZ;
-				tDragon.tVerts[i].fPosition.fZ = oldY;
-
-				tDragon.tVerts[i].fPosition.fZ *= -1;
-
-			}
+			//for (int i = 0; i < tDragon.nVertex_Count; i++)
+			//{
+			//	float oldY = tDragon.tVerts[i].fPosition.fY;
+			//	float oldZ = tDragon.tVerts[i].fPosition.fZ;
+			//	
+			//	tDragon.tVerts[i].fPosition.fY = oldZ;
+			//	tDragon.tVerts[i].fPosition.fZ = oldY;
+			//
+			//	tDragon.tVerts[i].fPosition.fZ *= -1;
+			//
+			//}
 
 			for (int i = 0; i < tDragon.nVertex_Count; i++)
 			{
