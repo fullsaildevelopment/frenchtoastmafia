@@ -353,8 +353,9 @@ void cGame_Loop::Update()
 			// Player vs Dragon Fireball
 
 			// Dragon vs Player Fireball
-			if (t_Collisions.Detect_AABB_To_AABB(tAABB_Dragon, tAABB_Player_Fireball) && c_Player_Fireball.getIsActive())
+			if ((t_Collisions.Detect_AABB_To_AABB(tAABB_Dragon, tAABB_Player_Fireball) && c_Player_Fireball.getIsActive()) || first_hit)
 			{
+				first_hit = false;
 				tWorld_Object_List->currAnim[2] = 1;
 
 				dragon_hit = true;

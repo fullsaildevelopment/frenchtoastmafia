@@ -60,9 +60,18 @@ void AI::resolveDragonState(tScene_Objects* tObject_List, tFloat4x4 _playerPos, 
 		{
 			XMMATRIX oldPosMat = XMLoadFloat4x4(&tFloat4x4_to_XMFLOAT4x4(tObject_List->fWorld_Matrix[2]));
 			XMMATRIX moveMat = XMMatrixTranslation(dragSpeed * xMove * _dTime, 0.0f, 0.0f);
+
+			XMMATRIX centerMat = XMMatrixTranslation(0.0f, 0.0f, 0.0f);
+
 			//XMMATRIX moveMat = XMMatrixIdentity();
 
-			XMMATRIX newPosMat = lookAtMatrix(XMMatrixMultiply(moveMat, oldPosMat), playerPosMat);
+			XMMATRIX newPosMat = lookAtMatrix(oldPosMat, centerMat);
+
+			newPosMat = XMMatrixMultiply(moveMat, newPosMat);
+
+			newPosMat = lookAtMatrix(newPosMat, playerPosMat);
+
+			//XMMATRIX newPosMat = lookAtMatrix(XMMatrixMultiply(moveMat, oldPosMat), playerPosMat);
 
 			newPosMat = XMMatrixMultiply(XMMatrixRotationX(3.14 / 5), newPosMat);
 

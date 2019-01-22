@@ -95,6 +95,7 @@ private:
 	float dragon_blast_kill = 0;
 
 	bool dragon_hit = false;
+	bool first_hit = true;
 	float timeCheck = 0;
 	// Particle Stuff
 
