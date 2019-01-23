@@ -166,5 +166,5 @@ public:
 
 	void Debugging_AABB(tAABB obj, cHead_Mount c_Head_Mount, tFloat4x4 offset);
 
-	void Draw_UI(tScene_Objects* t_Object_List, cHead_Mount c_Head_Mount, tFloat4x4 offset, tFloat4x4 drag_World_Matrix, cBase_Character dragon);
+	void Draw_UI(tScene_Objects* t_Object_List, cHead_Mount c_Head_Mount, tFloat4x4 offset, tFloat4x4 drag_World_Matrix, cBase_Character dragon, cBase_Character player);
 };

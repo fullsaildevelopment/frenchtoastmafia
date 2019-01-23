@@ -626,69 +626,69 @@ void cRender_Manager::Draw_Personal(tScene_Objects* tObject_List, cHead_Mount c_
 			c_Graphics_Setup->Get_Context().Get()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 			c_Graphics_Setup->Get_Context().Get()->VSSetShader(tObject_List->d3d_Vertex_Shaders[i].Get(), NULL, 0);
 			c_Graphics_Setup->Get_Context().Get()->PSSetShader(tObject_List->d3d_Pixel_Shaders[i].Get(), NULL, 0);
-			//c_Graphics_Setup->Get_Context().Get()->PSSetShaderResources(0, 1, tObject_List->d3d_SRV[i][0].GetAddressOf());
-
-			if (player.getHealth() == 100)
-			{
-				//HRESULT one_hundred_health = CreateDDSTextureFromFile(c_Graphics_Setup->Get_Device().Get(), L"hands_100.dds", nullptr, player_100_health.GetAddressOf());
-				HRESULT one_hundred_health = CreateDDSTextureFromFile(c_Graphics_Setup->Get_Device().Get(), L"hands_100.dds", nullptr, tObject_List->d3d_SRV[i][0].GetAddressOf());
-				//c_Graphics_Setup->Get_Context().Get()->PSSetShaderResources(0, 1, tObject_List->d3d_SRV[i][0].GetAddressOf());
-			}
-			else if (player.getHealth() == 90)
-			{
-				//HRESULT ninety_health = CreateDDSTextureFromFile(c_Graphics_Setup->Get_Device().Get(), L"hands_90.dds", nullptr, player_90_health.GetAddressOf());
-				HRESULT ninety_health = CreateDDSTextureFromFile(c_Graphics_Setup->Get_Device().Get(), L"hands_90.dds", nullptr, tObject_List->d3d_SRV[i][0].GetAddressOf());
-				//c_Graphics_Setup->Get_Context().Get()->PSSetShaderResources(0, 1, tObject_List->d3d_SRV[i][0].GetAddressOf());
-			}
-			else if (player.getHealth() == 80)
-			{
-				//HRESULT eighty_health = CreateDDSTextureFromFile(c_Graphics_Setup->Get_Device().Get(), L"hands_80.dds", nullptr, player_80_health.GetAddressOf());
-				HRESULT eighty_health = CreateDDSTextureFromFile(c_Graphics_Setup->Get_Device().Get(), L"hands_80.dds", nullptr, tObject_List->d3d_SRV[i][0].GetAddressOf());
-				//c_Graphics_Setup->Get_Context().Get()->PSSetShaderResources(0, 1, tObject_List->d3d_SRV[i][0].GetAddressOf());
-			}
-			else if (player.getHealth() == 70)
-			{
-				//HRESULT seventy_health = CreateDDSTextureFromFile(c_Graphics_Setup->Get_Device().Get(), L"hands_70.dds", nullptr, player_70_health.GetAddressOf());
-				HRESULT seventy_health = CreateDDSTextureFromFile(c_Graphics_Setup->Get_Device().Get(), L"hands_70.dds", nullptr, tObject_List->d3d_SRV[i][0].GetAddressOf());
-				//c_Graphics_Setup->Get_Context().Get()->PSSetShaderResources(0, 1, tObject_List->d3d_SRV[i][0].GetAddressOf());
-			}
-			else if (player.getHealth() == 60)
-			{
-				//HRESULT sixty_health = CreateDDSTextureFromFile(c_Graphics_Setup->Get_Device().Get(), L"hands_60.dds", nullptr, player_60_health.GetAddressOf());
-				HRESULT sixty_health = CreateDDSTextureFromFile(c_Graphics_Setup->Get_Device().Get(), L"hands_60.dds", nullptr, tObject_List->d3d_SRV[i][0].GetAddressOf());
-				//c_Graphics_Setup->Get_Context().Get()->PSSetShaderResources(0, 1, tObject_List->d3d_SRV[i][0].GetAddressOf());
-			}
-			else if (player.getHealth() == 50)
-			{
-				//HRESULT fifty_health = CreateDDSTextureFromFile(c_Graphics_Setup->Get_Device().Get(), L"hands_50.dds", nullptr, player_50_health.GetAddressOf());
-				HRESULT fifty_health = CreateDDSTextureFromFile(c_Graphics_Setup->Get_Device().Get(), L"hands_50.dds", nullptr, tObject_List->d3d_SRV[i][0].GetAddressOf());
-				//c_Graphics_Setup->Get_Context().Get()->PSSetShaderResources(0, 1, tObject_List->d3d_SRV[i][0].GetAddressOf());
-			}
-			else if (player.getHealth() == 40)
-			{
-				//HRESULT fourty_health = CreateDDSTextureFromFile(c_Graphics_Setup->Get_Device().Get(), L"hands_40.dds", nullptr, player_40_health.GetAddressOf());
-				HRESULT fourty_health = CreateDDSTextureFromFile(c_Graphics_Setup->Get_Device().Get(), L"hands_40.dds", nullptr, tObject_List->d3d_SRV[i][0].GetAddressOf());
-				//c_Graphics_Setup->Get_Context().Get()->PSSetShaderResources(0, 1, tObject_List->d3d_SRV[i][0].GetAddressOf());
-			}
-			else if (player.getHealth() == 30)
-			{
-				//HRESULT thirty_health = CreateDDSTextureFromFile(c_Graphics_Setup->Get_Device().Get(), L"hands_30.dds", nullptr, player_30_health.GetAddressOf());
-				HRESULT thirty_health = CreateDDSTextureFromFile(c_Graphics_Setup->Get_Device().Get(), L"hands_30.dds", nullptr, tObject_List->d3d_SRV[i][0].GetAddressOf());
-				//c_Graphics_Setup->Get_Context().Get()->PSSetShaderResources(0, 1, tObject_List->d3d_SRV[i][0].GetAddressOf());
-			}
-			else if (player.getHealth() == 20)
-			{
-				//HRESULT twenty_health = CreateDDSTextureFromFile(c_Graphics_Setup->Get_Device().Get(), L"hands_20.dds", nullptr, player_20_health.GetAddressOf());
-				HRESULT twenty_health = CreateDDSTextureFromFile(c_Graphics_Setup->Get_Device().Get(), L"hands_20.dds", nullptr, tObject_List->d3d_SRV[i][0].GetAddressOf());
-				//c_Graphics_Setup->Get_Context().Get()->PSSetShaderResources(0, 1, tObject_List->d3d_SRV[i][0].GetAddressOf());
-			}
-			else if (player.getHealth() == 10)
-			{
-				//HRESULT ten_health = CreateDDSTextureFromFile(c_Graphics_Setup->Get_Device().Get(), L"hands_10.dds", nullptr, player_10_health.GetAddressOf());
-				HRESULT ten_health = CreateDDSTextureFromFile(c_Graphics_Setup->Get_Device().Get(), L"hands_10.dds", nullptr, tObject_List->d3d_SRV[i][0].GetAddressOf());
-				//c_Graphics_Setup->Get_Context().Get()->PSSetShaderResources(0, 1, tObject_List->d3d_SRV[i][0].GetAddressOf());
-			}
 			c_Graphics_Setup->Get_Context().Get()->PSSetShaderResources(0, 1, tObject_List->d3d_SRV[i][0].GetAddressOf());
+
+			//if (player.getHealth() == 100)
+			//{
+			//	//HRESULT one_hundred_health = CreateDDSTextureFromFile(c_Graphics_Setup->Get_Device().Get(), L"hands_100.dds", nullptr, player_100_health.GetAddressOf());
+			//	HRESULT one_hundred_health = CreateDDSTextureFromFile(c_Graphics_Setup->Get_Device().Get(), L"hands_100.dds", nullptr, tObject_List->d3d_SRV[i][0].GetAddressOf());
+			//	//c_Graphics_Setup->Get_Context().Get()->PSSetShaderResources(0, 1, tObject_List->d3d_SRV[i][0].GetAddressOf());
+			//}
+			//else if (player.getHealth() == 90)
+			//{
+			//	//HRESULT ninety_health = CreateDDSTextureFromFile(c_Graphics_Setup->Get_Device().Get(), L"hands_90.dds", nullptr, player_90_health.GetAddressOf());
+			//	HRESULT ninety_health = CreateDDSTextureFromFile(c_Graphics_Setup->Get_Device().Get(), L"hands_90.dds", nullptr, tObject_List->d3d_SRV[i][0].GetAddressOf());
+			//	//c_Graphics_Setup->Get_Context().Get()->PSSetShaderResources(0, 1, tObject_List->d3d_SRV[i][0].GetAddressOf());
+			//}
+			//else if (player.getHealth() == 80)
+			//{
+			//	//HRESULT eighty_health = CreateDDSTextureFromFile(c_Graphics_Setup->Get_Device().Get(), L"hands_80.dds", nullptr, player_80_health.GetAddressOf());
+			//	HRESULT eighty_health = CreateDDSTextureFromFile(c_Graphics_Setup->Get_Device().Get(), L"hands_80.dds", nullptr, tObject_List->d3d_SRV[i][0].GetAddressOf());
+			//	//c_Graphics_Setup->Get_Context().Get()->PSSetShaderResources(0, 1, tObject_List->d3d_SRV[i][0].GetAddressOf());
+			//}
+			//else if (player.getHealth() == 70)
+			//{
+			//	//HRESULT seventy_health = CreateDDSTextureFromFile(c_Graphics_Setup->Get_Device().Get(), L"hands_70.dds", nullptr, player_70_health.GetAddressOf());
+			//	HRESULT seventy_health = CreateDDSTextureFromFile(c_Graphics_Setup->Get_Device().Get(), L"hands_70.dds", nullptr, tObject_List->d3d_SRV[i][0].GetAddressOf());
+			//	//c_Graphics_Setup->Get_Context().Get()->PSSetShaderResources(0, 1, tObject_List->d3d_SRV[i][0].GetAddressOf());
+			//}
+			//else if (player.getHealth() == 60)
+			//{
+			//	//HRESULT sixty_health = CreateDDSTextureFromFile(c_Graphics_Setup->Get_Device().Get(), L"hands_60.dds", nullptr, player_60_health.GetAddressOf());
+			//	HRESULT sixty_health = CreateDDSTextureFromFile(c_Graphics_Setup->Get_Device().Get(), L"hands_60.dds", nullptr, tObject_List->d3d_SRV[i][0].GetAddressOf());
+			//	//c_Graphics_Setup->Get_Context().Get()->PSSetShaderResources(0, 1, tObject_List->d3d_SRV[i][0].GetAddressOf());
+			//}
+			//else if (player.getHealth() == 50)
+			//{
+			//	//HRESULT fifty_health = CreateDDSTextureFromFile(c_Graphics_Setup->Get_Device().Get(), L"hands_50.dds", nullptr, player_50_health.GetAddressOf());
+			//	HRESULT fifty_health = CreateDDSTextureFromFile(c_Graphics_Setup->Get_Device().Get(), L"hands_50.dds", nullptr, tObject_List->d3d_SRV[i][0].GetAddressOf());
+			//	//c_Graphics_Setup->Get_Context().Get()->PSSetShaderResources(0, 1, tObject_List->d3d_SRV[i][0].GetAddressOf());
+			//}
+			//else if (player.getHealth() == 40)
+			//{
+			//	//HRESULT fourty_health = CreateDDSTextureFromFile(c_Graphics_Setup->Get_Device().Get(), L"hands_40.dds", nullptr, player_40_health.GetAddressOf());
+			//	HRESULT fourty_health = CreateDDSTextureFromFile(c_Graphics_Setup->Get_Device().Get(), L"hands_40.dds", nullptr, tObject_List->d3d_SRV[i][0].GetAddressOf());
+			//	//c_Graphics_Setup->Get_Context().Get()->PSSetShaderResources(0, 1, tObject_List->d3d_SRV[i][0].GetAddressOf());
+			//}
+			//else if (player.getHealth() == 30)
+			//{
+			//	//HRESULT thirty_health = CreateDDSTextureFromFile(c_Graphics_Setup->Get_Device().Get(), L"hands_30.dds", nullptr, player_30_health.GetAddressOf());
+			//	HRESULT thirty_health = CreateDDSTextureFromFile(c_Graphics_Setup->Get_Device().Get(), L"hands_30.dds", nullptr, tObject_List->d3d_SRV[i][0].GetAddressOf());
+			//	//c_Graphics_Setup->Get_Context().Get()->PSSetShaderResources(0, 1, tObject_List->d3d_SRV[i][0].GetAddressOf());
+			//}
+			//else if (player.getHealth() == 20)
+			//{
+			//	//HRESULT twenty_health = CreateDDSTextureFromFile(c_Graphics_Setup->Get_Device().Get(), L"hands_20.dds", nullptr, player_20_health.GetAddressOf());
+			//	HRESULT twenty_health = CreateDDSTextureFromFile(c_Graphics_Setup->Get_Device().Get(), L"hands_20.dds", nullptr, tObject_List->d3d_SRV[i][0].GetAddressOf());
+			//	//c_Graphics_Setup->Get_Context().Get()->PSSetShaderResources(0, 1, tObject_List->d3d_SRV[i][0].GetAddressOf());
+			//}
+			//else if (player.getHealth() == 10)
+			//{
+			//	//HRESULT ten_health = CreateDDSTextureFromFile(c_Graphics_Setup->Get_Device().Get(), L"hands_10.dds", nullptr, player_10_health.GetAddressOf());
+			//	HRESULT ten_health = CreateDDSTextureFromFile(c_Graphics_Setup->Get_Device().Get(), L"hands_10.dds", nullptr, tObject_List->d3d_SRV[i][0].GetAddressOf());
+			//	//c_Graphics_Setup->Get_Context().Get()->PSSetShaderResources(0, 1, tObject_List->d3d_SRV[i][0].GetAddressOf());
+			//}
+			//c_Graphics_Setup->Get_Context().Get()->PSSetShaderResources(0, 1, tObject_List->d3d_SRV[i][0].GetAddressOf());
 
 			tCB_PS.ambient.x = tObject_List->tMaterials_Data[i].tMats[0].tAmbient.fX;
 			tCB_PS.ambient.y = tObject_List->tMaterials_Data[i].tMats[0].tAmbient.fY;
@@ -1638,7 +1638,7 @@ void cRender_Manager::Debugging_AABB(tAABB obj, cHead_Mount c_Head_Mount, tFloat
 	}
 }
 
-void cRender_Manager::Draw_UI(tScene_Objects* t_Object_List, cHead_Mount c_Head_Mount, tFloat4x4 offset, tFloat4x4 drag_World_Matrix, cBase_Character dragon)
+void cRender_Manager::Draw_UI(tScene_Objects* t_Object_List, cHead_Mount c_Head_Mount, tFloat4x4 offset, tFloat4x4 drag_World_Matrix, cBase_Character dragon, cBase_Character player)
 {
 	if (dragon.getHealth() > 0)
 	{
@@ -1684,8 +1684,15 @@ void cRender_Manager::Draw_UI(tScene_Objects* t_Object_List, cHead_Mount c_Head_
 
 				XMFLOAT4X4 xmf_drag = tFloat4x4_to_XMFLOAT4x4(drag_World_Matrix);     // Health Bar moves up when dragon gets hit
 				XMMATRIX xmm_drag = XMLoadFloat4x4(&xmf_drag);
-				xmm_drag = XMMatrixMultiply(xmm_drag, XMMatrixTranslation(-300.0f, 600.0f, -300.0f));  // -300.0f, 600.0f, -300.0f
+				xmm_drag = XMMatrixMultiply(xmm_drag, XMMatrixTranslation(120.0f, 400.0f, -300.0f));  // -300.0f, 600.0f, -300.0f
 				xmm_drag = XMMatrixMultiply(health_bar_scaling, xmm_drag);  // JUST ADDED     Doesn't scale yet cuz it scales from the center
+				XMFLOAT4X4 player_pos_4x4;
+				player_pos_4x4 = tFloat4x4_to_XMFLOAT4x4(player.getPosition4x4());
+				XMMATRIX player_pos_Matrix;
+				player_pos_Matrix = XMLoadFloat4x4(&player_pos_4x4);
+				//lookAtMatrix(player_pos_Matrix, xmm_drag);
+				lookAtMatrix2(xmm_drag, player_pos_Matrix);
+
 				XMFLOAT4X4 xmf_out;
 				XMStoreFloat4x4(&xmf_out, xmm_drag);
 				tWVP.fWorld_Matrix = xmf_out;
