@@ -73,8 +73,8 @@ struct tScene_Objects
 	int nObject_Count;
 
 	// Position
-	tFloat3								fWorld_Position[32]{};
-	tFloat4x4							fWorld_Matrix[32]{};
+	tFloat3								fWorld_Position[15]{};
+	tFloat4x4							fWorld_Matrix[15]{};
 
 	tFloat4x4							fFireball_Matrix[3]{};
 	bool								fFireball_State[3]{};
@@ -82,35 +82,33 @@ struct tScene_Objects
 	int									maxFireballs = 3;
 
 	// Vertex and Index Data
-	bool								bIs_Animated[32]{};
+	bool								bIs_Animated[15]{};
 
-	tMesh								tMesh_Data[32]{};
-	tMesh_Skinned						tMesh_Skinned_Data[32]{};
+	tMesh								tMesh_Data[15]{};
+	tMesh_Skinned						tMesh_Skinned_Data[15]{};
 
-	ComPtr<ID3D11Buffer>				d3d_Vertex_Buffers[32]{};
-	ComPtr<ID3D11Buffer>				d3d_Index_Buffers[32]{};
+	ComPtr<ID3D11Buffer>				d3d_Vertex_Buffers[15]{};
+	ComPtr<ID3D11Buffer>				d3d_Index_Buffers[15]{};
 
 	// Material
-	tMaterials							tMaterials_Data[32]{};
-	ComPtr<ID3D11Buffer>				tMaterials_Buffers[32]{};
+	tMaterials							tMaterials_Data[15]{};
+	ComPtr<ID3D11Buffer>				tMaterials_Buffers[15]{};
 
 	// SRV
-	std::string							szSRV_File_Path[32];
-	ComPtr<ID3D11ShaderResourceView>	d3d_SRV[32][32]{};
+	std::string							szSRV_File_Path[15];
+	ComPtr<ID3D11ShaderResourceView>	d3d_SRV[15][10]{};
 
 	// Animation
-	tAnimation_Clip						tAnim_Clip[32][8]{};
-	tAnimation_Data						tAnim_Data[32]{}; // try to combine with clip when create binary writer
+	tAnimation_Clip						tAnim_Clip[15][8]{};
+	tAnimation_Data						tAnim_Data[15]{}; // try to combine with clip when create binary writer
 
-	int									currAnim[32]{};
+	int									currAnim[15]{};
 
 	// Vertex Shaders
-	std::string							szVS_File_Path[32]{};
-	ComPtr<ID3D11VertexShader>			d3d_Vertex_Shaders[32]{};
+	ComPtr<ID3D11VertexShader>			d3d_Vertex_Shaders[15]{};
 
 	// Pixel Shaders
-	std::string							szPS_File_Path[32]{};
-	ComPtr<ID3D11PixelShader>			d3d_Pixel_Shaders[32]{};
+	ComPtr<ID3D11PixelShader>			d3d_Pixel_Shaders[15]{};
 
 	//int									dragHP = 4;
 };
