@@ -365,7 +365,7 @@ void cGame_Loop::Update()
 				//dragon_hit = c_AI.getIsHit();
 				c_Player_Fireball.setIsActive(false);
 				c_AI.setIsHit(true);
-				c_Dragon.setHealth(-10);
+				c_Dragon.setHealth(-25);
 				c_Render_Manager.set_particle_array(p.get_particles());
 				p.create_particles(dragon_blast_color, c_XTime.Delta(), dragon_blast_acceleration, dragon_blast_kill, dragon_hit);
 				c_Player_Fireball.setIsActive(false);
@@ -630,8 +630,8 @@ void cGame_Loop::Update()
 	c_Render_Manager.Draw_Spell(tFireball_Nodes, c_Head_Mount, c_Offset_Matrix.GetPosition4x4(), bDisplay_Fireball);
 	c_Render_Manager.Draw_Spell(tIcebolt_Nodes, c_Head_Mount, c_Offset_Matrix.GetPosition4x4(), bDisplay_Icebolt);
 	c_Render_Manager.Draw_Spell(tShield_Nodes, c_Head_Mount, c_Offset_Matrix.GetPosition4x4(), bDisplay_Shield);
-	c_Render_Manager.Draw_Personal(tPersonal_Object_List, c_Head_Mount, c_Controllers, c_Offset_Matrix.GetPosition4x4(), &bMove_Bullet, &bSpell_Ready, c_Player_Fireball);
-	c_Render_Manager.Draw_UI(UI_Object_List, c_Head_Mount, c_Offset_Matrix.GetPosition4x4(), tWorld_Object_List->fWorld_Matrix[2]);
+	c_Render_Manager.Draw_Personal(tPersonal_Object_List, c_Head_Mount, c_Controllers, c_Offset_Matrix.GetPosition4x4(), &bMove_Bullet, &bSpell_Ready, c_Player_Fireball, c_Player);
+	c_Render_Manager.Draw_UI(UI_Object_List, c_Head_Mount, c_Offset_Matrix.GetPosition4x4(), tWorld_Object_List->fWorld_Matrix[2], c_Dragon);
 
 	// AABB Visual Debugging
 	/*if (m_nScene_Id == 2)

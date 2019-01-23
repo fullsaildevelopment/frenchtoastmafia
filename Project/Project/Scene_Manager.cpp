@@ -55,7 +55,7 @@ tScene_Objects* cScene_Manager::Get_Personal_Scene()
 		tScene->tMesh_Data[obj_id].nIndex_Count = tLeft_Hand.nIndex_Count;
 
 		// Material
-		tScene->tMaterials_Data[obj_id] = cBinary_Read.Read_Material("left_hand_material.bin");
+		tScene->tMaterials_Data[obj_id] = cBinary_Read.Read_Material("left_hand_material.bin");   
 	}
 	// Left Hand
 
@@ -1694,6 +1694,8 @@ tScene_Objects* cScene_Manager::Get_UI()
 		tScene->szSRV_File_Path[obj_id] = "Health_Bar.dds";
 	}
 	// Dragon Health Bar
+	//tScene->tMesh_Data[0].tVerts[1].fPosition.fX = 1.0f;  // NEW
+	//tScene->tMesh_Data[0].tVerts[3].fPosition.fX = 1.0f;  // NEW
 
 	return tScene;
 }

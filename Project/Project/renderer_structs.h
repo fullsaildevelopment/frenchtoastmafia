@@ -95,8 +95,8 @@ struct tScene_Objects
 	ComPtr<ID3D11Buffer>				tMaterials_Buffers[32]{};
 
 	// SRV
-	std::string							szSRV_File_Path[32];
-	ComPtr<ID3D11ShaderResourceView>	d3d_SRV[32][32]{};
+	std::string							szSRV_File_Path[32];   // ADDED [10]
+	ComPtr<ID3D11ShaderResourceView>	d3d_SRV[32][10]{};         // CHANGED FROM [32][32]
 
 	// Animation
 	tAnimation_Clip						tAnim_Clip[32][8]{};

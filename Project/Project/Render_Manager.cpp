@@ -527,7 +527,7 @@ void cRender_Manager::Unload(tScene_Objects* tObject_List)
 	ZeroMemory(tObject_List, sizeof(tScene_Objects));
 }
 
-void cRender_Manager::Draw_Personal(tScene_Objects* tObject_List, cHead_Mount c_Head_Mount, cControllers c_Controllers, tFloat4x4 offset, bool *bMove_Bullet, bool *bSpell_Ready, cBase_Spell c_Player_Fireball)
+void cRender_Manager::Draw_Personal(tScene_Objects* tObject_List, cHead_Mount c_Head_Mount, cControllers c_Controllers, tFloat4x4 offset, bool *bMove_Bullet, bool *bSpell_Ready, cBase_Spell c_Player_Fireball, cBase_Character player)
 {
 	float clear_color[4] = { 0.000000000f, 1.000000000f, 0.48235f, 1.000000000f };
 	for (int _eyeID = 0; _eyeID < 3; _eyeID++)
@@ -620,11 +620,74 @@ void cRender_Manager::Draw_Personal(tScene_Objects* tObject_List, cHead_Mount c_
 			else
 				c_Graphics_Setup->Get_Context().Get()->IASetVertexBuffers(0, 1, ts_v_buffer, &verts_size, &off_set);
 
+
 			c_Graphics_Setup->Get_Context().Get()->IASetIndexBuffer(tObject_List->d3d_Index_Buffers[i].Get(), DXGI_FORMAT_R32_UINT, 0);
 			c_Graphics_Setup->Get_Context().Get()->IASetInputLayout(c_Graphics_Setup->Get_Input_Layout().Get());
 			c_Graphics_Setup->Get_Context().Get()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 			c_Graphics_Setup->Get_Context().Get()->VSSetShader(tObject_List->d3d_Vertex_Shaders[i].Get(), NULL, 0);
 			c_Graphics_Setup->Get_Context().Get()->PSSetShader(tObject_List->d3d_Pixel_Shaders[i].Get(), NULL, 0);
+			//c_Graphics_Setup->Get_Context().Get()->PSSetShaderResources(0, 1, tObject_List->d3d_SRV[i][0].GetAddressOf());
+
+			if (player.getHealth() == 100)
+			{
+				//HRESULT one_hundred_health = CreateDDSTextureFromFile(c_Graphics_Setup->Get_Device().Get(), L"hands_100.dds", nullptr, player_100_health.GetAddressOf());
+				HRESULT one_hundred_health = CreateDDSTextureFromFile(c_Graphics_Setup->Get_Device().Get(), L"hands_100.dds", nullptr, tObject_List->d3d_SRV[i][0].GetAddressOf());
+				//c_Graphics_Setup->Get_Context().Get()->PSSetShaderResources(0, 1, tObject_List->d3d_SRV[i][0].GetAddressOf());
+			}
+			else if (player.getHealth() == 90)
+			{
+				//HRESULT ninety_health = CreateDDSTextureFromFile(c_Graphics_Setup->Get_Device().Get(), L"hands_90.dds", nullptr, player_90_health.GetAddressOf());
+				HRESULT ninety_health = CreateDDSTextureFromFile(c_Graphics_Setup->Get_Device().Get(), L"hands_90.dds", nullptr, tObject_List->d3d_SRV[i][0].GetAddressOf());
+				//c_Graphics_Setup->Get_Context().Get()->PSSetShaderResources(0, 1, tObject_List->d3d_SRV[i][0].GetAddressOf());
+			}
+			else if (player.getHealth() == 80)
+			{
+				//HRESULT eighty_health = CreateDDSTextureFromFile(c_Graphics_Setup->Get_Device().Get(), L"hands_80.dds", nullptr, player_80_health.GetAddressOf());
+				HRESULT eighty_health = CreateDDSTextureFromFile(c_Graphics_Setup->Get_Device().Get(), L"hands_80.dds", nullptr, tObject_List->d3d_SRV[i][0].GetAddressOf());
+				//c_Graphics_Setup->Get_Context().Get()->PSSetShaderResources(0, 1, tObject_List->d3d_SRV[i][0].GetAddressOf());
+			}
+			else if (player.getHealth() == 70)
+			{
+				//HRESULT seventy_health = CreateDDSTextureFromFile(c_Graphics_Setup->Get_Device().Get(), L"hands_70.dds", nullptr, player_70_health.GetAddressOf());
+				HRESULT seventy_health = CreateDDSTextureFromFile(c_Graphics_Setup->Get_Device().Get(), L"hands_70.dds", nullptr, tObject_List->d3d_SRV[i][0].GetAddressOf());
+				//c_Graphics_Setup->Get_Context().Get()->PSSetShaderResources(0, 1, tObject_List->d3d_SRV[i][0].GetAddressOf());
+			}
+			else if (player.getHealth() == 60)
+			{
+				//HRESULT sixty_health = CreateDDSTextureFromFile(c_Graphics_Setup->Get_Device().Get(), L"hands_60.dds", nullptr, player_60_health.GetAddressOf());
+				HRESULT sixty_health = CreateDDSTextureFromFile(c_Graphics_Setup->Get_Device().Get(), L"hands_60.dds", nullptr, tObject_List->d3d_SRV[i][0].GetAddressOf());
+				//c_Graphics_Setup->Get_Context().Get()->PSSetShaderResources(0, 1, tObject_List->d3d_SRV[i][0].GetAddressOf());
+			}
+			else if (player.getHealth() == 50)
+			{
+				//HRESULT fifty_health = CreateDDSTextureFromFile(c_Graphics_Setup->Get_Device().Get(), L"hands_50.dds", nullptr, player_50_health.GetAddressOf());
+				HRESULT fifty_health = CreateDDSTextureFromFile(c_Graphics_Setup->Get_Device().Get(), L"hands_50.dds", nullptr, tObject_List->d3d_SRV[i][0].GetAddressOf());
+				//c_Graphics_Setup->Get_Context().Get()->PSSetShaderResources(0, 1, tObject_List->d3d_SRV[i][0].GetAddressOf());
+			}
+			else if (player.getHealth() == 40)
+			{
+				//HRESULT fourty_health = CreateDDSTextureFromFile(c_Graphics_Setup->Get_Device().Get(), L"hands_40.dds", nullptr, player_40_health.GetAddressOf());
+				HRESULT fourty_health = CreateDDSTextureFromFile(c_Graphics_Setup->Get_Device().Get(), L"hands_40.dds", nullptr, tObject_List->d3d_SRV[i][0].GetAddressOf());
+				//c_Graphics_Setup->Get_Context().Get()->PSSetShaderResources(0, 1, tObject_List->d3d_SRV[i][0].GetAddressOf());
+			}
+			else if (player.getHealth() == 30)
+			{
+				//HRESULT thirty_health = CreateDDSTextureFromFile(c_Graphics_Setup->Get_Device().Get(), L"hands_30.dds", nullptr, player_30_health.GetAddressOf());
+				HRESULT thirty_health = CreateDDSTextureFromFile(c_Graphics_Setup->Get_Device().Get(), L"hands_30.dds", nullptr, tObject_List->d3d_SRV[i][0].GetAddressOf());
+				//c_Graphics_Setup->Get_Context().Get()->PSSetShaderResources(0, 1, tObject_List->d3d_SRV[i][0].GetAddressOf());
+			}
+			else if (player.getHealth() == 20)
+			{
+				//HRESULT twenty_health = CreateDDSTextureFromFile(c_Graphics_Setup->Get_Device().Get(), L"hands_20.dds", nullptr, player_20_health.GetAddressOf());
+				HRESULT twenty_health = CreateDDSTextureFromFile(c_Graphics_Setup->Get_Device().Get(), L"hands_20.dds", nullptr, tObject_List->d3d_SRV[i][0].GetAddressOf());
+				//c_Graphics_Setup->Get_Context().Get()->PSSetShaderResources(0, 1, tObject_List->d3d_SRV[i][0].GetAddressOf());
+			}
+			else if (player.getHealth() == 10)
+			{
+				//HRESULT ten_health = CreateDDSTextureFromFile(c_Graphics_Setup->Get_Device().Get(), L"hands_10.dds", nullptr, player_10_health.GetAddressOf());
+				HRESULT ten_health = CreateDDSTextureFromFile(c_Graphics_Setup->Get_Device().Get(), L"hands_10.dds", nullptr, tObject_List->d3d_SRV[i][0].GetAddressOf());
+				//c_Graphics_Setup->Get_Context().Get()->PSSetShaderResources(0, 1, tObject_List->d3d_SRV[i][0].GetAddressOf());
+			}
 			c_Graphics_Setup->Get_Context().Get()->PSSetShaderResources(0, 1, tObject_List->d3d_SRV[i][0].GetAddressOf());
 
 			tCB_PS.ambient.x = tObject_List->tMaterials_Data[i].tMats[0].tAmbient.fX;
@@ -1575,53 +1638,54 @@ void cRender_Manager::Debugging_AABB(tAABB obj, cHead_Mount c_Head_Mount, tFloat
 	}
 }
 
-void cRender_Manager::Draw_UI(tScene_Objects* t_Object_List, cHead_Mount c_Head_Mount, tFloat4x4 offset, tFloat4x4 drag_World_Matrix)
-
+void cRender_Manager::Draw_UI(tScene_Objects* t_Object_List, cHead_Mount c_Head_Mount, tFloat4x4 offset, tFloat4x4 drag_World_Matrix, cBase_Character dragon)
 {
-	//float clear_color[4] = { 0.000000000f, 1.000000000f, 0.48235f, 1.000000000f };
-	for (int _eyeID = 0; _eyeID < 3; _eyeID++)
+	if (dragon.getHealth() > 0)
 	{
-		if (_eyeID == 0)
+		//float clear_color[4] = { 0.000000000f, 1.000000000f, 0.48235f, 1.000000000f };
+		for (int _eyeID = 0; _eyeID < 3; _eyeID++)
 		{
-			ID3D11RenderTargetView *tmp_rtv[] = { c_Graphics_Setup->Get_RTV_Left().Get() };
-			c_Graphics_Setup->Get_Context().Get()->OMSetRenderTargets(1, tmp_rtv, c_Graphics_Setup->Get_DSV().Get());
-			//c_Graphics_Setup->Get_Context().Get()->ClearRenderTargetView(c_Graphics_Setup->Get_RTV_Left().Get(), clear_color);
-		}
-		else if (_eyeID == 1)
-		{
-			ID3D11RenderTargetView *tmp_rtv[] = { c_Graphics_Setup->Get_RTV_Right().Get() };
-			c_Graphics_Setup->Get_Context().Get()->OMSetRenderTargets(1, tmp_rtv, c_Graphics_Setup->Get_DSV().Get());
-			//c_Graphics_Setup->Get_Context().Get()->ClearRenderTargetView(c_Graphics_Setup->Get_RTV_Right().Get(), clear_color);
-		}
-		else// if (_eyeID == 2)
-		{
-			ID3D11RenderTargetView *tmp_rtv[] = { c_Graphics_Setup->Get_RTV().Get() };
-			c_Graphics_Setup->Get_Context().Get()->OMSetRenderTargets(1, tmp_rtv, c_Graphics_Setup->Get_DSV().Get());
-			//c_Graphics_Setup->Get_Context().Get()->ClearRenderTargetView(c_Graphics_Setup->Get_RTV().Get(), clear_color);
-		}
+			if (_eyeID == 0)
+			{
+				ID3D11RenderTargetView *tmp_rtv[] = { c_Graphics_Setup->Get_RTV_Left().Get() };
+				c_Graphics_Setup->Get_Context().Get()->OMSetRenderTargets(1, tmp_rtv, c_Graphics_Setup->Get_DSV().Get());
+				//c_Graphics_Setup->Get_Context().Get()->ClearRenderTargetView(c_Graphics_Setup->Get_RTV_Left().Get(), clear_color);
+			}
+			else if (_eyeID == 1)
+			{
+				ID3D11RenderTargetView *tmp_rtv[] = { c_Graphics_Setup->Get_RTV_Right().Get() };
+				c_Graphics_Setup->Get_Context().Get()->OMSetRenderTargets(1, tmp_rtv, c_Graphics_Setup->Get_DSV().Get());
+				//c_Graphics_Setup->Get_Context().Get()->ClearRenderTargetView(c_Graphics_Setup->Get_RTV_Right().Get(), clear_color);
+			}
+			else// if (_eyeID == 2)
+			{
+				ID3D11RenderTargetView *tmp_rtv[] = { c_Graphics_Setup->Get_RTV().Get() };
+				c_Graphics_Setup->Get_Context().Get()->OMSetRenderTargets(1, tmp_rtv, c_Graphics_Setup->Get_DSV().Get());
+				//c_Graphics_Setup->Get_Context().Get()->ClearRenderTargetView(c_Graphics_Setup->Get_RTV().Get(), clear_color);
+			}
 
-		c_Graphics_Setup->Get_Context().Get()->ClearDepthStencilView(c_Graphics_Setup->Get_DSV().Get(), D3D11_CLEAR_DEPTH, 1.0f, 0);
+			c_Graphics_Setup->Get_Context().Get()->ClearDepthStencilView(c_Graphics_Setup->Get_DSV().Get(), D3D11_CLEAR_DEPTH, 1.0f, 0);
 
-		XMStoreFloat4x4(&tWVP.fView_Matrix, XMMatrixIdentity());
-		if (_eyeID == 0)
-			tWVP.fProjection_Matrix = tFloat4x4_to_XMFLOAT4x4(c_Head_Mount.GetCurrentViewProjectionMatrix(vr::Eye_Left, tFloat4x4_To_Matrix4(offset)));
-		else
-			tWVP.fProjection_Matrix = tFloat4x4_to_XMFLOAT4x4(c_Head_Mount.GetCurrentViewProjectionMatrix(vr::Eye_Right, tFloat4x4_To_Matrix4(offset)));
+			XMStoreFloat4x4(&tWVP.fView_Matrix, XMMatrixIdentity());
+			if (_eyeID == 0)
+				tWVP.fProjection_Matrix = tFloat4x4_to_XMFLOAT4x4(c_Head_Mount.GetCurrentViewProjectionMatrix(vr::Eye_Left, tFloat4x4_To_Matrix4(offset)));
+			else
+				tWVP.fProjection_Matrix = tFloat4x4_to_XMFLOAT4x4(c_Head_Mount.GetCurrentViewProjectionMatrix(vr::Eye_Right, tFloat4x4_To_Matrix4(offset)));
 
-		unsigned int verts_size = sizeof(tVertex);
-		//unsigned int verts_skinned_size = sizeof(tVertex_Skinned);
-		unsigned int off_set = 0;
+			unsigned int verts_size = sizeof(tVertex);
+			//unsigned int verts_skinned_size = sizeof(tVertex_Skinned);
+			unsigned int off_set = 0;
 
+			for (int i = 0; i < t_Object_List->nObject_Count; i++)
+			{
+				// CONSTANT BUFFER - WVPC
+				XMMATRIX health_bar_scaling;
+				health_bar_scaling  = XMMatrixScaling((float)dragon.getHealth() / 100.0f, 1.0f, 1.0f);
 
-
-		for (int i = 0; i < t_Object_List->nObject_Count; i++)
-		{
-			// CONSTANT BUFFER - WVPC
-			
-				//if (i == 0)
-				XMFLOAT4X4 xmf_drag = tFloat4x4_to_XMFLOAT4x4(drag_World_Matrix);
-				XMMATRIX xmm_drag= XMLoadFloat4x4(&xmf_drag);
-				xmm_drag = XMMatrixMultiply(xmm_drag, XMMatrixTranslation(-300.0f, 600.0f, -300.0f));  // 0.0f, 300.0f, -200.0f
+				XMFLOAT4X4 xmf_drag = tFloat4x4_to_XMFLOAT4x4(drag_World_Matrix);     // Health Bar moves up when dragon gets hit
+				XMMATRIX xmm_drag = XMLoadFloat4x4(&xmf_drag);
+				xmm_drag = XMMatrixMultiply(xmm_drag, XMMatrixTranslation(-300.0f, 600.0f, -300.0f));  // -300.0f, 600.0f, -300.0f
+				xmm_drag = XMMatrixMultiply(health_bar_scaling, xmm_drag);  // JUST ADDED     Doesn't scale yet cuz it scales from the center
 				XMFLOAT4X4 xmf_out;
 				XMStoreFloat4x4(&xmf_out, xmm_drag);
 				tWVP.fWorld_Matrix = xmf_out;
@@ -1631,21 +1695,23 @@ void cRender_Manager::Draw_UI(tScene_Objects* t_Object_List, cHead_Mount c_Head_
 				c_Graphics_Setup->Get_Context().Get()->Unmap(d3d_Constant_Buffer_WVP.Get(), 0);
 				ID3D11Buffer *tmp_wvpc_buffer[] = { d3d_Constant_Buffer_WVP.Get() };
 				c_Graphics_Setup->Get_Context().Get()->VSSetConstantBuffers(0, 1, tmp_wvpc_buffer);
-			
 
-			ID3D11Buffer *ts_v_buffer[] = { t_Object_List->d3d_Vertex_Buffers[i].Get() };
-			c_Graphics_Setup->Get_Context().Get()->IASetVertexBuffers(0, 1, ts_v_buffer, &verts_size, &off_set);
 
-			c_Graphics_Setup->Get_Context().Get()->IASetIndexBuffer(t_Object_List->d3d_Index_Buffers[i].Get(), DXGI_FORMAT_R32_UINT, 0);
-			c_Graphics_Setup->Get_Context().Get()->IASetInputLayout(c_Graphics_Setup->Get_Input_Layout().Get());
-			c_Graphics_Setup->Get_Context().Get()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-			c_Graphics_Setup->Get_Context().Get()->VSSetShader(t_Object_List->d3d_Vertex_Shaders[i].Get(), NULL, 0);
-			c_Graphics_Setup->Get_Context().Get()->PSSetShader(t_Object_List->d3d_Pixel_Shaders[i].Get(), NULL, 0);
-			c_Graphics_Setup->Get_Context().Get()->PSSetShaderResources(0, 1, t_Object_List->d3d_SRV[i][0].GetAddressOf());
-			//c_Graphics_Setup->Get_Context().Get()->OMSetBlendState(c_Graphics_Setup->Get_Blend_State().Get(), blend, 0xffffffff);
+				ID3D11Buffer *ts_v_buffer[] = { t_Object_List->d3d_Vertex_Buffers[i].Get() };
+				c_Graphics_Setup->Get_Context().Get()->IASetVertexBuffers(0, 1, ts_v_buffer, &verts_size, &off_set);
 
-			//if (bDisplay_Spell_Book)
-			c_Graphics_Setup->Get_Context().Get()->DrawIndexed(t_Object_List->tMesh_Data[i].nIndex_Count, 0, 0);
+				c_Graphics_Setup->Get_Context().Get()->IASetIndexBuffer(t_Object_List->d3d_Index_Buffers[i].Get(), DXGI_FORMAT_R32_UINT, 0);
+				c_Graphics_Setup->Get_Context().Get()->IASetInputLayout(c_Graphics_Setup->Get_Input_Layout().Get());
+				c_Graphics_Setup->Get_Context().Get()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+				c_Graphics_Setup->Get_Context().Get()->VSSetShader(t_Object_List->d3d_Vertex_Shaders[i].Get(), NULL, 0);
+				c_Graphics_Setup->Get_Context().Get()->PSSetShader(t_Object_List->d3d_Pixel_Shaders[i].Get(), NULL, 0);
+				c_Graphics_Setup->Get_Context().Get()->PSSetShaderResources(0, 1, t_Object_List->d3d_SRV[i][0].GetAddressOf());
+				//c_Graphics_Setup->Get_Context().Get()->OMSetBlendState(c_Graphics_Setup->Get_Blend_State().Get(), blend, 0xffffffff);
+
+				//if (bDisplay_Spell_Book)
+				c_Graphics_Setup->Get_Context().Get()->DrawIndexed(t_Object_List->tMesh_Data[i].nIndex_Count, 0, 0);
+				//if (i == 0)
+			}
 		}
 	}
 }
