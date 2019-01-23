@@ -30,7 +30,7 @@ public:
 
 private:
 
-	int dragHP = 4;
+	int dragHP = 5;
 
 	//tFloat4x4 dragonPos;
 	tFloat4x4 dragonMouthPos;
