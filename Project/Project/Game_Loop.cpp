@@ -698,15 +698,28 @@ void cGame_Loop::Update()
 	// Scene Transitions
 	if (bChange_Scene)
 	{
+		if (m_nScene_Id == 2)
+		{
+			personal_swap_Id = { 0.0f, 0.0f, 0.0f, 0.0f };
+			memset(bNode_Order, 0, sizeof(bNode_Order));
+			bDisplay_Spell_Book = false;
+			bDisplay_Spell_Node = false;
+			bDisplay_Fireball = false;
+			bDisplay_Icebolt = false;
+			bDisplay_Shield = false;
+			bMove_Bullet = false;
+			bSpell_Ready = false;
+		}
+
 		c_Render_Manager.Unload(tWorld_Object_List);
 		m_nScene_Id++;
 		if (m_nScene_Id > 3)
 		{
 			m_nScene_Id = 2;
 			c_Player.setIsAlive(true);
-			c_Player.setHealth(100);
+			c_Player.setHealth(100 - c_Player.getHealth());
 			c_Dragon.setIsAlive(true);
-			c_Dragon.setHealth(100);
+			c_Dragon.setHealth(100 - c_Dragon.getHealth());
 		}
 		tWorld_Object_List = c_Scene_Manager.Get_World_Scene(m_nScene_Id);
 		c_Render_Manager.Load_Data(m_nScene_Id, tWorld_Object_List);
