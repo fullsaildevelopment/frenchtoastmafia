@@ -162,9 +162,24 @@ tScene_Objects* cScene_Manager::Get_Personal_Scene()
 
 		tScene->tMesh_Data[obj_id].nVertex_Count = tHand.nVertex_Count;
 
+		//for (int i = 0; i < tHand.nIndex_Count; i++)
+		//{
+		//	tScene->tMesh_Data[obj_id].nIndicies.push_back(tHand.nIndicies[i]);
+		//}
 		for (int i = 0; i < tHand.nIndex_Count; i++)
 		{
-			tScene->tMesh_Data[obj_id].nIndicies.push_back(tHand.nIndicies[i]);
+			if (i % 3 == 0)
+			{
+				tScene->tMesh_Data[obj_id].nIndicies.push_back(tHand.nIndicies[i]);
+			}
+			if (i % 3 == 1)
+			{
+				tScene->tMesh_Data[obj_id].nIndicies.push_back(tHand.nIndicies[i + 1]);
+			}
+			if (i % 3 == 2)
+			{
+				tScene->tMesh_Data[obj_id].nIndicies.push_back(tHand.nIndicies[i - 1]);
+			}
 		}
 		tScene->tMesh_Data[obj_id].nIndex_Count = tHand.nIndex_Count;
 
@@ -191,9 +206,24 @@ tScene_Objects* cScene_Manager::Get_Personal_Scene()
 
 		tScene->tMesh_Data[obj_id].nVertex_Count = tHand.nVertex_Count;
 
+		//for (int i = 0; i < tHand.nIndex_Count; i++)
+		//{
+		//	tScene->tMesh_Data[obj_id].nIndicies.push_back(tHand.nIndicies[i]);
+		//}
 		for (int i = 0; i < tHand.nIndex_Count; i++)
 		{
-			tScene->tMesh_Data[obj_id].nIndicies.push_back(tHand.nIndicies[i]);
+			if (i % 3 == 0)
+			{
+				tScene->tMesh_Data[obj_id].nIndicies.push_back(tHand.nIndicies[i]);
+			}
+			if (i % 3 == 1)
+			{
+				tScene->tMesh_Data[obj_id].nIndicies.push_back(tHand.nIndicies[i + 1]);
+			}
+			if (i % 3 == 2)
+			{
+				tScene->tMesh_Data[obj_id].nIndicies.push_back(tHand.nIndicies[i - 1]);
+			}
 		}
 		tScene->tMesh_Data[obj_id].nIndex_Count = tHand.nIndex_Count;
 
@@ -220,9 +250,24 @@ tScene_Objects* cScene_Manager::Get_Personal_Scene()
 
 		tScene->tMesh_Data[obj_id].nVertex_Count = tHand.nVertex_Count;
 
+		//for (int i = 0; i < tHand.nIndex_Count; i++)
+		//{
+		//	tScene->tMesh_Data[obj_id].nIndicies.push_back(tHand.nIndicies[i]);
+		//}
 		for (int i = 0; i < tHand.nIndex_Count; i++)
 		{
-			tScene->tMesh_Data[obj_id].nIndicies.push_back(tHand.nIndicies[i]);
+			if (i % 3 == 0)
+			{
+				tScene->tMesh_Data[obj_id].nIndicies.push_back(tHand.nIndicies[i]);
+			}
+			if (i % 3 == 1)
+			{
+				tScene->tMesh_Data[obj_id].nIndicies.push_back(tHand.nIndicies[i + 1]);
+			}
+			if (i % 3 == 2)
+			{
+				tScene->tMesh_Data[obj_id].nIndicies.push_back(tHand.nIndicies[i - 1]);
+			}
 		}
 		tScene->tMesh_Data[obj_id].nIndex_Count = tHand.nIndex_Count;
 
@@ -249,9 +294,24 @@ tScene_Objects* cScene_Manager::Get_Personal_Scene()
 
 		tScene->tMesh_Data[obj_id].nVertex_Count = tHand.nVertex_Count;
 
+		//for (int i = 0; i < tHand.nIndex_Count; i++)
+		//{
+		//	tScene->tMesh_Data[obj_id].nIndicies.push_back(tHand.nIndicies[i]);
+		//}
 		for (int i = 0; i < tHand.nIndex_Count; i++)
 		{
-			tScene->tMesh_Data[obj_id].nIndicies.push_back(tHand.nIndicies[i]);
+			if (i % 3 == 0)
+			{
+				tScene->tMesh_Data[obj_id].nIndicies.push_back(tHand.nIndicies[i]);
+			}
+			if (i % 3 == 1)
+			{
+				tScene->tMesh_Data[obj_id].nIndicies.push_back(tHand.nIndicies[i + 1]);
+			}
+			if (i % 3 == 2)
+			{
+				tScene->tMesh_Data[obj_id].nIndicies.push_back(tHand.nIndicies[i - 1]);
+			}
 		}
 		tScene->tMesh_Data[obj_id].nIndex_Count = tHand.nIndex_Count;
 
@@ -278,9 +338,24 @@ tScene_Objects* cScene_Manager::Get_Personal_Scene()
 
 		tScene->tMesh_Data[obj_id].nVertex_Count = tHand.nVertex_Count;
 
+		//for (int i = 0; i < tHand.nIndex_Count; i++)
+		//{
+		//	tScene->tMesh_Data[obj_id].nIndicies.push_back(tHand.nIndicies[i]);
+		//}
 		for (int i = 0; i < tHand.nIndex_Count; i++)
 		{
-			tScene->tMesh_Data[obj_id].nIndicies.push_back(tHand.nIndicies[i]);
+			if (i % 3 == 0)
+			{
+				tScene->tMesh_Data[obj_id].nIndicies.push_back(tHand.nIndicies[i]);
+			}
+			if (i % 3 == 1)
+			{
+				tScene->tMesh_Data[obj_id].nIndicies.push_back(tHand.nIndicies[i + 1]);
+			}
+			if (i % 3 == 2)
+			{
+				tScene->tMesh_Data[obj_id].nIndicies.push_back(tHand.nIndicies[i - 1]);
+			}
 		}
 		tScene->tMesh_Data[obj_id].nIndex_Count = tHand.nIndex_Count;
 
@@ -307,9 +382,24 @@ tScene_Objects* cScene_Manager::Get_Personal_Scene()
 
 		tScene->tMesh_Data[obj_id].nVertex_Count = tHand.nVertex_Count;
 
+		//for (int i = 0; i < tHand.nIndex_Count; i++)
+		//{
+		//	tScene->tMesh_Data[obj_id].nIndicies.push_back(tHand.nIndicies[i]);
+		//}
 		for (int i = 0; i < tHand.nIndex_Count; i++)
 		{
-			tScene->tMesh_Data[obj_id].nIndicies.push_back(tHand.nIndicies[i]);
+			if (i % 3 == 0)
+			{
+				tScene->tMesh_Data[obj_id].nIndicies.push_back(tHand.nIndicies[i]);
+			}
+			if (i % 3 == 1)
+			{
+				tScene->tMesh_Data[obj_id].nIndicies.push_back(tHand.nIndicies[i + 1]);
+			}
+			if (i % 3 == 2)
+			{
+				tScene->tMesh_Data[obj_id].nIndicies.push_back(tHand.nIndicies[i - 1]);
+			}
 		}
 		tScene->tMesh_Data[obj_id].nIndex_Count = tHand.nIndex_Count;
 
@@ -336,9 +426,24 @@ tScene_Objects* cScene_Manager::Get_Personal_Scene()
 
 		tScene->tMesh_Data[obj_id].nVertex_Count = tHand.nVertex_Count;
 
+		//for (int i = 0; i < tHand.nIndex_Count; i++)
+		//{
+		//	tScene->tMesh_Data[obj_id].nIndicies.push_back(tHand.nIndicies[i]);
+		//}
 		for (int i = 0; i < tHand.nIndex_Count; i++)
 		{
-			tScene->tMesh_Data[obj_id].nIndicies.push_back(tHand.nIndicies[i]);
+			if (i % 3 == 0)
+			{
+				tScene->tMesh_Data[obj_id].nIndicies.push_back(tHand.nIndicies[i]);
+			}
+			if (i % 3 == 1)
+			{
+				tScene->tMesh_Data[obj_id].nIndicies.push_back(tHand.nIndicies[i + 1]);
+			}
+			if (i % 3 == 2)
+			{
+				tScene->tMesh_Data[obj_id].nIndicies.push_back(tHand.nIndicies[i - 1]);
+			}
 		}
 		tScene->tMesh_Data[obj_id].nIndex_Count = tHand.nIndex_Count;
 
@@ -365,9 +470,24 @@ tScene_Objects* cScene_Manager::Get_Personal_Scene()
 
 		tScene->tMesh_Data[obj_id].nVertex_Count = tHand.nVertex_Count;
 
+		//for (int i = 0; i < tHand.nIndex_Count; i++)
+		//{
+		//	tScene->tMesh_Data[obj_id].nIndicies.push_back(tHand.nIndicies[i]);
+		//}
 		for (int i = 0; i < tHand.nIndex_Count; i++)
 		{
-			tScene->tMesh_Data[obj_id].nIndicies.push_back(tHand.nIndicies[i]);
+			if (i % 3 == 0)
+			{
+				tScene->tMesh_Data[obj_id].nIndicies.push_back(tHand.nIndicies[i]);
+			}
+			if (i % 3 == 1)
+			{
+				tScene->tMesh_Data[obj_id].nIndicies.push_back(tHand.nIndicies[i + 1]);
+			}
+			if (i % 3 == 2)
+			{
+				tScene->tMesh_Data[obj_id].nIndicies.push_back(tHand.nIndicies[i - 1]);
+			}
 		}
 		tScene->tMesh_Data[obj_id].nIndex_Count = tHand.nIndex_Count;
 
