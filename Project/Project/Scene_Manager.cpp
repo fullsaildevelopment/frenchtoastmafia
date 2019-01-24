@@ -328,7 +328,7 @@ tScene_Objects* cScene_Manager::Get_World_Scene(int nScene_Id)
 			tScene->tMaterials_Data[1] = cBinary_Read.Read_Material("arenaMat.bin");
 		}
 		// Arena
-		
+		/*
 		// Dragon - 2
 		{
 			XMFLOAT4X4 temp;
@@ -380,8 +380,8 @@ tScene_Objects* cScene_Manager::Get_World_Scene(int nScene_Id)
 			tScene->tMaterials_Data[2].tMats[0].szDiffuse_File_Path = "Dragon.fbm\\DarkDragon_D.png";
 		}
 		// Dragon
+		*/
 		
-		/*
 		// Anim Test - 2
 		{
 			XMFLOAT4X4 temp;
@@ -391,14 +391,14 @@ tScene_Objects* cScene_Manager::Get_World_Scene(int nScene_Id)
 			//tempMatrix = XMMatrixMultiply(XMMatrixRotationY(3.14 / 8), tempMatrix);
 			//tempMatrix = XMMatrixMultiply(XMMatrixScaling(0.9, 0.9, 0.9), tempMatrix);
 
-			tempMatrix = XMMatrixMultiply(tempMatrix, XMMatrixTranslation(-475, 0, 0));
+			tempMatrix = XMMatrixMultiply(tempMatrix, XMMatrixTranslation(-150, 0, 0));
 
 
 			XMStoreFloat4x4(&temp, tempMatrix);
 
 			tScene->fWorld_Matrix[2] = XMFLOAT4x4_to_tFloat4x4(temp);
 			tScene->bIs_Animated[2] = true;
-			tMesh_Skinned tDragon = cBinary_Read.Read_Mesh_Skinned("Dragon_FlyingSkinned.bin");
+			tMesh_Skinned tDragon = cBinary_Read.Read_Mesh_Skinned("Dragon_Flying2Skinned.bin");
 
 			//for (int i = 0; i < tDragon.nVertex_Count; i++)
 			//{
@@ -420,17 +420,17 @@ tScene_Objects* cScene_Manager::Get_World_Scene(int nScene_Id)
 			}
 			tScene->tMesh_Skinned_Data[2].nIndex_Count = tDragon.nIndex_Count;
 
-			tScene->tMaterials_Data[2] = cBinary_Read.Read_Material("Dragon_FlyingMaterial.bin");
+			tScene->tMaterials_Data[2] = cBinary_Read.Read_Material("Dragon_Flying2Material.bin");
 			tScene->tMaterials_Data[2].tMats[0].szDiffuse_File_Path = "Dragon.fbm\\DarkDragon_D.png";
 
-			tScene->tAnim_Clip[2][0] = cBinary_Read.Read_Skeleton("Dragon_FlyingSkeleton.bin");
-			tScene->tAnim_Clip[2][1] = cBinary_Read.Read_Skeleton("Dragon_GetHitSkeleton.bin");
+			tScene->tAnim_Clip[2][0] = cBinary_Read.Read_Skeleton("Dragon_Flying2Skeleton.bin");
+			tScene->tAnim_Clip[2][1] = cBinary_Read.Read_Skeleton("Dragon_GetHit2Skeleton.bin");
 			tScene->tAnim_Data[2] = Create_Inverse_Bind_Pose(tScene->tAnim_Clip[2][0].tKeyFrames[0]);
 
 			tScene->currAnim[2] = 0;
 		}
 		// Anim Test
-		*/
+		
 		// Fireball - 3
 		{
 			XMFLOAT4X4 temp;
