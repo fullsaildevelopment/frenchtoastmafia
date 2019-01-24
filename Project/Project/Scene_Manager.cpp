@@ -416,7 +416,18 @@ tScene_Objects* cScene_Manager::Get_World_Scene(int nScene_Id)
 
 			for (int i = 0; i < tDragon.nIndex_Count; i++)
 			{
-				tScene->tMesh_Skinned_Data[2].nIndicies.push_back(tDragon.nIndicies[i]);
+				if (i % 3 == 0)
+				{
+					tScene->tMesh_Skinned_Data[2].nIndicies.push_back(tDragon.nIndicies[i]);
+				}
+				if (i % 3 == 1)
+				{
+					tScene->tMesh_Skinned_Data[2].nIndicies.push_back(tDragon.nIndicies[i + 1]);
+				}
+				if (i % 3 == 2)
+				{
+					tScene->tMesh_Skinned_Data[2].nIndicies.push_back(tDragon.nIndicies[i - 1]);
+				}
 			}
 			tScene->tMesh_Skinned_Data[2].nIndex_Count = tDragon.nIndex_Count;
 

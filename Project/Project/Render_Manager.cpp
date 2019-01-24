@@ -792,7 +792,7 @@ void cRender_Manager::Draw_World(int nScene_Id, tScene_Objects* tObject_List, bo
 		sound.playSoundEffect("DragonSound1.mp3", FMOD_DEFAULT, 0.45f);
 
 		//tObject_List->dragHP -= 1;
-		if (_AI->getHP() == 3)
+		if (_AI->getHP() >= 3)
 		{
 			dragonTint = { 0.0f, 0.0f, 1.0f, 1.0f };
 		}

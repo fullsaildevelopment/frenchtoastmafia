@@ -31,7 +31,7 @@ void AI::resolveDragonState(tScene_Objects* tObject_List, tFloat4x4 _playerPos, 
 		//	aggro = true;
 		//}
 
-		if (dragHP < 4)
+		if (dragHP < 5)
 		{
 			aggro = true;
 		}
@@ -46,17 +46,17 @@ void AI::resolveDragonState(tScene_Objects* tObject_List, tFloat4x4 _playerPos, 
 		//	xMove *= -1;
 		//}
 
-		if (tObject_List->fWorld_Matrix[2].tW.fZ > 200.0f)
+		if (tObject_List->fWorld_Matrix[2].tW.fZ > 100.0f)
 		{
 			xMove = 300 * _dTime;
 		}
 
-		if (tObject_List->fWorld_Matrix[2].tW.fZ < -200.0f)
+		if (tObject_List->fWorld_Matrix[2].tW.fZ < -100.0f)
 		{
 			xMove = -300 * _dTime;
 		}
 
-		if (dragHP != 4)
+		if (dragHP < 5)
 		{
 			XMMATRIX oldPosMat = XMLoadFloat4x4(&tFloat4x4_to_XMFLOAT4x4(tObject_List->fWorld_Matrix[2]));
 			XMMATRIX moveMat = XMMatrixTranslation(dragSpeed * xMove * _dTime, 0.0f, 0.0f);
@@ -79,7 +79,7 @@ void AI::resolveDragonState(tScene_Objects* tObject_List, tFloat4x4 _playerPos, 
 			XMStoreFloat4x4(&newPos4x4, newPosMat);
 			tObject_List->fWorld_Matrix[2] = XMFLOAT4x4_to_tFloat4x4(newPos4x4);
 
-			if (tObject_List->fFireballs_Alive == 0)
+			if (tObject_List->fFireballs_Alive == 0 && dragHP > 3)
 			{
 				tObject_List->fFireballs_Alive = 3;
 
@@ -115,15 +115,61 @@ void AI::resolveDragonState(tScene_Objects* tObject_List, tFloat4x4 _playerPos, 
 				tObject_List->fFireball_Matrix[2] = XMFLOAT4x4_to_tFloat4x4(newProjPos4x4_3);
 
 			}
+			else if (tObject_List->fFireballs_Alive == 0 && dragHP <= 3)
+			{
+ 				tObject_List->fFireballs_Alive = 5;
+
+				tObject_List->fFireball_State[0] = true;
+				tObject_List->fFireball_State[1] = true;
+				tObject_List->fFireball_State[2] = true;
+				tObject_List->fFireball_State[3] = true;
+				tObject_List->fFireball_State[4] = true;
+
+				sound.playSoundEffect("Fireball+1.mp3", FMOD_DEFAULT, 0.5f);
+				_spell->setIsActive(true);
+
+				tObject_List->fFireball_Matrix[0] = _playerPos;
+				XMMATRIX oldProjPosMat = XMLoadFloat4x4(&tFloat4x4_to_XMFLOAT4x4(tObject_List->fFireball_Matrix[0]));
+
+				oldProjPosMat = XMMatrixMultiply(oldProjPosMat, XMMatrixTranslation(-100, 300, 0));
+
+				XMMATRIX newProjPosMat = lookAtMatrix(oldProjPosMat, playerPosMat);
+				XMMATRIX newProjPosMat2 = XMMatrixMultiply(XMMatrixTranslation(5, 0, 0), newProjPosMat);
+				XMMATRIX newProjPosMat3 = XMMatrixMultiply(XMMatrixTranslation(-5, 0, 0), newProjPosMat);
+				XMMATRIX newProjPosMat4 = XMMatrixMultiply(XMMatrixTranslation(0, 5, 5), newProjPosMat);
+				XMMATRIX newProjPosMat5 = XMMatrixMultiply(XMMatrixTranslation(0, -5, -5), newProjPosMat);
+
+				XMFLOAT4X4 newProjPos4x4;
+				XMStoreFloat4x4(&newProjPos4x4, newProjPosMat);
+				tObject_List->fFireball_Matrix[0] = XMFLOAT4x4_to_tFloat4x4(newProjPos4x4);
+
+				XMFLOAT4X4 newProjPos4x4_2;
+				XMStoreFloat4x4(&newProjPos4x4_2, newProjPosMat2);
+				tObject_List->fFireball_Matrix[1] = XMFLOAT4x4_to_tFloat4x4(newProjPos4x4_2);
+
+				XMFLOAT4X4 newProjPos4x4_3;
+				XMStoreFloat4x4(&newProjPos4x4_3, newProjPosMat3);
+				tObject_List->fFireball_Matrix[2] = XMFLOAT4x4_to_tFloat4x4(newProjPos4x4_3);
+
+				XMFLOAT4X4 newProjPos4x4_4;
+				XMStoreFloat4x4(&newProjPos4x4_4, newProjPosMat4);
+				tObject_List->fFireball_Matrix[3] = XMFLOAT4x4_to_tFloat4x4(newProjPos4x4_4);
+
+				XMFLOAT4X4 newProjPos4x4_5;
+				XMStoreFloat4x4(&newProjPos4x4_5, newProjPosMat5);
+				tObject_List->fFireball_Matrix[4] = XMFLOAT4x4_to_tFloat4x4(newProjPos4x4_5);
+
+
+			}
 
 		}
 
 		//projectile stuff
 
 
-		if (dragHP <= 3)
+		if (dragHP <= 5)
 		{
-			if (dragHP == 3)
+			if (dragHP >= 3)
 			{
 				for (int i = 0; i < tObject_List->maxFireballs; i++)
 				{
@@ -254,6 +300,6 @@ int AI::getHP()
 
 void AI::resetHP()
 {
-	dragHP = 4;
+	dragHP = 5;
 	aggro = false;
 }
