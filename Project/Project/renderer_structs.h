@@ -76,10 +76,11 @@ struct tScene_Objects
 	tFloat3								fWorld_Position[15]{};
 	tFloat4x4							fWorld_Matrix[15]{};
 
-	tFloat4x4							fFireball_Matrix[3]{};
-	bool								fFireball_State[3]{};
+	tFloat4x4							fFireball_Matrix[9]{};
+	tFloat4x4							fAlert_Matrix[9]{};
+	bool								fFireball_State[9]{};
 	int									fFireballs_Alive = 0;
-	int									maxFireballs = 3;
+	int									maxFireballs = 9;
 
 	// Vertex and Index Data
 	bool								bIs_Animated[15]{};

@@ -130,7 +130,7 @@ void cGame_Loop::Update()
 			tAABB_Player_Fireball.extents = tFloat3{ 0.2f, 0.13f, 0.2f };
 
 			tAABB_Dragon.center = c_Dragon.getPosition4().fXYZ;
-			tAABB_Dragon.extents = tFloat3{ 250.0f, 400.0f, 250.0f };
+			tAABB_Dragon.extents = tFloat3{ 15.0f, 100.0f, 35.0f };
 
 			tAABB_Dragon_Fireball[0].center = tWorld_Object_List->fFireball_Matrix[0].tW.fXYZ;
 			tAABB_Dragon_Fireball[0].extents = tFloat3{ 0.2f, 0.13f, 0.2f };
