@@ -566,43 +566,6 @@ void cRender_Manager::Draw_Personal(tScene_Objects* tObject_List, cHead_Mount c_
 
 		for (int i = 0; i < 4; i++)
 		{
-			// CONSTANT BUFFER - WVPC
-			{
-				if (i == 0)
-				{
-					tFloat4x4 temp = c_Controllers.Get_Left_Hand();
-					tWVP.fWorld_Matrix = tFloat4x4_to_XMFLOAT4x4(temp);
-				}
-				else if (i == 1)
-				{
-					tFloat4x4 temp = c_Controllers.Get_Right_Hand();
-					tWVP.fWorld_Matrix = tFloat4x4_to_XMFLOAT4x4(temp);
-				}
-				else if (i == 2)
-				{
-					tFloat4x4 temp = c_Controllers.Get_Left_Hand();
-					temp.tW.fZ -= 0.3;
-					temp.tW.fX += 0.2;
-					temp.tW.fY += 0.125;
-					tWVP.fWorld_Matrix = tFloat4x4_to_XMFLOAT4x4(temp);
-				}
-				else
-				{
-					tFloat4x4 temp = c_Controllers.Get_Right_Hand();
-					temp.tW.fZ -= 0.3;
-					temp.tW.fX += 0.2;
-					temp.tW.fY += 0.125;
-					tWVP.fWorld_Matrix = tFloat4x4_to_XMFLOAT4x4(temp);
-				}
-
-				// MAP DATA
-				c_Graphics_Setup->Get_Context().Get()->Map(d3d_Constant_Buffer_WVP.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &d3d_MSR);
-				memcpy(d3d_MSR.pData, &tWVP, sizeof(tConstantBuffer_VertexShader_WVP));
-				c_Graphics_Setup->Get_Context().Get()->Unmap(d3d_Constant_Buffer_WVP.Get(), 0);
-				ID3D11Buffer *tmp_wvpc_buffer[] = { d3d_Constant_Buffer_WVP.Get() };
-				c_Graphics_Setup->Get_Context().Get()->VSSetConstantBuffers(0, 1, tmp_wvpc_buffer);
-			}
-
 			switch (i)
 			{
 			case 0:
@@ -678,6 +641,48 @@ void cRender_Manager::Draw_Personal(tScene_Objects* tObject_List, cHead_Mount c_
 					break;
 				}
 				break;
+			}
+
+			// CONSTANT BUFFER - WVPC
+			{
+				//if (i == 0)
+				//{
+				//	tFloat4x4 temp = c_Controllers.Get_Left_Hand();
+				//	tWVP.fWorld_Matrix = tFloat4x4_to_XMFLOAT4x4(temp);
+				//}
+				//else if (i == 1)
+				//{
+				//	tFloat4x4 temp = c_Controllers.Get_Right_Hand();
+				//	tWVP.fWorld_Matrix = tFloat4x4_to_XMFLOAT4x4(temp);
+				//}
+				//else if (i == 2)
+				//{
+				//	tFloat4x4 temp = c_Controllers.Get_Left_Hand();
+				//	temp.tW.fZ -= 0.3;
+				//	temp.tW.fX += 0.2;
+				//	temp.tW.fY += 0.125;
+				//	tWVP.fWorld_Matrix = tFloat4x4_to_XMFLOAT4x4(temp);
+				//}
+				//else
+				//{
+				//	if (!*bMove_Bullet)
+				//	{
+				//		tFloat4x4 temp = c_Controllers.Get_Right_Hand();
+				//		temp.tW.fZ -= 0.3;
+				//		temp.tW.fX += 0.2;
+				//		temp.tW.fY += 0.125;
+				//		tWVP.fWorld_Matrix = tFloat4x4_to_XMFLOAT4x4(temp);
+				//	}
+				//}
+
+				tWVP.fWorld_Matrix = tFloat4x4_to_XMFLOAT4x4(tObject_List->fWorld_Matrix[obj_id]);
+
+				// MAP DATA
+				c_Graphics_Setup->Get_Context().Get()->Map(d3d_Constant_Buffer_WVP.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &d3d_MSR);
+				memcpy(d3d_MSR.pData, &tWVP, sizeof(tConstantBuffer_VertexShader_WVP));
+				c_Graphics_Setup->Get_Context().Get()->Unmap(d3d_Constant_Buffer_WVP.Get(), 0);
+				ID3D11Buffer *tmp_wvpc_buffer[] = { d3d_Constant_Buffer_WVP.Get() };
+				c_Graphics_Setup->Get_Context().Get()->VSSetConstantBuffers(0, 1, tmp_wvpc_buffer);
 			}
 
 			ID3D11Buffer *ts_v_buffer[] = { tObject_List->d3d_Vertex_Buffers[obj_id].Get() };

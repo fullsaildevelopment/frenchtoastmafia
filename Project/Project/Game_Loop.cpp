@@ -73,43 +73,35 @@ void cGame_Loop::Update()
 		xmm_in = XMMatrixMultiply(XMMatrixTranslation(0.0f, 0.0f, -0.75f), xmm_in);
 		XMStoreFloat4x4(&xmf_out, xmm_in);
 		c_Spell_Book.setPosition4x4(XMFLOAT4x4_to_tFloat4x4(xmf_out));
-
-		//tFloat4x4 temp_L = c_Controllers.Get_Left_Hand();
-		//tPersonal_Object_List->fWorld_Matrix[0] = temp_L;
-		//temp_L.tW.fZ += 0.3;
-		//temp_L.tW.fX += 0.2;
-		//temp_L.tW.fY += 0.125;
-		//tPersonal_Object_List->fWorld_Matrix[2] = temp_L;
-		//
-		//tFloat4x4 temp_R = c_Controllers.Get_Right_Hand();
-		//tPersonal_Object_List->fWorld_Matrix[1] = temp_R;
-		//temp_R.tW.fZ += 0.3;
-		//temp_R.tW.fX += 0.2;
-		//temp_R.tW.fY += 0.125;
-		//tPersonal_Object_List->fWorld_Matrix[3] = temp_R;
-
+		
 		if (bMove_Bullet)
 		{
-			xmf_in = tFloat4x4_to_XMFLOAT4x4(tWorld_Object_List->fWorld_Matrix[4]);
-			//xmf_in = tFloat4x4_to_XMFLOAT4x4(tPersonal_Object_List->fWorld_Matrix[2]);
+			//xmf_in = tFloat4x4_to_XMFLOAT4x4(tWorld_Object_List->fWorld_Matrix[4]);
+			xmf_in = tFloat4x4_to_XMFLOAT4x4(tPersonal_Object_List->fWorld_Matrix[3]);
 			xmm_in = XMLoadFloat4x4(&xmf_in);
 			xmm_in = XMMatrixMultiply(XMMatrixTranslation(0.0f, 0.0f, -200.0f * c_XTime.Delta()), xmm_in);
 			XMStoreFloat4x4(&xmf_out, xmm_in);
 			c_Player_Fireball.setPosition4x4(XMFLOAT4x4_to_tFloat4x4(xmf_out));
 			//c_Player_Spell_01.setPosition4x4(XMFLOAT4x4_to_tFloat4x4(xmf_out));
 			//c_Player_Spell_02.setPosition4x4(XMFLOAT4x4_to_tFloat4x4(xmf_out));
-			tWorld_Object_List->fWorld_Matrix[4] = c_Player_Fireball.getPosition4x4();
-			//tPersonal_Object_List->fWorld_Matrix[2] = c_Player_Fireball.getPosition4x4();
+			//tWorld_Object_List->fWorld_Matrix[4] = c_Player_Fireball.getPosition4x4();
+			tPersonal_Object_List->fWorld_Matrix[3] = c_Player_Fireball.getPosition4x4();
 		}
 		else
 		{
-			xmf_in = tFloat4x4_to_XMFLOAT4x4(c_Head_Mount.Get_CurrentLook(c_Offset_Matrix.GetPosition4x4()));
-			xmm_in = XMLoadFloat4x4(&xmf_in);
-			xmm_in = XMMatrixMultiply(XMMatrixTranslation(0.0f, 0.0f, -0.75f), xmm_in);
-			XMStoreFloat4x4(&xmf_out, xmm_in);
-			c_Spell_Book.setPosition4x4(XMFLOAT4x4_to_tFloat4x4(xmf_out));
-			c_Player_Fireball.setPosition4x4(XMFLOAT4x4_to_tFloat4x4(xmf_out));
-			tWorld_Object_List->fWorld_Matrix[4] = c_Player_Fireball.getPosition4x4();
+			tPersonal_Object_List->fWorld_Matrix[0] = c_Controllers.Get_Left_Hand();
+			tPersonal_Object_List->fWorld_Matrix[1] = c_Controllers.Get_Right_Hand();
+			tFloat4x4 temp;
+			temp = c_Controllers.Get_Left_Hand();
+			temp.tW.fZ -= 0.3;
+			temp.tW.fX += 0.2;
+			temp.tW.fY += 0.125;
+			tPersonal_Object_List->fWorld_Matrix[2] = temp;
+			temp = c_Controllers.Get_Right_Hand();
+			temp.tW.fZ -= 0.3;
+			temp.tW.fX += 0.2;
+			temp.tW.fY += 0.125;
+			tPersonal_Object_List->fWorld_Matrix[3] = temp;
 		}
 
 
@@ -142,8 +134,14 @@ void cGame_Loop::Update()
 			tAABB_Left_Hand.center = c_Controllers.Get_Left_Hand().tW.fXYZ;
 			tAABB_Left_Hand.extents = tFloat3{ 0.0625f, 0.0625f, 0.15f };
 
+			tAABB_LHand_Spell.center = tPersonal_Object_List->fWorld_Matrix[2].tW.fXYZ;
+			tAABB_LHand_Spell.extents = tFloat3{ 0.2f, 0.13f, 0.2f };
+
 			tAABB_Right_Hand.center = c_Controllers.Get_Right_Hand().tW.fXYZ;
 			tAABB_Right_Hand.extents = tFloat3{ 0.0625f, 0.0625f, 0.15f };
+
+			tAABB_RHand_Spell.center = tPersonal_Object_List->fWorld_Matrix[3].tW.fXYZ;
+			tAABB_RHand_Spell.extents = tFloat3{ 0.2f, 0.13f, 0.2f };
 
 			// Spell Book
 			{
@@ -748,12 +746,21 @@ void cGame_Loop::Update()
 	c_Render_Manager.Draw_Spell(tShield_Nodes, c_Head_Mount, c_Offset_Matrix.GetPosition4x4(), bDisplay_Shield, true, bNode_Order);
 	c_Render_Manager.Draw_Personal(tPersonal_Object_List, c_Head_Mount, c_Controllers, c_Offset_Matrix.GetPosition4x4(), &bMove_Bullet, &bSpell_Ready, c_Player_Fireball, personal_swap_Id);
 
+	if (m_nScene_Id == 2)
+	{
+		c_Render_Manager.Debugging_AABB(tAABB_Left_Hand, c_Head_Mount, c_Offset_Matrix.GetPosition4x4());
+		c_Render_Manager.Debugging_AABB(tAABB_Right_Hand, c_Head_Mount, c_Offset_Matrix.GetPosition4x4());
+		c_Render_Manager.Debugging_AABB(tAABB_LHand_Spell, c_Head_Mount, c_Offset_Matrix.GetPosition4x4());
+		c_Render_Manager.Debugging_AABB(tAABB_RHand_Spell, c_Head_Mount, c_Offset_Matrix.GetPosition4x4());
+	}
 	/*
 	// AABB Visual Debugging
 	if (m_nScene_Id == 2)
 	{
 		c_Render_Manager.Debugging_AABB(tAABB_Left_Hand, c_Head_Mount, c_Offset_Matrix.GetPosition4x4());
+		c_Render_Manager.Debugging_AABB(tAABB_LHand_Spell, c_Head_Mount, c_Offset_Matrix.GetPosition4x4());
 		c_Render_Manager.Debugging_AABB(tAABB_Right_Hand, c_Head_Mount, c_Offset_Matrix.GetPosition4x4());
+		c_Render_Manager.Debugging_AABB(tAABB_RHand_Spell, c_Head_Mount, c_Offset_Matrix.GetPosition4x4());
 
 		if (bDisplay_Spell_Book)
 		{
