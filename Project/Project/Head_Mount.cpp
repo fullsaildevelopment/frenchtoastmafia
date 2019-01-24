@@ -92,9 +92,9 @@ tFloat4x4 cHead_Mount::GetCurrentViewProjectionMatrix(vr::Hmd_Eye nEye, Matrix4 
 
 	Matrix4 matMVP = Matrix4();
 	if (nEye == vr::Eye_Left)
-		matMVP = c_VR_Setup->Get_mat4ProjectionLeft() * (offset * c_VR_Setup->Get_mat4eyePosLeft() * c_VR_Setup->Get_mat4HMDPose()).invert();
+		matMVP = c_VR_Setup->Get_mat4ProjectionLeft() * (offset * c_VR_Setup->Get_mat4HMDPose() * c_VR_Setup->Get_mat4eyePosLeft()).invert();
 	else if (nEye == vr::Eye_Right)
-		matMVP = c_VR_Setup->Get_mat4ProjectionRight() * (offset * c_VR_Setup->Get_mat4eyePosRight() * c_VR_Setup->Get_mat4HMDPose()).invert();
+		matMVP = c_VR_Setup->Get_mat4ProjectionRight() * (offset * c_VR_Setup->Get_mat4HMDPose() * c_VR_Setup->Get_mat4eyePosRight()).invert();
 
 	out_mat = Matrix4_To_tFloat4x4(matMVP);
 	return out_mat;

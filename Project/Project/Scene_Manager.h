@@ -24,10 +24,12 @@ public:
 	~cScene_Manager();
 
 	tScene_Objects* Get_Personal_Scene();
+	tScene_Objects* Get_Personal_Scene2();
 	tScene_Objects* Get_World_Scene(int nScene_Id);
 	tScene_Objects* Get_Spell_Book();
 	tScene_Objects* Get_Spell_Node_Fireball();
 	tScene_Objects* Get_Spell_Node_Icebolt();
 	tScene_Objects* Get_Spell_Node_Shield();
+	tScene_Objects* Get_UI();
 };
 

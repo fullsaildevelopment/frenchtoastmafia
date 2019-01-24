@@ -29,7 +29,7 @@ class cGame_Loop
 private:
 	cAnimation_Manager c_Animation_Manager;
 	cBase_Character c_Player, c_Dragon;
-	cBase_Spell c_Player_Fireball, c_Dragon_Fireball;
+	cBase_Spell c_Player_Spell_01, c_Player_Spell_02, c_Player_Fireball, c_Dragon_Fireball;
 	cControllers c_Controllers;
 	cGraphics_Setup *c_Graphics_Setup;
 	cHead_Mount c_Head_Mount;
@@ -46,6 +46,7 @@ private:
 	AI c_AI;
 
 	bool bChange_Scene = false;
+	bool bReset_Offset = false;
 	bool bCharacter_Moving = false;
 	bool bDisplay_Spell_Book = false;
 	bool bDisplay_Spell_Node = false;
@@ -53,15 +54,23 @@ private:
 	bool bDisplay_Icebolt = false;
 	bool bDisplay_Shield = false;
 	bool bNode_Order[3] = { false };
+
 	bool bMove_Bullet = false;
-	bool bReset_Offset = false;
+	bool bMove_Spell_01 = false;
+	bool bMove_Spell_02 = false;
+
 	bool bSpell_Ready = false;
+	bool bSpell_Ready_01 = false;
+	bool bSpell_Ready_02 = false;
+
 
 	int m_nScene_Id;
 	int nDisplay_Spell_Node = 0;
 
+	tFloat4 personal_swap_Id = { 0.0f, 0.0f, 0.0f, 0.0f };
 	tFloat4 movement = { 0.0f, 0.0f, 0.0f, 0.0f };
-	tScene_Objects *tPersonal_Object_List, *tWorld_Object_List, *tSpell_Book, *tFireball_Nodes, *tIcebolt_Nodes, *tShield_Nodes;
+	tScene_Objects *tPersonal_Object_List, *tWorld_Object_List, *UI_Object_List;
+	tScene_Objects *tSpell_Book, *tFireball_Nodes, *tIcebolt_Nodes, *tShield_Nodes;
 	tAABB tAABB_Player, tAABB_Player_Fireball, tAABB_Dragon;
 	tAABB tAABB_Left_Hand, tAABB_Right_Hand;
 	tAABB tAABB_Spell_1, tAABB_Spell_2, tAABB_Spell_3, tAABB_Cancel;
