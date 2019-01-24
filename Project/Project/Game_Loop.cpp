@@ -387,7 +387,7 @@ void cGame_Loop::Update()
 				//dragon_hit = c_AI.getIsHit();
 				c_Player_Fireball.setIsActive(false);
 				c_AI.setIsHit(true);
-				c_Dragon.setHealth(-25);
+				c_Dragon.setHealth(-20);
 				c_Render_Manager.set_particle_array(p.get_particles());
 				p.create_particles(dragon_blast_color, c_XTime.Delta(), dragon_blast_acceleration, dragon_blast_kill, dragon_hit);
 				c_Player_Fireball.setIsActive(false);
