@@ -65,7 +65,7 @@ int cControllers::Identify_Controller(TrackedDeviceIndex_t vr_event)
 	return 0;
 }
 
-void cControllers::Update_Controller(int nScene_Id, bool *bChange_Scene, bool *bDisplay_Spell_Book, bool *bDisplay_Spell_Node, bool *bMove_Bullet, bool *bReset_Offset, bool *bSpell_Ready, tFloat4 *movement, tFloat4x4 offset)
+void cControllers::Update_Controller(int nScene_Id, bool *bChange_Scene, bool *bDisplay_Spell_Book, bool bDisplay_Spell_Node, bool *bMove_Bullet, bool *bReset_Offset, bool *bSpell_Ready, tFloat4 *movement, tFloat4x4 offset)
 {
 	if (!c_VR_Setup->Get_HMD()->IsInputAvailable())
 		return;
@@ -115,7 +115,7 @@ void cControllers::Update_Controller(int nScene_Id, bool *bChange_Scene, bool *b
 					{
 						printf("Grip Press\n");
 						tReset_Offset.fY = 1.0f;
-						if (nScene_Id == 2 && !(*bDisplay_Spell_Node))
+						if (nScene_Id == 2 && (!bDisplay_Spell_Node))
 						//if (nScene_Id == 2)
 							*bDisplay_Spell_Book = true;
 					}
