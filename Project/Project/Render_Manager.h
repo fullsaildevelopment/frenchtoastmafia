@@ -38,8 +38,6 @@
 
 #include "Math_Conversion.h"
 
-#include "Base_Character.h"
-
 class cRender_Manager
 {
 private:
@@ -135,21 +133,6 @@ private:
 	UINT quad_indexes[100];
 	// Particle Stuff
 
-	// Health Bar Stuff
-
-	/*ComPtr<ID3D11ShaderResourceView> player_100_health;
-	ComPtr<ID3D11ShaderResourceView> player_90_health;
-	ComPtr<ID3D11ShaderResourceView> player_80_health;
-	ComPtr<ID3D11ShaderResourceView> player_70_health;
-	ComPtr<ID3D11ShaderResourceView> player_60_health;
-	ComPtr<ID3D11ShaderResourceView> player_50_health;
-	ComPtr<ID3D11ShaderResourceView> player_40_health;
-	ComPtr<ID3D11ShaderResourceView> player_30_health;
-	ComPtr<ID3D11ShaderResourceView> player_20_health;
-	ComPtr<ID3D11ShaderResourceView> player_10_health;*/
-
-	// Health Bar Stuff
-
 public:
 	cRender_Manager();
 	~cRender_Manager();
@@ -157,14 +140,12 @@ public:
 	void Initialize(cGraphics_Setup* c_Graphics_Setup);
 	void Load_Data(int nScene_Id, tScene_Objects* tObject_List);
 	void Unload(tScene_Objects* t_Object_List);
-	void Draw_Personal(tScene_Objects* t_Object_List, cHead_Mount c_Head_Mount, cControllers c_Controllers, tFloat4x4 offset, bool *bMove_Bullet, bool *bSpell_Ready, cBase_Spell c_Player_Fireball, cBase_Character player, tFloat4 tSwap_Id);
-	void Draw_Spell(tScene_Objects* t_Object_List, cHead_Mount c_Head_Mount, tFloat4x4 offset, bool bDisplay_Spell_Book, bool bUse_Node, bool bNode_Order[]);
+	void Draw_Personal(tScene_Objects* t_Object_List, cHead_Mount c_Head_Mount, cControllers c_Controllers, tFloat4x4 offset, bool *bMove_Bullet, bool *bSpell_Ready, cBase_Spell c_Player_Fireball);
+	void Draw_Spell(tScene_Objects* t_Object_List, cHead_Mount c_Head_Mount, tFloat4x4 offset, bool bDisplay_Spell_Book);
 	void Draw_World(int nScene_Id, tScene_Objects* t_Object_List, bool *bChange_Scene, bool *bMove_Bullet, cHead_Mount c_Head_Mount, tFloat4x4 offset, double totalTime, cBase_Spell c_Player_Fireball, AI* _AI, bool dragon_hit, double timeDelta, tFloat4x4 player_pos);
 	particle* get_particle_array();
 	void set_particle_array(particle* p_arr);
 	void keyboardInputs(tScene_Objects* tObject_List);
 
 	void Debugging_AABB(tAABB obj, cHead_Mount c_Head_Mount, tFloat4x4 offset);
-
-	void Draw_UI(tScene_Objects* t_Object_List, cHead_Mount c_Head_Mount, tFloat4x4 offset, tFloat4x4 drag_World_Matrix, cBase_Character dragon, cBase_Character player);
 };

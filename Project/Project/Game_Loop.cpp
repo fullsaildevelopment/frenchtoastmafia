@@ -52,9 +52,6 @@ void cGame_Loop::Setup()
 	tShield_Nodes = c_Scene_Manager.Get_Spell_Node_Shield();
 	c_Render_Manager.Load_Data(4, tShield_Nodes);
 
-	UI_Object_List = c_Scene_Manager.Get_UI();
-	c_Render_Manager.Load_Data(4, UI_Object_List);
-
 	sound.playSong("fionnulas-tale-celtic-flute-music.mp3", FMOD_LOOP_NORMAL, 0.1f);
 }
 
@@ -71,36 +68,14 @@ void cGame_Loop::Update()
 		c_Dragon_Fireball.setPosition4x4(tWorld_Object_List->fWorld_Matrix[3]);
 		c_AI.setIsHit(false);
 
-		xmf_in = tFloat4x4_to_XMFLOAT4x4(c_Head_Mount.Get_CurrentLook(c_Offset_Matrix.GetPosition4x4()));
-		xmm_in = XMLoadFloat4x4(&xmf_in);
-		xmm_in = XMMatrixMultiply(XMMatrixTranslation(0.0f, 0.0f, -0.75f), xmm_in);
-		XMStoreFloat4x4(&xmf_out, xmm_in);
-		c_Spell_Book.setPosition4x4(XMFLOAT4x4_to_tFloat4x4(xmf_out));
-
-		//tFloat4x4 temp_L = c_Controllers.Get_Left_Hand();
-		//tPersonal_Object_List->fWorld_Matrix[0] = temp_L;
-		//temp_L.tW.fZ += 0.3;
-		//temp_L.tW.fX += 0.2;
-		//temp_L.tW.fY += 0.125;
-		//tPersonal_Object_List->fWorld_Matrix[2] = temp_L;
-		//
-		//tFloat4x4 temp_R = c_Controllers.Get_Right_Hand();
-		//tPersonal_Object_List->fWorld_Matrix[1] = temp_R;
-		//temp_R.tW.fZ += 0.3;
-		//temp_R.tW.fX += 0.2;
-		//temp_R.tW.fY += 0.125;
-		//tPersonal_Object_List->fWorld_Matrix[3] = temp_R;
-
 		if (bMove_Bullet)
 		{
 			xmf_in = tFloat4x4_to_XMFLOAT4x4(tWorld_Object_List->fWorld_Matrix[4]);
 			//xmf_in = tFloat4x4_to_XMFLOAT4x4(tPersonal_Object_List->fWorld_Matrix[2]);
 			xmm_in = XMLoadFloat4x4(&xmf_in);
-			xmm_in = XMMatrixMultiply(XMMatrixTranslation(0.0f, 0.0f, -8.0f), xmm_in);
+			xmm_in = XMMatrixMultiply(XMMatrixTranslation(0.0f, 0.0f, -200.0f * c_XTime.Delta()), xmm_in);
 			XMStoreFloat4x4(&xmf_out, xmm_in);
 			c_Player_Fireball.setPosition4x4(XMFLOAT4x4_to_tFloat4x4(xmf_out));
-			//c_Player_Spell_01.setPosition4x4(XMFLOAT4x4_to_tFloat4x4(xmf_out));
-			//c_Player_Spell_02.setPosition4x4(XMFLOAT4x4_to_tFloat4x4(xmf_out));
 			tWorld_Object_List->fWorld_Matrix[4] = c_Player_Fireball.getPosition4x4();
 			//tPersonal_Object_List->fWorld_Matrix[2] = c_Player_Fireball.getPosition4x4();
 		}
@@ -143,10 +118,10 @@ void cGame_Loop::Update()
 
 
 			tAABB_Left_Hand.center = c_Controllers.Get_Left_Hand().tW.fXYZ;
-			tAABB_Left_Hand.extents = tFloat3{ 0.0625f, 0.0625f, 0.15f };
+			tAABB_Left_Hand.extents = tFloat3{ 0.125f, 0.125f, 0.15f };
 
 			tAABB_Right_Hand.center = c_Controllers.Get_Right_Hand().tW.fXYZ;
-			tAABB_Right_Hand.extents = tFloat3{ 0.0625f, 0.0625f, 0.15f };
+			tAABB_Right_Hand.extents = tFloat3{ 0.125f, 0.125f, 0.15f };
 
 			// Spell Book
 			{
@@ -160,7 +135,7 @@ void cGame_Loop::Update()
 					XMStoreFloat4x4(&xmf_out, xmm_out);
 					tOut = XMFLOAT4x4_to_tFloat4x4(xmf_out);
 					tAABB_Spell_1.center = tOut.tW.fXYZ;
-					tAABB_Spell_1.extents = tFloat3{ 0.0625f, 0.0625f, 0.1f };
+					tAABB_Spell_1.extents = tFloat3{ 0.125f, 0.125f, 0.1f };
 				}
 				// Fireball
 
@@ -174,7 +149,7 @@ void cGame_Loop::Update()
 					XMStoreFloat4x4(&xmf_out, xmm_out);
 					tOut = XMFLOAT4x4_to_tFloat4x4(xmf_out);
 					tAABB_Spell_2.center = tOut.tW.fXYZ;
-					tAABB_Spell_2.extents = tFloat3{ 0.0625f, 0.0625f, 0.1f };
+					tAABB_Spell_2.extents = tFloat3{ 0.125f, 0.125f, 0.1f };
 				}
 				// Icebolt
 
@@ -188,7 +163,7 @@ void cGame_Loop::Update()
 					XMStoreFloat4x4(&xmf_out, xmm_out);
 					tOut = XMFLOAT4x4_to_tFloat4x4(xmf_out);
 					tAABB_Spell_3.center = tOut.tW.fXYZ;
-					tAABB_Spell_3.extents = tFloat3{ 0.0625f, 0.0625f, 0.1f };
+					tAABB_Spell_3.extents = tFloat3{ 0.125f, 0.125f, 0.1f };
 				}
 				// Shield
 
@@ -202,7 +177,7 @@ void cGame_Loop::Update()
 					XMStoreFloat4x4(&xmf_out, xmm_out);
 					tOut = XMFLOAT4x4_to_tFloat4x4(xmf_out);
 					tAABB_Cancel.center = tOut.tW.fXYZ;
-					tAABB_Cancel.extents = tFloat3{ 0.0625f, 0.0625f, 0.1f };
+					tAABB_Cancel.extents = tFloat3{ 0.125f, 0.125f, 0.1f };
 				}
 				// Cancel
 			}
@@ -220,7 +195,7 @@ void cGame_Loop::Update()
 					XMStoreFloat4x4(&xmf_out, xmm_out);
 					tOut = XMFLOAT4x4_to_tFloat4x4(xmf_out);
 					tAABB_Fireball_1.center = tOut.tW.fXYZ;
-					tAABB_Fireball_1.extents = tFloat3{ 0.0625f, 0.0625f, 0.1f };
+					tAABB_Fireball_1.extents = tFloat3{ 0.125f, 0.125f, 0.1f };
 				}
 				// Node 1
 
@@ -234,7 +209,7 @@ void cGame_Loop::Update()
 					XMStoreFloat4x4(&xmf_out, xmm_out);
 					tOut = XMFLOAT4x4_to_tFloat4x4(xmf_out);
 					tAABB_Fireball_2.center = tOut.tW.fXYZ;
-					tAABB_Fireball_2.extents = tFloat3{ 0.0625f, 0.0625f, 0.1f };
+					tAABB_Fireball_2.extents = tFloat3{ 0.125f, 0.125f, 0.1f };
 				}
 				// Node 2
 
@@ -248,7 +223,7 @@ void cGame_Loop::Update()
 					XMStoreFloat4x4(&xmf_out, xmm_out);
 					tOut = XMFLOAT4x4_to_tFloat4x4(xmf_out);
 					tAABB_Fireball_3.center = tOut.tW.fXYZ;
-					tAABB_Fireball_3.extents = tFloat3{ 0.0625f, 0.0625f, 0.1f };
+					tAABB_Fireball_3.extents = tFloat3{ 0.125f, 0.125f, 0.1f };
 				}
 				// Node 3
 			}
@@ -266,7 +241,7 @@ void cGame_Loop::Update()
 					XMStoreFloat4x4(&xmf_out, xmm_out);
 					tOut = XMFLOAT4x4_to_tFloat4x4(xmf_out);
 					tAABB_Icebolt_1.center = tOut.tW.fXYZ;
-					tAABB_Icebolt_1.extents = tFloat3{ 0.0625f, 0.0625f, 0.1f };
+					tAABB_Icebolt_1.extents = tFloat3{ 0.125f, 0.125f, 0.1f };
 				}
 				// Node 1
 
@@ -280,7 +255,7 @@ void cGame_Loop::Update()
 					XMStoreFloat4x4(&xmf_out, xmm_out);
 					tOut = XMFLOAT4x4_to_tFloat4x4(xmf_out);
 					tAABB_Icebolt_2.center = tOut.tW.fXYZ;
-					tAABB_Icebolt_2.extents = tFloat3{ 0.0625f, 0.0625f, 0.1f };
+					tAABB_Icebolt_2.extents = tFloat3{ 0.125f, 0.125f, 0.1f };
 				}
 				// Node 2
 
@@ -294,7 +269,7 @@ void cGame_Loop::Update()
 					XMStoreFloat4x4(&xmf_out, xmm_out);
 					tOut = XMFLOAT4x4_to_tFloat4x4(xmf_out);
 					tAABB_Icebolt_3.center = tOut.tW.fXYZ;
-					tAABB_Icebolt_3.extents = tFloat3{ 0.0625f, 0.0625f, 0.1f };
+					tAABB_Icebolt_3.extents = tFloat3{ 0.125f, 0.125f, 0.1f };
 				}
 				// Node 3
 			}
@@ -312,7 +287,7 @@ void cGame_Loop::Update()
 					XMStoreFloat4x4(&xmf_out, xmm_out);
 					tOut = XMFLOAT4x4_to_tFloat4x4(xmf_out);
 					tAABB_Shield_1.center = tOut.tW.fXYZ;
-					tAABB_Shield_1.extents = tFloat3{ 0.0625f, 0.0625f, 0.1f };
+					tAABB_Shield_1.extents = tFloat3{ 0.125f, 0.125f, 0.1f };
 				}
 				// Node 1
 
@@ -326,7 +301,7 @@ void cGame_Loop::Update()
 					XMStoreFloat4x4(&xmf_out, xmm_out);
 					tOut = XMFLOAT4x4_to_tFloat4x4(xmf_out);
 					tAABB_Shield_2.center = tOut.tW.fXYZ;
-					tAABB_Shield_2.extents = tFloat3{ 0.0625f, 0.0625f, 0.1f };
+					tAABB_Shield_2.extents = tFloat3{ 0.125f, 0.125f, 0.1f };
 				}
 				// Node 2
 
@@ -340,7 +315,7 @@ void cGame_Loop::Update()
 					XMStoreFloat4x4(&xmf_out, xmm_out);
 					tOut = XMFLOAT4x4_to_tFloat4x4(xmf_out);
 					tAABB_Shield_3.center = tOut.tW.fXYZ;
-					tAABB_Shield_3.extents = tFloat3{ 0.0625f, 0.0625f, 0.1f };
+					tAABB_Shield_3.extents = tFloat3{ 0.125f, 0.125f, 0.1f };
 				}
 				// Node 3
 			}
@@ -388,7 +363,7 @@ void cGame_Loop::Update()
 				//dragon_hit = c_AI.getIsHit();
 				c_Player_Fireball.setIsActive(false);
 				c_AI.setIsHit(true);
-				c_Dragon.setHealth(-25);
+				c_Dragon.setHealth(-10);
 				c_Render_Manager.set_particle_array(p.get_particles());
 				p.create_particles(dragon_blast_color, c_XTime.Delta(), dragon_blast_acceleration, dragon_blast_kill, dragon_hit);
 				c_Player_Fireball.setIsActive(false);
@@ -401,48 +376,30 @@ void cGame_Loop::Update()
 			// Dragon vs Player Fireball
 
 			// Spell Book
-			if (bDisplay_Spell_Book || bDisplay_Spell_Node)
-			{
-				if (personal_swap_Id.fX == 0)
-					personal_swap_Id.fX = 1;
-
-				if (personal_swap_Id.fY == 0)
-					personal_swap_Id.fY = 1;
-			}
-
 			if (bDisplay_Spell_Book)
 			{
 				if (t_Collisions.Detect_AABB_To_AABB(tAABB_Left_Hand, tAABB_Spell_1) || t_Collisions.Detect_AABB_To_AABB(tAABB_Right_Hand, tAABB_Spell_1))
 				{
-					if (!bDisplay_Spell_Node)
-					{
-						bDisplay_Spell_Book = false;
-						bDisplay_Spell_Node = true;
-						bDisplay_Fireball = true;
-						memset(bNode_Order, 0, sizeof(bNode_Order));
-					}
+					bDisplay_Spell_Book = false;
+					bDisplay_Spell_Node = true;
+					bDisplay_Fireball = true;
+					memset(bNode_Order, 0, sizeof(bNode_Order));
 				}
 
 				if (t_Collisions.Detect_AABB_To_AABB(tAABB_Left_Hand, tAABB_Spell_2) || t_Collisions.Detect_AABB_To_AABB(tAABB_Right_Hand, tAABB_Spell_2))
 				{
-					if (!bDisplay_Spell_Node)
-					{
-						bDisplay_Spell_Book = false;
-						bDisplay_Spell_Node = true;
-						bDisplay_Icebolt = true;
-						memset(bNode_Order, 0, sizeof(bNode_Order));
-					}
+					bDisplay_Spell_Book = false;
+					bDisplay_Spell_Node = true;
+					bDisplay_Icebolt = true;
+					memset(bNode_Order, 0, sizeof(bNode_Order));
 				}
 
 				if (t_Collisions.Detect_AABB_To_AABB(tAABB_Left_Hand, tAABB_Spell_3) || t_Collisions.Detect_AABB_To_AABB(tAABB_Right_Hand, tAABB_Spell_3))
 				{
-					if (!bDisplay_Spell_Node)
-					{
-						bDisplay_Spell_Book = false;
-						bDisplay_Spell_Node = true;
-						bDisplay_Shield = true;
-						memset(bNode_Order, 0, sizeof(bNode_Order));
-					}
+					bDisplay_Spell_Book = false;
+					bDisplay_Spell_Node = true;
+					bDisplay_Shield = true;
+					memset(bNode_Order, 0, sizeof(bNode_Order));
 				}
 
 				if (t_Collisions.Detect_AABB_To_AABB(tAABB_Left_Hand, tAABB_Cancel) || t_Collisions.Detect_AABB_To_AABB(tAABB_Right_Hand, tAABB_Cancel))
@@ -454,7 +411,6 @@ void cGame_Loop::Update()
 					bDisplay_Shield = false;
 					bSpell_Ready = false;
 					memset(bNode_Order, 0, sizeof(bNode_Order));
-					personal_swap_Id = { 0.0f, 0.0f, 0.0f, 0.0f };
 				}
 			}
 			// Spell Book
@@ -476,7 +432,6 @@ void cGame_Loop::Update()
 						bDisplay_Spell_Node = false;
 						bDisplay_Fireball = false;
 						bSpell_Ready = false;
-						personal_swap_Id = { 0.0f, 0.0f, 0.0f, 0.0f };
 					}
 				}
 
@@ -489,24 +444,6 @@ void cGame_Loop::Update()
 						bDisplay_Spell_Book = false;
 						bDisplay_Spell_Node = false;
 						bDisplay_Fireball = false;
-
-						if (t_Collisions.Detect_AABB_To_AABB(tAABB_Left_Hand, tAABB_Fireball_3))
-						{
-							personal_swap_Id.fX = 2;
-							personal_swap_Id.fZ = 1;
-
-							if (personal_swap_Id.fY == 1)
-								personal_swap_Id.fY = 0;
-						}
-
-						if (t_Collisions.Detect_AABB_To_AABB(tAABB_Right_Hand, tAABB_Fireball_3))
-						{
-							personal_swap_Id.fY = 2;
-							personal_swap_Id.fW = 1;
-
-							if (personal_swap_Id.fX == 1)
-								personal_swap_Id.fX = 0;
-						}
 					}
 					else
 					{
@@ -515,7 +452,6 @@ void cGame_Loop::Update()
 						bDisplay_Spell_Node = false;
 						bDisplay_Fireball = false;
 						bSpell_Ready = false;
-						personal_swap_Id = { 0.0f, 0.0f, 0.0f, 0.0f };
 					}
 				}
 			}
@@ -538,7 +474,6 @@ void cGame_Loop::Update()
 						bDisplay_Spell_Node = false;
 						bDisplay_Icebolt = false;
 						bSpell_Ready = false;
-						personal_swap_Id = { 0.0f, 0.0f, 0.0f, 0.0f };
 					}
 				}
 
@@ -551,24 +486,6 @@ void cGame_Loop::Update()
 						bDisplay_Spell_Book = false;
 						bDisplay_Spell_Node = false;
 						bDisplay_Icebolt = false;
-
-						if (t_Collisions.Detect_AABB_To_AABB(tAABB_Left_Hand, tAABB_Icebolt_3))
-						{
-							personal_swap_Id.fX = 2;
-							personal_swap_Id.fZ = 2;
-
-							if (personal_swap_Id.fY == 1)
-								personal_swap_Id.fY = 0;
-						}
-
-						if (t_Collisions.Detect_AABB_To_AABB(tAABB_Right_Hand, tAABB_Icebolt_3))
-						{
-							personal_swap_Id.fY = 2;
-							personal_swap_Id.fW = 2;
-
-							if (personal_swap_Id.fX == 1)
-								personal_swap_Id.fX = 0;
-						}
 					}
 					else
 					{
@@ -577,7 +494,6 @@ void cGame_Loop::Update()
 						bDisplay_Spell_Node = false;
 						bDisplay_Icebolt = false;
 						bSpell_Ready = false;
-						personal_swap_Id = { 0.0f, 0.0f, 0.0f, 0.0f };
 					}
 				}
 			}
@@ -600,7 +516,6 @@ void cGame_Loop::Update()
 						bDisplay_Spell_Node = false;
 						bDisplay_Shield = false;
 						bSpell_Ready = false;
-						personal_swap_Id = { 0.0f, 0.0f, 0.0f, 0.0f };
 					}
 				}
 
@@ -613,24 +528,6 @@ void cGame_Loop::Update()
 						bDisplay_Spell_Book = false;
 						bDisplay_Spell_Node = false;
 						bDisplay_Shield = false;
-
-						if (t_Collisions.Detect_AABB_To_AABB(tAABB_Left_Hand, tAABB_Shield_3))
-						{
-							personal_swap_Id.fX = 3;
-							personal_swap_Id.fZ = 3;
-
-							if (personal_swap_Id.fY == 1)
-								personal_swap_Id.fY = 0;
-						}
-
-						if (t_Collisions.Detect_AABB_To_AABB(tAABB_Right_Hand, tAABB_Shield_3))
-						{
-							personal_swap_Id.fY = 3;
-							personal_swap_Id.fW = 3;
-
-							if (personal_swap_Id.fX == 1)
-								personal_swap_Id.fX = 0;
-						}
 					}
 					else
 					{
@@ -639,7 +536,6 @@ void cGame_Loop::Update()
 						bDisplay_Spell_Node = false;
 						bDisplay_Shield = false;
 						bSpell_Ready = false;
-						personal_swap_Id = { 0.0f, 0.0f, 0.0f, 0.0f };
 					}
 				}
 			}
@@ -685,7 +581,7 @@ void cGame_Loop::Update()
 		bCharacter_Moving = false;
 
 	// Controller Inputs
-	c_Controllers.Update_Controller(m_nScene_Id, &bChange_Scene, &bDisplay_Spell_Book, bDisplay_Spell_Node, &bMove_Bullet, &bReset_Offset, &bSpell_Ready, &movement, c_Offset_Matrix.GetPosition4x4());
+	c_Controllers.Update_Controller(m_nScene_Id, &bChange_Scene, &bDisplay_Spell_Book, &bDisplay_Spell_Node, &bMove_Bullet, &bReset_Offset, &bSpell_Ready, &movement, c_Offset_Matrix.GetPosition4x4());
 
 
 	// Special (Reset Position)
@@ -699,6 +595,18 @@ void cGame_Loop::Update()
 	// Scene Transitions
 	if (bChange_Scene)
 	{
+		if (m_nScene_Id == 2)
+		{
+			memset(bNode_Order, 0, sizeof(bNode_Order));
+			bDisplay_Spell_Book = false;
+			bDisplay_Spell_Node = false;
+			bDisplay_Fireball = false;
+			bDisplay_Icebolt = false;
+			bDisplay_Shield = false;
+			bMove_Bullet = false;
+			bSpell_Ready = false;
+		}
+
 		c_Render_Manager.Unload(tWorld_Object_List);
 		m_nScene_Id++;
 		if (m_nScene_Id > 3)
@@ -718,12 +626,6 @@ void cGame_Loop::Update()
 		bChange_Scene = false;
 	}
 
-	if (m_nScene_Id == 0)
-	{
-		if (c_XTime.TotalTime() > 4.0f)
-			bChange_Scene = true;
-	}
-
 	// Renders
 	if (m_nScene_Id == 2)
 	{
@@ -734,16 +636,14 @@ void cGame_Loop::Update()
 	c_Render_Manager.set_particle_array(p.get_particles());   // JUST ADDED THIS
 	p.create_particles(fireball_color, c_XTime.Delta(), fireball_acceleration, fireball_kill, dragon_hit);
 	c_Render_Manager.Draw_World(m_nScene_Id, tWorld_Object_List, &bChange_Scene, &bMove_Bullet, c_Head_Mount, c_Offset_Matrix.GetPosition4x4(), c_XTime.TotalTime(), c_Player_Fireball, &c_AI, dragon_hit, c_XTime.Delta(), c_Player.getPosition4x4());
-	c_Render_Manager.Draw_UI(UI_Object_List, c_Head_Mount, c_Offset_Matrix.GetPosition4x4(), tWorld_Object_List->fWorld_Matrix[2], c_Dragon, c_Player);
-	c_Render_Manager.Draw_Spell(tSpell_Book, c_Head_Mount, c_Offset_Matrix.GetPosition4x4(), bDisplay_Spell_Book, false, bNode_Order);
-	c_Render_Manager.Draw_Spell(tFireball_Nodes, c_Head_Mount, c_Offset_Matrix.GetPosition4x4(), bDisplay_Fireball, true, bNode_Order);
-	c_Render_Manager.Draw_Spell(tIcebolt_Nodes, c_Head_Mount, c_Offset_Matrix.GetPosition4x4(), bDisplay_Icebolt, true, bNode_Order);
-	c_Render_Manager.Draw_Spell(tShield_Nodes, c_Head_Mount, c_Offset_Matrix.GetPosition4x4(), bDisplay_Shield, true, bNode_Order);
-	c_Render_Manager.Draw_Personal(tPersonal_Object_List, c_Head_Mount, c_Controllers, c_Offset_Matrix.GetPosition4x4(), &bMove_Bullet, &bSpell_Ready, c_Player_Fireball, c_Player, personal_swap_Id);
+	c_Render_Manager.Draw_Spell(tSpell_Book, c_Head_Mount, c_Offset_Matrix.GetPosition4x4(), bDisplay_Spell_Book);
+	c_Render_Manager.Draw_Spell(tFireball_Nodes, c_Head_Mount, c_Offset_Matrix.GetPosition4x4(), bDisplay_Fireball);
+	c_Render_Manager.Draw_Spell(tIcebolt_Nodes, c_Head_Mount, c_Offset_Matrix.GetPosition4x4(), bDisplay_Icebolt);
+	c_Render_Manager.Draw_Spell(tShield_Nodes, c_Head_Mount, c_Offset_Matrix.GetPosition4x4(), bDisplay_Shield);
+	c_Render_Manager.Draw_Personal(tPersonal_Object_List, c_Head_Mount, c_Controllers, c_Offset_Matrix.GetPosition4x4(), &bMove_Bullet, &bSpell_Ready, c_Player_Fireball);
 
-	/*
 	// AABB Visual Debugging
-	if (m_nScene_Id == 2)
+	/*if (m_nScene_Id == 2)
 	{
 		c_Render_Manager.Debugging_AABB(tAABB_Left_Hand, c_Head_Mount, c_Offset_Matrix.GetPosition4x4());
 		c_Render_Manager.Debugging_AABB(tAABB_Right_Hand, c_Head_Mount, c_Offset_Matrix.GetPosition4x4());
@@ -777,8 +677,7 @@ void cGame_Loop::Update()
 			c_Render_Manager.Debugging_AABB(tAABB_Shield_3, c_Head_Mount, c_Offset_Matrix.GetPosition4x4());
 		}
 	}
-	*/
-
+*/
 	c_Head_Mount.VR_Render();
 
 	// Other updates

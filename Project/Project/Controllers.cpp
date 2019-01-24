@@ -65,11 +65,11 @@ int cControllers::Identify_Controller(TrackedDeviceIndex_t vr_event)
 	return 0;
 }
 
-void cControllers::Update_Controller(int nScene_Id, bool *bChange_Scene, bool *bDisplay_Spell_Book, bool bDisplay_Spell_Node, bool *bMove_Bullet, bool *bReset_Offset, bool *bSpell_Ready, tFloat4 *movement, tFloat4x4 offset)
+void cControllers::Update_Controller(int nScene_Id, bool *bChange_Scene, bool *bDisplay_Spell_Book, bool *bDisplay_Spell_Node, bool *bMove_Bullet, bool *bReset_Offset, bool *bSpell_Ready, tFloat4 *movement, tFloat4x4 offset)
 {
 	if (!c_VR_Setup->Get_HMD()->IsInputAvailable())
 		return;
-
+	
 	std::vector<float> vertdataarray;
 
 	m_uiControllerVertcount = 0;
@@ -92,13 +92,14 @@ void cControllers::Update_Controller(int nScene_Id, bool *bChange_Scene, bool *b
 		{
 			TrackedDevicePose_t trackedDevicePose;
 			VRControllerState001_t vr_controller_state;
+			c_VR_Setup->Get_HMD()->GetControllerStateWithPose(TrackingUniverseStanding, unTrackedDevice, &vr_controller_state, sizeof(VRControllerState001_t), &trackedDevicePose);
 			vr::VREvent_t vrEvent;
 			c_VR_Setup->Get_HMD()->PollNextEventWithPose(TrackingUniverseStanding, &vrEvent, sizeof(vrEvent), &trackedDevicePose);
 			u_int Axis_Id;
 
 			if (Identify_Controller(vrEvent.trackedDeviceIndex) > 0)
 				printf("%d : ", Identify_Controller(vrEvent.trackedDeviceIndex));
-
+			
 			switch (vrEvent.data.controller.button)
 			{
 			case k_EButton_Grip:
@@ -114,7 +115,7 @@ void cControllers::Update_Controller(int nScene_Id, bool *bChange_Scene, bool *b
 					{
 						printf("Grip Press\n");
 						tReset_Offset.fY = 1.0f;
-						if (nScene_Id == 2 && (!bDisplay_Spell_Node))
+						if (nScene_Id == 2 && !(*bDisplay_Spell_Node))
 						//if (nScene_Id == 2)
 							*bDisplay_Spell_Book = true;
 					}
@@ -177,39 +178,34 @@ void cControllers::Update_Controller(int nScene_Id, bool *bChange_Scene, bool *b
 					Axis_Id = (u_int)k_EButton_SteamVR_Touchpad - (u_int)vr::k_EButton_Axis0;
 					printf("x data: %f\n", vr_controller_state.rAxis[Axis_Id].x);
 					printf("y data: %f\n", vr_controller_state.rAxis[Axis_Id].y);
-					if (Identify_Controller(vrEvent.trackedDeviceIndex) == 1)
+
+					if (Identify_Controller(vrEvent.trackedDeviceIndex) == 1 && vr_controller_state.rAxis[Axis_Id].y > 0.25f)
 					{
-						c_VR_Setup->Get_HMD()->GetControllerStateWithPose(TrackingUniverseStanding, unTrackedDevice, &vr_controller_state, sizeof(VRControllerState001_t), &trackedDevicePose);
-						if (Identify_Controller(vrEvent.trackedDeviceIndex) == 1 && vr_controller_state.rAxis[Axis_Id].y > 0.25f)
-						{
-							printf("Touchpad Press Up\n");
-							movement->fZ = 0.0f;
-							movement->fX = 1.0f;
-						}
-
-						if (Identify_Controller(vrEvent.trackedDeviceIndex) == 1 && vr_controller_state.rAxis[Axis_Id].y < -0.25f)
-						{
-							printf("Touchpad Press Down\n");
-							movement->fX = 0.0f;
-							movement->fZ = 1.0f;
-						}
-
-						if (Identify_Controller(vrEvent.trackedDeviceIndex) == 1 && vr_controller_state.rAxis[Axis_Id].x < -0.25f)
-						{
-							printf("Touchpad Press Left\n");
-							movement->fY = 0.0f;
-							movement->fW = 1.0f;
-						}
-
-						if (Identify_Controller(vrEvent.trackedDeviceIndex) == 1 && vr_controller_state.rAxis[Axis_Id].x > 0.25f)
-						{
-							printf("Touchpad Press Right\n");
-							movement->fW = 0.0f;
-							movement->fY = 1.0f;
-						}
+						printf("Touchpad Press Up\n");
+						movement->fZ = 0.0f;
+						movement->fX = 1.0f;
 					}
 
+					if (Identify_Controller(vrEvent.trackedDeviceIndex) == 1 && vr_controller_state.rAxis[Axis_Id].y < -0.25f)
+					{
+						printf("Touchpad Press Down\n");
+						movement->fX = 0.0f;
+						movement->fZ = 1.0f;
+					}
 
+					if (Identify_Controller(vrEvent.trackedDeviceIndex) == 1 && vr_controller_state.rAxis[Axis_Id].x < -0.25f)
+					{
+						printf("Touchpad Press Left\n");
+						movement->fY = 0.0f;
+						movement->fW = 1.0f;
+					}
+
+					if (Identify_Controller(vrEvent.trackedDeviceIndex) == 1 && vr_controller_state.rAxis[Axis_Id].x > 0.25f)
+					{
+						printf("Touchpad Press Right\n");
+						movement->fW = 0.0f;
+						movement->fY = 1.0f;
+					}
 					break;
 
 				case VREvent_ButtonUnpress:
