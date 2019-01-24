@@ -117,7 +117,7 @@ void AI::resolveDragonState(tScene_Objects* tObject_List, tFloat4x4 _playerPos, 
 			}
 			else if (tObject_List->fFireballs_Alive == 0 && dragHP <= 3)
 			{
- 				tObject_List->fFireballs_Alive = 5;
+				tObject_List->fFireballs_Alive = 5;
 
 				tObject_List->fFireball_State[0] = true;
 				tObject_List->fFireball_State[1] = true;
@@ -133,11 +133,19 @@ void AI::resolveDragonState(tScene_Objects* tObject_List, tFloat4x4 _playerPos, 
 
 				oldProjPosMat = XMMatrixMultiply(oldProjPosMat, XMMatrixTranslation(-100, 300, 0));
 
+				int modNum = 20;
+				int addNum = 2;
+
+				int random = rand() % modNum;
+				int random2 = rand() % modNum;
+				int random3 = rand() % modNum;
+				int random4 = rand() % modNum;
+
 				XMMATRIX newProjPosMat = lookAtMatrix(oldProjPosMat, playerPosMat);
-				XMMATRIX newProjPosMat2 = XMMatrixMultiply(XMMatrixTranslation(5, 0, 0), newProjPosMat);
-				XMMATRIX newProjPosMat3 = XMMatrixMultiply(XMMatrixTranslation(-5, 0, 0), newProjPosMat);
-				XMMATRIX newProjPosMat4 = XMMatrixMultiply(XMMatrixTranslation(0, 5, 5), newProjPosMat);
-				XMMATRIX newProjPosMat5 = XMMatrixMultiply(XMMatrixTranslation(0, -5, -5), newProjPosMat);
+				XMMATRIX newProjPosMat2 = XMMatrixMultiply(XMMatrixTranslation(random + addNum, 0, 0), newProjPosMat);
+				XMMATRIX newProjPosMat3 = XMMatrixMultiply(XMMatrixTranslation((random2 + addNum) * -1, 0, 0), newProjPosMat);
+				XMMATRIX newProjPosMat4 = XMMatrixMultiply(XMMatrixTranslation(0, 0, random3 + addNum), newProjPosMat);
+				XMMATRIX newProjPosMat5 = XMMatrixMultiply(XMMatrixTranslation(0, 0, (random4 + addNum) * -1), newProjPosMat);
 
 				XMFLOAT4X4 newProjPos4x4;
 				XMStoreFloat4x4(&newProjPos4x4, newProjPosMat);
@@ -164,6 +172,10 @@ void AI::resolveDragonState(tScene_Objects* tObject_List, tFloat4x4 _playerPos, 
 					tObject_List->fAlert_Matrix[k] = tObject_List->fFireball_Matrix[k];
 					tObject_List->fAlert_Matrix[k].tW.fY = 0;
 					tObject_List->fAlert_Matrix[k].tW.fX += 100;
+
+					tObject_List->fAlert_Matrix[k].tX.fXYZ = { 1, 0, 0 };
+					tObject_List->fAlert_Matrix[k].tY.fXYZ = { 0, 1, 0 };
+					tObject_List->fAlert_Matrix[k].tZ.fXYZ = { 0, 0, 1 };
 				}
 
 			}
@@ -175,12 +187,25 @@ void AI::resolveDragonState(tScene_Objects* tObject_List, tFloat4x4 _playerPos, 
 
 		if (dragHP <= 5)
 		{
-			if (dragHP >= 3)
+			if (dragHP > 3)
 			{
 				for (int i = 0; i < tObject_List->maxFireballs; i++)
 				{
 					XMMATRIX oldPosMat = XMLoadFloat4x4(&tFloat4x4_to_XMFLOAT4x4(tObject_List->fFireball_Matrix[i]));
-					XMMATRIX moveMat = XMMatrixTranslation(0.0f, 0.0f, 250.0f * _dTime);
+					XMMATRIX moveMat = XMMatrixTranslation(0.0f, 0.0f, 200.0f * _dTime);
+
+					XMMATRIX newPosMat = XMMatrixMultiply(moveMat, oldPosMat);
+					XMFLOAT4X4 newPos4x4;
+					XMStoreFloat4x4(&newPos4x4, newPosMat);
+					tObject_List->fFireball_Matrix[i] = XMFLOAT4x4_to_tFloat4x4(newPos4x4);
+				}
+			}
+			else if (dragHP == 3)
+			{
+				for (int i = 0; i < tObject_List->maxFireballs; i++)
+				{
+					XMMATRIX oldPosMat = XMLoadFloat4x4(&tFloat4x4_to_XMFLOAT4x4(tObject_List->fFireball_Matrix[i]));
+					XMMATRIX moveMat = XMMatrixTranslation(0.0f, 0.0f, 150.0f * _dTime);
 
 					XMMATRIX newPosMat = XMMatrixMultiply(moveMat, oldPosMat);
 					XMFLOAT4X4 newPos4x4;
@@ -193,7 +218,7 @@ void AI::resolveDragonState(tScene_Objects* tObject_List, tFloat4x4 _playerPos, 
 				for (int i = 0; i < tObject_List->maxFireballs; i++)
 				{
 					XMMATRIX oldPosMat = XMLoadFloat4x4(&tFloat4x4_to_XMFLOAT4x4(tObject_List->fFireball_Matrix[i]));
-					XMMATRIX moveMat = XMMatrixTranslation(0.0f, 0.0f, 350.0f * _dTime);
+					XMMATRIX moveMat = XMMatrixTranslation(0.0f, 0.0f, 200.0f * _dTime);
 
 					XMMATRIX newPosMat = XMMatrixMultiply(moveMat, oldPosMat);
 					XMFLOAT4X4 newPos4x4;
@@ -206,7 +231,7 @@ void AI::resolveDragonState(tScene_Objects* tObject_List, tFloat4x4 _playerPos, 
 				for (int i = 0; i < tObject_List->maxFireballs; i++)
 				{
 					XMMATRIX oldPosMat = XMLoadFloat4x4(&tFloat4x4_to_XMFLOAT4x4(tObject_List->fFireball_Matrix[i]));
-					XMMATRIX moveMat = XMMatrixTranslation(0.0f, 0.0f, 450.0f * _dTime);
+					XMMATRIX moveMat = XMMatrixTranslation(0.0f, 0.0f, 250.0f * _dTime);
 
 					XMMATRIX newPosMat = XMMatrixMultiply(moveMat, oldPosMat);
 					XMFLOAT4X4 newPos4x4;
