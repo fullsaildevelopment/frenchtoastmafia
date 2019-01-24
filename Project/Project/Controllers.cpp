@@ -180,28 +180,28 @@ void cControllers::Update_Controller(int nScene_Id, bool *bChange_Scene, bool *b
 					if (Identify_Controller(vrEvent.trackedDeviceIndex) == 1)
 					{
 						c_VR_Setup->Get_HMD()->GetControllerStateWithPose(TrackingUniverseStanding, unTrackedDevice, &vr_controller_state, sizeof(VRControllerState001_t), &trackedDevicePose);
-						if (vr_controller_state.rAxis[Axis_Id].y > 0.25f)
+						if (Identify_Controller(vrEvent.trackedDeviceIndex) == 1 && vr_controller_state.rAxis[Axis_Id].y > 0.25f)
 						{
 							printf("Touchpad Press Up\n");
 							movement->fZ = 0.0f;
 							movement->fX = 1.0f;
 						}
 
-						if (vr_controller_state.rAxis[Axis_Id].y < -0.25f)
+						if (Identify_Controller(vrEvent.trackedDeviceIndex) == 1 && vr_controller_state.rAxis[Axis_Id].y < -0.25f)
 						{
 							printf("Touchpad Press Down\n");
 							movement->fX = 0.0f;
 							movement->fZ = 1.0f;
 						}
 
-						if (vr_controller_state.rAxis[Axis_Id].x < -0.25f)
+						if (Identify_Controller(vrEvent.trackedDeviceIndex) == 1 && vr_controller_state.rAxis[Axis_Id].x < -0.25f)
 						{
 							printf("Touchpad Press Left\n");
 							movement->fY = 0.0f;
 							movement->fW = 1.0f;
 						}
 
-						if (vr_controller_state.rAxis[Axis_Id].x > 0.25f)
+						if (Identify_Controller(vrEvent.trackedDeviceIndex) == 1 && vr_controller_state.rAxis[Axis_Id].x > 0.25f)
 						{
 							printf("Touchpad Press Right\n");
 							movement->fW = 0.0f;
