@@ -581,17 +581,17 @@ void cRender_Manager::Draw_Personal(tScene_Objects* tObject_List, cHead_Mount c_
 				else if (i == 2)
 				{
 					tFloat4x4 temp = c_Controllers.Get_Left_Hand();
-					temp.tW.fZ -= 0.3;
 					temp.tW.fX += 0.2;
 					temp.tW.fY += 0.125;
+					temp.tW.fZ -= 0.3;
 					tWVP.fWorld_Matrix = tFloat4x4_to_XMFLOAT4x4(temp);
 				}
 				else
 				{
 					tFloat4x4 temp = c_Controllers.Get_Right_Hand();
-					temp.tW.fZ -= 0.3;
 					temp.tW.fX += 0.2;
 					temp.tW.fY += 0.125;
+					temp.tW.fZ -= 0.3;
 					tWVP.fWorld_Matrix = tFloat4x4_to_XMFLOAT4x4(temp);
 				}
 
