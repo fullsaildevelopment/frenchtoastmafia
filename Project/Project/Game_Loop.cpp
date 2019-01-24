@@ -96,7 +96,7 @@ void cGame_Loop::Update()
 			xmf_in = tFloat4x4_to_XMFLOAT4x4(tWorld_Object_List->fWorld_Matrix[4]);
 			//xmf_in = tFloat4x4_to_XMFLOAT4x4(tPersonal_Object_List->fWorld_Matrix[2]);
 			xmm_in = XMLoadFloat4x4(&xmf_in);
-			xmm_in = XMMatrixMultiply(XMMatrixTranslation(0.0f, 0.0f, -8.0f), xmm_in);
+			xmm_in = XMMatrixMultiply(XMMatrixTranslation(0.0f, 0.0f, -200.0f * c_XTime.Delta()), xmm_in);
 			XMStoreFloat4x4(&xmf_out, xmm_in);
 			c_Player_Fireball.setPosition4x4(XMFLOAT4x4_to_tFloat4x4(xmf_out));
 			//c_Player_Spell_01.setPosition4x4(XMFLOAT4x4_to_tFloat4x4(xmf_out));
@@ -659,7 +659,7 @@ void cGame_Loop::Update()
 			bChange_Scene = true;
 
 		// Player Fireball
-		if (c_Player_Fireball.getPosition4().fX < -600 || c_Player_Fireball.getPosition4().fX > 600 || c_Player_Fireball.getPosition4().fY < -50 || c_Player_Fireball.getPosition4().fY > 400 || c_Player_Fireball.getPosition4().fZ < -600 || c_Player_Fireball.getPosition4().fZ > 600)
+		if (c_Player_Fireball.getPosition4().fX < -500 || c_Player_Fireball.getPosition4().fX > 500 || c_Player_Fireball.getPosition4().fY < -50 || c_Player_Fireball.getPosition4().fY > 400 || c_Player_Fireball.getPosition4().fZ < -500 || c_Player_Fireball.getPosition4().fZ > 500)
 			bMove_Bullet = false;
 
 		if (bMove_Bullet)
