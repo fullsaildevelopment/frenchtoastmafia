@@ -1011,6 +1011,26 @@ void cRender_Manager::Draw_World(int nScene_Id, tScene_Objects* tObject_List, bo
 						c_Graphics_Setup->Get_Context().Get()->DrawIndexed(tObject_List->tMesh_Data[i].nIndex_Count, 0, 0);
 					}
 				}
+				else if (i == 7)
+				{
+					for (int j = 0; j < tObject_List->maxFireballs; j++)
+					{
+						if (tObject_List->fFireball_State[j] == false)
+						{
+							continue;
+						}
+						tWVP.fWorld_Matrix = tFloat4x4_to_XMFLOAT4x4(tObject_List->fAlert_Matrix[j]);
+
+						// MAP DATA
+						c_Graphics_Setup->Get_Context().Get()->Map(d3d_Constant_Buffer_WVP.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &d3d_MSR);
+						memcpy(d3d_MSR.pData, &tWVP, sizeof(tConstantBuffer_VertexShader_WVP));
+						c_Graphics_Setup->Get_Context().Get()->Unmap(d3d_Constant_Buffer_WVP.Get(), 0);
+						ID3D11Buffer *tmp_wvpc_buffer[] = { d3d_Constant_Buffer_WVP.Get() };
+						c_Graphics_Setup->Get_Context().Get()->VSSetConstantBuffers(0, 1, tmp_wvpc_buffer);
+
+						c_Graphics_Setup->Get_Context().Get()->DrawIndexed(tObject_List->tMesh_Data[i].nIndex_Count, 0, 0);
+					}
+				}
 				else
 				{
 					if (tObject_List->bIs_Animated[i])
@@ -1360,43 +1380,43 @@ void cRender_Manager::keyboardInputs(tScene_Objects* tObject_List)
 {
 	if (GetAsyncKeyState('J'))
 	{
-		XMMATRIX oldPos = XMLoadFloat4x4(&tFloat4x4_to_XMFLOAT4x4(tObject_List->fWorld_Matrix[5]));
-		XMMATRIX moveMat = XMMatrixTranslation(0, 0, 20);
+		XMMATRIX oldPos = XMLoadFloat4x4(&tFloat4x4_to_XMFLOAT4x4(tObject_List->fWorld_Matrix[7]));
+		XMMATRIX moveMat = XMMatrixTranslation(0, 0, 1);
 
 		XMMATRIX newMat = XMMatrixMultiply(moveMat, oldPos);
 		XMFLOAT4X4 newMat2;
 		XMStoreFloat4x4(&newMat2, newMat);
-		tObject_List->fWorld_Matrix[5] = XMFLOAT4x4_to_tFloat4x4(newMat2);
+		tObject_List->fWorld_Matrix[7] = XMFLOAT4x4_to_tFloat4x4(newMat2);
 	}
 	if (GetAsyncKeyState('L'))
 	{
-		XMMATRIX oldPos = XMLoadFloat4x4(&tFloat4x4_to_XMFLOAT4x4(tObject_List->fWorld_Matrix[5]));
-		XMMATRIX moveMat = XMMatrixTranslation(0, 0, -20);
+		XMMATRIX oldPos = XMLoadFloat4x4(&tFloat4x4_to_XMFLOAT4x4(tObject_List->fWorld_Matrix[7]));
+		XMMATRIX moveMat = XMMatrixTranslation(0, 0, -1);
 
 		XMMATRIX newMat = XMMatrixMultiply(moveMat, oldPos);
 		XMFLOAT4X4 newMat2;
 		XMStoreFloat4x4(&newMat2, newMat);
-		tObject_List->fWorld_Matrix[5] = XMFLOAT4x4_to_tFloat4x4(newMat2);
+		tObject_List->fWorld_Matrix[7] = XMFLOAT4x4_to_tFloat4x4(newMat2);
 	}
 	if (GetAsyncKeyState('I'))
 	{
-		XMMATRIX oldPos = XMLoadFloat4x4(&tFloat4x4_to_XMFLOAT4x4(tObject_List->fWorld_Matrix[5]));
-		XMMATRIX moveMat = XMMatrixTranslation(-20, 0, 0);
+		XMMATRIX oldPos = XMLoadFloat4x4(&tFloat4x4_to_XMFLOAT4x4(tObject_List->fWorld_Matrix[7]));
+		XMMATRIX moveMat = XMMatrixTranslation(-1, 0, 0);
 
 		XMMATRIX newMat = XMMatrixMultiply(moveMat, oldPos);
 		XMFLOAT4X4 newMat2;
 		XMStoreFloat4x4(&newMat2, newMat);
-		tObject_List->fWorld_Matrix[5] = XMFLOAT4x4_to_tFloat4x4(newMat2);
+		tObject_List->fWorld_Matrix[7] = XMFLOAT4x4_to_tFloat4x4(newMat2);
 	}
 	if (GetAsyncKeyState('K'))
 	{
-		XMMATRIX oldPos = XMLoadFloat4x4(&tFloat4x4_to_XMFLOAT4x4(tObject_List->fWorld_Matrix[5]));
-		XMMATRIX moveMat = XMMatrixTranslation(20, 0, 0);
+		XMMATRIX oldPos = XMLoadFloat4x4(&tFloat4x4_to_XMFLOAT4x4(tObject_List->fWorld_Matrix[7]));
+		XMMATRIX moveMat = XMMatrixTranslation(1, 0, 0);
 
 		XMMATRIX newMat = XMMatrixMultiply(moveMat, oldPos);
 		XMFLOAT4X4 newMat2;
 		XMStoreFloat4x4(&newMat2, newMat);
-		tObject_List->fWorld_Matrix[5] = XMFLOAT4x4_to_tFloat4x4(newMat2);
+		tObject_List->fWorld_Matrix[7] = XMFLOAT4x4_to_tFloat4x4(newMat2);
 	}
 }
 

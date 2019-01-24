@@ -338,7 +338,7 @@ void cGame_Loop::Update()
 					tWorld_Object_List->fFireball_State[i] = false;
 					tWorld_Object_List->fFireballs_Alive -= 1;
 					//c_Dragon_Fireball.setIsActive(false);
-					c_Player.setHealth(-10);
+					//c_Player.setHealth(-10);
 					//tWorld_Object_List->fWorld_Matrix[3].tW.fY = 500;
 					sound.playSoundEffect("Pain-SoundBible.com-1883168362.mp3", FMOD_DEFAULT, 0.7f);
 					if (c_Player.getHealth() <= 0)

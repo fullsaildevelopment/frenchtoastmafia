@@ -243,7 +243,7 @@ tScene_Objects* cScene_Manager::Get_World_Scene(int nScene_Id)
 	// GAME
 	else
 	{
-		tScene->nObject_Count = 7;
+		tScene->nObject_Count = 8;
 
 		// Battle Mage - 0
 		{
@@ -587,12 +587,65 @@ tScene_Objects* cScene_Manager::Get_World_Scene(int nScene_Id)
 			{
 				tScene->tMesh_Data[6].nIndicies.push_back(tRedDragon.nIndicies[i]);
 			}
+
 			tScene->tMesh_Data[6].nIndex_Count = tRedDragon.nIndex_Count;
 
 			tScene->tMaterials_Data[6] = cBinary_Read.Read_Material("redDragonMaterial.bin");
 			tScene->tMaterials_Data[6].tMats[0].szDiffuse_File_Path = "RedDragon.fbm\\armored.png";
 		}
 		// Red Dragon
+
+		// Marker - 7
+		{
+			XMFLOAT4X4 temp;
+
+			XMMATRIX tempMatrix = XMMatrixIdentity();
+			tempMatrix = XMMatrixMultiply(tempMatrix, XMMatrixTranslation(-2.0f, 0.0f, 0.0f));
+
+			XMStoreFloat4x4(&temp, tempMatrix);
+
+			tScene->fWorld_Matrix[7] = XMFLOAT4x4_to_tFloat4x4(temp);
+			tMesh tAlert = cBinary_Read.Read_Mesh("alertMesh.bin");
+
+			for (int i = 0; i < tAlert.nVertex_Count; i++)
+			{
+				tAlert.tVerts[i].fPosition.fZ *= -1;
+			}
+
+			for (int i = 0; i < tAlert.nVertex_Count; i++)
+			{
+				tScene->tMesh_Data[7].tVerts.push_back(tAlert.tVerts[i]);
+			}
+
+			tScene->tMesh_Data[7].nVertex_Count = tAlert.nVertex_Count;
+
+
+			for (int i = 0; i < tAlert.nIndex_Count; i++)
+			{
+				tScene->tMesh_Data[7].nIndicies.push_back(tAlert.nIndicies[i]);
+			}
+			for (int i = 0; i < tAlert.nIndex_Count; i++)
+			{
+				if (i % 3 == 0)
+				{
+					tScene->tMesh_Skinned_Data[2].nIndicies.push_back(tAlert.nIndicies[i + 2]);
+				}
+				if (i % 3 == 1)
+				{
+					tScene->tMesh_Skinned_Data[2].nIndicies.push_back(tAlert.nIndicies[i]);
+				}
+				if (i % 3 == 2)
+				{
+					tScene->tMesh_Skinned_Data[2].nIndicies.push_back(tAlert.nIndicies[i - 2]);
+				}
+			}
+			tScene->tMesh_Data[7].nIndex_Count = tAlert.nIndex_Count;
+
+			tScene->tMaterials_Data[7] = cBinary_Read.Read_Material("fireballMaterial.bin");
+			tScene->tMaterials_Data[7].tMats[0].szDiffuse_File_Path = "Fireball.fbm\\Fireball_D.png";
+		}
+		// Marker
+
 
 	}
 

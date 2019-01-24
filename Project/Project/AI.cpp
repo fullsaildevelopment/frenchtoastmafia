@@ -159,6 +159,12 @@ void AI::resolveDragonState(tScene_Objects* tObject_List, tFloat4x4 _playerPos, 
 				XMStoreFloat4x4(&newProjPos4x4_5, newProjPosMat5);
 				tObject_List->fFireball_Matrix[4] = XMFLOAT4x4_to_tFloat4x4(newProjPos4x4_5);
 
+				for (int k = 0; k < tObject_List->fFireballs_Alive; k++)
+				{
+					tObject_List->fAlert_Matrix[k] = tObject_List->fFireball_Matrix[k];
+					tObject_List->fAlert_Matrix[k].tW.fY = 0;
+					tObject_List->fAlert_Matrix[k].tW.fX += 100;
+				}
 
 			}
 

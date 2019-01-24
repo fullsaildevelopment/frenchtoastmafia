@@ -77,6 +77,7 @@ struct tScene_Objects
 	tFloat4x4							fWorld_Matrix[32]{};
 
 	tFloat4x4							fFireball_Matrix[9]{};
+	tFloat4x4							fAlert_Matrix[9]{};
 	bool								fFireball_State[9]{};
 	int									fFireballs_Alive = 0;
 	int									maxFireballs = 9;
