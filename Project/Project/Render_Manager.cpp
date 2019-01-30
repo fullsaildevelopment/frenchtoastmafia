@@ -405,7 +405,7 @@ void cRender_Manager::Load_Data(int nScene_Id, tScene_Objects* tObject_List)
 			tObject_List->d3d_Index_Buffers[i] = d3d_tmp_index_buffer;
 		}
 
-		if (nScene_Id < 2 || nScene_Id == 3)
+		if (nScene_Id < 2 || nScene_Id == 3 || nScene_Id == 4)
 		{
 			c_Graphics_Setup->Get_Device().Get()->CreateVertexShader(VertexShader, sizeof(VertexShader), NULL, &tObject_List->d3d_Vertex_Shaders[i]);
 			c_Graphics_Setup->Get_Device().Get()->CreatePixelShader(PixelShader_Screen, sizeof(PixelShader_Screen), NULL, &tObject_List->d3d_Pixel_Shaders[i]);
@@ -413,7 +413,7 @@ void cRender_Manager::Load_Data(int nScene_Id, tScene_Objects* tObject_List)
 			const wchar_t* tmp_srv = ws_tmp_srv.c_str();
 			CreateDDSTextureFromFile(c_Graphics_Setup->Get_Device().Get(), tmp_srv, nullptr, tObject_List->d3d_SRV[i].GetAddressOf());
 		}
-		else if (nScene_Id == 4)
+		else if (nScene_Id == 9)
 		{
 			c_Graphics_Setup->Get_Device().Get()->CreateVertexShader(VertexShader, sizeof(VertexShader), NULL, &tObject_List->d3d_Vertex_Shaders[i]);
 			c_Graphics_Setup->Get_Device().Get()->CreatePixelShader(PixelShader_Spell, sizeof(PixelShader_Spell), NULL, &tObject_List->d3d_Pixel_Shaders[i]);

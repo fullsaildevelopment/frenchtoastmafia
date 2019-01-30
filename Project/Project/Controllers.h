@@ -39,6 +39,6 @@ public:
 	void Set_Right_Hand(tFloat4x4 right);
 
 	int Identify_Controller(TrackedDeviceIndex_t vr_event);
-	void Update_Controller(int nScene_Id, bool *bChange_Scene, bool *bDisplay_Spell_Book, bool bDisplay_Spell_Node, bool *bSpell_Selection_01, bool *bSpell_Selection_02, bool *bReset_Offset, bool *bMove_Spell_01, bool *bMove_Spell_02, bool *bSpell_Ready_01, bool *bSpell_Ready_02, tFloat4 *movement, tFloat4x4 offset);
+	void Update_Controller(int nScene_Id, bool *bChange_Scene, bool *bDisplay_Spell_Book, bool bDisplay_Spell_Node, bool *bReset_Offset, bool *bMove_Spell_01, bool *bMove_Spell_02, bool *bSpell_Ready_01, bool *bSpell_Ready_02, tFloat4 *movement, tFloat4x4 offset);
 };
 
