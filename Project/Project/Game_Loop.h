@@ -110,10 +110,12 @@ private:
 	// Particle Stuff
 
 	bool ham = false;
-	bool frog_switch = false;
+	//bool frog_switch = false;
 	bool frog_switch_2 = false;
 
 	bool sound_on = false;
+	bool frogger = false;
+	bool hammy = false;
 
 public:
 	cGame_Loop();

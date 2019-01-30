@@ -80,6 +80,7 @@ struct tScene_Objects
 	bool								fFireball_State[3]{};
 	int									fFireballs_Alive = 0;
 	int									maxFireballs = 3;
+	tFloat4x4							dragReset;
 
 	// Vertex and Index Data
 	bool								bIs_Animated[15]{};

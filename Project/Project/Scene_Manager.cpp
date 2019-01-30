@@ -2162,28 +2162,28 @@ tScene_Objects* cScene_Manager::Get_UI()
 		tVertex *dragon_Health_Bar_Bckgrnd = new tVertex[4];                       // modify to be the backdrop of the health bar
 		dragon_Health_Bar_Bckgrnd[0].fPosition.fX = -152.5f;
 		dragon_Health_Bar_Bckgrnd[0].fPosition.fY = 45.0f;
-		dragon_Health_Bar_Bckgrnd[0].fPosition.fZ = -0.1f;
+		dragon_Health_Bar_Bckgrnd[0].fPosition.fZ = -1.0f;
 
 		dragon_Health_Bar_Bckgrnd[0].fTexture_Coordinate.fX = 0.0f;
 		dragon_Health_Bar_Bckgrnd[0].fTexture_Coordinate.fY = 0.0f;
 
 		dragon_Health_Bar_Bckgrnd[1].fPosition.fX = 152.5f;
 		dragon_Health_Bar_Bckgrnd[1].fPosition.fY = 45.0f;
-		dragon_Health_Bar_Bckgrnd[1].fPosition.fZ = -0.1f;
+		dragon_Health_Bar_Bckgrnd[1].fPosition.fZ = -1.0f;
 
 		dragon_Health_Bar_Bckgrnd[1].fTexture_Coordinate.fX = 1.0f;
 		dragon_Health_Bar_Bckgrnd[1].fTexture_Coordinate.fY = 0.0f;
 
 		dragon_Health_Bar_Bckgrnd[2].fPosition.fX = -152.5f;
 		dragon_Health_Bar_Bckgrnd[2].fPosition.fY = -45.0f;
-		dragon_Health_Bar_Bckgrnd[2].fPosition.fZ = -0.1f;
+		dragon_Health_Bar_Bckgrnd[2].fPosition.fZ = -1.0f;
 
 		dragon_Health_Bar_Bckgrnd[2].fTexture_Coordinate.fX = 0.0f;
 		dragon_Health_Bar_Bckgrnd[2].fTexture_Coordinate.fY = 1.0f;
 
 		dragon_Health_Bar_Bckgrnd[3].fPosition.fX = 152.5f;
 		dragon_Health_Bar_Bckgrnd[3].fPosition.fY = -45.0f;
-		dragon_Health_Bar_Bckgrnd[3].fPosition.fZ = -0.1f;
+		dragon_Health_Bar_Bckgrnd[3].fPosition.fZ = -1.0f;
 
 		dragon_Health_Bar_Bckgrnd[3].fTexture_Coordinate.fX = 1.0f;
 		dragon_Health_Bar_Bckgrnd[3].fTexture_Coordinate.fY = 1.0f;

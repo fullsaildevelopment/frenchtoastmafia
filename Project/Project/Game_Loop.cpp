@@ -757,18 +757,30 @@ void cGame_Loop::Update()
 		bCharacter_Moving = false;
 
 	// Controller Inputs
-	c_Controllers.Update_Controller(m_nScene_Id, &bChange_Scene, &bDisplay_Spell_Book, bDisplay_Spell_Node, &bMove_Bullet, &bReset_Offset, &bSpell_Ready, &movement, c_Offset_Matrix.GetPosition4x4(), &ham, &frog_switch, &frog_switch_2);
+	c_Controllers.Update_Controller(m_nScene_Id, &bChange_Scene, &bDisplay_Spell_Book, bDisplay_Spell_Node, &bMove_Bullet, &bReset_Offset, &bSpell_Ready, &movement, c_Offset_Matrix.GetPosition4x4(), &ham, &frog_switch_2);
 
-	if (frog_switch = true && frog_switch_2 == true)
+	if (frog_switch_2 == true)
 	{
 		//sound.stopSong();
-		sound.playSoundEffect("crazy-frog-axel-f.mp3", FMOD_DEFAULT, 0.3f);
+		if (frogger == false)
+		{
+			//sound.muteAudio();
+			sound.stopSong();
+			sound.playSoundEffect("crazy-frog-axel-f.mp3", FMOD_DEFAULT, 0.3f);
+			frogger = true;
+		}
 	}
 
 	if (ham == true)
 	{
 		//sound.stopSong();
-		sound.playSoundEffect("the-hampsterdance-song.mp3", FMOD_DEFAULT, 0.3f);
+		//sound.muteAudio();
+		if (hammy == false)
+		{
+			sound.stopSong();
+			sound.playSoundEffect("the-hampsterdance-song.mp3", FMOD_DEFAULT, 0.3f);
+			hammy = true;
+		}
 	}
 
 	// Special (Reset Position)

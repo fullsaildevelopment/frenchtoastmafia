@@ -907,8 +907,11 @@ void cRender_Manager::Draw_World(int nScene_Id, tScene_Objects* tObject_List, bo
 	if (_AI->getIsHit())
 	{
 		flashTimer = flashTime;
-		sound.playSoundEffect("Blast-SoundBible.com-2068539061.mp3", FMOD_DEFAULT, 0.6f);
-		sound.playSoundEffect("DragonSound1.mp3", FMOD_DEFAULT, 0.45f);
+		if (_AI->dragAlive == true)
+		{
+			sound.playSoundEffect("Blast-SoundBible.com-2068539061.mp3", FMOD_DEFAULT, 0.6f);
+			sound.playSoundEffect("DragonSound1.mp3", FMOD_DEFAULT, 0.45f);
+		}
 
 		//tObject_List->dragHP -= 1;
 		if (_AI->getHP() == 3)
