@@ -911,6 +911,27 @@ void cGame_Loop::Update()
 			bChange_Scene = true;
 	}
 
+	switch (c_Spell_Shield_01.getHealth())
+	{
+	case 1:
+		fname = "Shield_Red.dds";
+		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[10]);
+		break;
+	case 2:
+		fname = "Shield_Yellow.dds";
+		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[10]);
+		break;
+	case 3:
+		fname = "Shield_Green.dds";
+		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[10]);
+		break;
+	default:
+		fname = "Shield_Blue.dds";
+		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[10]);
+		break;
+	}
+
+
 	switch (c_Spell_Shield_02.getHealth())
 	{
 	case 1:

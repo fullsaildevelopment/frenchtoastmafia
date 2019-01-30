@@ -451,11 +451,7 @@ tScene_Objects* cScene_Manager::Get_Personal_Scene()
 		tScene->fWorld_Matrix[obj_id] = XMFLOAT4x4_to_tFloat4x4(temp);
 
 		// Mesh
-		tMesh tFireball = cBinary_Read.Read_Mesh("fireballMesh.bin");
-		for (int i = 0; i < tFireball.nVertex_Count; i++)
-		{
-			tFireball.tVerts[i].fPosition.fZ *= -1;
-		}
+		tMesh tFireball = cBinary_Read.Read_Mesh("shield_spell_mesh.bin");
 
 		for (int i = 0; i < tFireball.nVertex_Count; i++)
 		{
@@ -471,8 +467,7 @@ tScene_Objects* cScene_Manager::Get_Personal_Scene()
 		}
 		tScene->tMesh_Data[obj_id].nIndex_Count = tFireball.nIndex_Count;
 
-		tScene->tMaterials_Data[obj_id] = cBinary_Read.Read_Material("fireballMaterial.bin");
-		tScene->tMaterials_Data[obj_id].tMats[0].szDiffuse_File_Path = "Fireball.fbm\\Fireball_D.png";
+		tScene->tMaterials_Data[obj_id] = cBinary_Read.Read_Material("shield_spell_material.bin");
 	}
 	// Left Shield
 
@@ -569,8 +564,7 @@ tScene_Objects* cScene_Manager::Get_Personal_Scene()
 		}
 		tScene->tMesh_Data[obj_id].nIndex_Count = tFireball.nIndex_Count;
 		
-		tScene->tMaterials_Data[obj_id] = cBinary_Read.Read_Material("shield_spell_material.bin");
-		
+		tScene->tMaterials_Data[obj_id] = cBinary_Read.Read_Material("shield_spell_material.bin");		
 	}
 	// Right Shield
 	return tScene;
@@ -656,6 +650,8 @@ tScene_Objects* cScene_Manager::Get_World_Scene(int nScene_Id)
 			tScene->szSRV_File_Path[0] = "2.dds";
 		else if (nScene_Id == 3)
 			tScene->szSRV_File_Path[0] = "3.dds";
+		else if (nScene_Id == 4)
+			tScene->szSRV_File_Path[0] = "4.dds";
 
 
 		return tScene;
