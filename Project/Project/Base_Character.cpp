@@ -88,6 +88,11 @@ void cBase_Character::setHealth(int change)
 	m_nHealth += change;
 }
 
+void cBase_Character::resetHealth()
+{
+	m_nHealth = 100;
+}
+
 void cBase_Character::setIsMovable(bool bMovable)
 {
 	m_bIsMovable = bMovable;

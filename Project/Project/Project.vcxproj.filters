@@ -177,6 +177,9 @@
     <ClInclude Include="Spell_Book.h">
       <Filter>Modules\Spell Book</Filter>
     </ClInclude>
+    <ClInclude Include="Spell_Shield.h">
+      <Filter>Modules\Spells</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Project.cpp">
@@ -245,6 +248,9 @@
     <ClCompile Include="Spell_Book.cpp">
       <Filter>Modules\Spell Book</Filter>
     </ClCompile>
+    <ClCompile Include="Spell_Shield.cpp">
+      <Filter>Modules\Spells</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Project.rc">
@@ -261,9 +267,6 @@
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="PixelShader_Screen.hlsl">
-      <Filter>Renderer Manager\Shaders\Pixel</Filter>
-    </FxCompile>
-    <FxCompile Include="PixelShader_Mage.hlsl">
       <Filter>Renderer Manager\Shaders\Pixel</Filter>
     </FxCompile>
     <FxCompile Include="PixelShader.hlsl">
@@ -297,6 +300,9 @@
       <Filter>Renderer Manager\Shaders\Vertex</Filter>
     </FxCompile>
     <FxCompile Include="PixelShader_Spell.hlsl">
+      <Filter>Renderer Manager\Shaders\Pixel</Filter>
+    </FxCompile>
+    <FxCompile Include="PixelShader_Object.hlsl">
       <Filter>Renderer Manager\Shaders\Pixel</Filter>
     </FxCompile>
   </ItemGroup>

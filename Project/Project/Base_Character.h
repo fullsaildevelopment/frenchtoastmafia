@@ -189,6 +189,7 @@ public:
 	* Mod. Initials:	 WM
 	*****************************************************************/
 	void setHealth(int change);
+	void resetHealth();
 	/*****************************************************************
 	* setIsMovable():    Set the character's movable state (Notes: gameplay as of current date character can't move while casting or charging)
 	*

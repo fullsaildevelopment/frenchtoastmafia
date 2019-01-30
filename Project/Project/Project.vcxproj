@@ -235,6 +235,7 @@
     <ClInclude Include="Scene_Manager.h" />
     <ClInclude Include="Specific_Structs.h" />
     <ClInclude Include="Spell_Book.h" />
+    <ClInclude Include="Spell_Shield.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="Vectors.h" />
     <ClInclude Include="VR_Setup.h" />
@@ -254,6 +255,7 @@
     <ClCompile Include="Render_Manager.cpp" />
     <ClCompile Include="Scene_Manager.cpp" />
     <ClCompile Include="Spell_Book.cpp" />
+    <ClCompile Include="Spell_Shield.cpp" />
     <ClCompile Include="VR_Setup.cpp" />
     <ClCompile Include="WICTextureLoader.cpp" />
     <ClCompile Include="XTime.cpp" />
@@ -310,7 +312,7 @@
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
     </FxCompile>
-    <FxCompile Include="PixelShader_Mage.hlsl">
+    <FxCompile Include="PixelShader_Object.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>

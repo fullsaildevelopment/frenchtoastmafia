@@ -65,7 +65,7 @@ int cControllers::Identify_Controller(TrackedDeviceIndex_t vr_event)
 	return 0;
 }
 
-void cControllers::Update_Controller(int nScene_Id, bool *bChange_Scene, bool *bDisplay_Spell_Book, bool bDisplay_Spell_Node, bool *bMove_Bullet, bool *bReset_Offset, bool *bSpell_Ready, tFloat4 *movement, tFloat4x4 offset, bool *ham, bool *frog_switch_2)
+void cControllers::Update_Controller(int nScene_Id, bool *bChange_Scene, bool *bDisplay_Spell_Book, bool bDisplay_Spell_Node, bool *bReset_Offset, bool *bMove_Spell_01, bool *bMove_Spell_02, bool *bSpell_Ready_01, bool *bSpell_Ready_02, tFloat4 *movement, tFloat4x4 offset, bool *ham, bool *frog_switch_2)
 {
 	if (!c_VR_Setup->Get_HMD()->IsInputAvailable())
 		return;
@@ -146,17 +146,21 @@ void cControllers::Update_Controller(int nScene_Id, bool *bChange_Scene, bool *b
 				{
 				case VREvent_ButtonPress:
 					if (Identify_Controller(vrEvent.trackedDeviceIndex) == 1)
+					{
 						printf("Trigger Press\n");
+						if (nScene_Id == 2)
+						{
+							if (*bSpell_Ready_01)
+								*bMove_Spell_01 = true;
+						}
+					}
 					else if (Identify_Controller(vrEvent.trackedDeviceIndex) == 2)
 					{
 						printf("Trigger Press\n");
 						if (nScene_Id == 2)
 						{
-							//if (!bMove_Bullet)
-								//sound.playSoundEffect("Large Fireball-SoundBible.com-301502490.mp3", FMOD_DEFAULT, 0.6f);
-
-							if (*bSpell_Ready)
-								*bMove_Bullet = true;
+							if (*bSpell_Ready_02)
+								*bMove_Spell_02 = true;
 						}
 						else
 							*bChange_Scene = true;
@@ -165,9 +169,9 @@ void cControllers::Update_Controller(int nScene_Id, bool *bChange_Scene, bool *b
 
 				case VREvent_ButtonUnpress:
 					if (Identify_Controller(vrEvent.trackedDeviceIndex) == 1)
-						printf("Trigger unPress\n");
+						printf("Trigger UnPress\n");
 					else
-						printf("Trigger unPress\n");
+						printf("Trigger UnPress\n");
 
 					break;
 				}
