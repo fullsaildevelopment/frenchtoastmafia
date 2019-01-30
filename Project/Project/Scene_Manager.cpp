@@ -654,7 +654,7 @@ tScene_Objects* cScene_Manager::Get_World_Scene(int nScene_Id)
 			tScene->szSRV_File_Path[0] = "1.dds";
 		else if (nScene_Id == 1)
 			tScene->szSRV_File_Path[0] = "2.dds";
-		else if (nScene_Id > 2)
+		else if (nScene_Id == 3)
 			tScene->szSRV_File_Path[0] = "3.dds";
 
 

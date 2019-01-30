@@ -65,7 +65,7 @@ int cControllers::Identify_Controller(TrackedDeviceIndex_t vr_event)
 	return 0;
 }
 
-void cControllers::Update_Controller(int nScene_Id, bool *bChange_Scene, bool *bDisplay_Spell_Book, bool bDisplay_Spell_Node, bool *bSpell_Selection, bool *bReset_Offset, bool *bMove_Spell_01, bool *bMove_Spell_02, bool *bSpell_Ready_01, bool *bSpell_Ready_02, tFloat4 *movement, tFloat4x4 offset)
+void cControllers::Update_Controller(int nScene_Id, bool *bChange_Scene, bool *bDisplay_Spell_Book, bool bDisplay_Spell_Node, bool *bSpell_Selection_01, bool *bSpell_Selection_02, bool *bReset_Offset, bool *bMove_Spell_01, bool *bMove_Spell_02, bool *bSpell_Ready_01, bool *bSpell_Ready_02, tFloat4 *movement, tFloat4x4 offset)
 {
 	if (!c_VR_Setup->Get_HMD()->IsInputAvailable())
 		return;
@@ -147,7 +147,10 @@ void cControllers::Update_Controller(int nScene_Id, bool *bChange_Scene, bool *b
 						printf("Trigger Press\n");
 						if (nScene_Id == 2)
 						{
-							if (*bSpell_Ready_01)
+							if (*bDisplay_Spell_Book || bDisplay_Spell_Node)
+								*bSpell_Selection_01 = true;
+
+							if (*bSpell_Ready_01 && !(*bDisplay_Spell_Book) && !bDisplay_Spell_Node)
 								*bMove_Spell_01 = true;
 						}
 					}
@@ -160,7 +163,7 @@ void cControllers::Update_Controller(int nScene_Id, bool *bChange_Scene, bool *b
 								//sound.playSoundEffect("Large Fireball-SoundBible.com-301502490.mp3", FMOD_DEFAULT, 0.6f);
 
 							if (*bDisplay_Spell_Book || bDisplay_Spell_Node)
-								*bSpell_Selection = true;
+								*bSpell_Selection_02 = true;
 
 							if (*bSpell_Ready_02 && !(*bDisplay_Spell_Book) && !bDisplay_Spell_Node)
 								*bMove_Spell_02 = true;
@@ -172,12 +175,9 @@ void cControllers::Update_Controller(int nScene_Id, bool *bChange_Scene, bool *b
 
 				case VREvent_ButtonUnpress:
 					if (Identify_Controller(vrEvent.trackedDeviceIndex) == 1)
-						printf("Trigger unPress\n");
+						*bSpell_Selection_01 = false;
 					else
-					{
-						printf("Trigger unPress\n");
-						*bSpell_Selection = false;
-					}
+						*bSpell_Selection_02 = false;
 
 					break;
 				}
