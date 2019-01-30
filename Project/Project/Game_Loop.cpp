@@ -270,7 +270,7 @@ void cGame_Loop::Update()
 					XMStoreFloat4x4(&xmf_out, xmm_out);
 					tOut = XMFLOAT4x4_to_tFloat4x4(xmf_out);
 					tAABB_Fireball_1.center = tOut.tW.fXYZ;
-					tAABB_Fireball_1.extents = tFloat3{ 0.0625f, 0.0625f, 0.1f };
+					tAABB_Fireball_1.extents = tFloat3{ 0.03125f, 0.03125f, 0.1f };
 				}
 				// Node 1
 
@@ -284,7 +284,7 @@ void cGame_Loop::Update()
 					XMStoreFloat4x4(&xmf_out, xmm_out);
 					tOut = XMFLOAT4x4_to_tFloat4x4(xmf_out);
 					tAABB_Fireball_2.center = tOut.tW.fXYZ;
-					tAABB_Fireball_2.extents = tFloat3{ 0.0625f, 0.0625f, 0.1f };
+					tAABB_Fireball_2.extents = tFloat3{ 0.03125f, 0.03125f, 0.1f };
 				}
 				// Node 2
 
@@ -298,7 +298,7 @@ void cGame_Loop::Update()
 					XMStoreFloat4x4(&xmf_out, xmm_out);
 					tOut = XMFLOAT4x4_to_tFloat4x4(xmf_out);
 					tAABB_Fireball_3.center = tOut.tW.fXYZ;
-					tAABB_Fireball_3.extents = tFloat3{ 0.0625f, 0.0625f, 0.1f };
+					tAABB_Fireball_3.extents = tFloat3{ 0.03125f, 0.03125f, 0.1f };
 				}
 				// Node 3
 			}
@@ -316,7 +316,7 @@ void cGame_Loop::Update()
 					XMStoreFloat4x4(&xmf_out, xmm_out);
 					tOut = XMFLOAT4x4_to_tFloat4x4(xmf_out);
 					tAABB_Icebolt_1.center = tOut.tW.fXYZ;
-					tAABB_Icebolt_1.extents = tFloat3{ 0.0625f, 0.0625f, 0.1f };
+					tAABB_Icebolt_1.extents = tFloat3{ 0.03125f, 0.03125f, 0.1f };
 				}
 				// Node 1
 
@@ -330,7 +330,7 @@ void cGame_Loop::Update()
 					XMStoreFloat4x4(&xmf_out, xmm_out);
 					tOut = XMFLOAT4x4_to_tFloat4x4(xmf_out);
 					tAABB_Icebolt_2.center = tOut.tW.fXYZ;
-					tAABB_Icebolt_2.extents = tFloat3{ 0.0625f, 0.0625f, 0.1f };
+					tAABB_Icebolt_2.extents = tFloat3{ 0.03125f, 0.03125f, 0.1f };
 				}
 				// Node 2
 
@@ -344,7 +344,7 @@ void cGame_Loop::Update()
 					XMStoreFloat4x4(&xmf_out, xmm_out);
 					tOut = XMFLOAT4x4_to_tFloat4x4(xmf_out);
 					tAABB_Icebolt_3.center = tOut.tW.fXYZ;
-					tAABB_Icebolt_3.extents = tFloat3{ 0.0625f, 0.0625f, 0.1f };
+					tAABB_Icebolt_3.extents = tFloat3{ 0.03125f, 0.03125f, 0.1f };
 				}
 				// Node 3
 			}
@@ -362,7 +362,7 @@ void cGame_Loop::Update()
 					XMStoreFloat4x4(&xmf_out, xmm_out);
 					tOut = XMFLOAT4x4_to_tFloat4x4(xmf_out);
 					tAABB_Shield_1.center = tOut.tW.fXYZ;
-					tAABB_Shield_1.extents = tFloat3{ 0.0625f, 0.0625f, 0.1f };
+					tAABB_Shield_1.extents = tFloat3{ 0.03125f, 0.03125f, 0.1f };
 				}
 				// Node 1
 
@@ -376,7 +376,7 @@ void cGame_Loop::Update()
 					XMStoreFloat4x4(&xmf_out, xmm_out);
 					tOut = XMFLOAT4x4_to_tFloat4x4(xmf_out);
 					tAABB_Shield_2.center = tOut.tW.fXYZ;
-					tAABB_Shield_2.extents = tFloat3{ 0.0625f, 0.0625f, 0.1f };
+					tAABB_Shield_2.extents = tFloat3{ 0.03125f, 0.03125f, 0.1f };
 				}
 				// Node 2
 
@@ -390,7 +390,7 @@ void cGame_Loop::Update()
 					XMStoreFloat4x4(&xmf_out, xmm_out);
 					tOut = XMFLOAT4x4_to_tFloat4x4(xmf_out);
 					tAABB_Shield_3.center = tOut.tW.fXYZ;
-					tAABB_Shield_3.extents = tFloat3{ 0.0625f, 0.0625f, 0.1f };
+					tAABB_Shield_3.extents = tFloat3{ 0.03125f, 0.03125f, 0.1f };
 				}
 				// Node 3
 			}
@@ -911,6 +911,27 @@ void cGame_Loop::Update()
 			bChange_Scene = true;
 	}
 
+	switch (c_Spell_Shield_02.getHealth())
+	{
+	case 1:
+		fname = "Shield_Red.dds";
+		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[13]);
+		break;
+	case 2:
+		fname = "Shield_Yellow.dds";
+		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[13]);
+		break;
+	case 3:
+		fname = "Shield_Green.dds";
+		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[13]);
+		break;
+	 default:
+		fname = "Shield_Blue.dds";
+		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[13]);
+		break;
+	}
+
+
 	// Renders
 	if (m_nScene_Id == 2)
 	{
@@ -929,11 +950,11 @@ void cGame_Loop::Update()
 	c_Render_Manager.Draw_Personal(tPersonal_Object_List, c_Head_Mount, c_Controllers, c_Offset_Matrix.GetPosition4x4(), &bMove_Spell_01, &bMove_Spell_02, &bSpell_Ready_01, &bSpell_Ready_02, c_Player, personal_swap_Id);
 
 
-	c_Render_Manager.Debugging_AABB(tAABB_Player, c_Head_Mount, c_Offset_Matrix.GetPosition4x4());
-	c_Render_Manager.Debugging_AABB(tAABB_Player_Shield_01, c_Head_Mount, c_Offset_Matrix.GetPosition4x4());
-	c_Render_Manager.Debugging_AABB(tAABB_Player_Shield_02, c_Head_Mount, c_Offset_Matrix.GetPosition4x4());
+	//c_Render_Manager.Debugging_AABB(tAABB_Player, c_Head_Mount, c_Offset_Matrix.GetPosition4x4());
+	//c_Render_Manager.Debugging_AABB(tAABB_Player_Shield_01, c_Head_Mount, c_Offset_Matrix.GetPosition4x4());
+	//c_Render_Manager.Debugging_AABB(tAABB_Player_Shield_02, c_Head_Mount, c_Offset_Matrix.GetPosition4x4());
 
-	/*
+	
 	// AABB Visual Debugging
 	if (m_nScene_Id == 2)
 	{
@@ -969,7 +990,7 @@ void cGame_Loop::Update()
 			c_Render_Manager.Debugging_AABB(tAABB_Shield_3, c_Head_Mount, c_Offset_Matrix.GetPosition4x4());
 		}
 	}
-	*/
+	
 
 	c_Head_Mount.VR_Render();
 

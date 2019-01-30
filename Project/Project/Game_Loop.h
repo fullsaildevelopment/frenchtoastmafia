@@ -66,6 +66,8 @@ private:
 	int m_nScene_Id;
 	int nDisplay_Spell_Node = 0;
 
+	std::string fname;
+
 	tFloat4 personal_swap_Id = { 0.0f, 0.0f, 0.0f, 0.0f };
 	tFloat4 movement = { 0.0f, 0.0f, 0.0f, 0.0f };
 	tScene_Objects *tPersonal_Object_List, *tWorld_Object_List, *UI_Object_List;

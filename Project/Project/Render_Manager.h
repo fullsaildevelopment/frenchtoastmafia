@@ -23,6 +23,7 @@
 
 #include "PixelShader_Object.csh"
 #include "PixelShader_Screen.csh"
+#include "PixelShader_Shield.csh"
 #include "PixelShader_Spell.csh"
 #include "dopeSoundSystem.h"
 
@@ -167,4 +168,5 @@ public:
 	void Debugging_AABB(tAABB obj, cHead_Mount c_Head_Mount, tFloat4x4 offset);
 
 	void Draw_UI(tScene_Objects* t_Object_List, cHead_Mount c_Head_Mount, tFloat4x4 offset, tFloat4x4 drag_World_Matrix, cBase_Character dragon, cBase_Character player);
+	void Texture_Swap(std::string fname, ComPtr<ID3D11ShaderResourceView> *srv);
 };

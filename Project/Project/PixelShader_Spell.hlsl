@@ -28,10 +28,9 @@ struct INPUT_DATA
 float4 main(INPUT_DATA input) : SV_TARGET
 {
 	float4 fEnd_Color = tTexture.Sample(sSampler_State[0], input.fTexture.xy);
-	//if (fEnd_Color.r == 0 && fEnd_Color.g == 0 && fEnd_Color.b == 0)
-	if (fEnd_Color.a == 0)
+	/*if (fEnd_Color.a == 0)
 		fEnd_Color.a = 0;
 	else
-		fEnd_Color.a = 0.5;
+		fEnd_Color.a = 0.5;*/
 	return fEnd_Color;
 }

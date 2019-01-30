@@ -433,7 +433,10 @@ void cRender_Manager::Load_Data(int nScene_Id, tScene_Objects* tObject_List)
 			}
 
 			//PIXEL SHADERS
-			c_Graphics_Setup->Get_Device().Get()->CreatePixelShader(PixelShader_Object, sizeof(PixelShader_Object), NULL, &tObject_List->d3d_Pixel_Shaders[i]);
+			if (i == 10 || i == 13)
+				c_Graphics_Setup->Get_Device().Get()->CreatePixelShader(PixelShader_Spell, sizeof(PixelShader_Spell), NULL, &tObject_List->d3d_Pixel_Shaders[i]);
+			else
+				c_Graphics_Setup->Get_Device().Get()->CreatePixelShader(PixelShader_Object, sizeof(PixelShader_Object), NULL, &tObject_List->d3d_Pixel_Shaders[i]);
 			//c_Graphics_Setup->Get_Device().Get()->CreatePixelShader(PixelShader, sizeof(PixelShader), NULL, &tObject_List->d3d_Pixel_Shaders[i]);
 
 			// SRV
@@ -1772,4 +1775,11 @@ void cRender_Manager::Draw_UI(tScene_Objects* t_Object_List, cHead_Mount c_Head_
 			}
 		}
 	}
+}
+
+void cRender_Manager::Texture_Swap(std::string fname, ComPtr<ID3D11ShaderResourceView> *srv)
+{
+	std::wstring wstr_tmp = std::wstring(fname.begin(), fname.end());
+	const wchar_t *path_tmp = wstr_tmp.c_str();
+	CreateDDSTextureFromFile(c_Graphics_Setup->Get_Device().Get(), path_tmp, nullptr, srv->GetAddressOf());
 }

@@ -570,9 +570,6 @@ tScene_Objects* cScene_Manager::Get_Personal_Scene()
 		tScene->tMesh_Data[obj_id].nIndex_Count = tFireball.nIndex_Count;
 		
 		tScene->tMaterials_Data[obj_id] = cBinary_Read.Read_Material("shield_spell_material.bin");
-		tScene->tMaterials_Data[obj_id].tMats[0].szDiffuse_File_Path = "Shield.fbm\\Shield_Red.png";
-		tScene->tMaterials_Data[obj_id].tMats[0].szDiffuse_File_Path = "Shield.fbm\\Shield_Red.png";
-		tScene->tMaterials_Data[obj_id].tMats[0].szDiffuse_File_Path = "Shield.fbm\\Shield_Red.png";
 		
 	}
 	// Right Shield
@@ -1074,34 +1071,34 @@ tScene_Objects* cScene_Manager::Get_Spell_Book()
 		// World Position
 		XMFLOAT4X4 temp;
 		XMMATRIX tempMatrix = XMMatrixIdentity();
-		tempMatrix = XMMatrixMultiply(tempMatrix, XMMatrixTranslation(0.0f, -0.125f, 0.0f));
+		tempMatrix = XMMatrixMultiply(tempMatrix, XMMatrixTranslation(0.0f, -0.1f, 0.0f));
 		XMStoreFloat4x4(&temp, tempMatrix);
 		tScene->fWorld_Matrix[obj_id] = XMFLOAT4x4_to_tFloat4x4(temp);
 
 		tVertex *spells = new tVertex[4];
-		spells[0].fPosition.fX = -0.75f;
-		spells[0].fPosition.fY = 0.75f;
+		spells[0].fPosition.fX = -0.375f;
+		spells[0].fPosition.fY = 0.375f;
 		spells[0].fPosition.fZ = 1.0f;
 
 		spells[0].fTexture_Coordinate.fX = 0.0f;
 		spells[0].fTexture_Coordinate.fY = 0.0f;
 
-		spells[1].fPosition.fX = 0.75f;
-		spells[1].fPosition.fY = 0.75;
+		spells[1].fPosition.fX = 0.375f;
+		spells[1].fPosition.fY = 0.375;
 		spells[1].fPosition.fZ = 1.0f;
 
 		spells[1].fTexture_Coordinate.fX = 1.0f;
 		spells[1].fTexture_Coordinate.fY = 0.0f;
 
-		spells[2].fPosition.fX = -0.75f;
-		spells[2].fPosition.fY = -0.75f;
+		spells[2].fPosition.fX = -0.375f;
+		spells[2].fPosition.fY = -0.375f;
 		spells[2].fPosition.fZ = 1.0f;
 
 		spells[2].fTexture_Coordinate.fX = 0.0f;
 		spells[2].fTexture_Coordinate.fY = 1.0f;
 
-		spells[3].fPosition.fX = 0.75f;
-		spells[3].fPosition.fY = -0.75f;
+		spells[3].fPosition.fX = 0.375f;
+		spells[3].fPosition.fY = -0.375f;
 		spells[3].fPosition.fZ = 1.0f;
 
 		spells[3].fTexture_Coordinate.fX = 1.0f;
@@ -1148,16 +1145,16 @@ tScene_Objects* cScene_Manager::Get_Spell_Book()
 			switch (obj_id)
 			{
 			case 1:
-				tempMatrix = XMMatrixMultiply(tempMatrix, XMMatrixTranslation(-0.25, 0.125, 0));
+				tempMatrix = XMMatrixMultiply(tempMatrix, XMMatrixTranslation(-0.175, 0.075, 0));
 				break;
 			case 2:
-				tempMatrix = XMMatrixMultiply(tempMatrix, XMMatrixTranslation(0.25, 0.125, 0));
+				tempMatrix = XMMatrixMultiply(tempMatrix, XMMatrixTranslation(0.175, 0.075, 0));
 				break;
 			case 3:
-				tempMatrix = XMMatrixMultiply(tempMatrix, XMMatrixTranslation(-0.25, -0.25, 0));
+				tempMatrix = XMMatrixMultiply(tempMatrix, XMMatrixTranslation(-0.175, -0.2, 0));
 				break;
 			case 4:
-				tempMatrix = XMMatrixMultiply(tempMatrix, XMMatrixTranslation(0.25, -0.25, 0));
+				tempMatrix = XMMatrixMultiply(tempMatrix, XMMatrixTranslation(0.175, -0.2, 0));
 				break;
 			default:
 				break;
@@ -1255,34 +1252,34 @@ tScene_Objects * cScene_Manager::Get_Spell_Node_Fireball()
 		// World Position
 		XMFLOAT4X4 temp;
 		XMMATRIX tempMatrix = XMMatrixIdentity();
-		tempMatrix = XMMatrixMultiply(tempMatrix, XMMatrixTranslation(0.0f, 0.0f, 0.125f));
+		tempMatrix = XMMatrixMultiply(tempMatrix, XMMatrixTranslation(0.0f, -0.1f, 0.0f));
 		XMStoreFloat4x4(&temp, tempMatrix);
 		tScene->fWorld_Matrix[obj_id] = XMFLOAT4x4_to_tFloat4x4(temp);
 
 		tVertex *spells = new tVertex[4];
-		spells[0].fPosition.fX = -0.75f;
-		spells[0].fPosition.fY = 0.75f;
+		spells[0].fPosition.fX = -0.375f;
+		spells[0].fPosition.fY = 0.375f;
 		spells[0].fPosition.fZ = 1.0f;
 
 		spells[0].fTexture_Coordinate.fX = 0.0f;
 		spells[0].fTexture_Coordinate.fY = 0.0f;
 
-		spells[1].fPosition.fX = 0.75f;
-		spells[1].fPosition.fY = 0.75f;
+		spells[1].fPosition.fX = 0.375f;
+		spells[1].fPosition.fY = 0.375;
 		spells[1].fPosition.fZ = 1.0f;
 
 		spells[1].fTexture_Coordinate.fX = 1.0f;
 		spells[1].fTexture_Coordinate.fY = 0.0f;
 
-		spells[2].fPosition.fX = -0.75f;
-		spells[2].fPosition.fY = -0.75f;
+		spells[2].fPosition.fX = -0.375f;
+		spells[2].fPosition.fY = -0.375f;
 		spells[2].fPosition.fZ = 1.0f;
 
 		spells[2].fTexture_Coordinate.fX = 0.0f;
 		spells[2].fTexture_Coordinate.fY = 1.0f;
 
-		spells[3].fPosition.fX = 0.75f;
-		spells[3].fPosition.fY = -0.75f;
+		spells[3].fPosition.fX = 0.375f;
+		spells[3].fPosition.fY = -0.375f;
 		spells[3].fPosition.fZ = 1.0f;
 
 		spells[3].fTexture_Coordinate.fX = 1.0f;
@@ -1324,7 +1321,7 @@ tScene_Objects * cScene_Manager::Get_Spell_Node_Fireball()
 		// World Position
 		XMFLOAT4X4 temp;
 		XMMATRIX tempMatrix = XMMatrixIdentity();
-		tempMatrix = XMMatrixMultiply(tempMatrix, XMMatrixTranslation(0.25, -0.25, 0));
+		tempMatrix = XMMatrixMultiply(tempMatrix, XMMatrixTranslation(0.1875, -0.1875, 0));
 		XMStoreFloat4x4(&temp, tempMatrix);
 		tScene->fWorld_Matrix[obj_id] = XMFLOAT4x4_to_tFloat4x4(temp);
 
@@ -1393,7 +1390,7 @@ tScene_Objects * cScene_Manager::Get_Spell_Node_Fireball()
 		// World Position
 		XMFLOAT4X4 temp;
 		XMMATRIX tempMatrix = XMMatrixIdentity();
-		tempMatrix = XMMatrixMultiply(tempMatrix, XMMatrixTranslation(-0.3, -0.25, 0.15));
+		tempMatrix = XMMatrixMultiply(tempMatrix, XMMatrixTranslation(-0.225, -0.1875, 0.15));
 		XMStoreFloat4x4(&temp, tempMatrix);
 		tScene->fWorld_Matrix[obj_id] = XMFLOAT4x4_to_tFloat4x4(temp);
 
@@ -1462,7 +1459,7 @@ tScene_Objects * cScene_Manager::Get_Spell_Node_Fireball()
 		// World Position
 		XMFLOAT4X4 temp;
 		XMMATRIX tempMatrix = XMMatrixIdentity();
-		tempMatrix = XMMatrixMultiply(tempMatrix, XMMatrixTranslation(0.3, 0.25, 0.15));
+		tempMatrix = XMMatrixMultiply(tempMatrix, XMMatrixTranslation(0.225, 0.1875, 0.15));
 		XMStoreFloat4x4(&temp, tempMatrix);
 		tScene->fWorld_Matrix[obj_id] = XMFLOAT4x4_to_tFloat4x4(temp);
 
@@ -1540,34 +1537,34 @@ tScene_Objects * cScene_Manager::Get_Spell_Node_Icebolt()
 		// World Position
 		XMFLOAT4X4 temp;
 		XMMATRIX tempMatrix = XMMatrixIdentity();
-		tempMatrix = XMMatrixMultiply(tempMatrix, XMMatrixTranslation(0.0f, -0.125f, 0.0f));
+		tempMatrix = XMMatrixMultiply(tempMatrix, XMMatrixTranslation(0.0f, -0.1f, 0.0f));
 		XMStoreFloat4x4(&temp, tempMatrix);
 		tScene->fWorld_Matrix[obj_id] = XMFLOAT4x4_to_tFloat4x4(temp);
 
 		tVertex *spells = new tVertex[4];
-		spells[0].fPosition.fX = -0.75f;
-		spells[0].fPosition.fY = 0.75f;
+		spells[0].fPosition.fX = -0.375f;
+		spells[0].fPosition.fY = 0.375f;
 		spells[0].fPosition.fZ = 1.0f;
 
 		spells[0].fTexture_Coordinate.fX = 0.0f;
 		spells[0].fTexture_Coordinate.fY = 0.0f;
 
-		spells[1].fPosition.fX = 0.75f;
-		spells[1].fPosition.fY = 0.75f;
+		spells[1].fPosition.fX = 0.375f;
+		spells[1].fPosition.fY = 0.375;
 		spells[1].fPosition.fZ = 1.0f;
 
 		spells[1].fTexture_Coordinate.fX = 1.0f;
 		spells[1].fTexture_Coordinate.fY = 0.0f;
 
-		spells[2].fPosition.fX = -0.75f;
-		spells[2].fPosition.fY = -0.75f;
+		spells[2].fPosition.fX = -0.375f;
+		spells[2].fPosition.fY = -0.375f;
 		spells[2].fPosition.fZ = 1.0f;
 
 		spells[2].fTexture_Coordinate.fX = 0.0f;
 		spells[2].fTexture_Coordinate.fY = 1.0f;
 
-		spells[3].fPosition.fX = 0.75f;
-		spells[3].fPosition.fY = -0.75f;
+		spells[3].fPosition.fX = 0.375f;
+		spells[3].fPosition.fY = -0.375f;
 		spells[3].fPosition.fZ = 1.0f;
 
 		spells[3].fTexture_Coordinate.fX = 1.0f;
@@ -1609,7 +1606,7 @@ tScene_Objects * cScene_Manager::Get_Spell_Node_Icebolt()
 		// World Position
 		XMFLOAT4X4 temp;
 		XMMATRIX tempMatrix = XMMatrixIdentity();
-		tempMatrix = XMMatrixMultiply(tempMatrix, XMMatrixTranslation(0, 0.25, 0.15));
+		tempMatrix = XMMatrixMultiply(tempMatrix, XMMatrixTranslation(0, 0.1875, 0.15));
 		XMStoreFloat4x4(&temp, tempMatrix);
 		tScene->fWorld_Matrix[obj_id] = XMFLOAT4x4_to_tFloat4x4(temp);
 
@@ -1678,7 +1675,7 @@ tScene_Objects * cScene_Manager::Get_Spell_Node_Icebolt()
 		// World Position
 		XMFLOAT4X4 temp;
 		XMMATRIX tempMatrix = XMMatrixIdentity();
-		tempMatrix = XMMatrixMultiply(tempMatrix, XMMatrixTranslation(-0.35, -0.35, 0));
+		tempMatrix = XMMatrixMultiply(tempMatrix, XMMatrixTranslation(-0.2625, -0.2625, 0));
 		XMStoreFloat4x4(&temp, tempMatrix);
 		tScene->fWorld_Matrix[obj_id] = XMFLOAT4x4_to_tFloat4x4(temp);
 
@@ -1747,7 +1744,7 @@ tScene_Objects * cScene_Manager::Get_Spell_Node_Icebolt()
 		// World Position
 		XMFLOAT4X4 temp;
 		XMMATRIX tempMatrix = XMMatrixIdentity();
-		tempMatrix = XMMatrixMultiply(tempMatrix, XMMatrixTranslation(0.35, -0.35, 0));
+		tempMatrix = XMMatrixMultiply(tempMatrix, XMMatrixTranslation(0.2625, -0.2625, 0));
 		XMStoreFloat4x4(&temp, tempMatrix);
 		tScene->fWorld_Matrix[obj_id] = XMFLOAT4x4_to_tFloat4x4(temp);
 
@@ -1825,34 +1822,34 @@ tScene_Objects * cScene_Manager::Get_Spell_Node_Shield()
 		// World Position
 		XMFLOAT4X4 temp;
 		XMMATRIX tempMatrix = XMMatrixIdentity();
-		tempMatrix = XMMatrixMultiply(tempMatrix, XMMatrixTranslation(0.0f, -0.125f, 0.0f));
+		tempMatrix = XMMatrixMultiply(tempMatrix, XMMatrixTranslation(0.0f, -0.1f, 0.0f));
 		XMStoreFloat4x4(&temp, tempMatrix);
 		tScene->fWorld_Matrix[obj_id] = XMFLOAT4x4_to_tFloat4x4(temp);
 
 		tVertex *spells = new tVertex[4];
-		spells[0].fPosition.fX = -0.75f;
-		spells[0].fPosition.fY = 0.75f;
+		spells[0].fPosition.fX = -0.375f;
+		spells[0].fPosition.fY = 0.375f;
 		spells[0].fPosition.fZ = 1.0f;
 
 		spells[0].fTexture_Coordinate.fX = 0.0f;
 		spells[0].fTexture_Coordinate.fY = 0.0f;
 
-		spells[1].fPosition.fX = 0.75f;
-		spells[1].fPosition.fY = 0.75f;
+		spells[1].fPosition.fX = 0.375f;
+		spells[1].fPosition.fY = 0.375;
 		spells[1].fPosition.fZ = 1.0f;
 
 		spells[1].fTexture_Coordinate.fX = 1.0f;
 		spells[1].fTexture_Coordinate.fY = 0.0f;
 
-		spells[2].fPosition.fX = -0.75f;
-		spells[2].fPosition.fY = -0.75f;
+		spells[2].fPosition.fX = -0.375f;
+		spells[2].fPosition.fY = -0.375f;
 		spells[2].fPosition.fZ = 1.0f;
 
 		spells[2].fTexture_Coordinate.fX = 0.0f;
 		spells[2].fTexture_Coordinate.fY = 1.0f;
 
-		spells[3].fPosition.fX = 0.75f;
-		spells[3].fPosition.fY = -0.75f;
+		spells[3].fPosition.fX = 0.375f;
+		spells[3].fPosition.fY = -0.375f;
 		spells[3].fPosition.fZ = 1.0f;
 
 		spells[3].fTexture_Coordinate.fX = 1.0f;
@@ -1894,7 +1891,7 @@ tScene_Objects * cScene_Manager::Get_Spell_Node_Shield()
 		// World Position
 		XMFLOAT4X4 temp;
 		XMMATRIX tempMatrix = XMMatrixIdentity();
-		tempMatrix = XMMatrixMultiply(tempMatrix, XMMatrixTranslation(-0.35, 0.2, 0.15));
+		tempMatrix = XMMatrixMultiply(tempMatrix, XMMatrixTranslation(-0.2, 0.1, 0.15));
 		XMStoreFloat4x4(&temp, tempMatrix);
 		tScene->fWorld_Matrix[obj_id] = XMFLOAT4x4_to_tFloat4x4(temp);
 
@@ -1963,7 +1960,7 @@ tScene_Objects * cScene_Manager::Get_Spell_Node_Shield()
 		// World Position
 		XMFLOAT4X4 temp;
 		XMMATRIX tempMatrix = XMMatrixIdentity();
-		tempMatrix = XMMatrixMultiply(tempMatrix, XMMatrixTranslation(0.375, 0.2, 0.15));
+		tempMatrix = XMMatrixMultiply(tempMatrix, XMMatrixTranslation(0.2, 0.1, 0.15));
 		XMStoreFloat4x4(&temp, tempMatrix);
 		tScene->fWorld_Matrix[obj_id] = XMFLOAT4x4_to_tFloat4x4(temp);
 
@@ -2032,7 +2029,7 @@ tScene_Objects * cScene_Manager::Get_Spell_Node_Shield()
 		// World Position
 		XMFLOAT4X4 temp;
 		XMMATRIX tempMatrix = XMMatrixIdentity();
-		tempMatrix = XMMatrixMultiply(tempMatrix, XMMatrixTranslation(0, -0.5, 0));
+		tempMatrix = XMMatrixMultiply(tempMatrix, XMMatrixTranslation(0, -0.375, 0));
 		XMStoreFloat4x4(&temp, tempMatrix);
 		tScene->fWorld_Matrix[obj_id] = XMFLOAT4x4_to_tFloat4x4(temp);
 
