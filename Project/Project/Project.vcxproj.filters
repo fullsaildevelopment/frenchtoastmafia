@@ -305,8 +305,5 @@
     <FxCompile Include="PixelShader_Object.hlsl">
       <Filter>Renderer Manager\Shaders\Pixel</Filter>
     </FxCompile>
-    <FxCompile Include="PixelShader_Shield.hlsl">
-      <Filter>Renderer Manager\Shaders\Pixel</Filter>
-    </FxCompile>
   </ItemGroup>
 </Project>

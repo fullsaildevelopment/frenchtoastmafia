@@ -23,7 +23,6 @@
 
 #include "PixelShader_Object.csh"
 #include "PixelShader_Screen.csh"
-#include "PixelShader_Shield.csh"
 #include "PixelShader_Spell.csh"
 #include "dopeSoundSystem.h"
 

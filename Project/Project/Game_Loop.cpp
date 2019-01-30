@@ -543,7 +543,7 @@ void cGame_Loop::Update()
 					}
 				}
 
-				if (bSpell_Selection && t_Collisions.Detect_AABB_To_AABB(tAABB_Left_Hand, tAABB_Spell_3) || t_Collisions.Detect_AABB_To_AABB(tAABB_Right_Hand, tAABB_Spell_3)))
+				if (bSpell_Selection && (t_Collisions.Detect_AABB_To_AABB(tAABB_Left_Hand, tAABB_Spell_3) || t_Collisions.Detect_AABB_To_AABB(tAABB_Right_Hand, tAABB_Spell_3)))
 				{
 					bSpell_Selection = false;
 					if (!bDisplay_Spell_Node)
