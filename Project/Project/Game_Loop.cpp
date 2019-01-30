@@ -449,9 +449,9 @@ void cGame_Loop::Update()
 				}
 				if (t_Collisions.Detect_AABB_To_AABB(tAABB_Left_Hand, tAABB_Spell_1) || t_Collisions.Detect_AABB_To_AABB(tAABB_Right_Hand, tAABB_Spell_1))
 				{
-					sound.playSoundEffect("Page_Turn-Mark_DiAngelo-1304638748.mp3", FMOD_DEFAULT, 0.4f);
 					if (!bDisplay_Spell_Node)
 					{
+						sound.playSoundEffect("Page_Turn-Mark_DiAngelo-1304638748.mp3", FMOD_DEFAULT, 0.4f);
 						bDisplay_Spell_Book = false;
 						bDisplay_Spell_Node = true;
 						bDisplay_Fireball = true;
@@ -461,9 +461,9 @@ void cGame_Loop::Update()
 
 				if (t_Collisions.Detect_AABB_To_AABB(tAABB_Left_Hand, tAABB_Spell_2) || t_Collisions.Detect_AABB_To_AABB(tAABB_Right_Hand, tAABB_Spell_2))
 				{
-					sound.playSoundEffect("Page_Turn-Mark_DiAngelo-1304638748.mp3", FMOD_DEFAULT, 0.4f);
 					if (!bDisplay_Spell_Node)
 					{
+						sound.playSoundEffect("Page_Turn-Mark_DiAngelo-1304638748.mp3", FMOD_DEFAULT, 0.4f);
 						bDisplay_Spell_Book = false;
 						bDisplay_Spell_Node = true;
 						bDisplay_Icebolt = true;
@@ -473,9 +473,9 @@ void cGame_Loop::Update()
 
 				if (t_Collisions.Detect_AABB_To_AABB(tAABB_Left_Hand, tAABB_Spell_3) || t_Collisions.Detect_AABB_To_AABB(tAABB_Right_Hand, tAABB_Spell_3))
 				{
-					sound.playSoundEffect("Page_Turn-Mark_DiAngelo-1304638748.mp3", FMOD_DEFAULT, 0.4f);
 					if (!bDisplay_Spell_Node)
 					{
+						sound.playSoundEffect("Page_Turn-Mark_DiAngelo-1304638748.mp3", FMOD_DEFAULT, 0.4f);
 						bDisplay_Spell_Book = false;
 						bDisplay_Spell_Node = true;
 						bDisplay_Shield = true;
