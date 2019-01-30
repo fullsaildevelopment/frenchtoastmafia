@@ -56,6 +56,7 @@ private:
 	bool bDisplay_Icebolt = false;
 	bool bDisplay_Shield = false;
 	bool bNode_Order[3] = { false };
+	bool bSpell_Selection = false;
 
 	bool bMove_Spell_01 = false;
 	bool bMove_Spell_02 = false;

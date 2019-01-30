@@ -65,7 +65,7 @@ int cControllers::Identify_Controller(TrackedDeviceIndex_t vr_event)
 	return 0;
 }
 
-void cControllers::Update_Controller(int nScene_Id, bool *bChange_Scene, bool *bDisplay_Spell_Book, bool bDisplay_Spell_Node, bool *bReset_Offset, bool *bMove_Spell_01, bool *bMove_Spell_02, bool *bSpell_Ready_01, bool *bSpell_Ready_02, tFloat4 *movement, tFloat4x4 offset)
+void cControllers::Update_Controller(int nScene_Id, bool *bChange_Scene, bool *bDisplay_Spell_Book, bool bDisplay_Spell_Node, bool *bSpell_Selection, bool *bReset_Offset, bool *bMove_Spell_01, bool *bMove_Spell_02, bool *bSpell_Ready_01, bool *bSpell_Ready_02, tFloat4 *movement, tFloat4x4 offset)
 {
 	if (!c_VR_Setup->Get_HMD()->IsInputAvailable())
 		return;
@@ -159,7 +159,10 @@ void cControllers::Update_Controller(int nScene_Id, bool *bChange_Scene, bool *b
 							//if (!bMove_Bullet)
 								//sound.playSoundEffect("Large Fireball-SoundBible.com-301502490.mp3", FMOD_DEFAULT, 0.6f);
 
-							if (*bSpell_Ready_02)
+							if (*bDisplay_Spell_Book || bDisplay_Spell_Node)
+								*bSpell_Selection = true;
+
+							if (*bSpell_Ready_02 && !(*bDisplay_Spell_Book) && !bDisplay_Spell_Node)
 								*bMove_Spell_02 = true;
 						}
 						else
@@ -171,7 +174,10 @@ void cControllers::Update_Controller(int nScene_Id, bool *bChange_Scene, bool *b
 					if (Identify_Controller(vrEvent.trackedDeviceIndex) == 1)
 						printf("Trigger unPress\n");
 					else
+					{
 						printf("Trigger unPress\n");
+						*bSpell_Selection = false;
+					}
 
 					break;
 				}

@@ -519,7 +519,7 @@ void cGame_Loop::Update()
 
 			if (bDisplay_Spell_Book)
 			{
-				if (t_Collisions.Detect_AABB_To_AABB(tAABB_Left_Hand, tAABB_Spell_1) || t_Collisions.Detect_AABB_To_AABB(tAABB_Right_Hand, tAABB_Spell_1))
+				if (bSpell_Selection && (t_Collisions.Detect_AABB_To_AABB(tAABB_Left_Hand, tAABB_Spell_1) || t_Collisions.Detect_AABB_To_AABB(tAABB_Right_Hand, tAABB_Spell_1)))
 				{
 					if (!bDisplay_Spell_Node)
 					{
@@ -530,7 +530,7 @@ void cGame_Loop::Update()
 					}
 				}
 
-				if (t_Collisions.Detect_AABB_To_AABB(tAABB_Left_Hand, tAABB_Spell_2) || t_Collisions.Detect_AABB_To_AABB(tAABB_Right_Hand, tAABB_Spell_2))
+				if (bSpell_Selection && (t_Collisions.Detect_AABB_To_AABB(tAABB_Left_Hand, tAABB_Spell_2) || t_Collisions.Detect_AABB_To_AABB(tAABB_Right_Hand, tAABB_Spell_2)))
 				{
 					if (!bDisplay_Spell_Node)
 					{
@@ -552,7 +552,7 @@ void cGame_Loop::Update()
 					}
 				}
 
-				if (t_Collisions.Detect_AABB_To_AABB(tAABB_Left_Hand, tAABB_Cancel) || t_Collisions.Detect_AABB_To_AABB(tAABB_Right_Hand, tAABB_Cancel))
+				if (bSpell_Selection && (t_Collisions.Detect_AABB_To_AABB(tAABB_Left_Hand, tAABB_Cancel) || t_Collisions.Detect_AABB_To_AABB(tAABB_Right_Hand, tAABB_Cancel)))
 				{
 					bDisplay_Spell_Book = false;
 					bDisplay_Spell_Node = false;
@@ -574,10 +574,10 @@ void cGame_Loop::Update()
 			// Fireball Nodes
 			if (bDisplay_Fireball)
 			{
-				if (t_Collisions.Detect_AABB_To_AABB(tAABB_Left_Hand, tAABB_Fireball_1) || t_Collisions.Detect_AABB_To_AABB(tAABB_Right_Hand, tAABB_Fireball_1))
+				if (bSpell_Selection && (t_Collisions.Detect_AABB_To_AABB(tAABB_Left_Hand, tAABB_Fireball_1) || t_Collisions.Detect_AABB_To_AABB(tAABB_Right_Hand, tAABB_Fireball_1)))
 					bNode_Order[0] = true;
 
-				if (t_Collisions.Detect_AABB_To_AABB(tAABB_Left_Hand, tAABB_Fireball_2) || t_Collisions.Detect_AABB_To_AABB(tAABB_Right_Hand, tAABB_Fireball_2))
+				if (bSpell_Selection && (t_Collisions.Detect_AABB_To_AABB(tAABB_Left_Hand, tAABB_Fireball_2) || t_Collisions.Detect_AABB_To_AABB(tAABB_Right_Hand, tAABB_Fireball_2)))
 				{
 					if (bNode_Order[0])
 						bNode_Order[1] = true;
@@ -597,7 +597,7 @@ void cGame_Loop::Update()
 					}
 				}
 
-				if (t_Collisions.Detect_AABB_To_AABB(tAABB_Left_Hand, tAABB_Fireball_3) || t_Collisions.Detect_AABB_To_AABB(tAABB_Right_Hand, tAABB_Fireball_3))
+				if (bSpell_Selection && (t_Collisions.Detect_AABB_To_AABB(tAABB_Left_Hand, tAABB_Fireball_3) || t_Collisions.Detect_AABB_To_AABB(tAABB_Right_Hand, tAABB_Fireball_3)))
 				{
 					if (bNode_Order[1])
 					{
@@ -647,10 +647,10 @@ void cGame_Loop::Update()
 			// Icebolt Nodes
 			if (bDisplay_Icebolt)
 			{
-				if (t_Collisions.Detect_AABB_To_AABB(tAABB_Left_Hand, tAABB_Icebolt_1) || t_Collisions.Detect_AABB_To_AABB(tAABB_Right_Hand, tAABB_Icebolt_1))
+				if (bSpell_Selection && (t_Collisions.Detect_AABB_To_AABB(tAABB_Left_Hand, tAABB_Icebolt_1) || t_Collisions.Detect_AABB_To_AABB(tAABB_Right_Hand, tAABB_Icebolt_1)))
 					bNode_Order[0] = true;
 
-				if (t_Collisions.Detect_AABB_To_AABB(tAABB_Left_Hand, tAABB_Icebolt_2) || t_Collisions.Detect_AABB_To_AABB(tAABB_Right_Hand, tAABB_Icebolt_2))
+				if (bSpell_Selection && (t_Collisions.Detect_AABB_To_AABB(tAABB_Left_Hand, tAABB_Icebolt_2) || t_Collisions.Detect_AABB_To_AABB(tAABB_Right_Hand, tAABB_Icebolt_2)))
 				{
 					if (bNode_Order[0])
 						bNode_Order[1] = true;
@@ -670,7 +670,7 @@ void cGame_Loop::Update()
 					}
 				}
 
-				if (t_Collisions.Detect_AABB_To_AABB(tAABB_Left_Hand, tAABB_Icebolt_3) || t_Collisions.Detect_AABB_To_AABB(tAABB_Right_Hand, tAABB_Icebolt_3))
+				if (bSpell_Selection && (t_Collisions.Detect_AABB_To_AABB(tAABB_Left_Hand, tAABB_Icebolt_3) || t_Collisions.Detect_AABB_To_AABB(tAABB_Right_Hand, tAABB_Icebolt_3)))
 				{
 					if (bNode_Order[1])
 					{
@@ -720,10 +720,10 @@ void cGame_Loop::Update()
 			// Shield Nodes
 			if (bDisplay_Shield)
 			{
-				if (t_Collisions.Detect_AABB_To_AABB(tAABB_Left_Hand, tAABB_Shield_1) || t_Collisions.Detect_AABB_To_AABB(tAABB_Right_Hand, tAABB_Shield_1))
+				if (bSpell_Selection && (t_Collisions.Detect_AABB_To_AABB(tAABB_Left_Hand, tAABB_Shield_1) || t_Collisions.Detect_AABB_To_AABB(tAABB_Right_Hand, tAABB_Shield_1)))
 					bNode_Order[0] = true;
 
-				if (t_Collisions.Detect_AABB_To_AABB(tAABB_Left_Hand, tAABB_Shield_2) || t_Collisions.Detect_AABB_To_AABB(tAABB_Right_Hand, tAABB_Shield_2))
+				if (bSpell_Selection && (t_Collisions.Detect_AABB_To_AABB(tAABB_Left_Hand, tAABB_Shield_2) || t_Collisions.Detect_AABB_To_AABB(tAABB_Right_Hand, tAABB_Shield_2)))
 				{
 					if (bNode_Order[0])
 						bNode_Order[1] = true;
@@ -743,7 +743,7 @@ void cGame_Loop::Update()
 					}
 				}
 
-				if (t_Collisions.Detect_AABB_To_AABB(tAABB_Left_Hand, tAABB_Shield_3) || t_Collisions.Detect_AABB_To_AABB(tAABB_Right_Hand, tAABB_Shield_3))
+				if (bSpell_Selection && (t_Collisions.Detect_AABB_To_AABB(tAABB_Left_Hand, tAABB_Shield_3) || t_Collisions.Detect_AABB_To_AABB(tAABB_Right_Hand, tAABB_Shield_3)))
 				{
 					if (bNode_Order[1])
 					{
@@ -854,7 +854,7 @@ void cGame_Loop::Update()
 		bCharacter_Moving = false;
 
 	// Controller Inputs
-	c_Controllers.Update_Controller(m_nScene_Id, &bChange_Scene, &bDisplay_Spell_Book, bDisplay_Spell_Node, &bReset_Offset, &bMove_Spell_01, &bMove_Spell_02, &bSpell_Ready_01, &bSpell_Ready_02, &movement, c_Offset_Matrix.GetPosition4x4());
+	c_Controllers.Update_Controller(m_nScene_Id, &bChange_Scene, &bDisplay_Spell_Book, bDisplay_Spell_Node, &bSpell_Selection, &bReset_Offset, &bMove_Spell_01, &bMove_Spell_02, &bSpell_Ready_01, &bSpell_Ready_02, &movement, c_Offset_Matrix.GetPosition4x4());
 
 
 	// Special (Reset Position)
@@ -956,6 +956,7 @@ void cGame_Loop::Update()
 
 	
 	// AABB Visual Debugging
+	/*
 	if (m_nScene_Id == 2)
 	{
 		c_Render_Manager.Debugging_AABB(tAABB_Left_Hand, c_Head_Mount, c_Offset_Matrix.GetPosition4x4());
@@ -990,7 +991,7 @@ void cGame_Loop::Update()
 			c_Render_Manager.Debugging_AABB(tAABB_Shield_3, c_Head_Mount, c_Offset_Matrix.GetPosition4x4());
 		}
 	}
-	
+	*/
 
 	c_Head_Mount.VR_Render();
 
