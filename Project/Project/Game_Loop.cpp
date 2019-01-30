@@ -506,6 +506,7 @@ void cGame_Loop::Update()
 						bNode_Order[1] = true;
 					else
 					{
+						sound.playSoundEffect("node_fail_sound.mp3", FMOD_DEFAULT, 0.4f);
 						memset(bNode_Order, 0, sizeof(bNode_Order));
 						bDisplay_Spell_Book = false;
 						bDisplay_Spell_Node = false;
@@ -545,6 +546,7 @@ void cGame_Loop::Update()
 					}
 					else
 					{
+						sound.playSoundEffect("node_fail_sound.mp3", FMOD_DEFAULT, 0.4f);
 						memset(bNode_Order, 0, sizeof(bNode_Order));
 						bDisplay_Spell_Book = false;
 						bDisplay_Spell_Node = false;
@@ -568,6 +570,7 @@ void cGame_Loop::Update()
 						bNode_Order[1] = true;
 					else
 					{
+						sound.playSoundEffect("node_fail_sound.mp3", FMOD_DEFAULT, 0.4f);
 						memset(bNode_Order, 0, sizeof(bNode_Order));
 						bDisplay_Spell_Book = false;
 						bDisplay_Spell_Node = false;
@@ -607,6 +610,7 @@ void cGame_Loop::Update()
 					}
 					else
 					{
+						sound.playSoundEffect("node_fail_sound.mp3", FMOD_DEFAULT, 0.4f);
 						memset(bNode_Order, 0, sizeof(bNode_Order));
 						bDisplay_Spell_Book = false;
 						bDisplay_Spell_Node = false;
@@ -630,6 +634,7 @@ void cGame_Loop::Update()
 						bNode_Order[1] = true;
 					else
 					{
+						sound.playSoundEffect("node_fail_sound.mp3", FMOD_DEFAULT, 0.4f);
 						memset(bNode_Order, 0, sizeof(bNode_Order));
 						bDisplay_Spell_Book = false;
 						bDisplay_Spell_Node = false;
@@ -669,6 +674,7 @@ void cGame_Loop::Update()
 					}
 					else
 					{
+						sound.playSoundEffect("node_fail_sound.mp3", FMOD_DEFAULT, 0.4f);
 						memset(bNode_Order, 0, sizeof(bNode_Order));
 						bDisplay_Spell_Book = false;
 						bDisplay_Spell_Node = false;
