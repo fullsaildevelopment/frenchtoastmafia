@@ -170,6 +170,7 @@ tScene_Objects* cScene_Manager::Get_Personal_Scene()
 
 		// Material
 		tScene->tMaterials_Data[obj_id] = cBinary_Read.Read_Material("left_hand_material.bin");
+		tScene->szSRV_File_Path[obj_id] = "Hand_Life_100.dds";
 	}
 	// Left Hand Idle
 
@@ -286,6 +287,7 @@ tScene_Objects* cScene_Manager::Get_Personal_Scene()
 
 		// Material
 		tScene->tMaterials_Data[obj_id] = cBinary_Read.Read_Material("right_hand_material.bin");
+		//tScene->szSRV_File_Path[obj_id] = "Hand_Life_100.dds";
 	}
 	// Right Hand Idle
 
@@ -315,6 +317,7 @@ tScene_Objects* cScene_Manager::Get_Personal_Scene()
 
 		// Material
 		tScene->tMaterials_Data[obj_id] = cBinary_Read.Read_Material("right_hand_material.bin");
+		//tScene->szSRV_File_Path[obj_id] = "Hand_Life_100.dds";
 	}
 	// Right Hand Select
 
@@ -344,6 +347,7 @@ tScene_Objects* cScene_Manager::Get_Personal_Scene()
 
 		// Material
 		tScene->tMaterials_Data[obj_id] = cBinary_Read.Read_Material("right_hand_material.bin");
+		//tScene->szSRV_File_Path[obj_id] = "Hand_Life_100.dds";
 	}
 	// Right Hand Spell
 
@@ -373,6 +377,7 @@ tScene_Objects* cScene_Manager::Get_Personal_Scene()
 
 		// Material
 		tScene->tMaterials_Data[obj_id] = cBinary_Read.Read_Material("right_hand_material.bin");
+		//tScene->szSRV_File_Path[obj_id] = "Hand_Life_100.dds";
 	}
 	// Right Hand Shield
 
@@ -508,6 +513,7 @@ tScene_Objects* cScene_Manager::Get_Personal_Scene()
 		tScene->tMesh_Data[obj_id].nIndex_Count = tFireball.nIndex_Count;
 
 		tScene->tMaterials_Data[obj_id] = cBinary_Read.Read_Material("fireballMaterial.bin");
+		//tScene->szSRV_File_Path[obj_id] = "Hand_Life_100.dds";
 		tScene->tMaterials_Data[obj_id].tMats[0].szDiffuse_File_Path = "Fireball.fbm\\Fireball_D.png";
 	}
 	// Right Fireball
@@ -542,6 +548,7 @@ tScene_Objects* cScene_Manager::Get_Personal_Scene()
 		tScene->tMesh_Data[obj_id].nIndex_Count = tFireball.nIndex_Count;
 
 		tScene->tMaterials_Data[obj_id] = cBinary_Read.Read_Material("fireballMaterial.bin");
+		//tScene->szSRV_File_Path[obj_id] = "Hand_Life_100.dds";
 		tScene->tMaterials_Data[obj_id].tMats[0].szDiffuse_File_Path = "Fireball.fbm\\Fireball_D.png";
 	}
 	// Right Icebolt
@@ -576,6 +583,7 @@ tScene_Objects* cScene_Manager::Get_Personal_Scene()
 		tScene->tMesh_Data[obj_id].nIndex_Count = tFireball.nIndex_Count;
 
 		tScene->tMaterials_Data[obj_id] = cBinary_Read.Read_Material("fireballMaterial.bin");
+		//tScene->szSRV_File_Path[obj_id] = "Hand_Life_100.dds";
 		tScene->tMaterials_Data[obj_id].tMats[0].szDiffuse_File_Path = "Fireball.fbm\\Fireball_D.png";
 	}
 	// Right Shield
@@ -2074,7 +2082,7 @@ tScene_Objects* cScene_Manager::Get_UI()
 {
 	tScene_Objects* tScene = new tScene_Objects;
 
-	tScene->nObject_Count = 1;
+	tScene->nObject_Count = 2;
 
 	// Dragon Health Bar
 	{
@@ -2141,6 +2149,67 @@ tScene_Objects* cScene_Manager::Get_UI()
 		tScene->tMesh_Data[obj_id].nIndex_Count = 6;
 
 		tScene->szSRV_File_Path[obj_id] = "Health_Bar.dds";
+	}
+
+	{
+		int obj_id = 1;
+
+		XMFLOAT4X4 temp;
+		XMMATRIX tempMatrix = XMMatrixIdentity();
+		XMStoreFloat4x4(&temp, tempMatrix);
+		tScene->fWorld_Matrix[obj_id] = XMFLOAT4x4_to_tFloat4x4(temp);
+
+		tVertex *dragon_Health_Bar_Bckgrnd = new tVertex[4];                       // modify to be the backdrop of the health bar
+		dragon_Health_Bar_Bckgrnd[0].fPosition.fX = -152.5f;
+		dragon_Health_Bar_Bckgrnd[0].fPosition.fY = 45.0f;
+		dragon_Health_Bar_Bckgrnd[0].fPosition.fZ = -0.1f;
+
+		dragon_Health_Bar_Bckgrnd[0].fTexture_Coordinate.fX = 0.0f;
+		dragon_Health_Bar_Bckgrnd[0].fTexture_Coordinate.fY = 0.0f;
+
+		dragon_Health_Bar_Bckgrnd[1].fPosition.fX = 152.5f;
+		dragon_Health_Bar_Bckgrnd[1].fPosition.fY = 45.0f;
+		dragon_Health_Bar_Bckgrnd[1].fPosition.fZ = -0.1f;
+
+		dragon_Health_Bar_Bckgrnd[1].fTexture_Coordinate.fX = 1.0f;
+		dragon_Health_Bar_Bckgrnd[1].fTexture_Coordinate.fY = 0.0f;
+
+		dragon_Health_Bar_Bckgrnd[2].fPosition.fX = -152.5f;
+		dragon_Health_Bar_Bckgrnd[2].fPosition.fY = -45.0f;
+		dragon_Health_Bar_Bckgrnd[2].fPosition.fZ = -0.1f;
+
+		dragon_Health_Bar_Bckgrnd[2].fTexture_Coordinate.fX = 0.0f;
+		dragon_Health_Bar_Bckgrnd[2].fTexture_Coordinate.fY = 1.0f;
+
+		dragon_Health_Bar_Bckgrnd[3].fPosition.fX = 152.5f;
+		dragon_Health_Bar_Bckgrnd[3].fPosition.fY = -45.0f;
+		dragon_Health_Bar_Bckgrnd[3].fPosition.fZ = -0.1f;
+
+		dragon_Health_Bar_Bckgrnd[3].fTexture_Coordinate.fX = 1.0f;
+		dragon_Health_Bar_Bckgrnd[3].fTexture_Coordinate.fY = 1.0f;
+
+		for (int i = 0; i < 4; i++)
+		{
+			tScene->tMesh_Data[obj_id].tVerts.push_back(dragon_Health_Bar_Bckgrnd[i]);
+		}
+
+		tScene->tMesh_Data[obj_id].nVertex_Count = 4;
+
+		// INDEX BUFFER
+
+		unsigned int dragon_Health_Bar_Bckgrnd_indicies[6] =
+		{
+			0,1,2,
+			1,3,2
+		};
+
+		for (int i = 0; i < 6; i++)
+		{
+			tScene->tMesh_Data[obj_id].nIndicies.push_back(dragon_Health_Bar_Bckgrnd_indicies[i]);
+		}
+		tScene->tMesh_Data[obj_id].nIndex_Count = 6;
+
+		tScene->szSRV_File_Path[obj_id] = "Neon_Green.dds";
 	}
 	// Dragon Health Bar
 	//tScene->tMesh_Data[0].tVerts[1].fPosition.fX = 1.0f;  // NEW

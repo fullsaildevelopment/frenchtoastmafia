@@ -65,7 +65,7 @@ int cControllers::Identify_Controller(TrackedDeviceIndex_t vr_event)
 	return 0;
 }
 
-void cControllers::Update_Controller(int nScene_Id, bool *bChange_Scene, bool *bDisplay_Spell_Book, bool bDisplay_Spell_Node, bool *bMove_Bullet, bool *bReset_Offset, bool *bSpell_Ready, tFloat4 *movement, tFloat4x4 offset)
+void cControllers::Update_Controller(int nScene_Id, bool *bChange_Scene, bool *bDisplay_Spell_Book, bool bDisplay_Spell_Node, bool *bMove_Bullet, bool *bReset_Offset, bool *bSpell_Ready, tFloat4 *movement, tFloat4x4 offset, bool *ham, bool *frog_switch, bool *frog_switch_2)
 {
 	if (!c_VR_Setup->Get_HMD()->IsInputAvailable())
 		return;
@@ -109,6 +109,7 @@ void cControllers::Update_Controller(int nScene_Id, bool *bChange_Scene, bool *b
 					{
 						printf("Grip Press\n");
 						tReset_Offset.fX = 1.0f;
+						*frog_switch = true;
 					}
 					else if (Identify_Controller(vrEvent.trackedDeviceIndex) == 2)
 					{
@@ -121,6 +122,7 @@ void cControllers::Update_Controller(int nScene_Id, bool *bChange_Scene, bool *b
 
 					if (tReset_Offset.fX > 0.0f && tReset_Offset.fY > 0.0f)
 						*bReset_Offset = true;
+
 					break;
 
 				case VREvent_ButtonUnpress:
@@ -128,6 +130,7 @@ void cControllers::Update_Controller(int nScene_Id, bool *bChange_Scene, bool *b
 					{
 						printf("Grip unPress\n");
 						tReset_Offset.fX = 0.0f;
+						*frog_switch = false;
 					}
 					else if (Identify_Controller(vrEvent.trackedDeviceIndex) == 2)
 					{
@@ -239,13 +242,38 @@ void cControllers::Update_Controller(int nScene_Id, bool *bChange_Scene, bool *b
 				{
 				case VREvent_ButtonPress:
 					if (Identify_Controller(vrEvent.trackedDeviceIndex) == 1)
-						printf("ApplicationMenu Press\n");
+					{
+						hidden_gem.fX = 1.0f;
+					}
 					else if (Identify_Controller(vrEvent.trackedDeviceIndex) == 2)
-						printf("ApplicationMenu Press\n");
+					{
+						hidden_gem.fY = 1.0f;
+						//if (frog_switch == true)
+						//{
+						//	//sound.stopSong();
+						//	sound.muteAudio();
+						//	sound.playSoundEffect("crazy-frog-axel-f.mp3", FMOD_DEFAULT, 0.3f);
+						//}
+						if (&frog_switch == true)
+						{
+							*frog_switch_2 = true;
+						}
+					}
+
+					if (hidden_gem.fX > 0.0f && hidden_gem.fY > 0.0f)
+					{
+						*ham = true;
+						//sound.stopSong();
+						//sound.muteAudio();
+						// Add song
+						//sound.playSoundEffect("the-hampsterdance-song.mp3", FMOD_DEFAULT, 0.3f);
+					}
 					break;
 
 				case VREvent_ButtonUnpress:
 					printf("ApplicationMenu unPress\n");
+					*ham = false;
+					*frog_switch_2 = false;
 					break;
 				}
 				break;

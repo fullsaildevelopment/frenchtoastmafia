@@ -29,7 +29,8 @@ void cGame_Loop::Initialize(cGraphics_Setup* _gsetup, cVR_Setup* _vsetup)
 	c_Head_Mount.SetupCameras();
 	c_Head_Mount.UpdateHMDMatrixPose();
 	c_XTime.Restart();
-	m_nScene_Id = 0;
+	m_nScene_Id = 0;                            // FMOD_DEFAULT
+	//sound.playSong("french-laugh_modified.mp3", FMOD_LOOP_NORMAL, 1.0f);
 }
 
 void cGame_Loop::Setup()
@@ -54,8 +55,6 @@ void cGame_Loop::Setup()
 
 	UI_Object_List = c_Scene_Manager.Get_UI();
 	c_Render_Manager.Load_Data(4, UI_Object_List);
-
-	sound.playSong("fionnulas-tale-celtic-flute-music.mp3", FMOD_LOOP_NORMAL, 0.1f);
 }
 
 
@@ -366,8 +365,33 @@ void cGame_Loop::Update()
 					c_Player.setHealth(-10);
 					//tWorld_Object_List->fWorld_Matrix[3].tW.fY = 500;
 					sound.playSoundEffect("Pain-SoundBible.com-1883168362.mp3", FMOD_DEFAULT, 0.7f);
+
+					if (c_Player.getHealth() == 50)
+					{
+						sound.playSoundEffect("Hearbeat_2-Mike_Koenig-143666461.mp3", FMOD_LOOP_NORMAL, 0.3f);
+					}
+					else if (c_Player.getHealth() == 40)
+					{
+						sound.playSoundEffect("Hearbeat_2-Mike_Koenig-143666461.mp3", FMOD_LOOP_NORMAL, 0.4f);
+					}
+					else if (c_Player.getHealth() == 30)
+					{
+						sound.playSoundEffect("Hearbeat_2-Mike_Koenig-143666461.mp3", FMOD_LOOP_NORMAL, 0.5f);
+					}
+					else if (c_Player.getHealth() == 20)
+					{
+						sound.playSoundEffect("Hearbeat_2-Mike_Koenig-143666461.mp3", FMOD_LOOP_NORMAL, 0.6f);
+					}
+					else if (c_Player.getHealth() == 10)
+					{
+						sound.playSoundEffect("Hearbeat_2-Mike_Koenig-143666461.mp3", FMOD_LOOP_NORMAL, 0.7f);
+					}
+
 					if (c_Player.getHealth() <= 0)
+					{
 						c_Player.setIsAlive(false);
+						sound.stopSong();
+					}
 				}
 				else if (tWorld_Object_List->fFireball_Matrix[i].tW.fY < -5)
 				{
@@ -388,12 +412,19 @@ void cGame_Loop::Update()
 				c_Player_Fireball.setIsActive(false);
 				c_AI.setIsHit(true);
 				c_Dragon.setHealth(-25);
+				sound.playSoundEffect("Blast-SoundBible.com-2068539061.mp3", FMOD_DEFAULT, 0.6f);
 				c_Render_Manager.set_particle_array(p.get_particles());
 				p.create_particles(dragon_blast_color, c_XTime.Delta(), dragon_blast_acceleration, dragon_blast_kill, dragon_hit);
 				c_Player_Fireball.setIsActive(false);
 
-				if (c_Player.getHealth() <= 0)
-					c_Player.setIsAlive(false);
+				/*if (c_Player.getHealth() <= 0)
+					c_Player.setIsAlive(false);*/
+
+				if (c_Dragon.getHealth() <= 0)
+				{
+					c_Dragon.setIsAlive(false);
+					sound.stopSong();
+				}
 
 				bMove_Bullet = false;
 			}
@@ -411,8 +442,10 @@ void cGame_Loop::Update()
 
 			if (bDisplay_Spell_Book)
 			{
+				sound.playSoundEffect("open_book_sound.mp3", FMOD_DEFAULT, 0.4f);
 				if (t_Collisions.Detect_AABB_To_AABB(tAABB_Left_Hand, tAABB_Spell_1) || t_Collisions.Detect_AABB_To_AABB(tAABB_Right_Hand, tAABB_Spell_1))
 				{
+					sound.playSoundEffect("Page_Turn-Mark_DiAngelo-1304638748.mp3", FMOD_DEFAULT, 0.4f);
 					if (!bDisplay_Spell_Node)
 					{
 						bDisplay_Spell_Book = false;
@@ -424,6 +457,7 @@ void cGame_Loop::Update()
 
 				if (t_Collisions.Detect_AABB_To_AABB(tAABB_Left_Hand, tAABB_Spell_2) || t_Collisions.Detect_AABB_To_AABB(tAABB_Right_Hand, tAABB_Spell_2))
 				{
+					sound.playSoundEffect("Page_Turn-Mark_DiAngelo-1304638748.mp3", FMOD_DEFAULT, 0.4f);
 					if (!bDisplay_Spell_Node)
 					{
 						bDisplay_Spell_Book = false;
@@ -435,6 +469,7 @@ void cGame_Loop::Update()
 
 				if (t_Collisions.Detect_AABB_To_AABB(tAABB_Left_Hand, tAABB_Spell_3) || t_Collisions.Detect_AABB_To_AABB(tAABB_Right_Hand, tAABB_Spell_3))
 				{
+					sound.playSoundEffect("Page_Turn-Mark_DiAngelo-1304638748.mp3", FMOD_DEFAULT, 0.4f);
 					if (!bDisplay_Spell_Node)
 					{
 						bDisplay_Spell_Book = false;
@@ -446,6 +481,7 @@ void cGame_Loop::Update()
 
 				if (t_Collisions.Detect_AABB_To_AABB(tAABB_Left_Hand, tAABB_Cancel) || t_Collisions.Detect_AABB_To_AABB(tAABB_Right_Hand, tAABB_Cancel))
 				{
+					sound.playSoundEffect("open_book_sound.mp3", FMOD_DEFAULT, 0.4f);
 					bDisplay_Spell_Book = false;
 					bDisplay_Spell_Node = false;
 					bDisplay_Fireball = false;
@@ -684,8 +720,19 @@ void cGame_Loop::Update()
 		bCharacter_Moving = false;
 
 	// Controller Inputs
-	c_Controllers.Update_Controller(m_nScene_Id, &bChange_Scene, &bDisplay_Spell_Book, bDisplay_Spell_Node, &bMove_Bullet, &bReset_Offset, &bSpell_Ready, &movement, c_Offset_Matrix.GetPosition4x4());
+	c_Controllers.Update_Controller(m_nScene_Id, &bChange_Scene, &bDisplay_Spell_Book, bDisplay_Spell_Node, &bMove_Bullet, &bReset_Offset, &bSpell_Ready, &movement, c_Offset_Matrix.GetPosition4x4(), &ham, &frog_switch, &frog_switch_2);
 
+	if (frog_switch = true && frog_switch_2 == true)
+	{
+		//sound.stopSong();
+		sound.playSoundEffect("crazy-frog-axel-f.mp3", FMOD_DEFAULT, 0.3f);
+	}
+
+	if (ham == true)
+	{
+		//sound.stopSong();
+		sound.playSoundEffect("the-hampsterdance-song.mp3", FMOD_DEFAULT, 0.3f);
+	}
 
 	// Special (Reset Position)
 	if (bReset_Offset && m_nScene_Id != 2)
@@ -707,6 +754,7 @@ void cGame_Loop::Update()
 			c_Player.setHealth(100);
 			c_Dragon.setIsAlive(true);
 			c_Dragon.setHealth(100);
+			sound.playSong("fionnulas-tale-celtic-flute-music.mp3", FMOD_LOOP_NORMAL, 0.1f);
 		}
 		tWorld_Object_List = c_Scene_Manager.Get_World_Scene(m_nScene_Id);
 		c_Render_Manager.Load_Data(m_nScene_Id, tWorld_Object_List);
@@ -719,8 +767,16 @@ void cGame_Loop::Update()
 
 	if (m_nScene_Id == 0)
 	{
+		if (is_playing == false)
+		{
+			sound.playSoundEffect("french-laugh_modified.mp3", FMOD_DEFAULT, 1.0f);
+			is_playing = true;
+		}
 		if (c_XTime.TotalTime() > 4.0f)
+		{
 			bChange_Scene = true;
+			sound.playSong("fionnulas-tale-celtic-flute-music.mp3", FMOD_LOOP_NORMAL, 0.1f);
+		}
 	}
 
 	// Renders

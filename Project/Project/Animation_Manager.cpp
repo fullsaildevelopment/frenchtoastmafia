@@ -84,6 +84,11 @@ void cAnimation_Manager::Animate(double dDelta, double dTotal, tScene_Objects* t
 				tObject_List->currAnim[i] = 0;
 			}
 
+			if (currentAnim == 0 && fRatio > 1)
+			{
+				sound.playSoundEffect("Flapping Wings 3-SoundBible.com-1900341762.mp3", FMOD_DEFAULT, 0.4f);
+			}
+
 			int nJoint_Size = (int)tObject_List->tAnim_Clip[i][currentAnim].tKeyFrames[nNext_Frame].tJoints.size();
 
 			for (int j = 0; j < nJoint_Size; j++)

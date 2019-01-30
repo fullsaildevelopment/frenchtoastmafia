@@ -12,6 +12,8 @@
 
 #include "Renderer_Structs.h"
 
+#include "dopeSoundSystem.h"
+
 class cAnimation_Manager
 {
 private:
@@ -19,6 +21,8 @@ private:
 
 	float m_fCurrent_Time;
 	int currentAnim = 0;
+
+	dopeSoundSystem sound;
 
 public:
 	cAnimation_Manager();

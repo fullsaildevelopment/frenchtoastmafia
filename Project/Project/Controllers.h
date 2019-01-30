@@ -10,6 +10,7 @@
 #include "Math_Conversion.h"
 #include "VR_Setup.h"
 
+
 class cControllers
 {
 private:
@@ -23,7 +24,9 @@ private:
 	unsigned int m_iTrackedControllerCount;
 
 	tFloat2 tReset_Offset;
-
+	tFloat2 hidden_gem;
+	
+	//dopeSoundSystem sound;
 
 public:
 	cControllers();
@@ -39,6 +42,6 @@ public:
 	void Set_Right_Hand(tFloat4x4 right);
 
 	int Identify_Controller(TrackedDeviceIndex_t vr_event);
-	void Update_Controller(int nScene_Id, bool *bChange_Scene, bool *bDisplay_Spell_Book, bool bDisplay_Spell_Node, bool *bMove_Bullet, bool *bReset_Offset, bool *bSpell_Ready, tFloat4 *movement, tFloat4x4 offset);
+	void Update_Controller(int nScene_Id, bool *bChange_Scene, bool *bDisplay_Spell_Book, bool bDisplay_Spell_Node, bool *bMove_Bullet, bool *bReset_Offset, bool *bSpell_Ready, tFloat4 *movement, tFloat4x4 offset, bool *ham, bool *frog_switch, bool *frog_switch_2);
 };
 

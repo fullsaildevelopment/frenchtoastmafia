@@ -105,7 +105,13 @@ private:
 
 	bool dragon_hit = false;
 	float timeCheck = 0;
+
+	bool is_playing = false;
 	// Particle Stuff
+
+	bool ham = false;
+	bool frog_switch = false;
+	bool frog_switch_2 = false;
 
 public:
 	cGame_Loop();
