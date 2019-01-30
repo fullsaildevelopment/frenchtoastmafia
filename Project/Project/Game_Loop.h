@@ -19,6 +19,7 @@
 #include "Render_Manager.h"
 #include "Scene_Manager.h"
 #include "Spell_Book.h"
+#include "Spell_Shield.h"
 #include "VR_Setup.h"
 #include "XTime.h"
 #include "dopeSoundSystem.h"
@@ -29,7 +30,7 @@ class cGame_Loop
 private:
 	cAnimation_Manager c_Animation_Manager;
 	cBase_Character c_Player, c_Dragon;
-	cBase_Spell c_Player_Spell_01, c_Player_Spell_02, c_Player_Fireball, c_Dragon_Fireball;
+	cBase_Spell c_Player_Spell_01, c_Player_Spell_02, c_Dragon_Fireball;
 	cControllers c_Controllers;
 	cGraphics_Setup *c_Graphics_Setup;
 	cHead_Mount c_Head_Mount;
@@ -37,6 +38,7 @@ private:
 	cRender_Manager c_Render_Manager;
 	cScene_Manager c_Scene_Manager;
 	cSpell_Book c_Spell_Book;
+	cSpell_Shield c_Spell_Shield_01, c_Spell_Shield_02;
 	tCollisions t_Collisions;
 
 	cVR_Setup *c_VR_Setup;
@@ -55,14 +57,11 @@ private:
 	bool bDisplay_Shield = false;
 	bool bNode_Order[3] = { false };
 
-	bool bMove_Bullet = false;
 	bool bMove_Spell_01 = false;
 	bool bMove_Spell_02 = false;
 
-	bool bSpell_Ready = false;
 	bool bSpell_Ready_01 = false;
 	bool bSpell_Ready_02 = false;
-
 
 	int m_nScene_Id;
 	int nDisplay_Spell_Node = 0;
@@ -71,7 +70,9 @@ private:
 	tFloat4 movement = { 0.0f, 0.0f, 0.0f, 0.0f };
 	tScene_Objects *tPersonal_Object_List, *tWorld_Object_List, *UI_Object_List;
 	tScene_Objects *tSpell_Book, *tFireball_Nodes, *tIcebolt_Nodes, *tShield_Nodes;
-	tAABB tAABB_Player, tAABB_Player_Fireball, tAABB_Dragon;
+	tAABB tAABB_Player, tAABB_Dragon;
+	tAABB tAABB_Player_Spell_01, tAABB_Player_Spell_02;
+	tAABB tAABB_Player_Shield_01, tAABB_Player_Shield_02;
 	tAABB tAABB_Left_Hand, tAABB_Right_Hand;
 	tAABB tAABB_Spell_1, tAABB_Spell_2, tAABB_Spell_3, tAABB_Cancel;
 	tAABB tAABB_Fireball_1, tAABB_Fireball_2, tAABB_Fireball_3;

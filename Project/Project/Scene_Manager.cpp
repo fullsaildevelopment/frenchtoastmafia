@@ -16,128 +16,6 @@ cScene_Manager::~cScene_Manager()
 {
 }
 
-/*
-tScene_Objects* cScene_Manager::Get_Personal_Scene()
-{
-	tScene_Objects* tScene = new tScene_Objects;
-
-	tScene->nObject_Count = 3;
-
-	// Left Hand - 0
-	{
-		int obj_id = 0;
-		// World Position
-		XMFLOAT4X4 temp;
-
-		XMMATRIX tempMatrix = XMMatrixIdentity();
-
-		//tempMatrix = XMMatrixMultiply(tempMatrix, XMMatrixTranslation(-0.1, 0.1, -0.1));
-
-		//tempMatrix = XMMatrixMultiply(XMMatrixScaling(0.1, 0.1, 0.1), tempMatrix);
-
-		XMStoreFloat4x4(&temp, tempMatrix);
-
-		tScene->fWorld_Matrix[obj_id] = XMFLOAT4x4_to_tFloat4x4(temp);
-
-		// Mesh
-		tMesh tLeft_Hand = cBinary_Read.Read_Mesh("right_hand_select_mesh.bin");
-
-		for (int i = 0; i < tLeft_Hand.nVertex_Count; i++)
-		{
-			tScene->tMesh_Data[obj_id].tVerts.push_back(tLeft_Hand.tVerts[i]);
-		}
-
-		tScene->tMesh_Data[obj_id].nVertex_Count = tLeft_Hand.nVertex_Count;
-
-		for (int i = 0; i < tLeft_Hand.nIndex_Count; i++)
-		{
-			tScene->tMesh_Data[obj_id].nIndicies.push_back(tLeft_Hand.nIndicies[i]);
-		}
-		tScene->tMesh_Data[obj_id].nIndex_Count = tLeft_Hand.nIndex_Count;
-
-		// Material
-		tScene->tMaterials_Data[obj_id] = cBinary_Read.Read_Material("left_hand_material.bin");   
-	}
-	// Left Hand
-
-	// Right Hand - 1
-	{
-		int obj_id = 1;
-		// World Position
-		XMFLOAT4X4 temp;
-
-		XMMATRIX tempMatrix = XMMatrixIdentity();
-
-		tempMatrix = XMMatrixMultiply(tempMatrix, XMMatrixTranslation(0.1, 0.1, -0.1));
-
-		XMStoreFloat4x4(&temp, tempMatrix);
-
-		tScene->fWorld_Matrix[obj_id] = XMFLOAT4x4_to_tFloat4x4(temp);
-
-
-		// Mesh
-		tMesh tLeft_Hand = cBinary_Read.Read_Mesh("right_hand_shield_mesh.bin");
-
-		for (int i = 0; i < tLeft_Hand.nVertex_Count; i++)
-		{
-			tScene->tMesh_Data[obj_id].tVerts.push_back(tLeft_Hand.tVerts[i]);
-		}
-
-		tScene->tMesh_Data[obj_id].nVertex_Count = tLeft_Hand.nVertex_Count;
-
-
-		for (int i = 0; i < tLeft_Hand.nIndex_Count; i++)
-		{
-			tScene->tMesh_Data[obj_id].nIndicies.push_back(tLeft_Hand.nIndicies[i]);
-		}
-		tScene->tMesh_Data[obj_id].nIndex_Count = tLeft_Hand.nIndex_Count;
-
-		// Material
-		tScene->tMaterials_Data[obj_id] = cBinary_Read.Read_Material("right_hand_material.bin");
-	}
-	// Right Hand
-
-	// Fireball - 2
-	{
-		int obj_id = 2;
-		XMFLOAT4X4 temp;
-
-		XMMATRIX tempMatrix = XMMatrixIdentity();
-
-		tempMatrix = XMMatrixMultiply(tempMatrix, XMMatrixTranslation(-0.1, 0.1, -0.1));
-
-		XMStoreFloat4x4(&temp, tempMatrix);
-
-		tScene->fWorld_Matrix[obj_id] = XMFLOAT4x4_to_tFloat4x4(temp);
-		tMesh tFireball = cBinary_Read.Read_Mesh("fireballMesh.bin");
-
-		for (int i = 0; i < tFireball.nVertex_Count; i++)
-		{
-			tFireball.tVerts[i].fPosition.fZ *= -1;
-		}
-
-		for (int i = 0; i < tFireball.nVertex_Count; i++)
-		{
-			tScene->tMesh_Data[obj_id].tVerts.push_back(tFireball.tVerts[i]);
-		}
-
-		tScene->tMesh_Data[obj_id].nVertex_Count = tFireball.nVertex_Count;
-
-
-		for (int i = 0; i < tFireball.nIndex_Count; i++)
-		{
-			tScene->tMesh_Data[obj_id].nIndicies.push_back(tFireball.nIndicies[i]);
-		}
-		tScene->tMesh_Data[obj_id].nIndex_Count = tFireball.nIndex_Count;
-
-		tScene->tMaterials_Data[obj_id] = cBinary_Read.Read_Material("fireballMaterial.bin");
-		tScene->tMaterials_Data[obj_id].tMats[0].szDiffuse_File_Path = "Fireball.fbm\\Fireball_D.png";
-	}
-	// Fireball
-
-	return tScene;
-}
-*/
 tScene_Objects* cScene_Manager::Get_Personal_Scene()
 {
 	tScene_Objects* tScene = new tScene_Objects;
@@ -675,28 +553,27 @@ tScene_Objects* cScene_Manager::Get_Personal_Scene()
 		tScene->fWorld_Matrix[obj_id] = XMFLOAT4x4_to_tFloat4x4(temp);
 
 		// Mesh
-		tMesh tFireball = cBinary_Read.Read_Mesh("fireballMesh.bin");
-		for (int i = 0; i < tFireball.nVertex_Count; i++)
-		{
-			tFireball.tVerts[i].fPosition.fZ *= -1;
-		}
-
+		tMesh tFireball = cBinary_Read.Read_Mesh("shield_spell_mesh.bin");
+				
 		for (int i = 0; i < tFireball.nVertex_Count; i++)
 		{
 			tScene->tMesh_Data[obj_id].tVerts.push_back(tFireball.tVerts[i]);
 		}
-
+		
 		tScene->tMesh_Data[obj_id].nVertex_Count = tFireball.nVertex_Count;
-
-
+		
+		
 		for (int i = 0; i < tFireball.nIndex_Count; i++)
 		{
 			tScene->tMesh_Data[obj_id].nIndicies.push_back(tFireball.nIndicies[i]);
 		}
 		tScene->tMesh_Data[obj_id].nIndex_Count = tFireball.nIndex_Count;
-
-		tScene->tMaterials_Data[obj_id] = cBinary_Read.Read_Material("fireballMaterial.bin");
-		tScene->tMaterials_Data[obj_id].tMats[0].szDiffuse_File_Path = "Fireball.fbm\\Fireball_D.png";
+		
+		tScene->tMaterials_Data[obj_id] = cBinary_Read.Read_Material("shield_spell_material.bin");
+		tScene->tMaterials_Data[obj_id].tMats[0].szDiffuse_File_Path = "Shield.fbm\\Shield_Red.png";
+		tScene->tMaterials_Data[obj_id].tMats[0].szDiffuse_File_Path = "Shield.fbm\\Shield_Red.png";
+		tScene->tMaterials_Data[obj_id].tMats[0].szDiffuse_File_Path = "Shield.fbm\\Shield_Red.png";
+		
 	}
 	// Right Shield
 	return tScene;
@@ -708,24 +585,6 @@ tScene_Objects* cScene_Manager::Get_World_Scene(int nScene_Id)
 	// SCREEN
 	if (nScene_Id < 2 || nScene_Id == 3)
 	{
-		//tBinary_Screen tBS;
-		//if (nScene_Id == 0)
-		//	tBS = cBinary_Read.Read_Screen_Binary("intro.bin");
-		//else if (nScene_Id == 1)
-		//	tBS = cBinary_Read.Read_Screen_Binary("menu.bin");
-		//else
-		//	tBS = cBinary_Read.Read_Screen_Binary("replay.bin");
-		//
-		//
-		//tScene->nObject_Count = tBS.nObject_Count;
-		//tScene->fWorld_Position[0] = { 0,0,0 };
-		//tScene->tMesh_Data[0] = tBS.tMes;
-		//if (tBS.vs_check != 0)
-		//	tScene->szVS_File_Path[0] = tBS.vs_name;
-		//if (tBS.ps_check != 0)
-		//	tScene->szPS_File_Path[0] = tBS.ps_name;
-		//if (tBS.srv_check != 0)
-		//	tScene->szSRV_File_Path[0] = tBS.srv_name;
 		tScene->nObject_Count = 1;
 		tScene->fWorld_Position[0] = { 0, 0, 15 };
 
@@ -734,36 +593,35 @@ tScene_Objects* cScene_Manager::Get_World_Scene(int nScene_Id)
 		XMMATRIX tempMatrix = XMMatrixIdentity();
 
 		tempMatrix = XMMatrixMultiply(tempMatrix, XMMatrixTranslation(0, 1, -3.0));
-		//tempMatrix = XMMatrixMultiply(tempMatrix, XMMatrixTranslation(0, 0, -12.234));
 
 		XMStoreFloat4x4(&temp, tempMatrix);
 
 		tScene->fWorld_Matrix[0] = XMFLOAT4x4_to_tFloat4x4(temp);
 
 		tVertex *test_screen = new tVertex[4];
-		test_screen[0].fPosition.fX = -2.4f;// -20.0f;
-		test_screen[0].fPosition.fY = 1.8f;//15.0f;
+		test_screen[0].fPosition.fX = -2.4f;
+		test_screen[0].fPosition.fY = 1.8f;
 		test_screen[0].fPosition.fZ = 1.0f;
 
 		test_screen[0].fTexture_Coordinate.fX = 0.0f;
 		test_screen[0].fTexture_Coordinate.fY = 0.0f;
 
-		test_screen[1].fPosition.fX = 2.4f;//20.0f;
-		test_screen[1].fPosition.fY = 1.8f;//15.0f;
+		test_screen[1].fPosition.fX = 2.4f;
+		test_screen[1].fPosition.fY = 1.8f;
 		test_screen[1].fPosition.fZ = 1.0f;
 
 		test_screen[1].fTexture_Coordinate.fX = 1.0f;
 		test_screen[1].fTexture_Coordinate.fY = 0.0f;
 
-		test_screen[2].fPosition.fX = -2.4f;//-20.0f;
-		test_screen[2].fPosition.fY = -1.8f;//-15.0f;
+		test_screen[2].fPosition.fX = -2.4f;
+		test_screen[2].fPosition.fY = -1.8f;
 		test_screen[2].fPosition.fZ = 1.0f;
 
 		test_screen[2].fTexture_Coordinate.fX = 0.0f;
 		test_screen[2].fTexture_Coordinate.fY = 1.0f;
 
-		test_screen[3].fPosition.fX = 2.4f;//20.0f;
-		test_screen[3].fPosition.fY = -1.8f;//-15.0f;
+		test_screen[3].fPosition.fX = 2.4f;
+		test_screen[3].fPosition.fY = -1.8f;
 		test_screen[3].fPosition.fZ = 1.0f;
 
 		test_screen[3].fTexture_Coordinate.fX = 1.0f;
@@ -817,7 +675,6 @@ tScene_Objects* cScene_Manager::Get_World_Scene(int nScene_Id)
 			XMMATRIX tempMatrix = XMMatrixIdentity();
 			tempMatrix = XMMatrixMultiply(XMMatrixTranslation(5, -3, 0), tempMatrix);
 			tempMatrix = XMMatrixMultiply(XMMatrixRotationY(180), tempMatrix);
-			//tempMatrix = XMMatrixMultiply(XMMatrixScaling(0.9, 0.9, 0.9), tempMatrix);
 
 
 			XMStoreFloat4x4(&temp, tempMatrix);
@@ -825,12 +682,6 @@ tScene_Objects* cScene_Manager::Get_World_Scene(int nScene_Id)
 			tScene->fWorld_Matrix[0] = XMFLOAT4x4_to_tFloat4x4(temp);
 			tScene->bIs_Animated[0] = true;
 			tMesh_Skinned tMage = cBinary_Read.Read_Mesh_Skinned("mesh.bin");
-
-			for (int i = 0; i < tMage.nVertex_Count; i++)
-			{
-				//tMage.tVerts[i].fPosition.fZ *= -1;
-				//tMage.tVerts[i].fNormal.fZ *= -1;
-			}
 
 			for (int i = 0; i < tMage.nVertex_Count; i++)
 			{
@@ -860,11 +711,6 @@ tScene_Objects* cScene_Manager::Get_World_Scene(int nScene_Id)
 			XMMATRIX tempMatrix = XMMatrixIdentity();
 
 			tempMatrix = XMMatrixMultiply(XMMatrixTranslation(0, -3, 0), tempMatrix);
-			//
-			//tempMatrix = XMMatrixMultiply(XMMatrixRotationX(3.14 / 2), tempMatrix);
-
-			//tempMatrix = XMMatrixMultiply(XMMatrixScaling(0.1, 0.1, 0.1), tempMatrix);
-
 
 			XMStoreFloat4x4(&temp, tempMatrix);
 

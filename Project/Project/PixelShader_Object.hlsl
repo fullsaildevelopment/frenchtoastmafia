@@ -1,5 +1,5 @@
 /************************************************************************
-* Filename:  		PixelShader_Mage.hlsl
+* Filename:  		PixelShader_Object.hlsl
 * Date:      		11/10/2018
 * Mod. Date: 		11/10/2018
 * Mod. Initials:	WM
