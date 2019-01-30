@@ -412,7 +412,7 @@ void cGame_Loop::Update()
 				c_Player_Fireball.setIsActive(false);
 				c_AI.setIsHit(true);
 				c_Dragon.setHealth(-25);
-				sound.playSoundEffect("Blast-SoundBible.com-2068539061.mp3", FMOD_DEFAULT, 0.6f);
+				//sound.playSoundEffect("Blast-SoundBible.com-2068539061.mp3", FMOD_DEFAULT, 0.6f);
 				c_Render_Manager.set_particle_array(p.get_particles());
 				p.create_particles(dragon_blast_color, c_XTime.Delta(), dragon_blast_acceleration, dragon_blast_kill, dragon_hit);
 				c_Player_Fireball.setIsActive(false);
