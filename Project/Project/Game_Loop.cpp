@@ -442,7 +442,11 @@ void cGame_Loop::Update()
 
 			if (bDisplay_Spell_Book)
 			{
-				sound.playSoundEffect("open_book_sound.mp3", FMOD_DEFAULT, 0.4f);
+				if (sound_on == false)
+				{
+					sound.playSoundEffect("open_book_sound.mp3", FMOD_DEFAULT, 0.4f);
+					sound_on = true;
+				}
 				if (t_Collisions.Detect_AABB_To_AABB(tAABB_Left_Hand, tAABB_Spell_1) || t_Collisions.Detect_AABB_To_AABB(tAABB_Right_Hand, tAABB_Spell_1))
 				{
 					sound.playSoundEffect("Page_Turn-Mark_DiAngelo-1304638748.mp3", FMOD_DEFAULT, 0.4f);
@@ -490,6 +494,8 @@ void cGame_Loop::Update()
 					bSpell_Ready = false;
 					memset(bNode_Order, 0, sizeof(bNode_Order));
 					personal_swap_Id = { 0.0f, 0.0f, 0.0f, 0.0f };
+
+					sound_on = false;
 				}
 			}
 			// Spell Book
@@ -498,14 +504,23 @@ void cGame_Loop::Update()
 			if (bDisplay_Fireball)
 			{
 				if (t_Collisions.Detect_AABB_To_AABB(tAABB_Left_Hand, tAABB_Fireball_1) || t_Collisions.Detect_AABB_To_AABB(tAABB_Right_Hand, tAABB_Fireball_1))
+				{
 					bNode_Order[0] = true;
+					sound.playSoundEffect("correct_node_sound.mp3", FMOD_DEFAULT, 0.4f);
+				}
+				// sucess
 
 				if (t_Collisions.Detect_AABB_To_AABB(tAABB_Left_Hand, tAABB_Fireball_2) || t_Collisions.Detect_AABB_To_AABB(tAABB_Right_Hand, tAABB_Fireball_2))
 				{
 					if (bNode_Order[0])
+					{
 						bNode_Order[1] = true;
+						sound.playSoundEffect("correct_node_sound.mp3", FMOD_DEFAULT, 0.4f);
+					}
+					// sucess
 					else
 					{
+						// fail
 						sound.playSoundEffect("node_fail_sound.mp3", FMOD_DEFAULT, 0.4f);
 						memset(bNode_Order, 0, sizeof(bNode_Order));
 						bDisplay_Spell_Book = false;
@@ -520,6 +535,8 @@ void cGame_Loop::Update()
 				{
 					if (bNode_Order[1])
 					{
+						// finish spell
+						sound.playSoundEffect("spell_finish.mp3", FMOD_DEFAULT, 0.4f);
 						bNode_Order[2] = true;
 						bSpell_Ready = true;
 						bDisplay_Spell_Book = false;
@@ -562,12 +579,18 @@ void cGame_Loop::Update()
 			if (bDisplay_Icebolt)
 			{
 				if (t_Collisions.Detect_AABB_To_AABB(tAABB_Left_Hand, tAABB_Icebolt_1) || t_Collisions.Detect_AABB_To_AABB(tAABB_Right_Hand, tAABB_Icebolt_1))
+				{
 					bNode_Order[0] = true;
+					sound.playSoundEffect("correct_node_sound.mp3", FMOD_DEFAULT, 0.4f);
+				}
 
 				if (t_Collisions.Detect_AABB_To_AABB(tAABB_Left_Hand, tAABB_Icebolt_2) || t_Collisions.Detect_AABB_To_AABB(tAABB_Right_Hand, tAABB_Icebolt_2))
 				{
 					if (bNode_Order[0])
+					{
 						bNode_Order[1] = true;
+						sound.playSoundEffect("correct_node_sound.mp3", FMOD_DEFAULT, 0.4f);
+					}
 					else
 					{
 						sound.playSoundEffect("node_fail_sound.mp3", FMOD_DEFAULT, 0.4f);
@@ -584,6 +607,7 @@ void cGame_Loop::Update()
 				{
 					if (bNode_Order[1])
 					{
+						sound.playSoundEffect("spell_finish.mp3", FMOD_DEFAULT, 0.4f);
 						bNode_Order[2] = true;
 						bSpell_Ready = true;
 						bDisplay_Spell_Book = false;
@@ -626,12 +650,18 @@ void cGame_Loop::Update()
 			if (bDisplay_Shield)
 			{
 				if (t_Collisions.Detect_AABB_To_AABB(tAABB_Left_Hand, tAABB_Shield_1) || t_Collisions.Detect_AABB_To_AABB(tAABB_Right_Hand, tAABB_Shield_1))
+				{
 					bNode_Order[0] = true;
+					sound.playSoundEffect("correct_node_sound.mp3", FMOD_DEFAULT, 0.4f);
+				}
 
 				if (t_Collisions.Detect_AABB_To_AABB(tAABB_Left_Hand, tAABB_Shield_2) || t_Collisions.Detect_AABB_To_AABB(tAABB_Right_Hand, tAABB_Shield_2))
 				{
 					if (bNode_Order[0])
+					{
 						bNode_Order[1] = true;
+						sound.playSoundEffect("correct_node_sound.mp3", FMOD_DEFAULT, 0.4f);
+					}
 					else
 					{
 						sound.playSoundEffect("node_fail_sound.mp3", FMOD_DEFAULT, 0.4f);
@@ -648,6 +678,7 @@ void cGame_Loop::Update()
 				{
 					if (bNode_Order[1])
 					{
+						sound.playSoundEffect("spell_finish.mp3", FMOD_DEFAULT, 0.4f);
 						bNode_Order[2] = true;
 						bSpell_Ready = true;
 						bDisplay_Spell_Book = false;

@@ -254,7 +254,7 @@ void cControllers::Update_Controller(int nScene_Id, bool *bChange_Scene, bool *b
 						//	sound.muteAudio();
 						//	sound.playSoundEffect("crazy-frog-axel-f.mp3", FMOD_DEFAULT, 0.3f);
 						//}
-						if (&frog_switch == true)
+						if (*frog_switch == true)
 						{
 							*frog_switch_2 = true;
 						}

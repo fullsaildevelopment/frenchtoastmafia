@@ -113,6 +113,8 @@ private:
 	bool frog_switch = false;
 	bool frog_switch_2 = false;
 
+	bool sound_on = false;
+
 public:
 	cGame_Loop();
 	~cGame_Loop();
