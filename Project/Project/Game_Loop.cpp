@@ -517,30 +517,30 @@ void cGame_Loop::Update()
 
 					if (c_Player.getHealth() == 50)
 					{
-						sound.playSoundEffect("Hearbeat_2-Mike_Koenig-143666461.mp3", FMOD_LOOP_NORMAL, 0.3f);
+						sound.playSoundEffect("Hearbeat_2-Mike_Koenig-143666461.mp3", FMOD_DEFAULT, 0.3f);
 					}
 					else if (c_Player.getHealth() == 40)
 					{
-						sound.playSoundEffect("Hearbeat_2-Mike_Koenig-143666461.mp3", FMOD_LOOP_NORMAL, 0.4f);
+						sound.playSoundEffect("Hearbeat_2-Mike_Koenig-143666461.mp3", FMOD_DEFAULT, 0.4f);
 					}
 					else if (c_Player.getHealth() == 30)
 					{
-						sound.playSoundEffect("Hearbeat_2-Mike_Koenig-143666461.mp3", FMOD_LOOP_NORMAL, 0.5f);
+						sound.playSoundEffect("Hearbeat_2-Mike_Koenig-143666461.mp3", FMOD_DEFAULT, 0.5f);
 					}
 					else if (c_Player.getHealth() == 20)
 					{
-						sound.playSoundEffect("Hearbeat_2-Mike_Koenig-143666461.mp3", FMOD_LOOP_NORMAL, 0.6f);
+						sound.playSoundEffect("Hearbeat_2-Mike_Koenig-143666461.mp3", FMOD_DEFAULT, 0.6f);
 					}
 					else if (c_Player.getHealth() == 10)
 					{
-						sound.playSoundEffect("Hearbeat_2-Mike_Koenig-143666461.mp3", FMOD_LOOP_NORMAL, 0.7f);
+						sound.playSoundEffect("Hearbeat_2-Mike_Koenig-143666461.mp3", FMOD_DEFAULT, 0.7f);
 					}
 
 					if (c_Player.getHealth() <= 0)
 					{
-						c_Player.setIsAlive(false);
 						sound.stopSong();
 						sound.stopSoundEffect();
+						c_Player.setIsAlive(false);
 					}
 				}
 				else if (tWorld_Object_List->fFireball_Matrix[i].tW.fY < -5)
