@@ -464,9 +464,39 @@ void cGame_Loop::Update()
 				{
 					tWorld_Object_List->fFireball_State[i] = false;
 					tWorld_Object_List->fFireballs_Alive -= 1;
+
+					if (tWorld_Object_List->fExplosion_State[i] == false)
+					{
+						tWorld_Object_List->fExplosion_State[i] = true;
+						tWorld_Object_List->fExplosion_Matrix[i] = tWorld_Object_List->fAlert_Matrix[i];
+						explosionTimer[i] = 0.5f;
+						if (c_AI.getHP() < 3)
+						{
+							sound.playSoundEffect("Blast-SoundBible.com-2068539061.mp3", FMOD_DEFAULT, 0.6f);
+						}
+					}
+
 				}
 			}
 			// Shield vs Dragon Fireball
+
+			//explosion stuff
+			for (int i = 0; i < tWorld_Object_List->maxFireballs; i++)
+			{
+				if (tWorld_Object_List->fExplosion_State[i] == false)
+				{
+					continue;
+				}
+
+				explosionTimer[i] -= c_XTime.Delta();
+
+				if (explosionTimer[i] <= 0)
+				{
+					tWorld_Object_List->fExplosion_State[i] = false;
+				}
+
+			}
+			//explosion stuff
 
 			// Player vs Dragon Fireball
 			for (int i = 0; i < tWorld_Object_List->maxFireballs; i++)
@@ -907,8 +937,6 @@ void cGame_Loop::Update()
 			timeCheck = 0;
 		}
 
-		if ((!c_Player.getIsAlive() || !c_Dragon.getIsAlive()) && m_nScene_Id == 2)
-			bChange_Scene = true;
 
 		// Player Fireball
 		if (c_Player_Spell_01.getPosition4().fX < -500 || c_Player_Spell_01.getPosition4().fX > 500 || c_Player_Spell_01.getPosition4().fY < -50 || c_Player_Spell_01.getPosition4().fY > 400 || c_Player_Spell_01.getPosition4().fZ < -500 || c_Player_Spell_01.getPosition4().fZ > 500)
@@ -1025,6 +1053,21 @@ void cGame_Loop::Update()
 	}
 
 
+	if ((!c_Player.getIsAlive() || !c_Dragon.getIsAlive()) && m_nScene_Id == 2)
+	{
+		if (!bChange_Scene && !endTimeSet)
+		{
+			end_time = c_XTime.TotalTimeExact();
+			endTimeSet = true;
+		}
+
+		if (c_XTime.TotalTimeExact() > end_time + 2)
+		{
+			bChange_Scene = true;
+			endTimeSet = false;
+		}
+	}
+
 	// Scene Transitions
 	if (bChange_Scene && timeCheck == 0)
 	{
@@ -1045,6 +1088,24 @@ void cGame_Loop::Update()
 			bMove_Spell_02 = false;
 			bSpell_Ready_01 = false;
 			bSpell_Ready_02 = false;
+
+			/*if (switchScene == false)
+			{
+				switchTimer = 5.0f;
+			}
+			switchScene = true;
+		}
+
+		if (switchScene == true)
+		{
+			switchTimer -= c_XTime.Delta();
+		}
+
+		if (switchTimer < -0.01f)
+		{
+			bChange_Scene = true;
+			switchScene = false;
+			switchTimer = 0.0f;*/
 
 			if (c_Player.getHealth() <= 0)
 			{
@@ -1099,7 +1160,7 @@ void cGame_Loop::Update()
 
 	switch (c_Spell_Shield_01.getHealth())
 	{
-	case 1:		
+	case 1:
 		fname = "Shield_Red.dds";
 		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[10]);
 		break;
@@ -1339,7 +1400,7 @@ void cGame_Loop::Update()
 	//c_Render_Manager.Debugging_AABB(tAABB_Player, c_Head_Mount, c_Offset_Matrix.GetPosition4x4());
 	//c_Render_Manager.Debugging_AABB(tAABB_Player_Shield_01, c_Head_Mount, c_Offset_Matrix.GetPosition4x4());
 	//c_Render_Manager.Debugging_AABB(tAABB_Player_Shield_02, c_Head_Mount, c_Offset_Matrix.GetPosition4x4());
-	
+
 	/*
 	if (m_nScene_Id == 2)
 	{

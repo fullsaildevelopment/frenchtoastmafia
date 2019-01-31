@@ -70,6 +70,11 @@ void AI::resolveDragonState(tScene_Objects* tObject_List, tFloat4x4 _playerPos, 
 				moveMat = XMMatrixTranslation(0, 0.0f, 0.0f);
 			}
 
+			if (dragHP < 3 && tObject_List->fWorld_Matrix[2].tW.fY < 60)
+			{
+				moveMat = XMMatrixMultiply(XMMatrixTranslation(0.0f, 50.0f * _dTime, 0.0f), moveMat);
+			}
+
 			XMMATRIX centerMat = XMMatrixTranslation(0.0f, 0.0f, 0.0f);
 
 			//XMMATRIX moveMat = XMMatrixIdentity();
@@ -141,7 +146,7 @@ void AI::resolveDragonState(tScene_Objects* tObject_List, tFloat4x4 _playerPos, 
 
 				oldProjPosMat = XMMatrixMultiply(oldProjPosMat, XMMatrixTranslation(-100, 300, 0));
 
-				int modNum = 40;
+				int modNum = 100;
 				int addNum = 5;
 
 

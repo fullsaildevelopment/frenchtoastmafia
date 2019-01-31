@@ -85,7 +85,11 @@ private:
 
 	tAABB tAABB_Dragon_Fireball[3];
 
-
+	float explosionTimer[9];
+	bool switchScene = false;
+	float switchTimer = 0.0f;
+	double end_time;
+	bool endTimeSet = false;
 	// Particle Stuff
 
 	Particle p;

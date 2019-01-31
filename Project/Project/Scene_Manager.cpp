@@ -666,7 +666,7 @@ tScene_Objects* cScene_Manager::Get_World_Scene(int nScene_Id)
 	// GAME
 	else
 	{
-		tScene->nObject_Count = 8;
+		tScene->nObject_Count = 9;
 
 		// Battle Mage - 0
 		{
@@ -847,9 +847,10 @@ tScene_Objects* cScene_Manager::Get_World_Scene(int nScene_Id)
 
 			tScene->tAnim_Clip[2][0] = cBinary_Read.Read_Skeleton("Dragon_Flying2Skeleton.bin");
 			tScene->tAnim_Clip[2][1] = cBinary_Read.Read_Skeleton("Dragon_GetHit2Skeleton.bin");
+			tScene->tAnim_Clip[2][2] = cBinary_Read.Read_Skeleton("Dragon_Sleeping2Skeleton.bin");
 			tScene->tAnim_Data[2] = Create_Inverse_Bind_Pose(tScene->tAnim_Clip[2][0].tKeyFrames[0]);
 
-			tScene->currAnim[2] = 0;
+			tScene->currAnim[2] = 2;
 		}
 		// Anim Test
 
@@ -1055,6 +1056,61 @@ tScene_Objects* cScene_Manager::Get_World_Scene(int nScene_Id)
 			tScene->tMaterials_Data[7].tMats[0].szDiffuse_File_Path = "Fireball.fbm\\Fireball_D.png";
 		}
 		// Marker
+
+		// Explosion - 8
+		{
+			XMFLOAT4X4 temp;
+
+			XMMATRIX tempMatrix = XMMatrixIdentity();
+			tempMatrix = XMMatrixMultiply(tempMatrix, XMMatrixTranslation(-20.0f, 0.0f, 0.0f));
+
+			XMStoreFloat4x4(&temp, tempMatrix);
+
+			tScene->fWorld_Matrix[8] = XMFLOAT4x4_to_tFloat4x4(temp);
+			tMesh tExplosion = cBinary_Read.Read_Mesh("explosionMesh.bin");
+
+			for (int i = 0; i < tExplosion.nVertex_Count; i++)
+			{
+				tExplosion.tVerts[i].fPosition.fZ *= -1;
+
+				tExplosion.tVerts[i].fPosition.fX *= 0.5;
+				tExplosion.tVerts[i].fPosition.fY *= 0.5;
+				tExplosion.tVerts[i].fPosition.fZ *= 0.5;
+			}
+
+			for (int i = 0; i < tExplosion.nVertex_Count; i++)
+			{
+				tScene->tMesh_Data[8].tVerts.push_back(tExplosion.tVerts[i]);
+			}
+
+			tScene->tMesh_Data[8].nVertex_Count = tExplosion.nVertex_Count;
+
+
+			for (int i = 0; i < tExplosion.nIndex_Count; i++)
+			{
+				tScene->tMesh_Data[8].nIndicies.push_back(tExplosion.nIndicies[i]);
+			}
+			for (int i = 0; i < tExplosion.nIndex_Count; i++)
+			{
+				if (i % 3 == 0)
+				{
+					tScene->tMesh_Skinned_Data[2].nIndicies.push_back(tExplosion.nIndicies[i + 2]);
+				}
+				if (i % 3 == 1)
+				{
+					tScene->tMesh_Skinned_Data[2].nIndicies.push_back(tExplosion.nIndicies[i]);
+				}
+				if (i % 3 == 2)
+				{
+					tScene->tMesh_Skinned_Data[2].nIndicies.push_back(tExplosion.nIndicies[i - 2]);
+				}
+			}
+			tScene->tMesh_Data[8].nIndex_Count = tExplosion.nIndex_Count;
+
+			tScene->tMaterials_Data[8] = cBinary_Read.Read_Material("explosionMaterial.bin");
+			tScene->tMaterials_Data[8].tMats[0].szDiffuse_File_Path = "Explosion.fbm\\explosion.png";
+		}
+		// Explosion
 
 	}
 

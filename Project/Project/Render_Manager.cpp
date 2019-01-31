@@ -1145,6 +1145,26 @@ void cRender_Manager::Draw_World(int nScene_Id, tScene_Objects* tObject_List, bo
 					c_Graphics_Setup->Get_Context().Get()->DrawIndexed(tObject_List->tMesh_Data[i].nIndex_Count, 0, 0);
 				}
 			}
+			else if (i == 8)
+			{
+				for (int j = 0; j < tObject_List->maxFireballs; j++)
+				{
+					if (tObject_List->fExplosion_State[j] == false)
+					{
+						continue;
+					}
+					tWVP.fWorld_Matrix = tFloat4x4_to_XMFLOAT4x4(tObject_List->fExplosion_Matrix[j]);
+
+					// MAP DATA
+					c_Graphics_Setup->Get_Context().Get()->Map(d3d_Constant_Buffer_WVP.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &d3d_MSR);
+					memcpy(d3d_MSR.pData, &tWVP, sizeof(tConstantBuffer_VertexShader_WVP));
+					c_Graphics_Setup->Get_Context().Get()->Unmap(d3d_Constant_Buffer_WVP.Get(), 0);
+					ID3D11Buffer *tmp_wvpc_buffer[] = { d3d_Constant_Buffer_WVP.Get() };
+					c_Graphics_Setup->Get_Context().Get()->VSSetConstantBuffers(0, 1, tmp_wvpc_buffer);
+
+					c_Graphics_Setup->Get_Context().Get()->DrawIndexed(tObject_List->tMesh_Data[i].nIndex_Count, 0, 0);
+				}
+			}
 			else
 			{
 				if (tObject_List->bIs_Animated[i])
@@ -1303,7 +1323,7 @@ void cRender_Manager::Draw_World(int nScene_Id, tScene_Objects* tObject_List, bo
 				XMMATRIX lookat_Fireball_Matrix;
 				XMMATRIX player_Pos_Matrix;
 				                                                    // RIGHT FIRE = 11 LEFT FIRE = 8
-				//if (spell_id.fZ == 1 )   // left hand fire 
+				//if (spell_id.fZ == 1 )   // left hand fire
 
 				//	if (spell_id.fW == 1) // right hand fire
 
@@ -1399,7 +1419,7 @@ void cRender_Manager::Draw_World(int nScene_Id, tScene_Objects* tObject_List, bo
 				XMMATRIX lookat_Fireball_Matrix;
 				XMMATRIX player_Pos_Matrix;
 				// RIGHT FIRE = 11 LEFT FIRE = 8
-//if (spell_id.fZ == 1 )   // left hand fire 
+//if (spell_id.fZ == 1 )   // left hand fire
 
 //	if (spell_id.fW == 1) // left hand fire
 
@@ -1495,7 +1515,7 @@ void cRender_Manager::Draw_World(int nScene_Id, tScene_Objects* tObject_List, bo
 				// left ice = fz 2
 
 				// right ice fw 2
-				
+
 				// RIGHT ICE = 12 LEFT ICE = 9
 				XMFLOAT4X4 temp_f = tFloat4x4_to_XMFLOAT4x4(tPersonal_Object_List->fWorld_Matrix[12]);   //  changes the fireball world matrix from a tFloat4x4 to a XMFLOAT4x4
 				lookat_Fireball_Matrix = DirectX::XMLoadFloat4x4(&temp_f);                     //  changes the fireball world matrix from a XMFloat4x4 to a XMMATRIX
@@ -2066,7 +2086,7 @@ void cRender_Manager::Draw_UI(tScene_Objects* t_Object_List, cHead_Mount c_Head_
 						XMMATRIX xmm_drag = XMLoadFloat4x4(&xmf_drag);
 						//xmm_drag = XMMatrixMultiply(xmm_drag, XMMatrixTranslation(120.0f, 400.0f, -300.0f));  // -300.0f, 600.0f, -300.0f
 						xmm_drag = XMMatrixMultiply(XMMatrixTranslation(0.0f, 100.0f, -500.0f), xmm_drag);
-		
+
 						XMFLOAT4X4 player_pos_4x4;
 						player_pos_4x4 = tFloat4x4_to_XMFLOAT4x4(player.getPosition4x4());
 						XMMATRIX player_pos_Matrix;
