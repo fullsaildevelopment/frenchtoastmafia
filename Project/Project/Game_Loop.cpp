@@ -961,14 +961,30 @@ void cGame_Loop::Update()
 		else
 			c_Player_Spell_02.setIsActive(false);
 	}
+	bool stopper = false;
+	float dist = sqrt((c_Offset_Matrix.GetPosition4x4().tW.fX * c_Offset_Matrix.GetPosition4x4().tW.fX) + (c_Offset_Matrix.GetPosition4x4().tW.fZ * c_Offset_Matrix.GetPosition4x4().tW.fZ));
+	if (dist > 46)
+	{
+		cOffset_Matrix tempOffset = c_Offset_Matrix;
+		tempOffset.Update_Offset(c_XTime.Delta(), c_Head_Mount.Get_mat4HMDPose(), movement);
+		float dist2 = sqrt((tempOffset.GetPosition4x4().tW.fX * tempOffset.GetPosition4x4().tW.fX) + (tempOffset.GetPosition4x4().tW.fZ * tempOffset.GetPosition4x4().tW.fZ));
+		if (dist2 > dist)
+		{
+			stopper = true;
+		}
 
+	}
 	// Trackpad movement
+
 	if (movement.fX > 0.0f || movement.fY > 0.0f || movement.fZ > 0.0f || movement.fW > 0.0f)
 	{
-		c_Offset_Matrix.Update_Offset(c_XTime.Delta(), c_Head_Mount.Get_mat4HMDPose(), movement);
-		bCharacter_Moving = true;
+		if (!stopper)
+		{
+			c_Offset_Matrix.Update_Offset(c_XTime.Delta(), c_Head_Mount.Get_mat4HMDPose(), movement);
+			bCharacter_Moving = true;
+		}
 	}
-
+	stopper = false;
 	if (movement.fX == 0.0f && movement.fY == 0.0f && movement.fZ == 0.0f && movement.fW == 0.0f)
 		bCharacter_Moving = false;
 
