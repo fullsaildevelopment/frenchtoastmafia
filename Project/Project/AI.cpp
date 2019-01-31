@@ -68,6 +68,7 @@ void AI::resolveDragonState(tScene_Objects* tObject_List, tFloat4x4 _playerPos, 
 			else
 			{
 				moveMat = XMMatrixTranslation(0, 0.0f, 0.0f);
+				tObject_List->currAnim[2] = 2;
 			}
 
 			if (dragHP < 3 && tObject_List->fWorld_Matrix[2].tW.fY < 60)
