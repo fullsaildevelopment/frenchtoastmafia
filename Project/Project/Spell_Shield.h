@@ -3,7 +3,7 @@
 class cSpell_Shield : public cBase_Spell
 {
 private:
-	int m_nHealth = 3;
+	int m_nHealth = 6;
 
 public:
 	cSpell_Shield();

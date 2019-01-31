@@ -23,5 +23,5 @@ void cSpell_Shield::setHealth(int change)
 
 void cSpell_Shield::resetHealth()
 {
-	m_nHealth = 3;
+	m_nHealth = 6;
 }

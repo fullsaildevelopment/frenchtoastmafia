@@ -170,7 +170,7 @@ void cGame_Loop::Update()
 		{
 			tAABB_Player.center = c_Player.getPosition4().fXYZ;
 			tAABB_Player.center.fY -= 0.875f;
-			tAABB_Player.extents = tFloat3{ 0.3f, 1.0f, 0.3f };
+			tAABB_Player.extents = tFloat3{ 1.0f, 2.0f, 1.0f };
 
 			tAABB_Left_Hand.center = c_Controllers.Get_Left_Hand().tW.fXYZ;
 			tAABB_Left_Hand.center.fZ -= 0.125f;
@@ -187,22 +187,24 @@ void cGame_Loop::Update()
 			tAABB_Player_Spell_02.extents = tFloat3{ 0.2f, 0.13f, 0.2f };
 
 			tAABB_Player_Shield_01.center = tPersonal_Object_List->fWorld_Matrix[10].tW.fXYZ;
-			tAABB_Player_Shield_01.extents = tFloat3{ 0.1f, 0.55f, 0.65f };
+			//tAABB_Player_Shield_01.extents = tFloat3{ 0.1f, 0.55f, 0.65f };
+			tAABB_Player_Shield_01.extents = tFloat3{ 1.0f, 5.5f, 6.5f };
 
 			tAABB_Player_Shield_02.center = tPersonal_Object_List->fWorld_Matrix[13].tW.fXYZ;
-			tAABB_Player_Shield_02.extents = tFloat3{ 0.1f, 0.55f, 0.65f };
+			//tAABB_Player_Shield_02.extents = tFloat3{ 0.1f, 0.55f, 0.65f };
+			tAABB_Player_Shield_01.extents = tFloat3{ 1.0f, 5.5f, 6.5f };
 
 			tAABB_Dragon.center = c_Dragon.getPosition4().fXYZ;
 			tAABB_Dragon.extents = tFloat3{ 15.0f, 100.0f, 35.0f };
 
 			tAABB_Dragon_Fireball[0].center = tWorld_Object_List->fFireball_Matrix[0].tW.fXYZ;
-			tAABB_Dragon_Fireball[0].extents = tFloat3{ 0.2f, 0.13f, 0.2f };
+			tAABB_Dragon_Fireball[0].extents = tFloat3{ 4.0f, 4.0f, 4.0f };
 
 			tAABB_Dragon_Fireball[1].center = tWorld_Object_List->fFireball_Matrix[1].tW.fXYZ;
-			tAABB_Dragon_Fireball[1].extents = tFloat3{ 0.2f, 0.13f, 0.2f };
+			tAABB_Dragon_Fireball[1].extents = tFloat3{ 4.0f, 4.0f, 4.0f };
 
 			tAABB_Dragon_Fireball[2].center = tWorld_Object_List->fFireball_Matrix[2].tW.fXYZ;
-			tAABB_Dragon_Fireball[2].extents = tFloat3{ 0.2f, 0.13f, 0.2f };
+			tAABB_Dragon_Fireball[2].extents = tFloat3{ 4.0f, 4.0f, 4.0f };
 
 
 			// Spell Book

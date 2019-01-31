@@ -98,8 +98,8 @@ void AI::resolveDragonState(tScene_Objects* tObject_List, tFloat4x4 _playerPos, 
 				//oldProjPosMat = XMMatrixMultiply(XMMatrixTranslation(2, 0, 0), oldProjPosMat);
 
 				XMMATRIX newProjPosMat = lookAtMatrix(oldProjPosMat, playerPosMat);
-				XMMATRIX newProjPosMat2 = XMMatrixMultiply(XMMatrixTranslation(5, 0, 0), newProjPosMat);
-				XMMATRIX newProjPosMat3 = XMMatrixMultiply(XMMatrixTranslation(-5, 0, 0), newProjPosMat);
+				XMMATRIX newProjPosMat2 = XMMatrixMultiply(XMMatrixTranslation(10, 0, 0), newProjPosMat);
+				XMMATRIX newProjPosMat3 = XMMatrixMultiply(XMMatrixTranslation(-10, 0, 0), newProjPosMat);
 
 
 				XMFLOAT4X4 newProjPos4x4;
