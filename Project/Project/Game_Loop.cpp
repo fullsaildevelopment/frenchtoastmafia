@@ -932,7 +932,25 @@ void cGame_Loop::Update()
 		}
 
 		if ((!c_Player.getIsAlive() || !c_Dragon.getIsAlive()) && m_nScene_Id == 2)
+		{
+			if (switchScene == false)
+			{
+				switchTimer = 5.0f;
+			}
+			switchScene = true;
+		}
+
+		if (switchScene == true)
+		{
+			switchTimer -= c_XTime.Delta();
+		}
+
+		if (switchTimer < -0.01f)
+		{
 			bChange_Scene = true;
+			switchScene = false;
+			switchTimer = 0.0f;
+		}
 
 		// Player Fireball
 		if (c_Player_Spell_01.getPosition4().fX < -500 || c_Player_Spell_01.getPosition4().fX > 500 || c_Player_Spell_01.getPosition4().fY < -50 || c_Player_Spell_01.getPosition4().fY > 400 || c_Player_Spell_01.getPosition4().fZ < -500 || c_Player_Spell_01.getPosition4().fZ > 500)
