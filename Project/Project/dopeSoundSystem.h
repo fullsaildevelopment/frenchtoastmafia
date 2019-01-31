@@ -31,5 +31,6 @@ public:
 	void updateSoundSystem();
 	void muteAudio();
 	void playSoundEffect(const char* soundName, FMOD_MODE channel_mode, float volume_level);
+	void stopSoundEffect();
 };
 

@@ -82,7 +82,7 @@ void cGame_Loop::Update()
 		XMStoreFloat4x4(&xmf_out, xmm_in);
 		c_Spell_Book.setPosition4x4(XMFLOAT4x4_to_tFloat4x4(xmf_out));
 
-		if (bMove_Spell_01)
+		if (bMove_Spell_01 && personal_swap_Id.fZ != 3)
 		{
 			if (personal_swap_Id.fZ == 1)
 				xmf_in = tFloat4x4_to_XMFLOAT4x4(tPersonal_Object_List->fWorld_Matrix[8]);
@@ -120,7 +120,7 @@ void cGame_Loop::Update()
 				tPersonal_Object_List->fWorld_Matrix[10] = c_Player_Spell_01.getPosition4x4();
 		}
 
-		if (bMove_Spell_02)
+		if (bMove_Spell_02 && personal_swap_Id.fW != 3)
 		{
 			if (personal_swap_Id.fW == 1)
 				xmf_in = tFloat4x4_to_XMFLOAT4x4(tPersonal_Object_List->fWorld_Matrix[11]);
@@ -169,10 +169,16 @@ void cGame_Loop::Update()
 		// AABB
 		{
 			tAABB_Player.center = c_Player.getPosition4().fXYZ;
-			tAABB_Player.center.fY -= 0.5f;
-			tAABB_Player.extents = tFloat3{ 5, 5, 5 };
-			//tAABB_Player.extents = tFloat3{ 0.75f, 1.25f, 0.75f };
+			tAABB_Player.center.fY -= 0.875f;
+			tAABB_Player.extents = tFloat3{ 0.3f, 1.0f, 0.3f };
 
+			tAABB_Left_Hand.center = c_Controllers.Get_Left_Hand().tW.fXYZ;
+			tAABB_Left_Hand.center.fZ -= 0.125f;
+			tAABB_Left_Hand.extents = tFloat3{ 0.15f, 0.0625f, 0.15f };
+
+			tAABB_Right_Hand.center = c_Controllers.Get_Right_Hand().tW.fXYZ;
+			tAABB_Right_Hand.center.fZ -= 0.125f;
+			tAABB_Right_Hand.extents = tFloat3{ 0.15f, 0.0625f, 0.15f };
 
 			tAABB_Player_Spell_01.center = c_Player_Spell_01.getPosition4().fXYZ;
 			tAABB_Player_Spell_01.extents = tFloat3{ 0.2f, 0.13f, 0.2f };
@@ -181,10 +187,10 @@ void cGame_Loop::Update()
 			tAABB_Player_Spell_02.extents = tFloat3{ 0.2f, 0.13f, 0.2f };
 
 			tAABB_Player_Shield_01.center = tPersonal_Object_List->fWorld_Matrix[10].tW.fXYZ;
-			tAABB_Player_Shield_01.extents = tFloat3{ 1.0f, 0.75f, 1.0f };
+			tAABB_Player_Shield_01.extents = tFloat3{ 0.1f, 0.55f, 0.65f };
 
 			tAABB_Player_Shield_02.center = tPersonal_Object_List->fWorld_Matrix[13].tW.fXYZ;
-			tAABB_Player_Shield_02.extents = tFloat3{ 1.0f, 0.75f, 1.0f };
+			tAABB_Player_Shield_02.extents = tFloat3{ 0.1f, 0.55f, 0.65f };
 
 			tAABB_Dragon.center = c_Dragon.getPosition4().fXYZ;
 			tAABB_Dragon.extents = tFloat3{ 15.0f, 100.0f, 35.0f };
@@ -198,11 +204,6 @@ void cGame_Loop::Update()
 			tAABB_Dragon_Fireball[2].center = tWorld_Object_List->fFireball_Matrix[2].tW.fXYZ;
 			tAABB_Dragon_Fireball[2].extents = tFloat3{ 0.2f, 0.13f, 0.2f };
 
-			tAABB_Left_Hand.center = c_Controllers.Get_Left_Hand().tW.fXYZ;
-			tAABB_Left_Hand.extents = tFloat3{ 0.0625f, 0.0625f, 0.15f };
-
-			tAABB_Right_Hand.center = c_Controllers.Get_Right_Hand().tW.fXYZ;
-			tAABB_Right_Hand.extents = tFloat3{ 0.0625f, 0.0625f, 0.15f };
 
 			// Spell Book
 			{
@@ -216,7 +217,7 @@ void cGame_Loop::Update()
 					XMStoreFloat4x4(&xmf_out, xmm_out);
 					tOut = XMFLOAT4x4_to_tFloat4x4(xmf_out);
 					tAABB_Spell_1.center = tOut.tW.fXYZ;
-					tAABB_Spell_1.extents = tFloat3{ 0.0625f, 0.0625f, 0.1f };
+					tAABB_Spell_1.extents = tFloat3{ 0.0625f, 0.0625f, 0.0625f };
 				}
 				// Fireball
 
@@ -230,7 +231,7 @@ void cGame_Loop::Update()
 					XMStoreFloat4x4(&xmf_out, xmm_out);
 					tOut = XMFLOAT4x4_to_tFloat4x4(xmf_out);
 					tAABB_Spell_2.center = tOut.tW.fXYZ;
-					tAABB_Spell_2.extents = tFloat3{ 0.0625f, 0.0625f, 0.1f };
+					tAABB_Spell_2.extents = tFloat3{ 0.0625f, 0.0625f, 0.0625f };
 				}
 				// Icebolt
 
@@ -244,7 +245,7 @@ void cGame_Loop::Update()
 					XMStoreFloat4x4(&xmf_out, xmm_out);
 					tOut = XMFLOAT4x4_to_tFloat4x4(xmf_out);
 					tAABB_Spell_3.center = tOut.tW.fXYZ;
-					tAABB_Spell_3.extents = tFloat3{ 0.0625f, 0.0625f, 0.1f };
+					tAABB_Spell_3.extents = tFloat3{ 0.0625f, 0.0625f, 0.0625f };
 				}
 				// Shield
 
@@ -258,7 +259,7 @@ void cGame_Loop::Update()
 					XMStoreFloat4x4(&xmf_out, xmm_out);
 					tOut = XMFLOAT4x4_to_tFloat4x4(xmf_out);
 					tAABB_Cancel.center = tOut.tW.fXYZ;
-					tAABB_Cancel.extents = tFloat3{ 0.0625f, 0.0625f, 0.1f };
+					tAABB_Cancel.extents = tFloat3{ 0.0625f, 0.0625f, 0.0625f };
 				}
 				// Cancel
 			}
@@ -276,7 +277,7 @@ void cGame_Loop::Update()
 					XMStoreFloat4x4(&xmf_out, xmm_out);
 					tOut = XMFLOAT4x4_to_tFloat4x4(xmf_out);
 					tAABB_Fireball_1.center = tOut.tW.fXYZ;
-					tAABB_Fireball_1.extents = tFloat3{ 0.03125f, 0.03125f, 0.1f };
+					tAABB_Fireball_1.extents = tFloat3{ 0.03125f, 0.03125f, 0.03125f };
 				}
 				// Node 1
 
@@ -290,7 +291,7 @@ void cGame_Loop::Update()
 					XMStoreFloat4x4(&xmf_out, xmm_out);
 					tOut = XMFLOAT4x4_to_tFloat4x4(xmf_out);
 					tAABB_Fireball_2.center = tOut.tW.fXYZ;
-					tAABB_Fireball_2.extents = tFloat3{ 0.03125f, 0.03125f, 0.1f };
+					tAABB_Fireball_2.extents = tFloat3{ 0.03125f, 0.03125f, 0.03125f };
 				}
 				// Node 2
 
@@ -304,7 +305,7 @@ void cGame_Loop::Update()
 					XMStoreFloat4x4(&xmf_out, xmm_out);
 					tOut = XMFLOAT4x4_to_tFloat4x4(xmf_out);
 					tAABB_Fireball_3.center = tOut.tW.fXYZ;
-					tAABB_Fireball_3.extents = tFloat3{ 0.03125f, 0.03125f, 0.1f };
+					tAABB_Fireball_3.extents = tFloat3{ 0.03125f, 0.03125f, 0.03125f };
 				}
 				// Node 3
 			}
@@ -322,7 +323,7 @@ void cGame_Loop::Update()
 					XMStoreFloat4x4(&xmf_out, xmm_out);
 					tOut = XMFLOAT4x4_to_tFloat4x4(xmf_out);
 					tAABB_Icebolt_1.center = tOut.tW.fXYZ;
-					tAABB_Icebolt_1.extents = tFloat3{ 0.03125f, 0.03125f, 0.1f };
+					tAABB_Icebolt_1.extents = tFloat3{ 0.03125f, 0.03125f, 0.03125f };
 				}
 				// Node 1
 
@@ -336,7 +337,7 @@ void cGame_Loop::Update()
 					XMStoreFloat4x4(&xmf_out, xmm_out);
 					tOut = XMFLOAT4x4_to_tFloat4x4(xmf_out);
 					tAABB_Icebolt_2.center = tOut.tW.fXYZ;
-					tAABB_Icebolt_2.extents = tFloat3{ 0.03125f, 0.03125f, 0.1f };
+					tAABB_Icebolt_2.extents = tFloat3{ 0.03125f, 0.03125f, 0.03125f };
 				}
 				// Node 2
 
@@ -350,7 +351,7 @@ void cGame_Loop::Update()
 					XMStoreFloat4x4(&xmf_out, xmm_out);
 					tOut = XMFLOAT4x4_to_tFloat4x4(xmf_out);
 					tAABB_Icebolt_3.center = tOut.tW.fXYZ;
-					tAABB_Icebolt_3.extents = tFloat3{ 0.03125f, 0.03125f, 0.1f };
+					tAABB_Icebolt_3.extents = tFloat3{ 0.03125f, 0.03125f, 0.03125f };
 				}
 				// Node 3
 			}
@@ -368,7 +369,7 @@ void cGame_Loop::Update()
 					XMStoreFloat4x4(&xmf_out, xmm_out);
 					tOut = XMFLOAT4x4_to_tFloat4x4(xmf_out);
 					tAABB_Shield_1.center = tOut.tW.fXYZ;
-					tAABB_Shield_1.extents = tFloat3{ 0.03125f, 0.03125f, 0.1f };
+					tAABB_Shield_1.extents = tFloat3{ 0.03125f, 0.03125f, 0.03125f };
 				}
 				// Node 1
 
@@ -382,7 +383,7 @@ void cGame_Loop::Update()
 					XMStoreFloat4x4(&xmf_out, xmm_out);
 					tOut = XMFLOAT4x4_to_tFloat4x4(xmf_out);
 					tAABB_Shield_2.center = tOut.tW.fXYZ;
-					tAABB_Shield_2.extents = tFloat3{ 0.03125f, 0.03125f, 0.1f };
+					tAABB_Shield_2.extents = tFloat3{ 0.03125f, 0.03125f, 0.03125f };
 				}
 				// Node 2
 
@@ -396,7 +397,7 @@ void cGame_Loop::Update()
 					XMStoreFloat4x4(&xmf_out, xmm_out);
 					tOut = XMFLOAT4x4_to_tFloat4x4(xmf_out);
 					tAABB_Shield_3.center = tOut.tW.fXYZ;
-					tAABB_Shield_3.extents = tFloat3{ 0.03125f, 0.03125f, 0.1f };
+					tAABB_Shield_3.extents = tFloat3{ 0.03125f, 0.03125f, 0.03125f };
 				}
 				// Node 3
 			}
@@ -500,13 +501,14 @@ void cGame_Loop::Update()
 					}
 					else if (c_Player.getHealth() == 10)
 					{
-						sound.playSoundEffect("Hearbeat_2-Mike_Koenig-143666461.mp3", FMOD_DEFAULT, 0.7f);
+						sound.playSoundEffect("Hearbeat_2-Mike_Koenig-143666461.mp3", FMOD_LOOP_NORMAL, 0.7f);
 					}
 
 					if (c_Player.getHealth() <= 0)
 					{
 						c_Player.setIsAlive(false);
 						sound.stopSong();
+						sound.stopSoundEffect();
 					}
 				}
 				else if (tWorld_Object_List->fFireball_Matrix[i].tW.fY < -5)
@@ -915,7 +917,7 @@ void cGame_Loop::Update()
 
 		if (bMove_Spell_01)
 		{
-			if (!c_Player_Spell_01.getIsActive())
+			if (!c_Player_Spell_01.getIsActive() && personal_swap_Id.fZ != 3)
 				sound.playSoundEffect("Large Fireball-SoundBible.com-301502490.mp3", FMOD_DEFAULT, 0.6f);
 
 			c_Player_Spell_01.setIsActive(true);
@@ -925,7 +927,7 @@ void cGame_Loop::Update()
 
 		if (bMove_Spell_02)
 		{
-			if (!c_Player_Spell_02.getIsActive())
+			if (!c_Player_Spell_02.getIsActive() && personal_swap_Id.fW != 3)
 				sound.playSoundEffect("Large Fireball-SoundBible.com-301502490.mp3", FMOD_DEFAULT, 0.6f);
 
 			c_Player_Spell_02.setIsActive(true);
@@ -1022,6 +1024,7 @@ void cGame_Loop::Update()
 			c_Player.resetHealth();
 			c_Dragon.setIsAlive(true);
 			c_Dragon.resetHealth();
+			sound.stopSoundEffect();
 			sound.playSong("fionnulas-tale-celtic-flute-music.mp3", FMOD_LOOP_NORMAL, 0.1f);
 			c_Spell_Shield_01.resetHealth();
 			c_Spell_Shield_02.resetHealth();
@@ -1260,7 +1263,7 @@ void cGame_Loop::Update()
 	c_Animation_Manager.Animate(c_XTime.Delta(), c_XTime.TotalTimeExact(), tWorld_Object_List);
 	c_Render_Manager.set_particle_array(p.get_particles());   // JUST ADDED THIS
 	p.create_particles(fireball_color, c_XTime.Delta(), fireball_acceleration, fireball_kill, dragon_hit);
-	c_Render_Manager.Draw_World(m_nScene_Id, tWorld_Object_List, &bChange_Scene, c_Head_Mount, c_Offset_Matrix.GetPosition4x4(), c_XTime.TotalTime(), &c_AI, dragon_hit, c_XTime.Delta(), c_Player.getPosition4x4(), tPersonal_Object_List, c_Player_Spell_02.getIsActive());  // tPersonal_Object_List
+	c_Render_Manager.Draw_World(m_nScene_Id, tWorld_Object_List, &bChange_Scene, c_Head_Mount, c_Offset_Matrix.GetPosition4x4(), c_XTime.TotalTime(), &c_AI, dragon_hit, c_XTime.Delta(), c_Player.getPosition4x4(), tPersonal_Object_List, bMove_Spell_02, personal_swap_Id);  // tPersonal_Object_List
 	c_Render_Manager.Draw_UI(UI_Object_List, c_Head_Mount, c_Offset_Matrix.GetPosition4x4(), tWorld_Object_List->fWorld_Matrix[2], c_Dragon, c_Player);
 	c_Render_Manager.Draw_Spell(tSpell_Book, c_Head_Mount, c_Offset_Matrix.GetPosition4x4(), bDisplay_Spell_Book, false, bNode_Order);
 	c_Render_Manager.Draw_Spell(tFireball_Nodes, c_Head_Mount, c_Offset_Matrix.GetPosition4x4(), bDisplay_Fireball, true, bNode_Order);
@@ -1268,13 +1271,12 @@ void cGame_Loop::Update()
 	c_Render_Manager.Draw_Spell(tShield_Nodes, c_Head_Mount, c_Offset_Matrix.GetPosition4x4(), bDisplay_Shield, true, bNode_Order);
 	c_Render_Manager.Draw_Personal(tPersonal_Object_List, c_Head_Mount, c_Controllers, c_Offset_Matrix.GetPosition4x4(), &bMove_Spell_01, &bMove_Spell_02, &bSpell_Ready_01, &bSpell_Ready_02, c_Player, personal_swap_Id);
 
-
-	//c_Render_Manager.Debugging_AABB(tAABB_Player, c_Head_Mount, c_Offset_Matrix.GetPosition4x4());
-	//c_Render_Manager.Debugging_AABB(tAABB_Player_Shield_01, c_Head_Mount, c_Offset_Matrix.GetPosition4x4());
-	//c_Render_Manager.Debugging_AABB(tAABB_Player_Shield_02, c_Head_Mount, c_Offset_Matrix.GetPosition4x4());
-
-
 	// AABB Visual Debugging
+
+	c_Render_Manager.Debugging_AABB(tAABB_Player, c_Head_Mount, c_Offset_Matrix.GetPosition4x4());
+	c_Render_Manager.Debugging_AABB(tAABB_Player_Shield_01, c_Head_Mount, c_Offset_Matrix.GetPosition4x4());
+	c_Render_Manager.Debugging_AABB(tAABB_Player_Shield_02, c_Head_Mount, c_Offset_Matrix.GetPosition4x4());
+	
 	/*
 	if (m_nScene_Id == 2)
 	{

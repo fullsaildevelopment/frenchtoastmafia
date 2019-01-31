@@ -164,3 +164,10 @@ void dopeSoundSystem::playSoundEffect(const char* soundName, FMOD_MODE channel_m
 	soundEffectChannel->setVolume(volume_level);
 }
 
+void dopeSoundSystem::stopSoundEffect()
+{
+	soundEffectChannel->stop();
+}
+
+
+

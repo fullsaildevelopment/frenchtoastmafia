@@ -888,7 +888,7 @@ void cRender_Manager::Draw_Spell(tScene_Objects* tObject_List, cHead_Mount c_Hea
 	}
 }
 
-void cRender_Manager::Draw_World(int nScene_Id, tScene_Objects* tObject_List, bool *bChange_Scene, cHead_Mount c_Head_Mount, tFloat4x4 offset, double totalTime, AI* _AI, bool dragon_hit, double timeDelta, tFloat4x4 player_pos, tScene_Objects *tPersonal_Object_List, bool f_alive)
+void cRender_Manager::Draw_World(int nScene_Id, tScene_Objects* tObject_List, bool *bChange_Scene, cHead_Mount c_Head_Mount, tFloat4x4 offset, double totalTime, AI* _AI, bool dragon_hit, double timeDelta, tFloat4x4 player_pos, tScene_Objects *tPersonal_Object_List, bool f_alive, tFloat4 spell_id)
 {
 	keyboardInputs(tObject_List);
 
@@ -1257,7 +1257,7 @@ void cRender_Manager::Draw_World(int nScene_Id, tScene_Objects* tObject_List, bo
 				line_vert_count = preAlloc_particle.size();
 			}
 
-			if (f_alive == true)
+			if (f_alive == true && spell_id.fW == 1)
 			{
 				ZeroMemory(&particle_Vertex_Buffer_DATA, sizeof(D3D11_SUBRESOURCE_DATA));
 				particle_Vertex_Buffer_DATA.pSysMem = &preAlloc_particle;

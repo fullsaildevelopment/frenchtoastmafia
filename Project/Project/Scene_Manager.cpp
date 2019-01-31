@@ -1148,16 +1148,16 @@ tScene_Objects* cScene_Manager::Get_Spell_Book()
 			switch (obj_id)
 			{
 			case 1:
-				tempMatrix = XMMatrixMultiply(tempMatrix, XMMatrixTranslation(-0.175, 0.075, 0));
+				tempMatrix = XMMatrixMultiply(tempMatrix, XMMatrixTranslation(-0.175, 0.075, -0.125));
 				break;
 			case 2:
-				tempMatrix = XMMatrixMultiply(tempMatrix, XMMatrixTranslation(0.175, 0.075, 0));
+				tempMatrix = XMMatrixMultiply(tempMatrix, XMMatrixTranslation(0.175, 0.075, -0.125));
 				break;
 			case 3:
-				tempMatrix = XMMatrixMultiply(tempMatrix, XMMatrixTranslation(-0.175, -0.2, 0));
+				tempMatrix = XMMatrixMultiply(tempMatrix, XMMatrixTranslation(-0.175, -0.2, -0.125));
 				break;
 			case 4:
-				tempMatrix = XMMatrixMultiply(tempMatrix, XMMatrixTranslation(0.175, -0.2, 0));
+				tempMatrix = XMMatrixMultiply(tempMatrix, XMMatrixTranslation(0.175, -0.2, -0.125));
 				break;
 			default:
 				break;
@@ -1324,7 +1324,7 @@ tScene_Objects * cScene_Manager::Get_Spell_Node_Fireball()
 		// World Position
 		XMFLOAT4X4 temp;
 		XMMATRIX tempMatrix = XMMatrixIdentity();
-		tempMatrix = XMMatrixMultiply(tempMatrix, XMMatrixTranslation(0.1875, -0.1875, 0));
+		tempMatrix = XMMatrixMultiply(tempMatrix, XMMatrixTranslation(0.1875, -0.1875, 0.15));
 		XMStoreFloat4x4(&temp, tempMatrix);
 		tScene->fWorld_Matrix[obj_id] = XMFLOAT4x4_to_tFloat4x4(temp);
 
