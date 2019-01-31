@@ -1745,7 +1745,8 @@ void cRender_Manager::Draw_UI(tScene_Objects* t_Object_List, cHead_Mount c_Head_
 
 						XMFLOAT4X4 xmf_drag = tFloat4x4_to_XMFLOAT4x4(drag_World_Matrix);     // Health Bar moves up when dragon gets hit
 						XMMATRIX xmm_drag = XMLoadFloat4x4(&xmf_drag);
-						xmm_drag = XMMatrixMultiply(xmm_drag, XMMatrixTranslation(120.0f, 400.0f, -300.0f));  // -300.0f, 600.0f, -300.0f
+						//xmm_drag = XMMatrixMultiply(xmm_drag, XMMatrixTranslation(120.0f, 400.0f, -300.0f));  // -300.0f, 600.0f, -300.0f
+						xmm_drag = XMMatrixMultiply(XMMatrixTranslation(0.0f, 100.0f, -500.0f), xmm_drag);
 						xmm_drag = XMMatrixMultiply(health_bar_scaling, xmm_drag);  // JUST ADDED     Doesn't scale yet cuz it scales from the center
 						XMFLOAT4X4 player_pos_4x4;
 						player_pos_4x4 = tFloat4x4_to_XMFLOAT4x4(player.getPosition4x4());
@@ -1762,8 +1763,9 @@ void cRender_Manager::Draw_UI(tScene_Objects* t_Object_List, cHead_Mount c_Head_
 					{
 						XMFLOAT4X4 xmf_drag = tFloat4x4_to_XMFLOAT4x4(drag_World_Matrix);     // Health Bar moves up when dragon gets hit
 						XMMATRIX xmm_drag = XMLoadFloat4x4(&xmf_drag);
-						xmm_drag = XMMatrixMultiply(xmm_drag, XMMatrixTranslation(120.0f, 400.0f, -300.0f));  // -300.0f, 600.0f, -300.0f
-
+						//xmm_drag = XMMatrixMultiply(xmm_drag, XMMatrixTranslation(120.0f, 400.0f, -300.0f));  // -300.0f, 600.0f, -300.0f
+						xmm_drag = XMMatrixMultiply(XMMatrixTranslation(0.0f, 100.0f, -500.0f), xmm_drag);
+		
 						XMFLOAT4X4 player_pos_4x4;
 						player_pos_4x4 = tFloat4x4_to_XMFLOAT4x4(player.getPosition4x4());
 						XMMATRIX player_pos_Matrix;
@@ -1792,7 +1794,7 @@ void cRender_Manager::Draw_UI(tScene_Objects* t_Object_List, cHead_Mount c_Head_
 					c_Graphics_Setup->Get_Context().Get()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 					c_Graphics_Setup->Get_Context().Get()->VSSetShader(t_Object_List->d3d_Vertex_Shaders[i].Get(), NULL, 0);
 					c_Graphics_Setup->Get_Context().Get()->PSSetShader(t_Object_List->d3d_Pixel_Shaders[i].Get(), NULL, 0);
-					c_Graphics_Setup->Get_Context().Get()->PSSetShaderResources(0, 1, t_Object_List->d3d_SRV[i][0].GetAddressOf());
+					c_Graphics_Setup->Get_Context().Get()->PSSetShaderResources(0, 1, t_Object_List->d3d_SRV[i].GetAddressOf());
 					//c_Graphics_Setup->Get_Context().Get()->OMSetBlendState(c_Graphics_Setup->Get_Blend_State().Get(), blend, 0xffffffff);
 
 					//if (bDisplay_Spell_Book)

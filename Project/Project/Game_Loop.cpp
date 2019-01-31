@@ -537,7 +537,7 @@ void cGame_Loop::Update()
 					sound.stopSong();
 				}
 
-				bMove_Bullet = false;
+				
 			}
 			// Dragon vs Player Fireball
 
