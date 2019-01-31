@@ -537,7 +537,7 @@ void cGame_Loop::Update()
 					sound.stopSong();
 				}
 
-				
+
 			}
 			// Dragon vs Player Fireball
 
@@ -967,6 +967,9 @@ void cGame_Loop::Update()
 	// Scene Transitions
 	if (bChange_Scene)
 	{
+		if (m_nScene_Id == 3 || m_nScene_Id == 4)
+			m_nScene_Id == 5;
+
 		if (m_nScene_Id == 2)
 		{
 			personal_swap_Id = { 0.0f, 0.0f, 0.0f, 0.0f };
@@ -982,13 +985,18 @@ void cGame_Loop::Update()
 			bSpell_Ready_02 = false;
 			c_Spell_Shield_01.setIsActive(false);
 			c_Spell_Shield_02.setIsActive(false);
-			c_Spell_Shield_01.resetHealth();
-			c_Spell_Shield_02.resetHealth();
+
+			if (c_Player.getHealth() <= 0)
+				m_nScene_Id == 3;
+
+			if (c_Dragon.getHealth() <= 0)
+				m_nScene_Id == 4;
 		}
 
 		c_Render_Manager.Unload(tWorld_Object_List);
-		m_nScene_Id++;
-		if (m_nScene_Id > 3)
+
+
+		if (m_nScene_Id == 5)
 		{
 			m_nScene_Id = 2;
 			c_Player.setIsAlive(true);
@@ -996,6 +1004,8 @@ void cGame_Loop::Update()
 			c_Dragon.setIsAlive(true);
 			c_Dragon.resetHealth();
 			sound.playSong("fionnulas-tale-celtic-flute-music.mp3", FMOD_LOOP_NORMAL, 0.1f);
+			c_Spell_Shield_01.resetHealth();
+			c_Spell_Shield_02.resetHealth();
 		}
 		tWorld_Object_List = c_Scene_Manager.Get_World_Scene(m_nScene_Id);
 		c_Render_Manager.Load_Data(m_nScene_Id, tWorld_Object_List);
