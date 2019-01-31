@@ -919,11 +919,6 @@ void cRender_Manager::Draw_World(int nScene_Id, tScene_Objects* tObject_List, bo
 			dragonTint = { 1.0f, 0.0f, 0.0f, 1.0f };
 		}
 
-		if (_AI->getHP() <= 0)
-		{
-			*bChange_Scene = true;
-		}
-
 	}
 
 	if (flashTimer < 0.0f)

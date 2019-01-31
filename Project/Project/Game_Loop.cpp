@@ -931,26 +931,6 @@ void cGame_Loop::Update()
 			timeCheck = 0;
 		}
 
-		if ((!c_Player.getIsAlive() || !c_Dragon.getIsAlive()) && m_nScene_Id == 2)
-		{
-			if (switchScene == false)
-			{
-				switchTimer = 5.0f;
-			}
-			switchScene = true;
-		}
-
-		if (switchScene == true)
-		{
-			switchTimer -= c_XTime.Delta();
-		}
-
-		if (switchTimer < -0.01f)
-		{
-			bChange_Scene = true;
-			switchScene = false;
-			switchTimer = 0.0f;
-		}
 
 		// Player Fireball
 		if (c_Player_Spell_01.getPosition4().fX < -500 || c_Player_Spell_01.getPosition4().fX > 500 || c_Player_Spell_01.getPosition4().fY < -50 || c_Player_Spell_01.getPosition4().fY > 400 || c_Player_Spell_01.getPosition4().fZ < -500 || c_Player_Spell_01.getPosition4().fZ > 500)
@@ -1025,6 +1005,21 @@ void cGame_Loop::Update()
 	}
 
 
+	if ((!c_Player.getIsAlive() || !c_Dragon.getIsAlive()) && m_nScene_Id == 2)
+	{
+		if (!bChange_Scene && !endTimeSet)
+		{
+			end_time = c_XTime.TotalTimeExact();
+			endTimeSet = true;
+		}
+
+		if (c_XTime.TotalTimeExact() > end_time + 2)
+		{
+			bChange_Scene = true;
+			endTimeSet = false;
+		}
+	}
+
 	// Scene Transitions
 	if (bChange_Scene)
 	{
@@ -1045,6 +1040,24 @@ void cGame_Loop::Update()
 			bMove_Spell_02 = false;
 			bSpell_Ready_01 = false;
 			bSpell_Ready_02 = false;
+
+			/*if (switchScene == false)
+			{
+				switchTimer = 5.0f;
+			}
+			switchScene = true;
+		}
+
+		if (switchScene == true)
+		{
+			switchTimer -= c_XTime.Delta();
+		}
+
+		if (switchTimer < -0.01f)
+		{
+			bChange_Scene = true;
+			switchScene = false;
+			switchTimer = 0.0f;*/
 
 			if (c_Player.getHealth() <= 0)
 			{
