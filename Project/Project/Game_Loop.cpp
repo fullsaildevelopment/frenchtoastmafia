@@ -674,7 +674,7 @@ void cGame_Loop::Update()
 					if (bNode_Order[1])
 					{
 						// finish spell
-						sound.playSoundEffect("spell_finish.mp3", FMOD_DEFAULT, 0.4f);
+						sound.playSoundEffect("Striking Match-SoundBible.com-138366619.mp3", FMOD_DEFAULT, 0.7f);
 						bNode_Order[2] = true;
 						bDisplay_Spell_Book = false;
 						bDisplay_Spell_Node = false;
@@ -756,7 +756,7 @@ void cGame_Loop::Update()
 				{
 					if (bNode_Order[1])
 					{
-						sound.playSoundEffect("spell_finish.mp3", FMOD_DEFAULT, 0.4f);
+						sound.playSoundEffect("ice_finish.mp3", FMOD_DEFAULT, 0.4f);
 						bNode_Order[2] = true;
 						bDisplay_Spell_Book = false;
 						bDisplay_Spell_Node = false;
@@ -917,20 +917,46 @@ void cGame_Loop::Update()
 
 		if (bMove_Spell_01)
 		{
-			if (!c_Player_Spell_01.getIsActive() && personal_swap_Id.fZ != 3)
-				sound.playSoundEffect("Large Fireball-SoundBible.com-301502490.mp3", FMOD_DEFAULT, 0.6f);
+			if (!c_Player_Spell_01.getIsActive() && personal_swap_Id.fZ == 1)
+			{
+				if (part_noise == false)
+				{
+					part_noise = true;
+					sound.playSoundEffect("Large Fireball-SoundBible.com-301502490.mp3", FMOD_DEFAULT, 0.6f);
+				}
+			}
+
+			if (!c_Player_Spell_01.getIsActive() && personal_swap_Id.fZ == 2)
+			{
+				if (part_noise == false)
+				{
+					part_noise = true;
+					sound.playSoundEffect("ice_shot.mp3", FMOD_DEFAULT, 0.6f);
+				}
+			}
 
 			c_Player_Spell_01.setIsActive(true);
+			part_noise = false;
 		}
 		else
 			c_Player_Spell_01.setIsActive(false);
 
 		if (bMove_Spell_02)
 		{
-			if (!c_Player_Spell_02.getIsActive() && personal_swap_Id.fW != 3)
+			if (!c_Player_Spell_02.getIsActive() && personal_swap_Id.fW == 1)
+			{
+				part_noise = true;
 				sound.playSoundEffect("Large Fireball-SoundBible.com-301502490.mp3", FMOD_DEFAULT, 0.6f);
+			}
+
+			if (!c_Player_Spell_02.getIsActive() && personal_swap_Id.fW == 2)
+			{
+				part_noise = true;
+				sound.playSoundEffect("ice_shot.mp3", FMOD_DEFAULT, 0.6f);
+			}
 
 			c_Player_Spell_02.setIsActive(true);
+			part_noise = false;
 		}
 		else
 			c_Player_Spell_02.setIsActive(false);
@@ -1168,6 +1194,12 @@ void cGame_Loop::Update()
 		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[6]);
 		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[7]);
 		break;
+	case 0:
+		fname = "Hand_Life_000.dds";
+		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[4]);
+		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[5]);
+		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[6]);
+		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[7]);
 	default:
 		break;
 	}
@@ -1179,75 +1211,81 @@ void cGame_Loop::Update()
 	switch (c_Player.getHealth())
 	{
 	case 100:
-		fname = "hands_100.dds";
+		fname = "Hand_Life_100.dds";
 		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[0]);
 		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[1]);
 		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[2]);
 		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[3]);
 		break;
 	case 90:
-		fname = "hands_90.dds";
+		fname = "Hand_Life_090.dds";
 		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[0]);
 		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[1]);
 		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[2]);
 		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[3]);
 		break;
 	case 80:
-		fname = "hands_80.dds";
+		fname = "Hand_Life_080.dds";
 		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[0]);
 		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[1]);
 		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[2]);
 		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[3]);
 		break;
 	case 70:
-		fname = "hands_70.dds";
+		fname = "Hand_Life_070.dds";
 		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[0]);
 		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[1]);
 		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[2]);
 		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[3]);
 		break;
 	case 60:
-		fname = "hands_60.dds";
+		fname = "Hand_Life_060.dds";
 		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[0]);
 		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[1]);
 		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[2]);
 		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[3]);
 		break;
 	case 50:
-		fname = "hands_50.dds";
+		fname = "Hand_Life_050.dds";
 		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[0]);
 		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[1]);
 		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[2]);
 		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[3]);
 		break;
 	case 40:
-		fname = "hands_40.dds";
+		fname = "Hand_Life_040.dds";
 		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[0]);
 		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[1]);
 		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[2]);
 		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[3]);
 		break;
 	case 30:
-		fname = "hands_30.dds";
+		fname = "Hand_Life_030.dds";
 		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[0]);
 		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[1]);
 		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[2]);
 		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[3]);
 		break;
 	case 20:
-		fname = "hands_20.dds";
+		fname = "Hand_Life_020.dds";
 		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[0]);
 		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[1]);
 		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[2]);
 		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[3]);
 		break;
 	case 10:
-		fname = "hands_10.dds";
+		fname = "Hand_Life_010.dds";
 		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[0]);
 		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[1]);
 		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[2]);
 		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[3]);
 		break;
+	case 0:
+		fname = "Hand_Life_000.dds";
+		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[0]);
+		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[1]);
+		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[2]);
+		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[3]);
 	default:
 		break;
 	}
@@ -1263,7 +1301,7 @@ void cGame_Loop::Update()
 	c_Animation_Manager.Animate(c_XTime.Delta(), c_XTime.TotalTimeExact(), tWorld_Object_List);
 	c_Render_Manager.set_particle_array(p.get_particles());   // JUST ADDED THIS
 	p.create_particles(fireball_color, c_XTime.Delta(), fireball_acceleration, fireball_kill, dragon_hit);
-	c_Render_Manager.Draw_World(m_nScene_Id, tWorld_Object_List, &bChange_Scene, c_Head_Mount, c_Offset_Matrix.GetPosition4x4(), c_XTime.TotalTime(), &c_AI, dragon_hit, c_XTime.Delta(), c_Player.getPosition4x4(), tPersonal_Object_List, bMove_Spell_02, personal_swap_Id);  // tPersonal_Object_List
+	c_Render_Manager.Draw_World(m_nScene_Id, tWorld_Object_List, &bChange_Scene, c_Head_Mount, c_Offset_Matrix.GetPosition4x4(), c_XTime.TotalTime(), &c_AI, dragon_hit, c_XTime.Delta(), c_Player.getPosition4x4(), tPersonal_Object_List, bMove_Spell_02, personal_swap_Id, bMove_Spell_01);  // tPersonal_Object_List
 	c_Render_Manager.Draw_UI(UI_Object_List, c_Head_Mount, c_Offset_Matrix.GetPosition4x4(), tWorld_Object_List->fWorld_Matrix[2], c_Dragon, c_Player);
 	c_Render_Manager.Draw_Spell(tSpell_Book, c_Head_Mount, c_Offset_Matrix.GetPosition4x4(), bDisplay_Spell_Book, false, bNode_Order);
 	c_Render_Manager.Draw_Spell(tFireball_Nodes, c_Head_Mount, c_Offset_Matrix.GetPosition4x4(), bDisplay_Fireball, true, bNode_Order);
@@ -1273,9 +1311,9 @@ void cGame_Loop::Update()
 
 	// AABB Visual Debugging
 
-	c_Render_Manager.Debugging_AABB(tAABB_Player, c_Head_Mount, c_Offset_Matrix.GetPosition4x4());
-	c_Render_Manager.Debugging_AABB(tAABB_Player_Shield_01, c_Head_Mount, c_Offset_Matrix.GetPosition4x4());
-	c_Render_Manager.Debugging_AABB(tAABB_Player_Shield_02, c_Head_Mount, c_Offset_Matrix.GetPosition4x4());
+	//c_Render_Manager.Debugging_AABB(tAABB_Player, c_Head_Mount, c_Offset_Matrix.GetPosition4x4());
+	//c_Render_Manager.Debugging_AABB(tAABB_Player_Shield_01, c_Head_Mount, c_Offset_Matrix.GetPosition4x4());
+	//c_Render_Manager.Debugging_AABB(tAABB_Player_Shield_02, c_Head_Mount, c_Offset_Matrix.GetPosition4x4());
 	
 	/*
 	if (m_nScene_Id == 2)

@@ -120,6 +120,8 @@ private:
 	bool frogger = false;
 	bool hammy = false;
 
+	bool part_noise = false;
+
 public:
 	cGame_Loop();
 	~cGame_Loop();

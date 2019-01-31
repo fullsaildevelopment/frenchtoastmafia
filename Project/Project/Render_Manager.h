@@ -110,6 +110,7 @@ private:
 	tConstantBuffer_VertexShader_Bullet tPart;
 
 	ComPtr<ID3D11ShaderResourceView> particle_Shader_Resource_View;
+	ComPtr< ID3D11ShaderResourceView> ice_particle_Shader_Resource_View;
 	ComPtr<ID3D11SamplerState> particle_Sample_State;
 
 	ComPtr<ID3D11BlendState> particle_Blend_State;
@@ -159,7 +160,7 @@ public:
 	void Unload(tScene_Objects* t_Object_List);
 	void Draw_Personal(tScene_Objects* t_Object_List, cHead_Mount c_Head_Mount, cControllers c_Controllers, tFloat4x4 offset, bool *bMove_Spell_01, bool *bMove_Spell_02, bool *bSpell_Ready_01, bool *bSpell_Ready_02, cBase_Character player, tFloat4 tSwap_Id);
 	void Draw_Spell(tScene_Objects* t_Object_List, cHead_Mount c_Head_Mount, tFloat4x4 offset, bool bDisplay_Spell_Book, bool bUse_Node, bool bNode_Order[]);
-	void Draw_World(int nScene_Id, tScene_Objects* t_Object_List, bool *bChange_Scene, cHead_Mount c_Head_Mount, tFloat4x4 offset, double totalTime, AI* _AI, bool dragon_hit, double timeDelta, tFloat4x4 player_pos, tScene_Objects *tPersonal_Object_List, bool f_alive, tFloat4 spell_id);
+	void Draw_World(int nScene_Id, tScene_Objects* t_Object_List, bool *bChange_Scene, cHead_Mount c_Head_Mount, tFloat4x4 offset, double totalTime, AI* _AI, bool dragon_hit, double timeDelta, tFloat4x4 player_pos, tScene_Objects *tPersonal_Object_List, bool f_alive_right, tFloat4 spell_id, bool f_alive_left);
 	particle* get_particle_array();
 	void set_particle_array(particle* p_arr);
 	void keyboardInputs(tScene_Objects* tObject_List);
