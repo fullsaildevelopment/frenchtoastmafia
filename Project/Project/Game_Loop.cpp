@@ -170,7 +170,7 @@ void cGame_Loop::Update()
 		{
 			tAABB_Player.center = c_Player.getPosition4().fXYZ;
 			tAABB_Player.center.fY -= 0.875f;
-			tAABB_Player.extents = tFloat3{ 0.3f, 1.0f, 0.3f };
+			tAABB_Player.extents = tFloat3{ 0.5f, 1.2f, 0.4f };
 
 			tAABB_Left_Hand.center = c_Controllers.Get_Left_Hand().tW.fXYZ;
 			tAABB_Left_Hand.center.fZ -= 0.125f;
@@ -468,6 +468,10 @@ void cGame_Loop::Update()
 						tWorld_Object_List->fExplosion_State[i] = true;
 						tWorld_Object_List->fExplosion_Matrix[i] = tWorld_Object_List->fAlert_Matrix[i];
 						explosionTimer[i] = 0.5f;
+						if (c_AI.getHP() < 3)
+						{
+							sound.playSoundEffect("Blast-SoundBible.com-2068539061.mp3", FMOD_DEFAULT, 0.6f);
+						}
 					}
 
 				}
