@@ -85,6 +85,8 @@ private:
 
 	tAABB tAABB_Dragon_Fireball[3];
 
+	float explosionTimer[9];
+
 
 	// Particle Stuff
 

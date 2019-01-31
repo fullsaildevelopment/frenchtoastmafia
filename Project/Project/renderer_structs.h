@@ -82,6 +82,9 @@ struct tScene_Objects
 	int									fFireballs_Alive = 0;
 	int									maxFireballs = 9;
 
+	tFloat4x4							fExplosion_Matrix[9]{};
+	bool								fExplosion_State[9]{};
+
 	// Vertex and Index Data
 	bool								bIs_Animated[15]{};
 

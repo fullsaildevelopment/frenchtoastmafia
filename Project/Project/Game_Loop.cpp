@@ -462,9 +462,35 @@ void cGame_Loop::Update()
 				{
 					tWorld_Object_List->fFireball_State[i] = false;
 					tWorld_Object_List->fFireballs_Alive -= 1;
+
+					if (tWorld_Object_List->fExplosion_State[i] == false)
+					{
+						tWorld_Object_List->fExplosion_State[i] = true;
+						tWorld_Object_List->fExplosion_Matrix[i] = tWorld_Object_List->fAlert_Matrix[i];
+						explosionTimer[i] = 0.5f;
+					}
+
 				}
 			}
 			// Shield vs Dragon Fireball
+
+			//explosion stuff
+			for (int i = 0; i < tWorld_Object_List->maxFireballs; i++)
+			{
+				if (tWorld_Object_List->fExplosion_State[i] == false)
+				{
+					continue;
+				}
+
+				explosionTimer[i] -= c_XTime.Delta();
+
+				if (explosionTimer[i] <= 0)
+				{
+					tWorld_Object_List->fExplosion_State[i] = false;
+				}
+
+			}
+			//explosion stuff
 
 			// Player vs Dragon Fireball
 			for (int i = 0; i < tWorld_Object_List->maxFireballs; i++)

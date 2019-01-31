@@ -132,7 +132,7 @@ void AI::resolveDragonState(tScene_Objects* tObject_List, tFloat4x4 _playerPos, 
 
 				oldProjPosMat = XMMatrixMultiply(oldProjPosMat, XMMatrixTranslation(-100, 300, 0));
 
-				int modNum = 40;
+				int modNum = 100;
 				int addNum = 5;
 
 
