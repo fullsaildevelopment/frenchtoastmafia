@@ -888,7 +888,7 @@ void cRender_Manager::Draw_Spell(tScene_Objects* tObject_List, cHead_Mount c_Hea
 	}
 }
 
-void cRender_Manager::Draw_World(int nScene_Id, tScene_Objects* tObject_List, bool *bChange_Scene, cHead_Mount c_Head_Mount, tFloat4x4 offset, double totalTime, AI* _AI, bool dragon_hit, double timeDelta, tFloat4x4 player_pos)
+void cRender_Manager::Draw_World(int nScene_Id, tScene_Objects* tObject_List, bool *bChange_Scene, cHead_Mount c_Head_Mount, tFloat4x4 offset, double totalTime, AI* _AI, bool dragon_hit, double timeDelta, tFloat4x4 player_pos, tScene_Objects *tPersonal_Object_List, bool f_alive)
 {
 	keyboardInputs(tObject_List);
 
@@ -1035,7 +1035,7 @@ void cRender_Manager::Draw_World(int nScene_Id, tScene_Objects* tObject_List, bo
 			c_Graphics_Setup->Get_Context().Get()->VSSetShader(tObject_List->d3d_Vertex_Shaders[i].Get(), NULL, 0);
 			c_Graphics_Setup->Get_Context().Get()->PSSetShader(tObject_List->d3d_Pixel_Shaders[i].Get(), NULL, 0);
 
-			if (nScene_Id < 2 || nScene_Id == 3)
+			if (nScene_Id < 2 || nScene_Id == 3 || nScene_Id == 4)
 			{
 				c_Graphics_Setup->Get_Context().Get()->PSSetShaderResources(0, 1, tObject_List->d3d_SRV[0].GetAddressOf());
 			}
@@ -1257,90 +1257,93 @@ void cRender_Manager::Draw_World(int nScene_Id, tScene_Objects* tObject_List, bo
 				line_vert_count = preAlloc_particle.size();
 			}
 
-			ZeroMemory(&particle_Vertex_Buffer_DATA, sizeof(D3D11_SUBRESOURCE_DATA));
-			particle_Vertex_Buffer_DATA.pSysMem = &preAlloc_particle;
-			particle_Vertex_Buffer_DATA.SysMemPitch = 0;
-			particle_Vertex_Buffer_DATA.SysMemSlicePitch = 0;
+			if (f_alive == true)
+			{
+				ZeroMemory(&particle_Vertex_Buffer_DATA, sizeof(D3D11_SUBRESOURCE_DATA));
+				particle_Vertex_Buffer_DATA.pSysMem = &preAlloc_particle;
+				particle_Vertex_Buffer_DATA.SysMemPitch = 0;
+				particle_Vertex_Buffer_DATA.SysMemSlicePitch = 0;
 
-			c_Graphics_Setup->Get_Device().Get()->CreateBlendState(&particle_Blend_DESC, particle_Blend_State.GetAddressOf());
+				c_Graphics_Setup->Get_Device().Get()->CreateBlendState(&particle_Blend_DESC, particle_Blend_State.GetAddressOf());
 
-			//HRESULT tex = CreateDDSTextureFromFile(c_Graphics_Setup->Get_Device().Get(), L"smoke_texture.dds", nullptr, particle_Shader_Resource_View.GetAddressOf());
-			c_Graphics_Setup->Get_Device().Get()->CreateSamplerState(&particle_Sample_State_DESC, particle_Sample_State.GetAddressOf());
+				//HRESULT tex = CreateDDSTextureFromFile(c_Graphics_Setup->Get_Device().Get(), L"smoke_texture.dds", nullptr, particle_Shader_Resource_View.GetAddressOf());
+				c_Graphics_Setup->Get_Device().Get()->CreateSamplerState(&particle_Sample_State_DESC, particle_Sample_State.GetAddressOf());
 
-			c_Graphics_Setup->Get_Device()->CreateBuffer(&particle_Vertex_Buffer_DESC, &particle_Vertex_Buffer_DATA, particle_Vertex_Buffer.GetAddressOf());
-			c_Graphics_Setup->Get_Device()->CreateBuffer(&particle_Index_Buffer_DESC, &particle_Index_Buffer_DATA, particle_Index_Buffer.GetAddressOf());
+				c_Graphics_Setup->Get_Device()->CreateBuffer(&particle_Vertex_Buffer_DESC, &particle_Vertex_Buffer_DATA, particle_Vertex_Buffer.GetAddressOf());
+				c_Graphics_Setup->Get_Device()->CreateBuffer(&particle_Index_Buffer_DESC, &particle_Index_Buffer_DATA, particle_Index_Buffer.GetAddressOf());
 
-			//D3D11_MAPPED_SUBRESOURCE mapped_Particle_Buffer;
-			//c_Graphics_Setup->Get_Context().Get()->Map(particle_Vertex_Buffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &d3d_MSR);
-			//memcpy(mapped_Particle_Buffer.pData, preAlloc_particle.data(), sizeof(tVertex) * 888);
-			//c_Graphics_Setup->Get_Context().Get()->Unmap(particle_Vertex_Buffer.Get(), 0);
+				//D3D11_MAPPED_SUBRESOURCE mapped_Particle_Buffer;
+				//c_Graphics_Setup->Get_Context().Get()->Map(particle_Vertex_Buffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &d3d_MSR);
+				//memcpy(mapped_Particle_Buffer.pData, preAlloc_particle.data(), sizeof(tVertex) * 888);
+				//c_Graphics_Setup->Get_Context().Get()->Unmap(particle_Vertex_Buffer.Get(), 0);
 
-			c_Graphics_Setup->Get_Device().Get()->CreateVertexShader(Particle_Vertex_Shader, sizeof(Particle_Vertex_Shader), NULL, particle_Vertex_Shader.GetAddressOf());
-			c_Graphics_Setup->Get_Device().Get()->CreatePixelShader(Particle_Pixel_Shader, sizeof(Particle_Pixel_Shader), NULL, particle_Pixel_Shader.GetAddressOf());
+				c_Graphics_Setup->Get_Device().Get()->CreateVertexShader(Particle_Vertex_Shader, sizeof(Particle_Vertex_Shader), NULL, particle_Vertex_Shader.GetAddressOf());
+				c_Graphics_Setup->Get_Device().Get()->CreatePixelShader(Particle_Pixel_Shader, sizeof(Particle_Pixel_Shader), NULL, particle_Pixel_Shader.GetAddressOf());
 
-			UINT Offsett[1] = { 0 };
-			UINT Stride[1] = { sizeof(tVertex) };
+				UINT Offsett[1] = { 0 };
+				UINT Stride[1] = { sizeof(tVertex) };
 
-			//c_Graphics_Setup->Get_Context().Get()->ClearDepthStencilView(c_Graphics_Setup->Get_DSV().Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1, 0);
-			//c_Graphics_Setup->Get_Context().Get()->OMSetRenderTargets(1, c_Graphics_Setup->Get_RTV().GetAddressOf(), 0);
-			//c_Graphics_Setup->Get_Context().Get()->ClearRenderTargetView(c_Graphics_Setup->Get_RTV().Get(),);
-			//c_Graphics_Setup->Get_Context().Get()->RSSetViewports(1, &c_Graphics_Setup->Get_View_Port());
+				//c_Graphics_Setup->Get_Context().Get()->ClearDepthStencilView(c_Graphics_Setup->Get_DSV().Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1, 0);
+				//c_Graphics_Setup->Get_Context().Get()->OMSetRenderTargets(1, c_Graphics_Setup->Get_RTV().GetAddressOf(), 0);
+				//c_Graphics_Setup->Get_Context().Get()->ClearRenderTargetView(c_Graphics_Setup->Get_RTV().Get(),);
+				//c_Graphics_Setup->Get_Context().Get()->RSSetViewports(1, &c_Graphics_Setup->Get_View_Port());
 
-			// Set particles position
+				// Set particles position
 
-			tObject_List->fWorld_Matrix->tW.fX;
-			tObject_List->fWorld_Matrix->tW.fY;
-			tObject_List->fWorld_Matrix->tW.fZ - 2;
-			//tObject_List->fWorld_Matrix->tW.fW + 50;
+				tObject_List->fWorld_Matrix->tW.fX;
+				tObject_List->fWorld_Matrix->tW.fY;
+				tObject_List->fWorld_Matrix->tW.fZ - 2;
+				//tObject_List->fWorld_Matrix->tW.fW + 50;
 
-			XMMATRIX lookat_Fireball_Matrix;
-			XMMATRIX player_Pos_Matrix;
+				XMMATRIX lookat_Fireball_Matrix;
+				XMMATRIX player_Pos_Matrix;
 
-			XMFLOAT4X4 temp_f = tFloat4x4_to_XMFLOAT4x4(tObject_List->fWorld_Matrix[4]);   //  changes the fireball world matrix from a tFloat4x4 to a XMFLOAT4x4
-			lookat_Fireball_Matrix = DirectX::XMLoadFloat4x4(&temp_f);                     //  changes the fireball world matrix from a XMFloat4x4 to a XMMATRIX
-			temp_f = tFloat4x4_to_XMFLOAT4x4(player_pos);                                  //  changes the hmd_matrix from a tFloat4x4 to a XMFLOAT4x4
-			player_Pos_Matrix = DirectX::XMLoadFloat4x4(&temp_f);                          //  changes the hmd_matrix from a XMFLOAT4x4 to a XMMATRIX
-			lookat_Fireball_Matrix = lookAtMatrix(lookat_Fireball_Matrix, player_Pos_Matrix);
+				XMFLOAT4X4 temp_f = tFloat4x4_to_XMFLOAT4x4(tPersonal_Object_List->fWorld_Matrix[11]);   //  changes the fireball world matrix from a tFloat4x4 to a XMFLOAT4x4
+				lookat_Fireball_Matrix = DirectX::XMLoadFloat4x4(&temp_f);                     //  changes the fireball world matrix from a XMFloat4x4 to a XMMATRIX
+				temp_f = tFloat4x4_to_XMFLOAT4x4(player_pos);                                  //  changes the hmd_matrix from a tFloat4x4 to a XMFLOAT4x4
+				player_Pos_Matrix = DirectX::XMLoadFloat4x4(&temp_f);                          //  changes the hmd_matrix from a XMFLOAT4x4 to a XMMATRIX
+				lookat_Fireball_Matrix = lookAtMatrix(lookat_Fireball_Matrix, player_Pos_Matrix);
 
-			//lookat_Fireball_Matrix = tFloat4x4_to_XMFLOAT4x4(lookat_Fireball_Matrix);
-			XMFLOAT4X4 lookAt_Fireball_4x4;  // &tWVP.fWorld_Matrix
-			DirectX::XMStoreFloat4x4(&lookAt_Fireball_4x4, lookat_Fireball_Matrix);  // tObject_List->fWorld_Matrix[4]   // tFloat4x4_to_XMFLOAT4x4();
-			tWVP.fWorld_Matrix = lookAt_Fireball_4x4;
-			// particle constant buffer goes here
+				//lookat_Fireball_Matrix = tFloat4x4_to_XMFLOAT4x4(lookat_Fireball_Matrix);
+				XMFLOAT4X4 lookAt_Fireball_4x4;  // &tWVP.fWorld_Matrix
+				DirectX::XMStoreFloat4x4(&lookAt_Fireball_4x4, lookat_Fireball_Matrix);  // tObject_List->fWorld_Matrix[4]   // tFloat4x4_to_XMFLOAT4x4();
+				tWVP.fWorld_Matrix = lookAt_Fireball_4x4;
+				// particle constant buffer goes here
 
-			tPart.direction.z = timeDelta;
-			tPart.direction.w = totalTime;
+				tPart.direction.z = timeDelta;
+				tPart.direction.w = totalTime;
 
-			c_Graphics_Setup->Get_Context().Get()->Map(particle_Constant_Buffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &particle_Constant_Mapped_RS);
-			memcpy(particle_Constant_Mapped_RS.pData, &tPart, sizeof(tConstantBuffer_VertexShader_Bullet));
-			c_Graphics_Setup->Get_Context().Get()->Unmap(particle_Constant_Buffer.Get(), 0);
+				c_Graphics_Setup->Get_Context().Get()->Map(particle_Constant_Buffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &particle_Constant_Mapped_RS);
+				memcpy(particle_Constant_Mapped_RS.pData, &tPart, sizeof(tConstantBuffer_VertexShader_Bullet));
+				c_Graphics_Setup->Get_Context().Get()->Unmap(particle_Constant_Buffer.Get(), 0);
 
-			// particle constant buffer goes here
+				// particle constant buffer goes here
 
-			c_Graphics_Setup->Get_Context().Get()->Map(d3d_Constant_Buffer_WVP.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &d3d_MSR);
-			memcpy(d3d_MSR.pData, &tWVP, sizeof(tConstantBuffer_VertexShader_WVP));
-			c_Graphics_Setup->Get_Context().Get()->Unmap(d3d_Constant_Buffer_WVP.Get(), 0);
+				c_Graphics_Setup->Get_Context().Get()->Map(d3d_Constant_Buffer_WVP.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &d3d_MSR);
+				memcpy(d3d_MSR.pData, &tWVP, sizeof(tConstantBuffer_VertexShader_WVP));
+				c_Graphics_Setup->Get_Context().Get()->Unmap(d3d_Constant_Buffer_WVP.Get(), 0);
 
-			//tObject_List->fWorld_Matrix[4]    // BULLETS WORLD POSITION
+				//tObject_List->fWorld_Matrix[4]    // BULLETS WORLD POSITION
 
-			c_Graphics_Setup->Get_Context().Get()->VSSetConstantBuffers(0, 1, d3d_Constant_Buffer_WVP.GetAddressOf());
+				c_Graphics_Setup->Get_Context().Get()->VSSetConstantBuffers(0, 1, d3d_Constant_Buffer_WVP.GetAddressOf());
 
-			c_Graphics_Setup->Get_Context().Get()->IASetVertexBuffers(0, 1, particle_Vertex_Buffer.GetAddressOf(), Stride, Offsett);
-			c_Graphics_Setup->Get_Context().Get()->IASetIndexBuffer(particle_Index_Buffer.Get(), DXGI_FORMAT_R32_UINT, 0);
-			c_Graphics_Setup->Get_Context().Get()->IASetInputLayout(c_Graphics_Setup->Get_Input_Layout().Get());
-			c_Graphics_Setup->Get_Context().Get()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+				c_Graphics_Setup->Get_Context().Get()->IASetVertexBuffers(0, 1, particle_Vertex_Buffer.GetAddressOf(), Stride, Offsett);
+				c_Graphics_Setup->Get_Context().Get()->IASetIndexBuffer(particle_Index_Buffer.Get(), DXGI_FORMAT_R32_UINT, 0);
+				c_Graphics_Setup->Get_Context().Get()->IASetInputLayout(c_Graphics_Setup->Get_Input_Layout().Get());
+				c_Graphics_Setup->Get_Context().Get()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
-			c_Graphics_Setup->Get_Context().Get()->OMSetBlendState(particle_Blend_State.Get(), blend_Ratio, 0xffffffff);
+				c_Graphics_Setup->Get_Context().Get()->OMSetBlendState(particle_Blend_State.Get(), blend_Ratio, 0xffffffff);
 
-			c_Graphics_Setup->Get_Context().Get()->VSSetShader(particle_Vertex_Shader.Get(), NULL, 0);
-			c_Graphics_Setup->Get_Context().Get()->PSSetShader(particle_Pixel_Shader.Get(), NULL, 0);
+				c_Graphics_Setup->Get_Context().Get()->VSSetShader(particle_Vertex_Shader.Get(), NULL, 0);
+				c_Graphics_Setup->Get_Context().Get()->PSSetShader(particle_Pixel_Shader.Get(), NULL, 0);
 
-			c_Graphics_Setup->Get_Context().Get()->PSSetSamplers(0, 1, particle_Sample_State.GetAddressOf());
+				c_Graphics_Setup->Get_Context().Get()->PSSetSamplers(0, 1, particle_Sample_State.GetAddressOf());
 
-			ID3D11ShaderResourceView *temp_particle_Shader_Resource_View[1] = { particle_Shader_Resource_View.Get() };
-			c_Graphics_Setup->Get_Context().Get()->PSSetShaderResources(0, 1, temp_particle_Shader_Resource_View);
+				ID3D11ShaderResourceView *temp_particle_Shader_Resource_View[1] = { particle_Shader_Resource_View.Get() };
+				c_Graphics_Setup->Get_Context().Get()->PSSetShaderResources(0, 1, temp_particle_Shader_Resource_View);
 
-			c_Graphics_Setup->Get_Context().Get()->DrawIndexed(50, 0, 0);  // 50  // 100
+				c_Graphics_Setup->Get_Context().Get()->DrawIndexed(50, 0, 0);  // 50  // 100
+			}
 			// PARTICLES
 
 			// DRAGON PARTICLES

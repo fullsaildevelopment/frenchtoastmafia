@@ -57,6 +57,10 @@ void cGame_Loop::Setup()
 	c_Render_Manager.Load_Data(9, UI_Object_List);
 
 	//sound.playSong("fionnulas-tale-celtic-flute-music.mp3", FMOD_LOOP_NORMAL, 0.1f);
+	c_Spell_Shield_01.resetHealth();
+	c_Spell_Shield_01.setIsActive(false);
+	c_Spell_Shield_02.resetHealth();
+	c_Spell_Shield_02.setIsActive(false);
 }
 
 
@@ -166,7 +170,8 @@ void cGame_Loop::Update()
 		{
 			tAABB_Player.center = c_Player.getPosition4().fXYZ;
 			tAABB_Player.center.fY -= 0.5f;
-			tAABB_Player.extents = tFloat3{ 0.75f, 1.25f, 0.75f };
+			tAABB_Player.extents = tFloat3{ 5, 5, 5 };
+			//tAABB_Player.extents = tFloat3{ 0.75f, 1.25f, 0.75f };
 
 
 			tAABB_Player_Spell_01.center = c_Player_Spell_01.getPosition4().fXYZ;
@@ -409,34 +414,44 @@ void cGame_Loop::Update()
 					continue;
 				}
 
-				if (t_Collisions.Detect_AABB_To_AABB(tAABB_Player_Shield_01, tAABB_Dragon_Fireball[i]) || t_Collisions.Detect_AABB_To_AABB(tAABB_Player_Shield_02, tAABB_Dragon_Fireball[i]))
+				if ((c_Spell_Shield_01.getIsActive() && t_Collisions.Detect_AABB_To_AABB(tAABB_Player_Shield_01, tAABB_Dragon_Fireball[i])) || (c_Spell_Shield_02.getIsActive() && t_Collisions.Detect_AABB_To_AABB(tAABB_Player_Shield_02, tAABB_Dragon_Fireball[i])))
 				{
 					tWorld_Object_List->fFireball_State[i] = false;
 					tWorld_Object_List->fFireballs_Alive -= 1;
 
-					if (t_Collisions.Detect_AABB_To_AABB(tAABB_Player_Shield_01, tAABB_Dragon_Fireball[i]))
+					if ((c_Spell_Shield_01.getIsActive() && t_Collisions.Detect_AABB_To_AABB(tAABB_Player_Shield_01, tAABB_Dragon_Fireball[i])))
 					{
 						c_Spell_Shield_01.setHealth(-1);
 						if (c_Spell_Shield_01.getHealth() <= 0)
 						{
+							sound.playSoundEffect("shield_break.mp3", FMOD_DEFAULT, 0.4f);
 							personal_swap_Id.fX = 0;
 							personal_swap_Id.fZ = 0;
 							bSpell_Ready_01 = false;
 							c_Spell_Shield_01.setIsActive(false);
 							c_Spell_Shield_01.resetHealth();
 						}
+						else
+						{
+							sound.playSoundEffect("shield_hit.mp3", FMOD_DEFAULT, 0.4f);
+						}
 					}
 
-					if (t_Collisions.Detect_AABB_To_AABB(tAABB_Player_Shield_02, tAABB_Dragon_Fireball[i]))
+					if ((c_Spell_Shield_02.getIsActive() && t_Collisions.Detect_AABB_To_AABB(tAABB_Player_Shield_02, tAABB_Dragon_Fireball[i])))
 					{
 						c_Spell_Shield_02.setHealth(-1);
 						if (c_Spell_Shield_02.getHealth() <= 0)
 						{
+							sound.playSoundEffect("shield_break.mp3", FMOD_DEFAULT, 0.4f);
 							personal_swap_Id.fY = 0;
 							personal_swap_Id.fW = 0;
 							bSpell_Ready_02 = false;
 							c_Spell_Shield_02.setIsActive(false);
 							c_Spell_Shield_02.resetHealth();
+						}
+						else
+						{
+							sound.playSoundEffect("shield_hit.mp3", FMOD_DEFAULT, 0.4f);
 						}
 					}
 
@@ -485,7 +500,7 @@ void cGame_Loop::Update()
 					}
 					else if (c_Player.getHealth() == 10)
 					{
-						sound.playSoundEffect("Hearbeat_2-Mike_Koenig-143666461.mp3", FMOD_LOOP_NORMAL, 0.7f);
+						sound.playSoundEffect("Hearbeat_2-Mike_Koenig-143666461.mp3", FMOD_DEFAULT, 0.7f);
 					}
 
 					if (c_Player.getHealth() <= 0)
@@ -562,10 +577,10 @@ void cGame_Loop::Update()
 				{
 					if (!bDisplay_Spell_Node)
 					{
-						sound.playSoundEffect("Page_Turn-Mark_DiAngelo-1304638748.mp3", FMOD_DEFAULT, 0.4f);
 						bDisplay_Spell_Book = false;
 						bDisplay_Spell_Node = true;
 						bDisplay_Fireball = true;
+						sound.playSoundEffect("Page_Turn-Mark_DiAngelo-1304638748.mp3", FMOD_DEFAULT, 0.4f);
 						memset(bNode_Order, 0, sizeof(bNode_Order));
 					}
 				}
@@ -574,10 +589,10 @@ void cGame_Loop::Update()
 				{
 					if (!bDisplay_Spell_Node)
 					{
-						sound.playSoundEffect("Page_Turn-Mark_DiAngelo-1304638748.mp3", FMOD_DEFAULT, 0.4f);
 						bDisplay_Spell_Book = false;
 						bDisplay_Spell_Node = true;
 						bDisplay_Icebolt = true;
+						sound.playSoundEffect("Page_Turn-Mark_DiAngelo-1304638748.mp3", FMOD_DEFAULT, 0.4f);
 						memset(bNode_Order, 0, sizeof(bNode_Order));
 					}
 				}
@@ -586,10 +601,10 @@ void cGame_Loop::Update()
 				{
 					if (!bDisplay_Spell_Node)
 					{
-						sound.playSoundEffect("Page_Turn-Mark_DiAngelo-1304638748.mp3", FMOD_DEFAULT, 0.4f);
 						bDisplay_Spell_Book = false;
 						bDisplay_Spell_Node = true;
 						bDisplay_Shield = true;
+						sound.playSoundEffect("Page_Turn-Mark_DiAngelo-1304638748.mp3", FMOD_DEFAULT, 0.4f);
 						memset(bNode_Order, 0, sizeof(bNode_Order));
 					}
 				}
@@ -967,10 +982,11 @@ void cGame_Loop::Update()
 	// Scene Transitions
 	if (bChange_Scene)
 	{
-		if (m_nScene_Id == 3 || m_nScene_Id == 4)
-			m_nScene_Id == 5;
-
-		if (m_nScene_Id == 2)
+		if (m_nScene_Id == 0 || m_nScene_Id == 1)
+			m_nScene_Id++;
+		else if (m_nScene_Id == 3 || m_nScene_Id == 4)
+			m_nScene_Id = 5;
+		else if (m_nScene_Id == 2)
 		{
 			personal_swap_Id = { 0.0f, 0.0f, 0.0f, 0.0f };
 			memset(bNode_Order, 0, sizeof(bNode_Order));
@@ -983,18 +999,21 @@ void cGame_Loop::Update()
 			bMove_Spell_02 = false;
 			bSpell_Ready_01 = false;
 			bSpell_Ready_02 = false;
-			c_Spell_Shield_01.setIsActive(false);
-			c_Spell_Shield_02.setIsActive(false);
 
 			if (c_Player.getHealth() <= 0)
-				m_nScene_Id == 3;
+			{
+				m_nScene_Id = 4;
+				sound.playSoundEffect("Sad_Trombone-Joe_Lamb-665429450.mp3", FMOD_DEFAULT, 0.4f);
+			}
 
 			if (c_Dragon.getHealth() <= 0)
-				m_nScene_Id == 4;
+			{
+				m_nScene_Id = 3;
+				sound.playSoundEffect("Final_Fantasy_VII_-_Victory_Fanfare.mp3", FMOD_DEFAULT, 0.4f);
+			}
 		}
 
 		c_Render_Manager.Unload(tWorld_Object_List);
-
 
 		if (m_nScene_Id == 5)
 		{
@@ -1006,6 +1025,8 @@ void cGame_Loop::Update()
 			sound.playSong("fionnulas-tale-celtic-flute-music.mp3", FMOD_LOOP_NORMAL, 0.1f);
 			c_Spell_Shield_01.resetHealth();
 			c_Spell_Shield_02.resetHealth();
+			c_Spell_Shield_01.setIsActive(false);
+			c_Spell_Shield_02.setIsActive(false);
 		}
 		tWorld_Object_List = c_Scene_Manager.Get_World_Scene(m_nScene_Id);
 		c_Render_Manager.Load_Data(m_nScene_Id, tWorld_Object_List);
@@ -1070,6 +1091,165 @@ void cGame_Loop::Update()
 		break;
 	}
 
+	// RIGHT
+
+	switch (c_Player.getHealth())
+	{
+	case 100:
+			fname = "Hand_Life_100.dds";
+			c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[4]);
+			c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[5]);
+			c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[6]);
+			c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[7]);
+			break;
+	case 90:
+		fname = "Hand_Life_090.dds";
+		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[4]);
+		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[5]);
+		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[6]);
+		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[7]);
+		break;
+	case 80:
+		fname = "Hand_Life_080.dds";
+		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[4]);
+		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[5]);
+		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[6]);
+		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[7]);
+		break;
+	case 70:
+		fname = "Hand_Life_070.dds";
+		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[4]);
+		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[5]);
+		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[6]);
+		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[7]);
+		break;
+	case 60:
+		fname = "Hand_Life_060.dds";
+		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[4]);
+		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[5]);
+		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[6]);
+		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[7]);
+		break;
+	case 50:
+		fname = "Hand_Life_050.dds";
+		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[4]);
+		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[5]);
+		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[6]);
+		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[7]);
+		break;
+	case 40:
+		fname = "Hand_Life_040.dds";
+		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[4]);
+		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[5]);
+		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[6]);
+		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[7]);
+		break;
+	case 30:
+		fname = "Hand_Life_030.dds";
+		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[4]);
+		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[5]);
+		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[6]);
+		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[7]);
+		break;
+	case 20:
+		fname = "Hand_Life_020.dds";
+		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[4]);
+		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[5]);
+		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[6]);
+		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[7]);
+		break;
+	case 10:
+		fname = "Hand_Life_010.dds";
+		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[4]);
+		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[5]);
+		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[6]);
+		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[7]);
+		break;
+	default:
+		break;
+	}
+
+	// RIGHT
+
+	// LEFT
+
+	switch (c_Player.getHealth())
+	{
+	case 100:
+		fname = "hands_100.dds";
+		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[0]);
+		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[1]);
+		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[2]);
+		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[3]);
+		break;
+	case 90:
+		fname = "hands_90.dds";
+		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[0]);
+		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[1]);
+		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[2]);
+		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[3]);
+		break;
+	case 80:
+		fname = "hands_80.dds";
+		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[0]);
+		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[1]);
+		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[2]);
+		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[3]);
+		break;
+	case 70:
+		fname = "hands_70.dds";
+		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[0]);
+		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[1]);
+		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[2]);
+		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[3]);
+		break;
+	case 60:
+		fname = "hands_60.dds";
+		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[0]);
+		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[1]);
+		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[2]);
+		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[3]);
+		break;
+	case 50:
+		fname = "hands_50.dds";
+		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[0]);
+		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[1]);
+		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[2]);
+		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[3]);
+		break;
+	case 40:
+		fname = "hands_40.dds";
+		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[0]);
+		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[1]);
+		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[2]);
+		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[3]);
+		break;
+	case 30:
+		fname = "hands_30.dds";
+		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[0]);
+		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[1]);
+		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[2]);
+		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[3]);
+		break;
+	case 20:
+		fname = "hands_20.dds";
+		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[0]);
+		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[1]);
+		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[2]);
+		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[3]);
+		break;
+	case 10:
+		fname = "hands_10.dds";
+		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[0]);
+		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[1]);
+		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[2]);
+		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[3]);
+		break;
+	default:
+		break;
+	}
+
+	// LEFT
 
 	// Renders
 	if (m_nScene_Id == 2)
@@ -1080,7 +1260,7 @@ void cGame_Loop::Update()
 	c_Animation_Manager.Animate(c_XTime.Delta(), c_XTime.TotalTimeExact(), tWorld_Object_List);
 	c_Render_Manager.set_particle_array(p.get_particles());   // JUST ADDED THIS
 	p.create_particles(fireball_color, c_XTime.Delta(), fireball_acceleration, fireball_kill, dragon_hit);
-	c_Render_Manager.Draw_World(m_nScene_Id, tWorld_Object_List, &bChange_Scene, c_Head_Mount, c_Offset_Matrix.GetPosition4x4(), c_XTime.TotalTime(), &c_AI, dragon_hit, c_XTime.Delta(), c_Player.getPosition4x4());
+	c_Render_Manager.Draw_World(m_nScene_Id, tWorld_Object_List, &bChange_Scene, c_Head_Mount, c_Offset_Matrix.GetPosition4x4(), c_XTime.TotalTime(), &c_AI, dragon_hit, c_XTime.Delta(), c_Player.getPosition4x4(), tPersonal_Object_List, c_Player_Spell_02.getIsActive());  // tPersonal_Object_List
 	c_Render_Manager.Draw_UI(UI_Object_List, c_Head_Mount, c_Offset_Matrix.GetPosition4x4(), tWorld_Object_List->fWorld_Matrix[2], c_Dragon, c_Player);
 	c_Render_Manager.Draw_Spell(tSpell_Book, c_Head_Mount, c_Offset_Matrix.GetPosition4x4(), bDisplay_Spell_Book, false, bNode_Order);
 	c_Render_Manager.Draw_Spell(tFireball_Nodes, c_Head_Mount, c_Offset_Matrix.GetPosition4x4(), bDisplay_Fireball, true, bNode_Order);

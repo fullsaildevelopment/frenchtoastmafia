@@ -581,7 +581,7 @@ tScene_Objects* cScene_Manager::Get_World_Scene(int nScene_Id)
 {
 	tScene_Objects* tScene = new tScene_Objects;
 	// SCREEN
-	if (nScene_Id < 2 || nScene_Id == 3)
+	if (nScene_Id < 2 || nScene_Id == 3 || nScene_Id == 4)
 	{
 		tScene->nObject_Count = 1;
 		tScene->fWorld_Position[0] = { 0, 0, 15 };
