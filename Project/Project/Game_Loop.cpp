@@ -899,7 +899,7 @@ void cGame_Loop::Update()
 		// Collisions
 
 		if (dragon_hit == true)
-			timeCheck += 1;
+			timeCheck += 1.0f;
 
 		if (timeCheck > 75)
 		{
@@ -1026,7 +1026,7 @@ void cGame_Loop::Update()
 
 
 	// Scene Transitions
-	if (bChange_Scene)
+	if (bChange_Scene && timeCheck == 0)
 	{
 		if (m_nScene_Id == 0 || m_nScene_Id == 1)
 			m_nScene_Id++;
@@ -1099,7 +1099,7 @@ void cGame_Loop::Update()
 
 	switch (c_Spell_Shield_01.getHealth())
 	{
-	case 1:
+	case 1:		
 		fname = "Shield_Red.dds";
 		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[10]);
 		break;
@@ -1228,6 +1228,7 @@ void cGame_Loop::Update()
 
 	switch (c_Player.getHealth())
 	{
+		/*
 	case 100:
 		fname = "Hand_Life_100.dds";
 		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[0]);
@@ -1304,7 +1305,13 @@ void cGame_Loop::Update()
 		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[1]);
 		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[2]);
 		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[3]);
+		*/
 	default:
+		fname = "L_Hand_texture.dds";
+		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[0]);
+		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[1]);
+		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[2]);
+		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[3]);
 		break;
 	}
 

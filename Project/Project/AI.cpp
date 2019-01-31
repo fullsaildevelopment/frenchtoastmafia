@@ -59,7 +59,16 @@ void AI::resolveDragonState(tScene_Objects* tObject_List, tFloat4x4 _playerPos, 
 		if (dragHP < 5)
 		{
 			XMMATRIX oldPosMat = XMLoadFloat4x4(&tFloat4x4_to_XMFLOAT4x4(tObject_List->fWorld_Matrix[2]));
-			XMMATRIX moveMat = XMMatrixTranslation(dragSpeed * xMove * _dTime, 0.0f, 0.0f);
+
+			XMMATRIX moveMat;
+			if (dragHP > 0)
+			{
+				moveMat = XMMatrixTranslation(dragSpeed * xMove * _dTime, 0.0f, 0.0f);
+			}
+			else
+			{
+				moveMat = XMMatrixTranslation(0, 0.0f, 0.0f);
+			}
 
 			XMMATRIX centerMat = XMMatrixTranslation(0.0f, 0.0f, 0.0f);
 

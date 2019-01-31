@@ -905,6 +905,7 @@ void cRender_Manager::Draw_World(int nScene_Id, tScene_Objects* tObject_List, bo
 		{
 			sound.playSoundEffect("Blast-SoundBible.com-2068539061.mp3", FMOD_DEFAULT, 0.6f);
 			sound.playSoundEffect("DragonSound1.mp3", FMOD_DEFAULT, 0.45f);
+			//sound.stopSoundEffect();
 		}
 
 		//tObject_List->dragHP -= 1;
@@ -923,7 +924,7 @@ void cRender_Manager::Draw_World(int nScene_Id, tScene_Objects* tObject_List, bo
 
 		if (_AI->getHP() <= 0)
 		{
-			*bChange_Scene = true;
+			//*bChange_Scene = true;
 		}
 
 	}
