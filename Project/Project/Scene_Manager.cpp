@@ -1439,7 +1439,7 @@ tScene_Objects * cScene_Manager::Get_Spell_Node_Fireball()
 		}
 		tScene->tMesh_Data[obj_id].nIndex_Count = 6;
 
-		tScene->szSRV_File_Path[obj_id] = "node_01.dds";
+		tScene->szSRV_File_Path[obj_id] = "node_01_off.dds";
 	}
 	// Node - 1
 
@@ -1508,7 +1508,7 @@ tScene_Objects * cScene_Manager::Get_Spell_Node_Fireball()
 		}
 		tScene->tMesh_Data[obj_id].nIndex_Count = 6;
 
-		tScene->szSRV_File_Path[obj_id] = "node_02.dds";
+		tScene->szSRV_File_Path[obj_id] = "node_02_off.dds";
 	}
 	// Node - 2
 
@@ -1577,7 +1577,7 @@ tScene_Objects * cScene_Manager::Get_Spell_Node_Fireball()
 		}
 		tScene->tMesh_Data[obj_id].nIndex_Count = 6;
 
-		tScene->szSRV_File_Path[obj_id] = "node_03.dds";
+		tScene->szSRV_File_Path[obj_id] = "node_03_off.dds";
 	}
 	// Node - 3
 
@@ -1724,7 +1724,7 @@ tScene_Objects * cScene_Manager::Get_Spell_Node_Icebolt()
 		}
 		tScene->tMesh_Data[obj_id].nIndex_Count = 6;
 
-		tScene->szSRV_File_Path[obj_id] = "node_01.dds";
+		tScene->szSRV_File_Path[obj_id] = "node_01_off.dds";
 	}
 	// Node - 1
 
@@ -1793,7 +1793,7 @@ tScene_Objects * cScene_Manager::Get_Spell_Node_Icebolt()
 		}
 		tScene->tMesh_Data[obj_id].nIndex_Count = 6;
 
-		tScene->szSRV_File_Path[obj_id] = "node_02.dds";
+		tScene->szSRV_File_Path[obj_id] = "node_02_off.dds";
 	}
 	// Node - 2
 
@@ -1862,7 +1862,7 @@ tScene_Objects * cScene_Manager::Get_Spell_Node_Icebolt()
 		}
 		tScene->tMesh_Data[obj_id].nIndex_Count = 6;
 
-		tScene->szSRV_File_Path[obj_id] = "node_03.dds";
+		tScene->szSRV_File_Path[obj_id] = "node_03_off.dds";
 	}
 	// Node - 3
 
@@ -2009,7 +2009,7 @@ tScene_Objects * cScene_Manager::Get_Spell_Node_Shield()
 		}
 		tScene->tMesh_Data[obj_id].nIndex_Count = 6;
 
-		tScene->szSRV_File_Path[obj_id] = "node_01.dds";
+		tScene->szSRV_File_Path[obj_id] = "node_01_off.dds";
 	}
 	// Node - 1
 
@@ -2078,7 +2078,7 @@ tScene_Objects * cScene_Manager::Get_Spell_Node_Shield()
 		}
 		tScene->tMesh_Data[obj_id].nIndex_Count = 6;
 
-		tScene->szSRV_File_Path[obj_id] = "node_02.dds";
+		tScene->szSRV_File_Path[obj_id] = "node_02_off.dds";
 	}
 	// Node - 2
 
@@ -2148,7 +2148,7 @@ tScene_Objects * cScene_Manager::Get_Spell_Node_Shield()
 		}
 		tScene->tMesh_Data[obj_id].nIndex_Count = 6;
 
-		tScene->szSRV_File_Path[obj_id] = "node_03.dds";
+		tScene->szSRV_File_Path[obj_id] = "node_03_off.dds";
 	}
 	// Node - 3
 
