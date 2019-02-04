@@ -933,7 +933,7 @@ tScene_Objects* cScene_Manager::Get_World_Scene(int nScene_Id)
 		// Bullet
 
 		// Snorlax - 5
-		{
+		/*{
 			XMFLOAT4X4 temp;
 
 			XMMATRIX tempMatrix = XMMatrixIdentity();
@@ -967,7 +967,7 @@ tScene_Objects* cScene_Manager::Get_World_Scene(int nScene_Id)
 
 			tScene->tMaterials_Data[5] = cBinary_Read.Read_Material("fireballMaterial.bin");
 			tScene->tMaterials_Data[5].tMats[0].szDiffuse_File_Path = "Fireball.fbm\\Fireball_D.png";
-		}
+		}*/
 		// Snorlax
 
 		// Red Dragon - 6
