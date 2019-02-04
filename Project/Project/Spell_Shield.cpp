@@ -17,8 +17,8 @@ void cSpell_Shield::setHealth(int change)
 {
 	m_nHealth += change;
 
-	if (m_nHealth > 5)
-		m_nHealth = 5;
+	if (m_nHealth > 15)
+		m_nHealth = 15;
 }
 
 void cSpell_Shield::resetHealth()
