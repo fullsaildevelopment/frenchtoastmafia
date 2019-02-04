@@ -174,11 +174,11 @@ void cGame_Loop::Update()
 
 			tAABB_Left_Hand.center = c_Controllers.Get_Left_Hand().tW.fXYZ;
 			tAABB_Left_Hand.center.fZ -= 0.125f;
-			tAABB_Left_Hand.extents = tFloat3{ 0.15f, 0.0625f, 0.15f };
+			tAABB_Left_Hand.extents = tFloat3{ 0.1125F, 0.0625f, 0.1125F };
 
 			tAABB_Right_Hand.center = c_Controllers.Get_Right_Hand().tW.fXYZ;
 			tAABB_Right_Hand.center.fZ -= 0.125f;
-			tAABB_Right_Hand.extents = tFloat3{ 0.15f, 0.0625f, 0.15f };
+			tAABB_Right_Hand.extents = tFloat3{ 0.1125f, 0.0625f, 0.1125f };
 
 			tAABB_Player_Spell_01.center = c_Player_Spell_01.getPosition4().fXYZ;
 			tAABB_Player_Spell_01.extents = tFloat3{ 0.2f, 0.13f, 0.2f };
@@ -187,11 +187,9 @@ void cGame_Loop::Update()
 			tAABB_Player_Spell_02.extents = tFloat3{ 0.2f, 0.13f, 0.2f };
 
 			tAABB_Player_Shield_01.center = tPersonal_Object_List->fWorld_Matrix[10].tW.fXYZ;
-			//tAABB_Player_Shield_01.extents = tFloat3{ 0.1f, 0.55f, 0.65f };
 			tAABB_Player_Shield_01.extents = tFloat3{ 1.0f, 5.5f, 6.5f };
 
 			tAABB_Player_Shield_02.center = tPersonal_Object_List->fWorld_Matrix[13].tW.fXYZ;
-			//tAABB_Player_Shield_02.extents = tFloat3{ 0.1f, 0.55f, 0.65f };
 			tAABB_Player_Shield_01.extents = tFloat3{ 1.0f, 5.5f, 6.5f };
 
 			tAABB_Dragon.center = c_Dragon.getPosition4().fXYZ;
@@ -431,7 +429,7 @@ void cGame_Loop::Update()
 
 					if ((c_Spell_Shield_01.getIsActive() && t_Collisions.Detect_AABB_To_AABB(tAABB_Player_Shield_01, tAABB_Dragon_Fireball[i])))
 					{
-						c_Spell_Shield_01.setHealth(-1);
+						c_Spell_Shield_01.setHealth(-2);
 						if (c_Spell_Shield_01.getHealth() <= 0)
 						{
 							sound.playSoundEffect("shield_break.mp3", FMOD_DEFAULT, 0.4f);
@@ -449,7 +447,7 @@ void cGame_Loop::Update()
 
 					if ((c_Spell_Shield_02.getIsActive() && t_Collisions.Detect_AABB_To_AABB(tAABB_Player_Shield_02, tAABB_Dragon_Fireball[i])))
 					{
-						c_Spell_Shield_02.setHealth(-1);
+						c_Spell_Shield_02.setHealth(-2);
 						if (c_Spell_Shield_02.getHealth() <= 0)
 						{
 							sound.playSoundEffect("shield_break.mp3", FMOD_DEFAULT, 0.4f);
@@ -679,6 +677,7 @@ void cGame_Loop::Update()
 				{
 					bNode_Order[0] = true;
 					sound.playSoundEffect("correct_node_sound.mp3", FMOD_DEFAULT, 0.4f);
+					c_Render_Manager.Texture_Swap("node_01_on.dds", &tFireball_Nodes->d3d_SRV[1]);
 				}
 				// sucess
 
@@ -688,6 +687,7 @@ void cGame_Loop::Update()
 					{
 						bNode_Order[1] = true;
 						sound.playSoundEffect("correct_node_sound.mp3", FMOD_DEFAULT, 0.4f);
+						c_Render_Manager.Texture_Swap("node_02_on.dds", &tFireball_Nodes->d3d_SRV[2]);
 					}
 					// sucess
 					else
@@ -705,6 +705,8 @@ void cGame_Loop::Update()
 						c_Spell_Shield_01.resetHealth();
 						c_Spell_Shield_02.resetHealth();
 						personal_swap_Id = { 0.0f, 0.0f, 0.0f, 0.0f };
+						c_Render_Manager.Texture_Swap("node_01_off.dds", &tFireball_Nodes->d3d_SRV[1]);
+						c_Render_Manager.Texture_Swap("node_02_off.dds", &tFireball_Nodes->d3d_SRV[2]);
 					}
 				}
 
@@ -718,6 +720,8 @@ void cGame_Loop::Update()
 						bDisplay_Spell_Book = false;
 						bDisplay_Spell_Node = false;
 						bDisplay_Fireball = false;
+						c_Render_Manager.Texture_Swap("node_01_off.dds", &tFireball_Nodes->d3d_SRV[1]);
+						c_Render_Manager.Texture_Swap("node_02_off.dds", &tFireball_Nodes->d3d_SRV[2]);
 
 						if (t_Collisions.Detect_AABB_To_AABB(tAABB_Left_Hand, tAABB_Fireball_3))
 						{
@@ -753,6 +757,8 @@ void cGame_Loop::Update()
 						c_Spell_Shield_01.resetHealth();
 						c_Spell_Shield_02.resetHealth();
 						personal_swap_Id = { 0.0f, 0.0f, 0.0f, 0.0f };
+						c_Render_Manager.Texture_Swap("node_01_off.dds", &tFireball_Nodes->d3d_SRV[1]);
+						c_Render_Manager.Texture_Swap("node_02_off.dds", &tFireball_Nodes->d3d_SRV[2]);
 					}
 				}
 			}
@@ -765,6 +771,7 @@ void cGame_Loop::Update()
 				{
 					bNode_Order[0] = true;
 					sound.playSoundEffect("correct_node_sound.mp3", FMOD_DEFAULT, 0.4f);
+					c_Render_Manager.Texture_Swap("node_01_on.dds", &tIcebolt_Nodes->d3d_SRV[1]);
 				}
 
 				if (t_Collisions.Detect_AABB_To_AABB(tAABB_Left_Hand, tAABB_Icebolt_2) || t_Collisions.Detect_AABB_To_AABB(tAABB_Right_Hand, tAABB_Icebolt_2))
@@ -773,6 +780,7 @@ void cGame_Loop::Update()
 					{
 						bNode_Order[1] = true;
 						sound.playSoundEffect("correct_node_sound.mp3", FMOD_DEFAULT, 0.4f);
+						c_Render_Manager.Texture_Swap("node_02_on.dds", &tIcebolt_Nodes->d3d_SRV[2]);
 					}
 					else
 					{
@@ -788,6 +796,8 @@ void cGame_Loop::Update()
 						c_Spell_Shield_01.resetHealth();
 						c_Spell_Shield_02.resetHealth();
 						personal_swap_Id = { 0.0f, 0.0f, 0.0f, 0.0f };
+						c_Render_Manager.Texture_Swap("node_01_off.dds", &tIcebolt_Nodes->d3d_SRV[1]);
+						c_Render_Manager.Texture_Swap("node_02_off.dds", &tIcebolt_Nodes->d3d_SRV[2]);
 					}
 				}
 
@@ -800,6 +810,8 @@ void cGame_Loop::Update()
 						bDisplay_Spell_Book = false;
 						bDisplay_Spell_Node = false;
 						bDisplay_Icebolt = false;
+						c_Render_Manager.Texture_Swap("node_01_off.dds", &tIcebolt_Nodes->d3d_SRV[1]);
+						c_Render_Manager.Texture_Swap("node_02_off.dds", &tIcebolt_Nodes->d3d_SRV[2]);
 
 						if (t_Collisions.Detect_AABB_To_AABB(tAABB_Left_Hand, tAABB_Icebolt_3))
 						{
@@ -835,6 +847,8 @@ void cGame_Loop::Update()
 						c_Spell_Shield_01.resetHealth();
 						c_Spell_Shield_02.resetHealth();
 						personal_swap_Id = { 0.0f, 0.0f, 0.0f, 0.0f };
+						c_Render_Manager.Texture_Swap("node_01_off.dds", &tIcebolt_Nodes->d3d_SRV[1]);
+						c_Render_Manager.Texture_Swap("node_02_off.dds", &tIcebolt_Nodes->d3d_SRV[2]);
 					}
 				}
 			}
@@ -847,6 +861,7 @@ void cGame_Loop::Update()
 				{
 					bNode_Order[0] = true;
 					sound.playSoundEffect("correct_node_sound.mp3", FMOD_DEFAULT, 0.4f);
+					c_Render_Manager.Texture_Swap("node_01_on.dds", &tShield_Nodes->d3d_SRV[1]);
 				}
 
 				if (t_Collisions.Detect_AABB_To_AABB(tAABB_Left_Hand, tAABB_Shield_2) || t_Collisions.Detect_AABB_To_AABB(tAABB_Right_Hand, tAABB_Shield_2))
@@ -855,6 +870,7 @@ void cGame_Loop::Update()
 					{
 						bNode_Order[1] = true;
 						sound.playSoundEffect("correct_node_sound.mp3", FMOD_DEFAULT, 0.4f);
+					c_Render_Manager.Texture_Swap("node_02_on.dds", &tShield_Nodes->d3d_SRV[2]);
 					}
 					else
 					{
@@ -870,6 +886,8 @@ void cGame_Loop::Update()
 						c_Spell_Shield_01.resetHealth();
 						c_Spell_Shield_02.resetHealth();
 						personal_swap_Id = { 0.0f, 0.0f, 0.0f, 0.0f };
+						c_Render_Manager.Texture_Swap("node_01_off.dds", &tShield_Nodes->d3d_SRV[1]);
+						c_Render_Manager.Texture_Swap("node_02_off.dds", &tShield_Nodes->d3d_SRV[2]);
 					}
 				}
 
@@ -882,6 +900,8 @@ void cGame_Loop::Update()
 						bDisplay_Spell_Book = false;
 						bDisplay_Spell_Node = false;
 						bDisplay_Shield = false;
+						c_Render_Manager.Texture_Swap("node_01_off.dds", &tShield_Nodes->d3d_SRV[1]);
+						c_Render_Manager.Texture_Swap("node_02_off.dds", &tShield_Nodes->d3d_SRV[2]);
 
 						if (t_Collisions.Detect_AABB_To_AABB(tAABB_Left_Hand, tAABB_Shield_3))
 						{
@@ -890,7 +910,7 @@ void cGame_Loop::Update()
 							personal_swap_Id.fZ = 3;
 
 							if (c_Spell_Shield_01.getIsActive())
-								c_Spell_Shield_01.setHealth(2);
+								c_Spell_Shield_01.setHealth(5);
 							else
 								c_Spell_Shield_01.setIsActive(true);
 
@@ -905,7 +925,7 @@ void cGame_Loop::Update()
 							personal_swap_Id.fW = 3;
 
 							if (c_Spell_Shield_02.getIsActive())
-								c_Spell_Shield_02.setHealth(2);
+								c_Spell_Shield_02.setHealth(5);
 							else
 								c_Spell_Shield_02.setIsActive(true);
 
@@ -928,6 +948,8 @@ void cGame_Loop::Update()
 						c_Spell_Shield_01.resetHealth();
 						c_Spell_Shield_02.resetHealth();
 						personal_swap_Id = { 0.0f, 0.0f, 0.0f, 0.0f };
+						c_Render_Manager.Texture_Swap("node_01_off.dds", &tShield_Nodes->d3d_SRV[1]);
+						c_Render_Manager.Texture_Swap("node_02_off.dds", &tShield_Nodes->d3d_SRV[2]);
 					}
 				}
 			}
@@ -1168,14 +1190,21 @@ void cGame_Loop::Update()
 	switch (c_Spell_Shield_01.getHealth())
 	{
 	case 1:
+	case 2:
+	case 3:
+	case 4:
 		fname = "Shield_Red.dds";
 		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[10]);
 		break;
-	case 2:
+	case 5:
+	case 6:
+	case 7:
 		fname = "Shield_Yellow.dds";
 		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[10]);
 		break;
-	case 3:
+	case 8:
+	case 9:
+	case 10:
 		fname = "Shield_Green.dds";
 		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[10]);
 		break;
@@ -1189,14 +1218,21 @@ void cGame_Loop::Update()
 	switch (c_Spell_Shield_02.getHealth())
 	{
 	case 1:
+	case 2:
+	case 3:
+	case 4:
 		fname = "Shield_Red.dds";
 		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[13]);
 		break;
-	case 2:
+	case 5:
+	case 6:
+	case 7:
 		fname = "Shield_Yellow.dds";
 		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[13]);
 		break;
-	case 3:
+	case 8:
+	case 9:
+	case 10:
 		fname = "Shield_Green.dds";
 		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[13]);
 		break;
