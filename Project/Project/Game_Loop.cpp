@@ -197,14 +197,21 @@ void cGame_Loop::Update()
 			tAABB_Dragon.center = c_Dragon.getPosition4().fXYZ;
 			tAABB_Dragon.extents = tFloat3{ 15.0f, 100.0f, 35.0f };
 
-			tAABB_Dragon_Fireball[0].center = tWorld_Object_List->fFireball_Matrix[0].tW.fXYZ;
-			tAABB_Dragon_Fireball[0].extents = tFloat3{ 4.0f, 4.0f, 4.0f };
+			//tAABB_Dragon_Fireball[0].center = tWorld_Object_List->fFireball_Matrix[0].tW.fXYZ;
+			//tAABB_Dragon_Fireball[0].extents = tFloat3{ 4.0f, 4.0f, 4.0f };
+			//
+			//tAABB_Dragon_Fireball[1].center = tWorld_Object_List->fFireball_Matrix[1].tW.fXYZ;
+			//tAABB_Dragon_Fireball[1].extents = tFloat3{ 4.0f, 4.0f, 4.0f };
+			//
+			//tAABB_Dragon_Fireball[2].center = tWorld_Object_List->fFireball_Matrix[2].tW.fXYZ;
+			//tAABB_Dragon_Fireball[2].extents = tFloat3{ 4.0f, 4.0f, 4.0f };
 
-			tAABB_Dragon_Fireball[1].center = tWorld_Object_List->fFireball_Matrix[1].tW.fXYZ;
-			tAABB_Dragon_Fireball[1].extents = tFloat3{ 4.0f, 4.0f, 4.0f };
-
-			tAABB_Dragon_Fireball[2].center = tWorld_Object_List->fFireball_Matrix[2].tW.fXYZ;
-			tAABB_Dragon_Fireball[2].extents = tFloat3{ 4.0f, 4.0f, 4.0f };
+			//tWorld_Object_List->maxFireballs
+			for(int j = 0; j < 7; j++)
+			{
+				tAABB_Dragon_Fireball[j].center = tWorld_Object_List->fFireball_Matrix[j].tW.fXYZ;
+				tAABB_Dragon_Fireball[j].extents = tFloat3{ 4.0f, 4.0f, 4.0f };
+			}
 
 
 			// Spell Book

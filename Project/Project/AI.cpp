@@ -90,6 +90,13 @@ void AI::resolveDragonState(tScene_Objects* tObject_List, tFloat4x4 _playerPos, 
 
 			newPosMat = XMMatrixMultiply(XMMatrixRotationX(3.14 / 5), newPosMat);
 
+			float test = newPosMat.r[3].m128_f32[0];
+			if (test < -155)
+			{
+				//newPosMat = XMMatrixMultiply(XMMatrixTranslation(10.0f, 0.0f, 0.0f), newPosMat);
+				newPosMat.r[3].m128_f32[0] += 5;
+			}
+
 			XMFLOAT4X4 newPos4x4;
 			XMStoreFloat4x4(&newPos4x4, newPosMat);
 			tObject_List->fWorld_Matrix[2] = XMFLOAT4x4_to_tFloat4x4(newPos4x4);
