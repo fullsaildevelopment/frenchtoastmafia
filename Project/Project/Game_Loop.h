@@ -88,7 +88,7 @@ private:
 	float explosionTimer[9];
 	bool switchScene = false;
 	float switchTimer = 0.0f;
-	double end_time;
+	double end_time = 0.0f;
 	bool endTimeSet = false;
 	// Particle Stuff
 

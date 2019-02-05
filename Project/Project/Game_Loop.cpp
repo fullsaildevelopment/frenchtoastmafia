@@ -614,15 +614,14 @@ void cGame_Loop::Update()
 				/*if (c_Player.getHealth() <= 0)
 					c_Player.setIsAlive(false);*/
 
-				if (c_Dragon.getHealth() <= 0)
-				{
-					c_Dragon.setIsAlive(false);
-					sound.stopSong();
-				}
-
-
 			}
 			// Dragon vs Player Fireball
+
+			if (c_Dragon.getHealth() <= 0)
+			{
+				c_Dragon.setIsAlive(false);
+				sound.stopSong();
+			}
 
 			// Spell Book
 			if (bDisplay_Spell_Book || bDisplay_Spell_Node)
@@ -1110,15 +1109,20 @@ void cGame_Loop::Update()
 		bReset_Offset = false;
 	}
 
-
-	if ((!c_Player.getIsAlive() || !c_Dragon.getIsAlive()) && m_nScene_Id == 2)
+	if (c_Dragon.getIsAlive())
 	{
-		if (!bChange_Scene && !endTimeSet)
-		{
-			end_time = c_XTime.TotalTimeExact();
+		endTimeSet = false;
+	}
+	//if ((!c_Player.getIsAlive() || !c_Dragon.getIsAlive()) && m_nScene_Id == 2)
+	if (!c_Dragon.getIsAlive() && m_nScene_Id == 2 && !endTimeSet)
+	{
 			endTimeSet = true;
-		}
 
+			end_time = c_XTime.TotalTimeExact();
+	}
+
+	if (end_time > 0.01f)
+	{
 		if (c_XTime.TotalTimeExact() > end_time + 2)
 		{
 			bChange_Scene = true;
