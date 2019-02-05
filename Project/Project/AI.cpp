@@ -20,6 +20,26 @@ void AI::resolveDragonState(tScene_Objects* tObject_List, tFloat4x4 _playerPos, 
 		dragHP -= 1;
 		//aggro = true;
 	}
+	if (isHitIce)
+	{
+		freezeCountdown = freezeTime;
+	}
+	if (freezeCountdown > 0.01f)
+	{
+		freezeCountdown -= _dTime;
+	}
+	if (freezeCountdown <= 0.01f)
+	{
+		freezeCountdown = 0.0f;
+	}
+	if (freezeCountdown > 0.0f)
+	{
+		dragSpeed = 5.0f;
+	}
+	else
+	{
+		dragSpeed = 10.0f;
+	}
 
 	XMMATRIX playerPosMat = XMLoadFloat4x4(&tFloat4x4_to_XMFLOAT4x4(_playerPos));
 
@@ -362,6 +382,16 @@ bool AI::getIsHit()
 	return isHit;
 }
 
+void AI::setIsHitIce(bool _set)
+{
+	isHitIce = _set;
+}
+
+bool AI::getIsHitIce()
+{
+	return isHitIce;
+}
+
 int AI::getHP()
 {
 	return dragHP;
@@ -371,4 +401,9 @@ void AI::resetHP()
 {
 	dragHP = 5;
 	aggro = false;
+}
+
+float AI::getSpeed()
+{
+	return dragSpeed;
 }

@@ -87,14 +87,18 @@ float4 main(INPUT_DATA input) : SV_TARGET
 	//final_color *= attenuation;
 	final_color.a = combined_color.a;
 
-	if (tint.x == 1)
-		final_color.x += 1;
+	//if (tint.x == 1)
+	//	final_color.x += 1;
+	//
+	//if (tint.y == 1)
+	//	final_color.y += 1;
+	//
+	//if (tint.z == 1)
+	//	final_color.z += 1;
 
-	if (tint.y == 1)
-		final_color.y += 1;
-
-	if (tint.z == 1)
-		final_color.z += 1;
+	final_color.x += tint.x;
+	final_color.y += tint.y;
+	final_color.z += tint.z;
 
 	return final_color;
 

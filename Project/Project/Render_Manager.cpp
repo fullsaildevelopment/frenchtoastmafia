@@ -909,24 +909,33 @@ void cRender_Manager::Draw_World(int nScene_Id, tScene_Objects* tObject_List, bo
 		}
 
 		//tObject_List->dragHP -= 1;
-		if (_AI->getHP() == 3)
-		{
-			dragonTint = { 0.0f, 0.0f, 1.0f, 1.0f };
-		}
-		if (_AI->getHP() == 2)
-		{
-			dragonTint = { 1.0f, 1.0f, 0.0f, 1.0f };
-		}
-		if (_AI->getHP() == 1)
-		{
-			dragonTint = { 1.0f, 0.0f, 0.0f, 1.0f };
-		}
+		//if (_AI->getHP() == 3)
+		//{
+		//	dragonTint = { 0.0f, 0.0f, 1.0f, 1.0f };
+		//}
+		//if (_AI->getHP() == 2)
+		//{
+		//	dragonTint = { 1.0f, 1.0f, 0.0f, 1.0f };
+		//}
+		//if (_AI->getHP() == 1)
+		//{
+		//	dragonTint = { 1.0f, 0.0f, 0.0f, 1.0f };
+		//}
+		//
+		//if (_AI->getHP() <= 0)
+		//{
+		//	//*bChange_Scene = true;
+		//}
 
-		if (_AI->getHP() <= 0)
-		{
-			//*bChange_Scene = true;
-		}
+	}
 
+	if (_AI->getSpeed() < 9.0f)
+	{
+		dragonTint = { 0.0f, 0.5f, 0.5f, 1.0f };
+	}
+	else
+	{
+		dragonTint = { 0.0f, 0.0f, 0.0f, 1.0f };
 	}
 
 	if (flashTimer < 0.0f)

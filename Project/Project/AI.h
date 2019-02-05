@@ -22,8 +22,13 @@ public:
 	void setIsHit(bool _set);
 	bool getIsHit();
 
+	void setIsHitIce(bool _set);
+	bool getIsHitIce();
+
 	int getHP();
 	void resetHP();
+
+	float getSpeed();
 
 	AI();
 	~AI();
@@ -46,6 +51,10 @@ private:
 	float dragSpeed = 10.0f;
 
 	bool isHit = false;
+	bool isHitIce = false;
+
+	float freezeTime = 3.5f;
+	float freezeCountdown = 0.0f;
 
 	void fire();
 

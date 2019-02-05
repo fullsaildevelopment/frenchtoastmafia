@@ -75,6 +75,7 @@ void cGame_Loop::Update()
 		c_Dragon.setPosition4x4(tWorld_Object_List->fWorld_Matrix[2]);
 		c_Dragon_Fireball.setPosition4x4(tWorld_Object_List->fWorld_Matrix[3]);
 		c_AI.setIsHit(false);
+		c_AI.setIsHitIce(false);
 
 		xmf_in = tFloat4x4_to_XMFLOAT4x4(c_Head_Mount.Get_CurrentLook(c_Offset_Matrix.GetPosition4x4()));
 		xmm_in = XMLoadFloat4x4(&xmf_in);
@@ -560,28 +561,56 @@ void cGame_Loop::Update()
 			if ((t_Collisions.Detect_AABB_To_AABB(tAABB_Dragon, tAABB_Player_Spell_01) && c_Player_Spell_01.getIsActive())
 				|| (t_Collisions.Detect_AABB_To_AABB(tAABB_Dragon, tAABB_Player_Spell_02) && c_Player_Spell_02.getIsActive()))
 			{
-				tWorld_Object_List->currAnim[2] = 1;
-
-				dragon_hit = true;
 				//dragon_hit = c_AI.setIsHit(true);
 				//dragon_hit = c_AI.getIsHit();
 				if (t_Collisions.Detect_AABB_To_AABB(tAABB_Dragon, tAABB_Player_Spell_01) && c_Player_Spell_01.getIsActive())
 				{
 					c_Player_Spell_01.setIsActive(false);
 					bMove_Spell_01 = false;
+
+					if (personal_swap_Id.fZ == 1)
+					{
+						tWorld_Object_List->currAnim[2] = 1;
+
+						dragon_hit = true;
+
+						c_Dragon.setHealth(-20);
+
+						c_AI.setIsHit(true);
+						c_Render_Manager.set_particle_array(p.get_particles());
+						p.create_particles(dragon_blast_color, c_XTime.Delta(), dragon_blast_acceleration, dragon_blast_kill, dragon_hit);
+					}
+					else if(personal_swap_Id.fZ == 2)
+					{
+						
+						c_AI.setIsHitIce(true);
+					}
+
 				}
 
 				if (t_Collisions.Detect_AABB_To_AABB(tAABB_Dragon, tAABB_Player_Spell_02) && c_Player_Spell_02.getIsActive())
 				{
 					c_Player_Spell_02.setIsActive(false);
 					bMove_Spell_02 = false;
+
+					if (personal_swap_Id.fW == 1)
+					{
+						tWorld_Object_List->currAnim[2] = 1;
+
+						dragon_hit = true;
+
+						c_Dragon.setHealth(-20);
+
+						c_AI.setIsHit(true);
+						c_Render_Manager.set_particle_array(p.get_particles());
+						p.create_particles(dragon_blast_color, c_XTime.Delta(), dragon_blast_acceleration, dragon_blast_kill, dragon_hit);
+					}
+					else if (personal_swap_Id.fW == 2)
+					{
+					
+						c_AI.setIsHitIce(true);
+					}
 				}
-
-				c_AI.setIsHit(true);
-				c_Dragon.setHealth(-20);
-				c_Render_Manager.set_particle_array(p.get_particles());
-				p.create_particles(dragon_blast_color, c_XTime.Delta(), dragon_blast_acceleration, dragon_blast_kill, dragon_hit);
-
 				/*if (c_Player.getHealth() <= 0)
 					c_Player.setIsAlive(false);*/
 
