@@ -107,6 +107,7 @@ struct tScene_Objects
 	tAnimation_Data						tAnim_Data[15]{}; // try to combine with clip when create binary writer
 
 	int									currAnim[15]{};
+	bool animTransition = false;
 
 	// Vertex Shaders
 	ComPtr<ID3D11VertexShader>			d3d_Vertex_Shaders[15]{};

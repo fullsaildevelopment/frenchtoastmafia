@@ -1116,6 +1116,12 @@ void cGame_Loop::Update()
 	{
 		end_time = 0.0f;
 	}
+
+	if (tWorld_Object_List->animTransition == true)
+	{
+		tWorld_Object_List->currAnim[2] = 4;
+		bChange_Scene = true;
+	}
 	
 	if (!c_Dragon.getIsAlive() && m_nScene_Id == 2)
 	{
@@ -1126,7 +1132,7 @@ void cGame_Loop::Update()
 	{
 		bool tr = true;
 	}
-	//if ((!c_Player.getIsAlive() || !c_Dragon.getIsAlive()) && m_nScene_Id == 2)
+
 	if (end_time >= 3.0 && m_nScene_Id == 2)
 	{
 			bChange_Scene = true;
@@ -1135,7 +1141,7 @@ void cGame_Loop::Update()
 	}
 
 	// Scene Transitions
-	if (bChange_Scene && timeCheck == 0)
+	if (bChange_Scene)
 	{
 		if (m_nScene_Id == 0 || m_nScene_Id == 1)
 			m_nScene_Id++;
