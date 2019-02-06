@@ -29,7 +29,10 @@ void cGame_Loop::Initialize(cGraphics_Setup* _gsetup, cVR_Setup* _vsetup)
 	c_Head_Mount.SetupCameras();
 	c_Head_Mount.UpdateHMDMatrixPose();
 	c_XTime.Restart();
-	m_nScene_Id = 0;                            // FMOD_DEFAULT
+	m_nScene_Id = 0;  
+	end_time = 0.0f;
+
+	// FMOD_DEFAULT
 	//sound.playSong("french-laugh_modified.mp3", FMOD_LOOP_NORMAL, 1.0f);
 }
 
@@ -206,7 +209,7 @@ void cGame_Loop::Update()
 			//tAABB_Dragon_Fireball[2].extents = tFloat3{ 4.0f, 4.0f, 4.0f };
 
 			//tWorld_Object_List->maxFireballs
-			for(int j = 0; j < 7; j++)
+			for(int j = 0; j < 6; j++)
 			{
 				tAABB_Dragon_Fireball[j].center = tWorld_Object_List->fFireball_Matrix[j].tW.fXYZ;
 				tAABB_Dragon_Fireball[j].extents = tFloat3{ 4.0f, 4.0f, 4.0f };
@@ -1109,25 +1112,26 @@ void cGame_Loop::Update()
 		bReset_Offset = false;
 	}
 
-	if (c_Dragon.getIsAlive())
+	if (end_time > 0.1)
 	{
-		endTimeSet = false;
+		bool tr = true;
+	}
+
+	if (!c_Dragon.getIsAlive() && m_nScene_Id == 2)
+	{
+		//end_time += c_XTime.Delta();
+	}
+
+	if (end_time > 0.1)
+	{
+		bool tr = true;
 	}
 	//if ((!c_Player.getIsAlive() || !c_Dragon.getIsAlive()) && m_nScene_Id == 2)
-	if (!c_Dragon.getIsAlive() && m_nScene_Id == 2 && !endTimeSet)
+	if (end_time >= 3.0 && m_nScene_Id == 2)
 	{
-			endTimeSet = true;
-
-			end_time = c_XTime.TotalTimeExact();
-	}
-
-	if (end_time > 0.01f)
-	{
-		if (c_XTime.TotalTimeExact() > end_time + 2)
-		{
 			bChange_Scene = true;
-			endTimeSet = false;
-		}
+
+			end_time = 0.0f;
 	}
 
 	// Scene Transitions
