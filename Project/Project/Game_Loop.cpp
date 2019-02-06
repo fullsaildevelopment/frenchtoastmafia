@@ -1440,7 +1440,7 @@ void cGame_Loop::Update()
 		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[3]);
 		*/
 	default:
-		fname = "L_Hand_texture.dds";
+		fname = "Left_Hand.dds";
 		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[0]);
 		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[1]);
 		c_Render_Manager.Texture_Swap(fname, &tPersonal_Object_List->d3d_SRV[2]);
