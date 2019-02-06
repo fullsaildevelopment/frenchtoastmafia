@@ -87,7 +87,7 @@ private:
 
 	float explosionTimer[9];
 	//bool switchScene = false;
-	float end_time;
+	
 	// Particle Stuff
 
 	Particle p;
@@ -132,4 +132,5 @@ public:
 	void Setup();
 	void Update();
 	void Clean_Up();
+	float end_time;
 };
