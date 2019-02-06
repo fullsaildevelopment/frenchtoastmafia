@@ -86,10 +86,8 @@ private:
 	tAABB tAABB_Dragon_Fireball[3];
 
 	float explosionTimer[9];
-	bool switchScene = false;
-	float switchTimer = 0.0f;
-	double end_time;
-	bool endTimeSet = false;
+	//bool switchScene = false;
+	
 	// Particle Stuff
 
 	Particle p;
@@ -134,4 +132,5 @@ public:
 	void Setup();
 	void Update();
 	void Clean_Up();
+	float end_time;
 };
