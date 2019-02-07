@@ -994,6 +994,8 @@ tScene_Objects* cScene_Manager::Get_World_Scene(int nScene_Id)
 			tScene->tAnim_Clip[2][0] = cBinary_Read.Read_Skeleton("Dragon_Flying2Skeleton.bin");
 			tScene->tAnim_Clip[2][1] = cBinary_Read.Read_Skeleton("Dragon_GetHit2Skeleton.bin");
 			tScene->tAnim_Clip[2][2] = cBinary_Read.Read_Skeleton("Dragon_Sleeping2Skeleton.bin");
+			tScene->tAnim_Clip[2][3] = cBinary_Read.Read_Skeleton("Dragon_Death_TransitionSkeleton.bin");
+			tScene->tAnim_Clip[2][4] = cBinary_Read.Read_Skeleton("Dragon_Death_FallSkeleton.bin");
 			tScene->tAnim_Data[2] = Create_Inverse_Bind_Pose(tScene->tAnim_Clip[2][0].tKeyFrames[0]);
 
 			tScene->currAnim[2] = 2;

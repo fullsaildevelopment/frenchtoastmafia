@@ -84,6 +84,12 @@ void cAnimation_Manager::Animate(double dDelta, double dTotal, tScene_Objects* t
 				tObject_List->currAnim[i] = 0;
 			}
 
+			if (currentAnim == 3 && fRatio > 1)
+			{
+				//tObject_List->currAnim[i] = 4;
+				tObject_List->animTransition = true;
+			}
+
 			if (currentAnim == 0 && fRatio > 1)
 			{
 				sound.playSoundEffect("Flapping Wings 3-SoundBible.com-1900341762.mp3", FMOD_DEFAULT, 0.4f);
