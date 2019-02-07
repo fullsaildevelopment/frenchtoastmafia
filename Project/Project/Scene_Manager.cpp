@@ -741,60 +741,60 @@ tScene_Objects* cScene_Manager::Get_World_Scene(int nScene_Id)
 
 		tScene->fWorld_Position[1] = { 15, 0, 0 };
 
-		XMFLOAT4X4 temp;
+		XMFLOAT4X4 temp1;
 
-		XMMATRIX tempMatrix = XMMatrixIdentity();
+		XMMATRIX tempMatrix1 = XMMatrixIdentity();
 
-		tempMatrix = XMMatrixMultiply(tempMatrix, XMMatrixTranslation(-3.0f, 1.0f, 0.0f));
+		tempMatrix = XMMatrixMultiply(tempMatrix, XMMatrixTranslation(7.5f, 1.0f, -3.0f));
 
 		XMStoreFloat4x4(&temp, tempMatrix);
 
 		tScene->fWorld_Matrix[1] = XMFLOAT4x4_to_tFloat4x4(temp);
 
-		tVertex *test_screen = new tVertex[4];
-		test_screen[0].fPosition.fX = 1.0f;
-		test_screen[0].fPosition.fY = 1.8f;
-		test_screen[0].fPosition.fZ = -2.4f;
+		tVertex *test_screen2 = new tVertex[4];
+		test_screen2[0].fPosition.fX = -2.4f;
+		test_screen2[0].fPosition.fY = 1.8f;
+		test_screen2[0].fPosition.fZ = 1.0f;
 
-		test_screen[0].fTexture_Coordinate.fX = 0.0f;
-		test_screen[0].fTexture_Coordinate.fY = 0.0f;
+		test_screen2[0].fTexture_Coordinate.fX = 0.0f;
+		test_screen2[0].fTexture_Coordinate.fY = 0.0f;
 
-		test_screen[1].fPosition.fX = 1.0f;
-		test_screen[1].fPosition.fY = 1.8f;
-		test_screen[1].fPosition.fZ = 2.4f;
-
-		test_screen[1].fTexture_Coordinate.fX = 1.0f;
-		test_screen[1].fTexture_Coordinate.fY = 0.0f;
-
-		test_screen[2].fPosition.fX = 1.0f;
-		test_screen[2].fPosition.fY = -1.8f;
-		test_screen[2].fPosition.fZ = -2.4f;
-
-		test_screen[2].fTexture_Coordinate.fX = 0.0f;
-		test_screen[2].fTexture_Coordinate.fY = 1.0f;
-
-		test_screen[3].fPosition.fX = 1.0f;
-		test_screen[3].fPosition.fY = -1.8f;
-		test_screen[3].fPosition.fZ = 2.4f;
-
-		test_screen[3].fTexture_Coordinate.fX = 1.0f;
-		test_screen[3].fTexture_Coordinate.fY = 1.0f;
+		test_screen2[1].fPosition.fX = 2.4f;
+		test_screen2[1].fPosition.fY = 1.8f;
+		test_screen2[1].fPosition.fZ = 1.0f;
+				   
+		test_screen2[1].fTexture_Coordinate.fX = 1.0f;
+		test_screen2[1].fTexture_Coordinate.fY = 0.0f;
+				   
+		test_screen2[2].fPosition.fX = -2.4f;
+		test_screen2[2].fPosition.fY = -1.8f;
+		test_screen2[2].fPosition.fZ = 1.0f;
+				   
+		test_screen2[2].fTexture_Coordinate.fX = 0.0f;
+		test_screen2[2].fTexture_Coordinate.fY = 1.0f;
+				   
+		test_screen2[3].fPosition.fX = 2.4f;
+		test_screen2[3].fPosition.fY = -1.8f;
+		test_screen2[3].fPosition.fZ = 1.0f;
+				   
+		test_screen2[3].fTexture_Coordinate.fX = 1.0f;
+		test_screen2[3].fTexture_Coordinate.fY = 1.0f;
 
 		for (int i = 0; i < 4; i++)
 		{
-			test_screen[i].fPosition.fX *= -1;
+			test_screen2[i].fPosition.fZ *= -1;
 		}
 
 		for (int i = 0; i < 4; i++)
 		{
-			tScene->tMesh_Data[1].tVerts.push_back(test_screen[i]);
+			tScene->tMesh_Data[1].tVerts.push_back(test_screen2[i]);
 		}
 
 		tScene->tMesh_Data[1].nVertex_Count = 4;
 
 		// INDEX BUFFER
 
-		unsigned int test_screen_indicies[6] =
+		unsigned int test_screen_indicies1[6] =
 		{
 			0,1,2,
 			1,3,2
@@ -802,11 +802,11 @@ tScene_Objects* cScene_Manager::Get_World_Scene(int nScene_Id)
 
 		for (int i = 0; i < 6; i++)
 		{
-			tScene->tMesh_Data[1].nIndicies.push_back(test_screen_indicies[i]);
+			tScene->tMesh_Data[1].nIndicies.push_back(test_screen_indicies1[i]);
 		}
 		tScene->tMesh_Data[1].nIndex_Count = 6;
 
-		tScene->szSRV_File_Path[1] = "control_screen.dds";
+		tScene->szSRV_File_Path[1] = "control screen.dds";
 		
 		return tScene;
 	}

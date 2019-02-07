@@ -1053,7 +1053,7 @@ void cRender_Manager::Draw_World(int nScene_Id, tScene_Objects* tObject_List, bo
 
 			if (nScene_Id < 2 || nScene_Id == 3 || nScene_Id == 4)
 			{
-				c_Graphics_Setup->Get_Context().Get()->PSSetShaderResources(0, 1, tObject_List->d3d_SRV[0].GetAddressOf());
+				c_Graphics_Setup->Get_Context().Get()->PSSetShaderResources(0, 1, tObject_List->d3d_SRV[i].GetAddressOf());
 			}
 			else
 			{
