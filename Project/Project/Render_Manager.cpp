@@ -1001,7 +1001,7 @@ void cRender_Manager::Draw_World(int nScene_Id, tScene_Objects* tObject_List, bo
 			{
 				continue;
 			}
-			if (i == 5)
+			if (i == 5 || i == 6)
 			{
 				continue;
 			}
